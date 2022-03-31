@@ -5,12 +5,12 @@ import {getSports, getSportById, postSport, updateSport, deleteSport} from '../c
 
 const app = express.Router()
 
-app.get('/',)
+app.get('/',getSports)
 
-app.get('/:id',)
+app.get('/:id',getSportById)
 
-app.post('/',)
+app.post('/',postSport)
 
-app.put('/:id',)
+app.put('/:id',updateSport)
 
-app.delete('/:id',)
+app.delete('/:id',deleteSport)

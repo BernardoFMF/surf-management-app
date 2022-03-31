@@ -5,12 +5,12 @@ import {getEvents, getEventById, postEvent, updateEvent, deleteEvent} from '../c
 
 const app = express.Router()
 
-app.get('/',)
+app.get('/',getEvents)
 
-app.get('/:id',)
+app.get('/:id',getEventById)
 
-app.post('/',)
+app.post('/',postEvent)
 
-app.put('/:id',)
+app.put('/:id',updateEvent)
 
-app.delete('/:id',)
+app.delete('/:id',deleteEvent)

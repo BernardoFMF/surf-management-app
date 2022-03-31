@@ -3,35 +3,35 @@
 import express from 'express'
 import {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany, 
 	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompaniesQuota, updateCompanyQuota,
-	postCompanyEvent, updateCompanyEventById} from '../controllers/userControllers.js'
+	postCompanyEvent, updateCompanyEventById} from '../controllers/companyControllers.js'
 
 const app = express.Router()
 
 
-app.get('/',)
+app.get('/',getCompanies)
 
-app.get('/:id',)
+app.get('/:id',getCompanyById)
 
-app.post('/',)
+app.post('/',postCompany)
 
-app.put('/:id',)
+app.put('/:id',updateCompany)
 
-app.delete('/:id',)
+app.delete('/:id',deleteCompany)
 
 // quotas
 
-app.get('/quotas',)
+app.get('/quotas',getCompaniesQuotas)
 
-app.get('/:id/quotas',)
+app.get('/:id/quotas',getCompanyQuotasById)
 
-app.post('/quotas',)
+app.post('/quotas',postCompaniesQuota)
 
-app.put('/quotas/:qid/',)
+app.put('/quotas/:qid/',updateCompaniesQuota)
 
-app.put('/:id/quotas/:qid',)
+app.put('/:id/quotas/:qid',updateCompanyQuota)
 
 // events
 
-app.post('/:id/events',)
+app.post('/:id/events',postCompanyEvent)
 
-app.put('/:id/events/:eid',)
+app.put('/:id/events/:eid',updateCompanyEventById)
