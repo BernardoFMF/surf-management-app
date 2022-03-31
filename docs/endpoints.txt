@@ -1,0 +1,97 @@
+
+Individual endpoints:
+
+    GET /users- list all users
+
+    GET /users/{id} - list a specific user
+
+    POST /users - creates a user
+
+    PUT /users/{id} - updates a specific user
+
+    // it has soft delete
+    DELETE /users/{id}
+
+    Quota endpoints:
+
+        GET /users/quotas - list all quotas for all user
+
+        GET /users/{id}/quotas - list all quotas for a specific user
+
+        POST /users/quotas - creates a quota for all users
+
+        PUT /users/quotas/{year} - updates a data from a quota
+
+        PUT /users/{id}/quotas/{year} - updates the quota for a specific user
+
+    Sport endpoints:
+
+        GET /users/sports - list all sports for all users
+
+        GET /users/sports/{id} - list a specific sport for all users
+
+        GET /users/{id}/sports - list all sports for a specific user
+
+        POST /users/{id}/sports - creates a sport for a specific user
+
+        DELETE /users/{id}/sports/{id} - deletes a specific sport for a specific user
+
+    Events endpoints:
+
+        POST /users/{id}/events - creates an event
+
+        PUT /users/{id}/events/{id} - updates a specific event
+
+Company endpoints:
+
+    GET /companies - list all companies
+
+    GET /companies/{id} - list a specific company
+
+    POST /companies - creates a company
+
+    PUT /companies/{id} - updates a specific company
+
+    DELETE /companies/{id} - deletes a specific company
+
+    Quota endpoints:
+
+        GET /companies/quotas - list all quotas for all company
+
+        GET /companies/{id}/quotas - list all quotas for a specific company
+
+        POST /companies/quotas - creates a quota for all companies
+
+        PUT /companies/quotas/{year} - updates a data from a quota
+
+        PUT /companies/{id}/quotas/{year} - updates the quota for a specific company
+
+    Events endpoints:
+
+        POST /companies/{id}/events - creates an event
+
+        PUT /companies/{id}/events/{id} - updates a specific event
+
+Sport endpoints:
+
+    GET /sports - list all sports
+
+    GET /sports/{id} - list a specific sport
+
+    POST /sports - creates a sport
+
+    PUT /sports/{id} - updates a specific sport
+
+    DELETE /sports/{id} - deletes a specific sport
+
+Events endpoints:
+
+    GET /events - list all events
+
+    GET /events/{id} - list a specific event
+
+    POST /events - creates an event
+
+    PUT /events/{id} - updates a specific event
+
+    DELETE /events/{id} - deletes a specific event
