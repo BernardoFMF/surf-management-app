@@ -1,8 +1,8 @@
 'use strict'
-//TODO Error Handling
+
 import asyncHandler from 'express-async-handler'
 
-import {getSportsServices, getSportByIdServices, postSportServices, updateSportServices, deleteSportServices} from '../services/sportServices.js'
+import {getSportsServices, getSportByIdServices, postSportServices, deleteSportServices} from '../services/sportServices.js'
 
 const getSports = asyncHandler(async (req, res) => {
 	const sports = await getSportsServices()
@@ -10,36 +10,21 @@ const getSports = asyncHandler(async (req, res) => {
 })
 
 const getSportById = asyncHandler(async (req, res) => {
-	const sport = await getSportByIdServices(req.params.id)
+	const sport = await getSportByIdServices(req.params.sid)
 	if (sport) res.json(sport)
-	else {
-		res.status(404)
-		throw new Error('Sport not found.')
-	}
 })
 
 const postSport = asyncHandler(async (req, res) => {
 	const sport = await postSportServices(req.body.name)
-	if (sport) res.json(sport)
-	else {
-		res.status()
-	}
-})
-
-const updateSport = asyncHandler(async (req, res) => {
-	const sports = await updateSportServices(req.body.name)
-	if(sports) res.json(sports)
-	else {
-		res.status()
+	if (sport) {
+		res.status(201)
+		res.json(sport)
 	}
 })
 
 const deleteSport = asyncHandler(async (req, res) => {
-	const sport = await deleteSportServices(req.params.id)
-	if(sport) res.json(sport)
-	else {
-		res.status()
-	}
+	const sport = await deleteSportServices(req.params.sid)
+	if (sport) res.json(sport)
 })
 
-export {getSports, getSportById, postSport, updateSport, deleteSport}
+export {getSports, getSportById, postSport, deleteSport}

@@ -1,8 +1,8 @@
 'use strict'
-//TODO Error Handling
+
 import asyncHandler from 'express-async-handler'
 
-import {getEventsServices, getEventByIdServices, postEventServices, updateEventServices, deleteEventServices} from '../services/eventsServices.js'
+import { getEventsServices, getEventByIdServices, postEventServices, updateEventServices, deleteEventServices, updateMemberAttendanceServices, postMemberAttendanceServices } from '../services/eventsServices.js'
 
 const getEvents = asyncHandler(async (req, res) => {
 	const events = await getEventsServices()
@@ -10,38 +10,40 @@ const getEvents = asyncHandler(async (req, res) => {
 })
 
 const getEventById = asyncHandler(async (req, res) => {
-	const event = await getEventByIdServices(req.params.id)
+	const event = await getEventByIdServices(req.params.eid)
 	if (event) res.json(event)
-	else {
-		res.status(404)
-		throw new Error('Event not found.')
-	}
 })
 
 const postEvent = asyncHandler(async (req, res) => {
-	const event = await postEventServices(req.body.name, req.body.initialDate, req.body.finalDate)
-	if (event) res.json(event)
-	else {
-		res.status()
-        throw new Error('Event could not be created.')
+	const event = await postEventServices(req.body.name, req.body.initial_date, req.body.final_date)
+	if (event) {
+		res.status(201)
+		res.json(event)
 	}
 })
 
 const updateEvent = asyncHandler(async (req, res) => {
-	const events = await updateEventServices(req.body.name, req.body.initialDate, req.body.finalDate)
-	if(events) res.json(events)
-	else {
-		res.status()
-	}
+	const event = await updateEventServices(req.body.name, req.body.initial_date, req.body.final_date)
+	if (event) res.json(event)
 })
 
 const deleteEvent = asyncHandler(async (req, res) => {
-	const event = await deleteEventServices(req.params.id)
-	if(event) res.json(event)
-	else {
-		res.status()
-        throw new Error('Event could not be deleted.')
+	const event = await deleteEventServices(req.params.eid)
+	if (event) res.json({ message: 'Event deleted sucessfully' })
+})
+
+const postMemberAttendance = asyncHandler(async (req,res) => {
+	const event = await postMemberAttendanceServices(req.params.eid, req.body.id, req.body.state)
+	if(event) {
+		res.status(201)
+		res.json(event)
 	}
 })
 
-export {getEvents, getEventById, postEvent, updateEvent, deleteEvent}
+const updateMemberAttendance = asyncHandler(async (req,res) => {
+	const event = await updateMemberAttendanceServices(req.params.eid, req.body.id, req.body.state)
+	if(event) res.json(event)
+})
+
+
+export {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance}
