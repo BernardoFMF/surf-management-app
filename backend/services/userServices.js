@@ -1,7 +1,7 @@
 'use strict'
 
 import error from '../utils/error.js'
-import {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUsersQuotasId,
+import {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUsersQuotasById,
 	postUsersQuota, updateUserQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport } from '../data/userDataMem.js'
 
 const getUsersServices = async () => {
@@ -13,7 +13,8 @@ const getUserByIdServices = async (id) => {
 	return await getUserById(id)
 }
 
-const postUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
+const postUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
+	if(!id) throw error(400, 'Parameter not found: id')
 	if(!cc) throw error(400, 'Parameter not found: cc')
 	if(!nif) throw error(400, 'Parameter not found: nif')
 	if(!type) throw error(400, 'Parameter not found: type')
@@ -26,7 +27,7 @@ const postUserServices = async (cc, nif, type, birth_date, nationality, full_nam
 	if(!address) throw error(400, 'Parameter not found: address')
 	if(!location) throw error(400, 'Parameter not found: location')
 	if(!password) throw error(400, 'Parameter not found: password')
-	return await postUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
+	return await postUser(id, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
 }
 
 const updateUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
@@ -56,7 +57,7 @@ const getUsersQuotasServices = async () => {
 
 const getUserQuotasByIdServices = async (id) => {
 	if(!id) throw error(400, 'Parameter not found: id')
-	return await getUsersQuotasId(id)
+	return await getUsersQuotasById(id)
 }
 
 const postUsersQuotaServices = async (date) => {
