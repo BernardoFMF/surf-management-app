@@ -23,7 +23,7 @@ const postEvent = asyncHandler(async (req, res) => {
 })
 
 const updateEvent = asyncHandler(async (req, res) => {
-	const event = await updateEventServices(req.body.name, req.body.initial_date, req.body.final_date)
+	const event = await updateEventServices(req.params.eid, req.body.name, req.body.initial_date, req.body.final_date)
 	if (event) res.json(event)
 })
 
