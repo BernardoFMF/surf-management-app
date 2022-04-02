@@ -1,24 +1,25 @@
 'use strict'
 
 import error from '../utils/error.js'
+import {getSports, getSportsById, postSport, deleteSport} from '../data/sportDataMem.js'
 
 const getSportsServices = async () => {
-	return await db.getSports()
+	return await getSports()
 }
 
 const getSportsByIdServices = async (sid) => {
 	if(!sid) throw error(400, 'Parameter not found: sid')
-	return await db.getSportsById(sid)
+	return await getSportsById(sid)
 }
 
 const postSportServices = async (name) => {
 	if(!name) throw error(400, 'Parameter not found: name')
-	return await db.postSport(name)
+	return await postSport(name)
 }
 
 const deleteSportServices = async (sid) => {
 	if(!sid) throw error(400, 'Parameter not found: sid')
-	return await db.deleteSport(sid)
+	return await deleteSport(sid)
 }
 
 export {getSportsServices, getSportsByIdServices, postSportServices, deleteSportServices}

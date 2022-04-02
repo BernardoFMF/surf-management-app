@@ -2,7 +2,7 @@
 
 import asyncHandler from 'express-async-handler'
 
-import { getEventsServices, getEventByIdServices, postEventServices, updateEventServices, deleteEventServices, updateMemberAttendanceServices, postMemberAttendanceServices } from '../services/eventsServices.js'
+import {getEventsServices, getEventByIdServices, postEventServices, updateEventServices, deleteEventServices, updateMemberAttendanceServices, postMemberAttendanceServices } from '../services/eventsServices.js'
 
 const getEvents = asyncHandler(async (req, res) => {
 	const events = await getEventsServices()

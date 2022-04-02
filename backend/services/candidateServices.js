@@ -1,14 +1,15 @@
 'use strict'
 
 import error from '../utils/error.js'
+import {getCandidates, getCandidateById, postCandidate, deleteCandidate, approveCandidate} from '../data/candidateDateMem.js'
 
 const getCandidatesServices = async () => {
-	return await db.getCandidates()
+	return await getCandidates()
 }
 
 const getCandidateByIdServices = async (id) => {
 	if(!id) throw error(400, 'Parameter not found: id')
-	return await db.getCandidateById(id)
+	return await getCandidateById(id)
 }
 
 const postCandidateServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
@@ -24,17 +25,17 @@ const postCandidateServices = async (cc, nif, type, birth_date, nationality, ful
 	if(!address) throw error(400, 'Parameter not found: address')
 	if(!location) throw error(400, 'Parameter not found: location')
 	if(!password) throw error(400, 'Parameter not found: password')
-	return await db.postCandidate(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
+	return await postCandidate(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
 }
 
 const deleteCandidateServices = async (cid) => {
 	if(!cid) throw error(400, 'Parameter not found: cid')
-	return await db.deleteCandidate(cid)
+	return await deleteCandidate(cid)
 }
 
 const approveCandidateServices = async (cid) => {
 	if(!cid) throw error(400, 'Parameter not found: cid')
-	return await db.approveCandidate(cid)
+	return await approveCandidate(cid)
 }
 
 export {getCandidatesServices, getCandidateByIdServices, postCandidateServices, deleteCandidateServices, approveCandidateServices}

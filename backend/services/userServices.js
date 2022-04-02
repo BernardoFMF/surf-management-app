@@ -1,14 +1,16 @@
 'use strict'
 
 import error from '../utils/error.js'
+import {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUsersQuotasId,
+	postUsersQuota, updateUserQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport } from '../data/userDataMem.js'
 
 const getUsersServices = async () => {
-	return await db.getUsers()
+	return await getUsers()
 }
 
 const getUserByIdServices = async (id) => {
 	if(!id) throw error(400, 'Parameter not found: id')
-	return await db.getUserById(id)
+	return await getUserById(id)
 }
 
 const postUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
@@ -24,7 +26,7 @@ const postUserServices = async (cc, nif, type, birth_date, nationality, full_nam
 	if(!address) throw error(400, 'Parameter not found: address')
 	if(!location) throw error(400, 'Parameter not found: location')
 	if(!password) throw error(400, 'Parameter not found: password')
-	return await db.postUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
+	return await postUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
 }
 
 const updateUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
@@ -40,46 +42,46 @@ const updateUserServices = async (cc, nif, type, birth_date, nationality, full_n
 	if(!address) throw error(400, 'Parameter not found: address')
 	if(!location) throw error(400, 'Parameter not found: location')
 	if(!password) throw error(400, 'Parameter not found: password')
-	return await db.updateUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
+	return await updateUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
 }
 
 const deleteUserServices = async (id) => {
 	if(!id) throw error(400, 'Parameter not found: id')
-	return await db.deleteUser(id)
+	return await deleteUser(id)
 }
 
 const getUsersQuotasServices = async () => {
-	return await db.getUsersQuotas()
+	return await getUsersQuotas()
 }
 
 const getUserQuotasByIdServices = async (id) => {
 	if(!id) throw error(400, 'Parameter not found: id')
-	return await db.getUsersQuotasId(id)
+	return await getUsersQuotasId(id)
 }
 
 const postUsersQuotaServices = async (date) => {
 	if(!date) throw error(400, 'Parameter not found: date')
-	return await db.postUsersQuota(date)
+	return await postUsersQuota(date)
 }
 
 const updateUserQuotaServices = async (qid, paymentDate) => {
 	if(!qid) throw error(400, 'Parameter not found: qid')
 	if(!paymentDate) throw error(400, 'Parameter not found: paymentDate')
-	return await db.updateUserQuota(qid, paymentDate)
+	return await updateUserQuota(qid, paymentDate)
 }
 
 const getUsersSportsServices = async () => {
-	return await db.getUsersSport()
+	return await getUsersSports()
 }
 
 const getUsersSportServices = async (sid) => {
 	if(!sid) throw error(400, 'Parameter not found: sid')
-	return await db.getUsersSport(sid)
+	return await getUsersSport(sid)
 }
 
 const getUserSportsByIdServices = async (id) => {
 	if(!id) throw error(400, 'Parameter not found: id')
-	return await db.getUserSportsById(id)
+	return await getUserSportsById(id)
 }
 
 const postUserSportServices = async (id, sid, type, federationNumber, federationId, yearsFederated) => {
@@ -89,7 +91,7 @@ const postUserSportServices = async (id, sid, type, federationNumber, federation
 	if(!federationNumber) throw error(400, 'Parameter not found: federationNumber')
 	if(!federationId) throw error(400, 'Parameter not found: federationId')
 	if(!yearsFederated) throw error(400, 'Parameter not found: yearsFederated')
-	return await db.postUserSport(id, sid, type, federationNumber, federationId, yearsFederated)
+	return await postUserSport(id, sid, type, federationNumber, federationId, yearsFederated)
 }
 
 const updateUserSportServices = async (id, sid, type, federationNumber, federationId, yearsFederated) => {
@@ -99,13 +101,13 @@ const updateUserSportServices = async (id, sid, type, federationNumber, federati
 	if(!federationNumber) throw error(400, 'Parameter not found: federationNumber')
 	if(!federationId) throw error(400, 'Parameter not found: federationId')
 	if(!yearsFederated) throw error(400, 'Parameter not found: yearsFederated')
-	return await db.updateUserSport(id, sid, type, federationNumber, federationId, yearsFederated)
+	return await updateUserSport(id, sid, type, federationNumber, federationId, yearsFederated)
 }
 
 const deleteUserSportServices = async (id, sid) => {
 	if(!id) throw error(400, 'Parameter not found: id')
 	if(!sid) throw error(400, 'Parameter not found: sid')
-	return await db.deleteUserSport(sid)
+	return await deleteUserSport(sid)
 }
 
 export { getUsersServices, getUserByIdServices, postUserServices, updateUserServices, deleteUserServices, getUsersQuotasServices, getUserQuotasByIdServices, postUsersQuotaServices, updateUserQuotaServices, getUsersSportsServices, getUsersSportServices, getUserSportsByIdServices, postUserSportServices, updateUserSportServices, deleteUserSportServices}
