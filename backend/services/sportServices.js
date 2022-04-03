@@ -1,15 +1,15 @@
 'use strict'
 
 import error from '../utils/error.js'
-import {getSports, getSportsById, postSport, deleteSport} from '../data/sportDataMem.js'
+import {getSports, getSportById, postSport, deleteSport} from '../data/sportDataMem.js'
 
 const getSportsServices = async () => {
 	return await getSports()
 }
 
-const getSportsByIdServices = async (sid) => {
+const getSportByIdServices = async (sid) => {
 	if(!sid) throw error(400, 'Parameter not found: sid')
-	return await getSportsById(sid)
+	return await getSportById(sid)
 }
 
 const postSportServices = async (name) => {
@@ -22,4 +22,4 @@ const deleteSportServices = async (sid) => {
 	return await deleteSport(sid)
 }
 
-export {getSportsServices, getSportsByIdServices, postSportServices, deleteSportServices}
+export {getSportsServices, getSportByIdServices, postSportServices, deleteSportServices}

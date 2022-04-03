@@ -8,7 +8,7 @@ const getSports = async () => {
 	return sports
 }
 
-const getSportsById = async (sid) => {
+const getSportById = async (sid) => {
 	const sport = sports.filter(sport => sport.sid == sid)[0]
 	if (!sport) throw error(404, 'Could not find any sport.')
 	return sport
@@ -16,7 +16,7 @@ const getSportsById = async (sid) => {
 
 const postSport = async (name) => {
 	autoId++
-	const newSport = {id : autoId, name}
+	const newSport = {sid : autoId, name}
 	sports.push(newSport)
 	return newSport
 }
@@ -26,4 +26,4 @@ const deleteSport = async (sid) => {
 	return sports
 }
 
-export {getSports, getSportsById, postSport, deleteSport} 
+export {getSports, getSportById, postSport, deleteSport} 

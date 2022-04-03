@@ -1,7 +1,7 @@
 'use strict'
 
 import error from '../utils/error.js'
-import {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance} from '../data/eventDataMem.js'
+import {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance, getEventByIdAttendance} from '../data/eventDataMem.js'
 
 const getEventsServices = async() => {
 	return await getEvents()
@@ -19,11 +19,12 @@ const postEventServices = async(name, initial_date, final_date) => {
 	return await postEvent(name, initial_date,final_date)
 }
 
-const updateEventServices = async(name, initial_date, final_date) => {
+const updateEventServices = async(event_id, name, initial_date, final_date) => {
+	if(!event_id) throw error(400,'Parameter not found: event_id')
 	if(!name) throw error(400,'Parameter not found: name')
 	if(!initial_date) throw error(400,'Parameter not found: initial_date')
 	if(!final_date) throw error(400,'Parameter not found: final_date')
-	return await updateEvent(name, initial_date, final_date)
+	return await updateEvent(event_id, name, initial_date, final_date)
 }
 
 const deleteEventServices = async(event_id) => {
@@ -45,6 +46,10 @@ const updateMemberAttendanceServices = async(event_id, id, state) => {
 	return await updateMemberAttendance(event_id, id, state)
 }
 
+const getEventByIdAttendanceServices = async(event_id) => {
+	if(!event_id) throw error(400,'Parameter not found: event_id')
+	return await getEventByIdAttendance(event_id)
+}
 
-export { getEventsServices, getEventByIdServices, postEventServices, updateEventServices, deleteEventServices, updateMemberAttendanceServices, postMemberAttendanceServices }
+export { getEventsServices, getEventByIdServices, postEventServices, updateEventServices, deleteEventServices, updateMemberAttendanceServices, postMemberAttendanceServices, getEventByIdAttendanceServices }
 

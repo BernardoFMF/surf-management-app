@@ -1,7 +1,7 @@
 'use strict'
 
 import express from 'express'
-import {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance} from '../controllers/eventControllers.js'
+import {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance, getEventByIdAttendance} from '../controllers/eventControllers.js'
 
 const app = express.Router()
 
@@ -15,8 +15,10 @@ app.put('/:eid', updateEvent)
 
 app.delete('/:eid', deleteEvent)
 
-app.post('/:eid', postMemberAttendance)
+app.post('/:eid/attendance', postMemberAttendance)
 
-app.put('/:eid', updateMemberAttendance)
+app.put('/:eid/attendance', updateMemberAttendance)
+
+app.get('/:eid/attendance', getEventByIdAttendance)
 
 export default app

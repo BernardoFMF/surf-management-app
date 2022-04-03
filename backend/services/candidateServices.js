@@ -1,7 +1,7 @@
 'use strict'
 
 import error from '../utils/error.js'
-import {getCandidates, getCandidateById, postCandidate, deleteCandidate, approveCandidate} from '../data/candidateDateMem.js'
+import {getCandidates, getCandidateById, postCandidate, deleteCandidate, approveCandidate} from '../data/candidateDataMem.js'
 
 const getCandidatesServices = async () => {
 	return await getCandidates()

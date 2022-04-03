@@ -24,7 +24,7 @@ const postSport = asyncHandler(async (req, res) => {
 
 const deleteSport = asyncHandler(async (req, res) => {
 	const sport = await deleteSportServices(req.params.sid)
-	if (sport) res.json(sport)
+	if (sport) res.json({ message: 'Sport deleted sucessfully' })
 })
 
 export {getSports, getSportById, postSport, deleteSport}

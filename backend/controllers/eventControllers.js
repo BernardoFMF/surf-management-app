@@ -2,7 +2,7 @@
 
 import asyncHandler from 'express-async-handler'
 
-import {getEventsServices, getEventByIdServices, postEventServices, updateEventServices, deleteEventServices, updateMemberAttendanceServices, postMemberAttendanceServices } from '../services/eventsServices.js'
+import {getEventsServices, getEventByIdServices, postEventServices, updateEventServices, deleteEventServices, updateMemberAttendanceServices, postMemberAttendanceServices, getEventByIdAttendanceServices} from '../services/eventServices.js'
 
 const getEvents = asyncHandler(async (req, res) => {
 	const events = await getEventsServices()
@@ -34,7 +34,7 @@ const deleteEvent = asyncHandler(async (req, res) => {
 
 const postMemberAttendance = asyncHandler(async (req,res) => {
 	const event = await postMemberAttendanceServices(req.params.eid, req.body.id, req.body.state)
-	if(event) {
+	if (event) {
 		res.status(201)
 		res.json(event)
 	}
@@ -42,8 +42,12 @@ const postMemberAttendance = asyncHandler(async (req,res) => {
 
 const updateMemberAttendance = asyncHandler(async (req,res) => {
 	const event = await updateMemberAttendanceServices(req.params.eid, req.body.id, req.body.state)
-	if(event) res.json(event)
+	if (event) res.json(event)
 })
 
+const getEventByIdAttendance = asyncHandler(async (req,res) => {
+	const attendance = await getEventByIdAttendanceServices(req.params.eid)
+	res.json(attendance)
+})
 
-export {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance}
+export {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance, getEventByIdAttendance}

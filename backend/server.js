@@ -1,8 +1,8 @@
 'use strict'
 
 import express from 'express'
-import yaml from 'yamljs'
-import swaggerUi from 'swagger-ui-express'
+//import yaml from 'yamljs'
+//import swaggerUi from 'swagger-ui-express'
 import passport from 'passport'
 import cookieParser from 'cookie-parser'
 import expressSession from 'express-session'
@@ -16,7 +16,7 @@ import errorHandler from './middlewares/errorMiddleware.js'
 
 
 dotenv.config()
-const openapi = yaml.load('./openapi.yaml')
+//const openapi = yaml.load('./openapi.yaml')
 const app = express()
 
 app.use(express.json())
@@ -36,7 +36,7 @@ app.use('/api/events', eventRoutes)
 
 app.use(errorHandler)
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT_NUMBER || 8080
 
 app.listen(PORT, () => {
 	console.log(`Listening on port ${PORT}`)
