@@ -3,6 +3,7 @@
 import error from '../utils/error.js'
 let companies = []
 let autoId = 0
+let quotaAutoId = 0
 
 const getCompanies = async () => {
 	return companies
@@ -16,7 +17,7 @@ const getCompanyById = async (cid) => {
 
 const postCompany = async (name, nif) => {
 	autoId++
-	const newCompany = {cid : autoId, name, nif, quotas :[]}
+	const newCompany = {cid: autoId, name, nif, quotas: []}
 	companies.push(newCompany)
 	return newCompany
 }
@@ -37,17 +38,38 @@ const deleteCompany = async (cid) => {
 	return company
 }
 
-const getCompaniesQuotas = async (cid) => {
-	//TODO
+const getCompaniesQuotas = async () => {
+	let quotas = []
+	for (let company in companies) {
+		let companyQuotas = company.quotas
+		quotas.push(...companyQuotas)
+	}
+	return quotas
 }
 
 const getCompanyQuotasById = async (cid) => {
-	const company = companies.filter(company => company.cid == cid)[0]
-	return company.quotas
+	return companies.filter(company => company.id == cid)[0].quotas
 }
 
-const postCompaniesQuota = async (cid) => {
-	//TODO
+const postCompaniesQuota = async (date) => {
+	let created_quotas = []
+	companies = companies.map(company => {
+		let quotaIfExists = company.quotas.filter(quota => quota.date == date)
+		if (!quotaIfExists) {
+			quotaAutoId++
+			const newQuota = {
+				uid: company.id,
+				id: quotaAutoId,
+				amount: company.quota_value,
+				payment_date: 'NULL',
+				date
+			}
+			company.quotas.push(newQuota)
+			created_quotas.push(newQuota)
+			return company
+		}
+	})
+	return created_quotas
 }
 
 const updateCompanyQuota = async (qid, paymentDate) => {

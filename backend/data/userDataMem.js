@@ -3,6 +3,7 @@
 import error from '../utils/error.js'
 let users = []
 let autoId = 0
+let quotaAutoId = 0
 
 const getUsers = async () => {
 	return users
@@ -16,14 +17,17 @@ const getUserById = async (id) => {
 
 const postUser = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
 	autoId++
-	const newUser = {id: autoId, cc, nif, type, birth_date, nationality, full_name, password, contact: {phone_number, email, postal_code, address, location}, quotas: [], sports: []}
+	let quotaValue = 0
+	if (type == 'effective') quotaValue = 15
+	const newUser = {id: autoId, cc, nif, type, birth_date, nationality, full_name, has_debt: true, paid_enrollment: false, quota_value: quotaValue, password, contact: {phone_number, email, postal_code, address, location}, quotas: [], sports: []}
 	users.push(newUser)
 	return newUser
 }
 
 const updateUser = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
+	const user = await getUserById(id)
 	await deleteUser(id)
-	const newUser = {id, cc, nif, type, birth_date, nationality, full_name, password, contact: {phone_number, email, postal_code, address, location}}
+	const newUser = {id, cc, nif, type, birth_date, nationality, full_name, has_debt: user.has_debt, paid_enrollment: user.paid_enrollment, quota_value: user.quota_value, password, contact: {phone_number, email, postal_code, address, location}, quotas: user.quotas, sports: user.sports}
 	users.push(newUser)
 	return newUser
 }
@@ -35,43 +39,127 @@ const deleteUser = async (id) => {
 }
 
 const getUsersQuotas = async () => {
-    
+	let quotas = []
+	for (let user in users) {
+		let userQuotas = user.quotas
+		quotas.push(...userQuotas)
+	}
+	return quotas
 }
 
-const getUsersQuotasById = async () => {
-
+const getUsersQuotasById = async (id) => {
+	return users.filter(user => user.id == id)[0].quotas
 }
 
-const postUsersQuota = async () => {
-
+const postUsersQuota = async (date) => {
+	let created_quotas = []
+	users = users.map(user => {
+		let quotaIfExists = user.quotas.filter(quota => quota.date == date)
+		if (!quotaIfExists) {
+			quotaAutoId++
+			const newQuota = {
+				uid: user.id,
+				id: quotaAutoId,
+				amount: user.quota_value,
+				payment_date: 'NULL',
+				date
+			}
+			user.quotas.push(newQuota)
+			created_quotas.push(newQuota)
+			return user
+		}
+	})
+	return created_quotas
 }
 
-const updateUserQuota = async () => {
-    
+const updateUserQuota = async (qid, paymentDate) => {
+	let retQuota
+	users = users.map(user => {
+		user.quotas = user.quotas.map(quota => {
+			if (quota.id == qid) {
+				retQuota = quota
+				quota.payment_date = paymentDate
+			}
+			return quota
+		})
+		return user
+	})
+	return retQuota
 }
 
 const getUsersSports = async () => {
-
+	let userSports = []
+	for (let user in users) {
+		userSports.push(...user.sports)
+	}
+	return userSports
 }
 
-const getUsersSport = async () => {
-
+const getUsersSport = async (sid) => {
+	let usersSport = []
+	for (let user in users) {
+		const sport = user.sports.filter(sport => sport.id == sid)
+		if (sport) usersSport.push(sport)
+	}
+	return usersSport
 }
 
-const getUserSportsById = async () => {
-
+const getUserSportsById = async (id) => {
+	return users.filter(user => user.id == id)[0].sports
 }
 
-const postUserSport = async () => {
-
+const postUserSport = async (id, sid, type, federationNumber, federationId, yearsFederated) => {
+	let retSport
+	users = users.map(user => {
+		if (user.id == id) {
+			let sportIfExists = user.sports.filter(sport => sport.id == sid)[0]
+			if (sportIfExists) throw error(409, 'sport already exists')
+			const newSport = {
+				id: sid,
+				uid: id,
+				type,
+				federationNumber,
+				federationId,
+				yearsFederated
+			}
+			retSport = newSport
+			user.sports.push(newSport)
+		}
+		return user
+	})
+	return retSport
 }
 
-const updateUserSport = async () => {
-
+const updateUserSport = async (id, sid, type, federationNumber, federationId, yearsFederated) => {
+	let retSport
+	users = users.map(user => {
+		if (user.id == id) {
+			let sportIfExists = user.sports.filter(sport => sport.id == sid)[0]
+			if (!sportIfExists) throw error(409, 'sport does not exists')
+			const newSport = {
+				id: sid,
+				uid: id,
+				type,
+				federationNumber,
+				federationId,
+				yearsFederated
+			}
+			retSport = newSport
+			deleteUserSport(id, sid)
+			user.sports.push(newSport)
+		}
+		return user
+	})
+	return retSport
 }
 
-const deleteUserSport = async () => {
-
+const deleteUserSport = async (id, sid) => {
+	users = users.map(user => {
+		if (user.id == id) {
+			user.sports = user.sports.filter(sport => sport.id == sid)
+		}
+		return user
+	})
 }
 
 export {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUsersQuotasById,

@@ -111,4 +111,4 @@ const deleteUserSportServices = async (id, sid) => {
 	return await deleteUserSport(sid)
 }
 
-export { getUsersServices, getUserByIdServices, postUserServices, updateUserServices, deleteUserServices, getUsersQuotasServices, getUserQuotasByIdServices, postUsersQuotaServices, updateUserQuotaServices, getUsersSportsServices, getUsersSportServices, getUserSportsByIdServices, postUserSportServices, updateUserSportServices, deleteUserSportServices}
+export { getUsersServices, getUserByIdServices, postUserServices, updateUserServices, deleteUserServices, getUsersQuotasServices, getUserQuotasByIdServices, postUsersQuotaServices, updateUserQuotaServices, getUsersSportsServices, getUsersSportServices, getUserSportsByIdServices, postUserSportServices, updateUserSportServices, deleteUserSportServices }
