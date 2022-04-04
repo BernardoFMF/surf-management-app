@@ -23,18 +23,12 @@ const postEvent = async (name, initial_date, final_date) => {
 }
 
 const updateEvent = async (eid, name, initial_date, final_date) => {
-	console.log(final_date)
-	let retEvent
-	events = events.map(event => {
-		if(event.eid == eid){
-			event.name = name
-			event.initial_date = initial_date
-			event.final_date = final_date
-			retEvent = event
-		}
-		return event
-	})
-	return retEvent
+	const idx = events.findIndex((obj => obj.eid == eid))
+	if(idx == undefined) throw Error(404, 'Could not find any event with that Id')
+	events[idx].name = name
+	events[idx].initial_date = initial_date
+	events[idx].final_date = final_date
+	return events[idx]
 }
 
 const deleteEvent = async (eid) => {
@@ -49,20 +43,14 @@ const postMemberAttendance = async (event_id, id, state) => {
 }
 
 const updateMemberAttendance = async (event_id, id, state) => {
-	let event_user
-	attendance = attendance.map(attendance_tuple => {
-		if (attendance_tuple.eid == event_id && attendance_tuple.uid == id) {
-			attendance_tuple.state = state
-		}
-		event_user = attendance_tuple
-		return attendance_tuple
-	})
-	if (!event_user) throw error(404, 'User does not have attendance to this event')
-	return event_user
+	const idx = attendance.findIndex((obj => obj.eid == event_id && obj.uid == id))
+	if(idx == undefined) throw Error(404, 'User does not have attendance to this event')
+	attendance[idx].state = state
+	return attendance[idx]
 }
 
 const getEventByIdAttendance = async (event_id) => {
-	return attendance.filter(attendance_tuple => attendance_tuple.eid == event_id)
+	return attendance.filter(attendance_tuple => attendance_tuple.eid == event_id)[0]
 }
 
 export {getEvents, getEventById, postEvent,updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance, getEventByIdAttendance} 
