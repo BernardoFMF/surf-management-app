@@ -24,7 +24,7 @@ const postCompany = async (name, nif, phone_number, email, postal_code, address,
 
 const updateCompany = async (cid, name, nif, phone_number, email, postal_code, address, location) => {
 	const idx = companies.findIndex((obj => obj.cid == cid))
-	if(idx == undefined) throw Error(404, 'Could not find any event with that Id')
+	if(idx == -1) throw error(404, 'Could not find any company with that Id')
 	companies[idx].name = name
 	companies[idx].nif = nif
 	companies[idx].phone_number = phone_number
@@ -36,6 +36,7 @@ const updateCompany = async (cid, name, nif, phone_number, email, postal_code, a
 }
 
 const deleteCompany = async (cid) => {
+	await getCompanyById(cid)
 	companies = companies.filter(company => company.cid != cid)
 	return companies
 }
@@ -51,7 +52,9 @@ const getCompaniesQuotas = async () => {
 }
 
 const getCompanyQuotasById = async (cid) => {
-	return companies.filter(company => company.cid == cid)[0].quotas
+	const company = companies.filter(company => company.cid == cid)[0]
+	if (!company) throw error(404, 'Company does not exist')
+	return company.quotas
 }
 
 const postCompaniesQuota = async (date) => {
@@ -61,7 +64,7 @@ const postCompaniesQuota = async (date) => {
 		if (!quotaIfExists) {
 			quotaAutoId++
 			const newQuota = {
-				uid: company.cid,
+				cid: company.cid,
 				qid: quotaAutoId,
 				amount: company.quota_value,
 				payment_date: 'NULL',

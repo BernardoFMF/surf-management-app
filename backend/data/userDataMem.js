@@ -49,7 +49,9 @@ const getUsersQuotas = async () => {
 }
 
 const getUserQuotasById = async (id) => {
-	return users.filter(user => user.id == id)[0].quotas
+	const user = users.filter(user => user.id == id)[0]
+	if (!user) throw error(404, 'User does not exist')
+	return user.quotas
 }
 
 const postUsersQuota = async (date) => {
@@ -88,7 +90,9 @@ const updateUserQuota = async (qid, paymentDate) => {
 const getUsersSports = async () => {
 	let userSports = []
 	for (let user of users) {
-		userSports.push(...user.sports)
+		for (let sport of user.sports) {
+			if (sport.length != 0) userSports.push(sport)
+		}
 	}
 	return userSports
 }
@@ -140,7 +144,7 @@ const updateUserSport = async (id, sid, type, federationNumber, federationId, ye
 		if (user.id == id) {
 			let sportIfExists = user.sports.filter(sport => sport.id == sid)[0]
 			if (!sportIfExists) throw error(409, 'sport does not exists')
-			deleteUserSport(id, sid)
+			user.sports = user.sports.filter(sport => sport.id != sid)
 			user.sports.push(retSport)
 		}
 		return user
@@ -149,14 +153,14 @@ const updateUserSport = async (id, sid, type, federationNumber, federationId, ye
 }
 
 const deleteUserSport = async (id, sid) => {
-	users = users.map(user => {
+	users.forEach(user => {
 		if (user.id == id) {
-			user.sports = user.sports.filter(sport => sport.id == sid)
+			user.sports = user.sports.filter(sport => sport.id != sid)
 		}
-		return user
 	})
-	return await getUserById(id)
+	const idx = users.findIndex((user => user.id == id))
+	return users[idx]
 }
 
-export {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUserQuotasById,
+export { getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUserQuotasById,
 	postUsersQuota, updateUserQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport }

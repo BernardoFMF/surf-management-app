@@ -6,24 +6,26 @@ import {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany,
 
 const app = express.Router()
 
-app.get('/', getCompanies)
-
-app.get('/:id', getCompanyById)
-
-app.post('/', postCompany)
-
-app.put('/:id', updateCompany)
-
-app.delete('/:id', deleteCompany)
-
 // quotas
 
 app.get('/quotas', getCompaniesQuotas)
 
-app.get('/:id/quotas', getCompanyQuotasById)
+app.get('/:cid/quotas', getCompanyQuotasById)
 
 app.post('/quotas', postCompaniesQuota)
 
 app.put('/quotas/:qid', updateCompanyQuota)
+
+// companies
+
+app.get('/', getCompanies)
+
+app.get('/:cid', getCompanyById)
+
+app.post('/', postCompany)
+
+app.put('/:cid', updateCompany)
+
+app.delete('/:cid', deleteCompany)
 
 export default app

@@ -10,7 +10,7 @@ const getCandidates = asyncHandler(async (req, res) => {
 })
 
 const getCandidateById = asyncHandler(async (req, res) => {
-	const candidate = await getCandidateByIdServices(req.params.id)
+	const candidate = await getCandidateByIdServices(req.params.cid)
 	if (candidate) res.json(candidate)
 })
 

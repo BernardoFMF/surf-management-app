@@ -53,7 +53,7 @@ const postUsersQuota = asyncHandler(async (req,res) => {
 })
 
 const updateUserQuota = asyncHandler(async (req,res) => {
-	const quota = await updateUserQuotaServices(req.params.qid, req.body.paymentDate)
+	const quota = await updateUserQuotaServices(req.params.qid, req.body.payment_date)
 	if (quota) res.json(quota)
 })
 
@@ -73,7 +73,7 @@ const getUserSportsById = asyncHandler(async (req,res) => {
 })
 
 const postUserSport = asyncHandler(async (req,res) => {
-	const userSport = await postUserSportServices(req.params.id, req.body.sid, req.body.type, req.body.federationNumber, req.body.federationId, req.body.yearsFederated)
+	const userSport = await postUserSportServices(req.params.id, req.body.sid, req.body.type, req.body.federation_number, req.body.federation_id, req.body.years_federated)
 	if (userSport) {
 		res.status(201)
 		res.json(userSport)
@@ -81,7 +81,7 @@ const postUserSport = asyncHandler(async (req,res) => {
 })
 
 const updateUserSport = asyncHandler(async (req,res) => {
-	const userSport = await updateUserSportServices(req.params.id, req.body.sid, req.body.type, req.body.federationNumber, req.body.federationId, req.body.yearsFederated)
+	const userSport = await updateUserSportServices(req.params.id, req.body.sid, req.body.type, req.body.federation_number, req.body.federation_id, req.body.years_federated)
 	if (userSport) res.json(userSport)
 })
 

@@ -11,7 +11,7 @@ const getCompanies = asyncHandler(async (req, res) => {
 })
 
 const getCompanyById = asyncHandler(async (req, res) => {
-	const company = await getCompanyByIdServices(req.params.id)
+	const company = await getCompanyByIdServices(req.params.cid)
 	if (company) res.json(company)
 })
 
@@ -24,12 +24,12 @@ const postCompany = asyncHandler(async (req, res) => {
 })
 
 const updateCompany = asyncHandler(async (req, res) => {
-	const company = await updateCompanyServices(req.body.name, req.body.nif, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location)
+	const company = await updateCompanyServices(req.params.cid, req.body.name, req.body.nif, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location)
 	if (company) res.json(company)
 })
 
 const deleteCompany = asyncHandler(async (req, res) => {
-	const company = await deleteCompanyServices(req.params.id)
+	const company = await deleteCompanyServices(req.params.cid)
 	if (company) res.json({ message: 'Company deleted sucessfully' })
 })
 
@@ -39,7 +39,7 @@ const getCompaniesQuotas = asyncHandler(async (req, res) => {
 })
 
 const getCompanyQuotasById = asyncHandler(async (req, res) => {
-	const companyQuotas = await getCompanyQuotasByIdServices(req.params.id)
+	const companyQuotas = await getCompanyQuotasByIdServices(req.params.cid)
 	if(companyQuotas) res.json(companyQuotas)
 })
 
@@ -52,7 +52,7 @@ const postCompaniesQuota = asyncHandler(async (req,res) => {
 })
 
 const updateCompanyQuota = asyncHandler(async (req,res) => {
-	const companyQuota = await updateCompanyQuotaServices(req.params.qid, req.body.paymentDate)
+	const companyQuota = await updateCompanyQuotaServices(req.params.qid, req.body.payment_date)
 	if(companyQuota) res.json(companyQuota)
 })
 

@@ -13,8 +13,7 @@ const getUserByIdServices = async (id) => {
 	return await getUserById(id)
 }
 
-const postUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
-	if(!id) throw error(400, 'Parameter not found: id')
+const postUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
 	if(!cc) throw error(400, 'Parameter not found: cc')
 	if(!nif) throw error(400, 'Parameter not found: nif')
 	if(!type) throw error(400, 'Parameter not found: type')
@@ -27,7 +26,7 @@ const postUserServices = async (id, cc, nif, type, birth_date, nationality, full
 	if(!address) throw error(400, 'Parameter not found: address')
 	if(!location) throw error(400, 'Parameter not found: location')
 	if(!password) throw error(400, 'Parameter not found: password')
-	return await postUser(id, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
+	return await postUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
 }
 
 const updateUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
@@ -108,7 +107,7 @@ const updateUserSportServices = async (id, sid, type, federationNumber, federati
 const deleteUserSportServices = async (id, sid) => {
 	if(!id) throw error(400, 'Parameter not found: id')
 	if(!sid) throw error(400, 'Parameter not found: sid')
-	return await deleteUserSport(sid)
+	return await deleteUserSport(id, sid)
 }
 
 export { getUsersServices, getUserByIdServices, postUserServices, updateUserServices, deleteUserServices, getUsersQuotasServices, getUserQuotasByIdServices, postUsersQuotaServices, updateUserQuotaServices, getUsersSportsServices, getUsersSportServices, getUserSportsByIdServices, postUserSportServices, updateUserSportServices, deleteUserSportServices }

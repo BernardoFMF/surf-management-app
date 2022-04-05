@@ -7,16 +7,6 @@ import {getUsers, getUserById, postUser, updateUser, deleteUser,
 
 const app = express.Router()
 
-app.get('/', getUsers)
-
-app.get('/:id', getUserById)
-
-app.post('/', postUser)
-
-app.put('/:id', updateUser)
-
-app.delete('/:id', deleteUser)
-
 // quotas
 
 app.get('/quotas', getUsersQuotas)
@@ -31,7 +21,7 @@ app.put('/quotas/:qid', updateUserQuota)
 
 app.get('/sports', getUsersSports)
 
-app.get('/sports/:id', getUsersSport)
+app.get('/sports/:sid', getUsersSport)
 
 app.get('/:id/sports', getUserSportsById)
 
@@ -39,6 +29,18 @@ app.post('/:id/sports', postUserSport)
 
 app.put('/:id/sports/:sid', updateUserSport)
 
-app.delete('/sports/:id', deleteUserSport)
+app.delete('/:id/sports/:sid', deleteUserSport)
+
+// users
+
+app.get('/', getUsers)
+
+app.get('/:id', getUserById)
+
+app.post('/', postUser)
+
+app.put('/:id', updateUser)
+
+app.delete('/:id', deleteUser)
 
 export default app
