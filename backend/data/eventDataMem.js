@@ -28,7 +28,7 @@ const updateEvent = async (eid, name, initial_date, final_date) => {
 	events[idx].name = name
 	events[idx].initial_date = initial_date
 	events[idx].final_date = final_date
-	return events[idx]
+	return events[idx]	
 }
 
 const deleteEvent = async (eid) => {

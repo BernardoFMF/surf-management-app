@@ -30,7 +30,7 @@ const deleteCandidate = async (id) => {
 const approveCandidate = async (id) => {
 	const candidate = await getCandidateById(id)
 	candidates = candidates.filter(candidate => candidate.id != id)
-	postUser(candidate.cc, candidate.nif, candidate.type, candidate.birth_date, candidate.nationality, candidate.full_name, candidate.phone_number, candidate.email, candidate.postal_code, candidate.address, location, candidate.password)
+	await postUser(candidate.cc, candidate.nif, candidate.type, candidate.birth_date, candidate.nationality, candidate.full_name, candidate.phone_number, candidate.email, candidate.postal_code, candidate.address, candidate.location, candidate.password)
 	return candidates
 }
 
