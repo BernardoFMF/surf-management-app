@@ -1,7 +1,7 @@
 'use strict'
 
 import error from '../utils/error.js'
-import {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUsersQuotasById,
+import {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUserQuotasById,
 	postUsersQuota, updateUserQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport } from '../data/userDataMem.js'
 
 const getUsersServices = async () => {
@@ -57,7 +57,7 @@ const getUsersQuotasServices = async () => {
 
 const getUserQuotasByIdServices = async (id) => {
 	if(!id) throw error(400, 'Parameter not found: id')
-	return await getUsersQuotasById(id)
+	return await getUserQuotasById(id)
 }
 
 const postUsersQuotaServices = async (date) => {

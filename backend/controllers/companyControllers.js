@@ -16,7 +16,7 @@ const getCompanyById = asyncHandler(async (req, res) => {
 })
 
 const postCompany = asyncHandler(async (req, res) => {
-	const company = await postCompanyServices(req.body.name, req.body.nif)
+	const company = await postCompanyServices(req.body.name, req.body.nif, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location)
 	if (company) {
 		res.status(201)
 		res.json(company)
@@ -24,7 +24,7 @@ const postCompany = asyncHandler(async (req, res) => {
 })
 
 const updateCompany = asyncHandler(async (req, res) => {
-	const company = await updateCompanyServices(req.body.name, req.body.nif)
+	const company = await updateCompanyServices(req.body.name, req.body.nif, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location)
 	if (company) res.json(company)
 })
 

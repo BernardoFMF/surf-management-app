@@ -4,6 +4,9 @@ import {getSports, getSportById, postSport, deleteSport} from '../data/sportData
 import {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance, getEventByIdAttendance} from '../data/eventDataMem.js'
 import {getCandidates, getCandidateById, postCandidate, deleteCandidate, approveCandidate} from '../data/candidateDataMem.js'
 import {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany, getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompanyQuota } from '../data/companyDataMem'
+import {getUsers, getUserById, postUser, updateUser, deleteUser, 
+	getUsersQuotas, getUserQuotasById, postUsersQuota, updateUserQuota,
+	getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport} from '../data/userDataMem.js'
 
 async function insertSportDummies() {
 	await postSport('Surf')
@@ -25,10 +28,23 @@ async function insertCompanyDummies() {
 	await postCompany('Billabong', 42321331231, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity')
 }
 
+async function insertUserDummies() {
+	await postUser(383128318, 764271741145, 'founder', '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020')
+	await postUser(383123818, 763371741145, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz')
+}
+
+async function insertSportsforUsersDummies() {
+	await postUserSport(1, 2, 'coach', 1890547, 54, [2017,2018,2019,2020,2021])
+	await postUserSport(2, 1, 'pratitioner', 1890548, 54, [2018])
+}
+
+
 beforeAll( async () => { 
 	await insertSportDummies()
 	await insertCandidateDummies()
 	await insertCompanyDummies()
+	await insertUserDummies()
+	await insertSportsforUsersDummies()
 	return await insertEventDummies()
 })
 
@@ -142,6 +158,7 @@ test('Delete specific candidate', async () => {
 test('Approve a candidate', async () => {
 	expect.assertions(1)
 	const candidates = await approveCandidate(1)
+	await deleteUser(3)
 	expect(candidates.length).toBe(1)
 })
 
@@ -203,3 +220,103 @@ test('Update a company quota', async () => {
 	const quota = await updateCompanyQuota(1, '02-03-2022')
 	expect(quota.payment_date).toBe('02-03-2022')
 })
+
+//User
+
+test('Get all users', async () => {
+	expect.assertions(1)
+	const users = await getUsers()
+	expect(users.length).toBe(2)
+})
+
+test('Get a specif user', async () => {
+	expect.assertions(1)
+	const user = await getUserById(1)
+	expect(user.birth_date).toBe('09-03-1987')
+})
+
+test('Post User', async () => {
+	expect.assertions(1)
+	const user = await postUser(383123909, 763399841145, 'effective', '03-10-1983', 'Senegales', 'Moussa Marega', 934077623, 'maregagrandefixe@outlook.com', '2835-081', 'Rua D.Batista', 'Lisboa','gandagolo')
+	expect(user.full_name).toBe('Moussa Marega')
+})
+
+test('Update a user', async () => {
+	expect.assertions(1)
+	const user = await updateUser(2,383123818, 763371741145, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marques', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz')
+	expect(user.full_name).toBe('Luis Marques')
+})
+
+test('Delete user', async () => {
+	expect.assertions(1)
+	const users = await deleteUser(2)
+	expect(users.length).toBe(2)
+})
+
+//User Quotas
+
+test('Create a user quota', async () => {
+	expect.assertions(1)
+	const quotas = await postUsersQuota('01-01-2022')
+	expect(quotas.length).toBe(2)
+})
+
+test('Get all user quotas', async () => {
+	expect.assertions(1)
+	const quotas = await getUsersQuotas()
+	expect(quotas.length).toBe(2)
+})	
+
+test('Get specific user quota', async () => {
+	expect.assertions(1)
+	const quotas = await getUserQuotasById(1)
+	expect(quotas.length).toBe(1)
+})
+
+test('Update a user quota', async () => {
+	expect.assertions(1)
+	const quota = await updateUserQuota(1, '07-06-2022')
+	expect(quota.payment_date).toBe('07-06-2022')
+})
+
+//User Sports
+
+test('Get all sports', async () => {
+	expect.assertions(1)
+	const userSports = await getUsersSports()
+	expect(userSports[0].federationId).toBe(54)
+})
+
+test('Get users that practice a given sport ', async () => {
+	expect.assertions(1)
+	const users = await getUsersSport(2)
+	expect(users.length).toBe(1)
+})	
+
+test('Get sports that a given user practice', async () => {
+	expect.assertions(1)
+	const sports = await getUserSportsById(1)
+	expect(sports.length).toBe(1)
+})
+
+test('Create a sport for a user', async () => {
+	expect.assertions(1)
+	const sport = await postUserSport(1, 1, 'coach', 1890547, 54, [2019,2020,2021])
+	expect(sport.type).toBe('coach')
+})
+
+test('Update a sport for a user', async () => {
+	expect.assertions(1)
+	const sport = await updateUserSport(1, 1, 'coach', 1890556, 54, [2019,2020,2021])
+	expect(sport.federationNumber).toBe(1890556)
+})
+
+test('Delete a sport for a user', async () => {
+	expect.assertions(1)
+	const user = await deleteUserSport(1)
+	expect(user.sports.length).toBe(0)
+})
+
+
+
+

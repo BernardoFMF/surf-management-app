@@ -40,56 +40,54 @@ const deleteUser = async (id) => {
 
 const getUsersQuotas = async () => {
 	let quotas = []
-	for (let user in users) {
-		let userQuotas = user.quotas
-		quotas.push(...userQuotas)
+	for (let user of users) {
+		for(let quota of user.quotas) {
+			quotas.push(quota)
+		}
 	}
 	return quotas
 }
 
-const getUsersQuotasById = async (id) => {
+const getUserQuotasById = async (id) => {
 	return users.filter(user => user.id == id)[0].quotas
 }
 
 const postUsersQuota = async (date) => {
 	let created_quotas = []
 	users = users.map(user => {
-		let quotaIfExists = user.quotas.filter(quota => quota.date == date)
+		let quotaIfExists = user.quotas.filter(quota => quota.date == date)[0]
 		if (!quotaIfExists) {
 			quotaAutoId++
 			const newQuota = {
 				uid: user.id,
-				id: quotaAutoId,
+				qid: quotaAutoId,
 				amount: user.quota_value,
 				payment_date: 'NULL',
 				date
 			}
 			user.quotas.push(newQuota)
 			created_quotas.push(newQuota)
-			return user
 		}
+		return user
 	})
 	return created_quotas
 }
 
 const updateUserQuota = async (qid, paymentDate) => {
-	let retQuota
-	users = users.map(user => {
-		user.quotas = user.quotas.map(quota => {
-			if (quota.id == qid) {
-				retQuota = quota
-				quota.payment_date = paymentDate
-			}
-			return quota
-		})
-		return user
-	})
-	return retQuota
+	let idx = 0
+	for (let user in users) {
+		const quotaIfExists = users[user].quotas.filter(quota => quota.qid == qid)[0]
+		if(quotaIfExists) break
+		idx++
+	}
+	const idxQ = users[idx].quotas.findIndex((obj => obj.qid == qid))
+	users[idx].quotas[idxQ].payment_date = paymentDate
+	return users[idx].quotas[idxQ]
 }
 
 const getUsersSports = async () => {
 	let userSports = []
-	for (let user in users) {
+	for (let user of users) {
 		userSports.push(...user.sports)
 	}
 	return userSports
@@ -97,33 +95,32 @@ const getUsersSports = async () => {
 
 const getUsersSport = async (sid) => {
 	let usersSport = []
-	for (let user in users) {
+	for (let user of users) {
 		const sport = user.sports.filter(sport => sport.id == sid)
-		if (sport) usersSport.push(sport)
+		if (sport.length != 0) usersSport.push(sport[0])
 	}
 	return usersSport
 }
 
 const getUserSportsById = async (id) => {
-	return users.filter(user => user.id == id)[0].sports
+	const user = users.filter(user => user.id == id)[0]
+	return user.sports
 }
 
 const postUserSport = async (id, sid, type, federationNumber, federationId, yearsFederated) => {
-	let retSport
+	let retSport = {
+		id: sid,
+		uid: id,
+		type,
+		federationNumber,
+		federationId,
+		yearsFederated
+	}
 	users = users.map(user => {
 		if (user.id == id) {
 			let sportIfExists = user.sports.filter(sport => sport.id == sid)[0]
 			if (sportIfExists) throw error(409, 'sport already exists')
-			const newSport = {
-				id: sid,
-				uid: id,
-				type,
-				federationNumber,
-				federationId,
-				yearsFederated
-			}
-			retSport = newSport
-			user.sports.push(newSport)
+			user.sports.push(retSport)
 		}
 		return user
 	})
@@ -131,22 +128,20 @@ const postUserSport = async (id, sid, type, federationNumber, federationId, year
 }
 
 const updateUserSport = async (id, sid, type, federationNumber, federationId, yearsFederated) => {
-	let retSport
+	let retSport = {
+		id: sid,
+		uid: id,
+		type,
+		federationNumber,
+		federationId,
+		yearsFederated
+	}
 	users = users.map(user => {
 		if (user.id == id) {
 			let sportIfExists = user.sports.filter(sport => sport.id == sid)[0]
 			if (!sportIfExists) throw error(409, 'sport does not exists')
-			const newSport = {
-				id: sid,
-				uid: id,
-				type,
-				federationNumber,
-				federationId,
-				yearsFederated
-			}
-			retSport = newSport
 			deleteUserSport(id, sid)
-			user.sports.push(newSport)
+			user.sports.push(retSport)
 		}
 		return user
 	})
@@ -160,7 +155,8 @@ const deleteUserSport = async (id, sid) => {
 		}
 		return user
 	})
+	return await getUserById(id)
 }
 
-export {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUsersQuotasById,
+export {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUserQuotasById,
 	postUsersQuota, updateUserQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport }
