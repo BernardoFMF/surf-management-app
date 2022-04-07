@@ -3,7 +3,7 @@
 import asyncHandler from 'express-async-handler'
 
 import {getCompaniesServices, getCompanyByIdServices, postCompanyServices, updateCompanyServices, deleteCompanyServices, 
-	getCompaniesQuotasServices, getCompanyQuotasByIdServices, postCompaniesQuotaServices, updateCompanyQuotaServices} from '../services/companyServices.js'
+	getCompaniesQuotasServices, getCompanyQuotasByIdServices, postCompaniesQuotaServices, updateCompanyQuotaServices, updateCompaniesQuotaServices} from '../services/companyServices.js'
 
 const getCompanies = asyncHandler(async (req, res) => {
 	const companies = await getCompaniesServices()
@@ -56,5 +56,10 @@ const updateCompanyQuota = asyncHandler(async (req,res) => {
 	if(companyQuota) res.json(companyQuota)
 })
 
+const updateCompaniesQuota = asyncHandler(async (req,res) => {
+	const companyQuota = await updateCompaniesQuotaServices(req.body.old_date, req.body.new_date)
+	if(companyQuota) res.json(companyQuota)
+})
+
 export { getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany, 
-	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompanyQuota }
+	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompanyQuota, updateCompaniesQuota }

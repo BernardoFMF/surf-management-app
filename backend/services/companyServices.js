@@ -2,7 +2,7 @@
 
 import error from '../utils/error.js'
 import {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany, 
-	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompanyQuota} from '../data/companyDataMem.js'
+	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompanyQuota, updateCompaniesQuota} from '../data/companyDataMem.js'
 
 const getCompaniesServices = async() => {
 	return await getCompanies()
@@ -61,7 +61,13 @@ const updateCompanyQuotaServices = async(qid, paymentDate) => {
 	return await updateCompanyQuota(qid, paymentDate)
 }
 
+const updateCompaniesQuotaServices = async(oldDate, newDate) => {
+	if(!oldDate) throw error(400,'Parameter not found: oldDate')
+	if(!newDate) throw error(400,'Parameter not found: newDate')
+	return await updateCompaniesQuota(oldDate, newDate)
+}
+
 export { getCompaniesServices, getCompanyByIdServices, postCompanyServices, updateCompanyServices, deleteCompanyServices, 
-	getCompaniesQuotasServices, getCompanyQuotasByIdServices, postCompaniesQuotaServices, updateCompanyQuotaServices }
+	getCompaniesQuotasServices, getCompanyQuotasByIdServices, postCompaniesQuotaServices, updateCompanyQuotaServices, updateCompaniesQuotaServices }
 
 

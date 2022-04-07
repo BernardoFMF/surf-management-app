@@ -90,5 +90,20 @@ const updateCompanyQuota = async (qid, paymentDate) => {
 	return companies[idx].quotas[idxQ]
 }
 
+const updateCompaniesQuota = async (oldDate, newDate) => {
+	let quotas = []
+	companies = companies.map(company => {
+		company.quotas = company.quotas.map(quota => {
+			if (quota.date == oldDate) {
+				quota.date = newDate
+				quotas.push(quota)
+			}
+			return quota
+		})
+		return company
+	})
+	return quotas
+}
+
 export {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany, 
-	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompanyQuota } 
+	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompanyQuota, updateCompaniesQuota } 

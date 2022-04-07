@@ -2,7 +2,7 @@
 
 import error from '../utils/error.js'
 import {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUserQuotasById,
-	postUsersQuota, updateUserQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport } from '../data/userDataMem.js'
+	postUsersQuota, updateUserQuota, updateUsersQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport } from '../data/userDataMem.js'
 
 const getUsersServices = async () => {
 	return await getUsers()
@@ -70,6 +70,12 @@ const updateUserQuotaServices = async (qid, paymentDate) => {
 	return await updateUserQuota(qid, paymentDate)
 }
 
+const updateUsersQuotaServices = async (oldDate, newDate) => {
+	if(!oldDate) throw error(400, 'Parameter not found: oldDate')
+	if(!newDate) throw error(400, 'Parameter not found: newDate')
+	return await updateUsersQuota(oldDate, newDate)
+}
+
 const getUsersSportsServices = async () => {
 	return await getUsersSports()
 }
@@ -110,4 +116,4 @@ const deleteUserSportServices = async (id, sid) => {
 	return await deleteUserSport(id, sid)
 }
 
-export { getUsersServices, getUserByIdServices, postUserServices, updateUserServices, deleteUserServices, getUsersQuotasServices, getUserQuotasByIdServices, postUsersQuotaServices, updateUserQuotaServices, getUsersSportsServices, getUsersSportServices, getUserSportsByIdServices, postUserSportServices, updateUserSportServices, deleteUserSportServices }
+export { getUsersServices, getUserByIdServices, postUserServices, updateUserServices, deleteUserServices, getUsersQuotasServices, getUserQuotasByIdServices, postUsersQuotaServices, updateUsersQuotaServices, updateUserQuotaServices, getUsersSportsServices, getUsersSportServices, getUserSportsByIdServices, postUserSportServices, updateUserSportServices, deleteUserSportServices }

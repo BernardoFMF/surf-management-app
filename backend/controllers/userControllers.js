@@ -3,7 +3,7 @@
 import asyncHandler from 'express-async-handler'
 
 import {getUsersServices, getUserByIdServices, postUserServices, updateUserServices, deleteUserServices, 
-	getUsersQuotasServices, getUserQuotasByIdServices, postUsersQuotaServices, updateUserQuotaServices,
+	getUsersQuotasServices, getUserQuotasByIdServices, postUsersQuotaServices, updateUserQuotaServices, updateUsersQuotaServices,
 	getUsersSportsServices, getUsersSportServices, getUserSportsByIdServices, postUserSportServices, updateUserSportServices, deleteUserSportServices} from '../services/userServices.js'
 
 const getUsers = asyncHandler(async (req, res) => {
@@ -48,12 +48,17 @@ const postUsersQuota = asyncHandler(async (req,res) => {
 	const quota = await postUsersQuotaServices(req.body.date)
 	if (quota) {
 		res.status(201)
-		res.json(quota)
+		res.json({ message: 'Quotas created sucessfully' })
 	}
 })
 
 const updateUserQuota = asyncHandler(async (req,res) => {
 	const quota = await updateUserQuotaServices(req.params.qid, req.body.payment_date)
+	if (quota) res.json(quota)
+})
+
+const updateUsersQuota = asyncHandler(async (req,res) => {
+	const quota = await updateUsersQuotaServices(req.body.old_date, req.body.new_date)
 	if (quota) res.json(quota)
 })
 
@@ -90,4 +95,4 @@ const deleteUserSport = asyncHandler(async (req,res) => {
 	if(userSport) res.json({ message: 'Sport deleted sucessfully from user' })
 })
 
-export {getUsers, getUserById, postUser, updateUser, deleteUser,getUsersQuotas,getUserQuotasById, postUsersQuota, updateUserQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport}
+export {getUsers, getUserById, postUser, updateUser, deleteUser,getUsersQuotas,getUserQuotasById, postUsersQuota, updateUserQuota, updateUsersQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport}

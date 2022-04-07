@@ -87,6 +87,21 @@ const updateUserQuota = async (qid, paymentDate) => {
 	return users[idx].quotas[idxQ]
 }
 
+const updateUsersQuota = async (oldDate, newDate) => {
+	let quotas = []
+	users = users.map(user => {
+		user.quotas = user.quotas.map(quota => {
+			if (quota.date == oldDate) {
+				quota.date = newDate
+				quotas.push(quota)
+			}
+			return quota
+		})
+		return user
+	})
+	return quotas
+}
+
 const getUsersSports = async () => {
 	let userSports = []
 	for (let user of users) {
@@ -163,4 +178,4 @@ const deleteUserSport = async (id, sid) => {
 }
 
 export { getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUserQuotasById,
-	postUsersQuota, updateUserQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport }
+	postUsersQuota, updateUserQuota, updateUsersQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport }

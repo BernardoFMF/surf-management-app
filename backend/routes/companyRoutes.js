@@ -2,7 +2,7 @@
 
 import express from 'express'
 import {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany, 
-	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompanyQuota} from '../controllers/companyControllers.js'
+	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompaniesQuota, updateCompanyQuota} from '../controllers/companyControllers.js'
 
 const app = express.Router()
 
@@ -13,6 +13,8 @@ app.get('/quotas', getCompaniesQuotas)
 app.get('/:cid/quotas', getCompanyQuotasById)
 
 app.post('/quotas', postCompaniesQuota)
+
+app.put('/quotas', updateCompaniesQuota)
 
 app.put('/quotas/:qid', updateCompanyQuota)
 
