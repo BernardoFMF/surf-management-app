@@ -1,15 +1,15 @@
 create table Candidate_ (
 	id_ 			serial,
-	nif_			int,
-	cc_ 			varchar(30),
+	nif_			int unique,
+	cc_ 			varchar(30) unique,
 	full_name_ 		varchar(60),
 	nationality_ 	varchar(30),
 	birth_date_		varchar(30),
 	location_		varchar(30),
 	address_ 		varchar(40),
 	postal_code_ 	varchar(20) check (postal_code_ like '%-%'),
-	email_ 			varchar(30) check (email_ like '%@%'),
-	phone_number_	int,
+	email_ 			varchar(30) check (email_ like '%@%') unique,
+	phone_number_	int unique,
 	pword_			varchar(100),
 	
 	primary key(id_)
@@ -20,6 +20,7 @@ create table Member_ (
 	member_type_	varchar(40) check (member_type_ in ('founder', 'effective', 'merit', 'corporate')),
 	has_debt_ 		bool,
 	quota_value_ 	int,
+	is_deleted_ 	bool default false,
 	
 	primary key(id_)
 );
@@ -47,7 +48,6 @@ create table Attendance_ (
 create table Quota_ (
 	id_ 	 		serial,
 	member_id_ 	 	int,
-	amount_			int,
 	payment_date_	date,
 	date_			date,
 	
@@ -55,13 +55,19 @@ create table Quota_ (
 	constraint fk_member foreign key(member_id_) references Member_(id_)
 );
 
+create table Current_Quota_ (
+	date_			date,
+	
+	primary key (date)
+);
+
 create table Contact_ (
 	member_id_ 	 	int,
 	location_		varchar(30),
 	address_ 		varchar(40),
 	postal_code_ 	varchar(20) check (postal_code_ like '%-%'),
-	email_ 			varchar(30) check (email_ like '%@%'),
-	phone_number_	int,
+	email_ 			varchar(30) check (email_ like '%@%') unique,
+	phone_number_	int unique,
 	
 	primary key (member_id_),
 	constraint fk_member foreign key(member_id_) references Member_(id_)
@@ -86,6 +92,7 @@ create table User_ (
 	enrollment_date_	date,
 	paid_enrollment_	bool,
 	pword_			varchar(100),
+	is_admin_		bool default false,
 
 	primary key (member_id_),
 	constraint fk_member foreign key(member_id_) references Member_(id_)
@@ -103,6 +110,7 @@ create table User_Img_ (
 create table Sport_ (
 	id_ 	 		serial,
 	name_			varchar(30),
+	is_deleted_ 	bool default false,
 
 	primary key (id_)
 );
@@ -110,22 +118,24 @@ create table Sport_ (
 create table User_Sport_ (
 	user_id_ 	 	int,
 	sport_id_ 	 	int,
+	type_			text [],
+	fed_id_			int,
+	name_			varchar(30),
+	years_federated int [],
+	is_abesent_		bool default false,
 
 	primary key (user_id_, sport_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_),
 	constraint fk_sport foreign key(sport_id_) references Sport_(id_)
 );
 
-create table Federation_Info_ (
-	id_ 	 		serial,
-	fed_id_			int,
-	name_			varchar(30),
-	years_federated int,
+create table Membership_card_ (
 	user_id_ 	 	int,
-
-	primary key (id_),
+	qrcode_			text,
+	
+	primary key(user_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_)
-);
+)
 
 
 

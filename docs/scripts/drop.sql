@@ -1,10 +1,10 @@
-drop table if exists Federation_Info_;
 drop table if exists User_Sport_;
 drop table if exists Sport_;
 drop table if exists User_Img_;
 drop table if exists User_;
 drop table if exists Company_;
 drop table if exists Contact_;
+drop table if exists Current_Quota_;
 drop table if exists Quota_;
 drop table if exists Attendance_;
 drop table if exists Event_;
