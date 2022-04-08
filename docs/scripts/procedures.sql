@@ -70,7 +70,10 @@ create or replace procedure post_sport(name_ varchar(30))
  * Deletes an event
  * Checks if there is any attendance to this event 
  */
-create or replace procedure delete_event(eid_ int)
+create or replace procedure delete_event(eid_ int){
+	DELETE FROM Attendance_ WHERE event_id_ = eid_;
+	DELETE FROM Event_ WHERE event_id_ = eid_;
+}
 
 /**
  * Creates an attendance
@@ -98,7 +101,24 @@ create or replace procedure delete_event(eid_ int)
  * Deletes a candidate
  * Creates a user
  */
-create or replace procedure put_candidate()
+create or replace procedure aproove_candidate(cid int, type_ varchar(40), quota_value_ int, qrcode_ text, paid_enrollement_ bool){
+	DECLARE candidate_nif_ int;
+	DECLARE candidate_cc_  varchar(30)
+	declare candidate_full_name_ varchar(60),
+	DECLARE candidate_nationality_ varchar(30),
+	DECLARE candidate_birth_date_ varchar(30),
+	DECLARE candidate_location_ varchar(30),
+	DECLARE candidate_address_ varchar(40),
+	declare candidate_postal_code_ varchar(8),
+	DECLARE candidate_email_ varchar(30),
+	DECLARE candidate_phone_number_	int,
+	DECLARE candidate_pword_ text,
+	DECLARE candidate_username_	varchar(30),
+	SELECT candidate_nif_ = nif_, candidate_cc_=cc_, candidate_full_name_=full_name_, candidate_nationality_=nationality_,candidate_birth_date_=birth_date_, candidate_location_=location_, candidate_address_=address_, candidate_postal_code_=postal_code_, candidate_email_=email_, candidate_phone_number_ =phone_number_, candidate_pword_ =pword_, candidate_username_=username_ FROM Candidate_ WHERE id_ = cid;
+	EXEC post_user(candidate_cc_, candidate_nif_, type_, quota_value_, candidate_birth_date_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, qrcode_, paid_enrollement);
+	DELETE FROM Candidate_ WHERE id_ = cid;
+	RETURN id;
+}
 
 -- company
 
@@ -110,12 +130,30 @@ create or replace procedure put_candidate()
  * if not creates it)
  */
 
-create or replace procedure post_company(name_ varchar(40), nif_ int, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30))
+create or replace procedure post_company(name_ varchar(40), nif_ int, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30)){
+	DECLARE cid int;
+	INSERT INTO Member_(member_type_,has_debt_,quota_value_,is_deleted_) VALUES ('corporate',true,50,false) RETURN cid = id;
+	INSERT INTO Contact_(member_id_,location_,address_,postal_code_,email_,phone_number_) VALUES (cid,location_,address_,postal_code_,email_,phone_number_);
+	INSERT INTO Company_(member_id_,nif_,name_) VALUES (cid, nif_, name_);
+	DECLARE date1 Date;
+	DECLARE curr_date DATE;
+	DECLARE year1 int;
+	SELECT date1 = date_ FROM Quota_ ORDER BY id_ DESC LIMIT 1;
+	SELECT year1 = extract(YEAR FROM date1)
+	SELECT curr_date = extract(YEAR FROM current_date)
+	if(year1 == curr_date) {
+		INSERT INTO Quota_(member_id_,payment_date_,date_) VALUES (cid,NULL,date1);	
+	}
+	RETURN cid;
+}
 
 /**
  * Updates contact & company
  */
-create or replace procedure put_company(cid_ int, name_ varchar(40), nif_ int, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30))
+create or replace procedure put_company(cid_ int, name_ varchar(40), nif_ int, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30)){
+	UPDATE Contact_ SET phone_number_ = phone_number_, email_ = email_,postal_code_ = postal_code_,address_ = address_, location_ = location_ WHERE member_id_ = cid_;
+	UPDATE Company_ SET name_ = name_, nif_ = nif_ WHERE member_id_ = cid_;
+}
 
 /**
  * delete company is made by a simple update query (changes the member table)
@@ -127,12 +165,15 @@ create or replace procedure put_company(cid_ int, name_ varchar(40), nif_ int, p
 /**
  * Creates a quota selecting every member to its respective quota
  */
-create or replace procedure post_quotas(date_ date)
+create or replace procedure post_quotas(date_ date) {
+	INSERT INTO Quotas_(member_id_, payment_date_, date_) SELECT id_,NULL,date_ FROM Member_;
+}
 
 /**
  * Updates the payment in a specific quota
+ * no proc needed
  */
-create or replace procedure put_quotas(qid_ int, payment_date_ date)
+
 
 
 

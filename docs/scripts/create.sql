@@ -19,7 +19,7 @@ create table Candidate_ (
 create table Member_ (
 	id_ 			serial,
 	member_type_	varchar(40) check (member_type_ in ('founder', 'effective', 'merit', 'corporate')),
-	has_debt_ 		bool,
+	has_debt_ 		bool default true,
 	quota_value_ 	int,
 	is_deleted_ 	bool default false,
 	
