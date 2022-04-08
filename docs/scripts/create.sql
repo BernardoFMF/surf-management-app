@@ -11,6 +11,7 @@ create table Candidate_ (
 	email_ 			varchar(30) check (email_ like '%@%') unique,
 	phone_number_	int unique,
 	pword_			text,
+	username_		varchar(30) unique,
 	
 	primary key(id_)
 );
@@ -55,12 +56,6 @@ create table Quota_ (
 	constraint fk_member foreign key(member_id_) references Member_(id_)
 );
 
-create table Current_Quota_ (
-	date_			date,
-	
-	primary key (date)
-);
-
 create table Contact_ (
 	member_id_ 	 	int,
 	location_		varchar(30),
@@ -93,6 +88,7 @@ create table User_ (
 	paid_enrollment_	bool,
 	pword_			varchar(100),
 	is_admin_		bool default false,
+	username_		varchar(30) unique,
 
 	primary key (member_id_),
 	constraint fk_member foreign key(member_id_) references Member_(id_)
