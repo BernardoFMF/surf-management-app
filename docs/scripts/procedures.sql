@@ -23,10 +23,15 @@ create or replace procedure post_user(cc_ varchar(30), nif_ int, type_ varchar(4
 	insert into Membership_card_ (user_id_, qrcode_)
 	values (mid, qrcode_);
 	
-	declare date1 date;
-	select date1 = date_ from Quota_ order by id_ desc limit 1;
-	insert into Quota_(member_id_, payment_date_, date_) values (mid, null, date1)
-	
+	DECLARE date1 DATE;
+	DECLARE curr_date DATE;
+	DECLARE year1 int;
+	SELECT date1 = date_ FROM Quota_ ORDER BY id_ DESC LIMIT 1;
+	SELECT year1 = extract(YEAR FROM date1)
+	SELECT curr_date = extract(YEAR FROM current_date)
+	if(year1 == curr_date) {
+		INSERT INTO Quota_(member_id_,payment_date_,date_) VALUES (mid,NULL,date1);	
+	}
 	return mid;
 }
 
