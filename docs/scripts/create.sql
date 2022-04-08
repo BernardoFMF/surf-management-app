@@ -115,6 +115,7 @@ create table User_Sport_ (
 	user_id_ 	 	int,
 	sport_id_ 	 	int,
 	type_			text [],
+	fed_number_		int,
 	fed_id_			int,
 	fed_name_		varchar(30),
 	years_federated int [],

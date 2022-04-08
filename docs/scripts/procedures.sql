@@ -65,8 +65,8 @@ create or replace procedure post_user_sport(id_ int, sid_ int, fed_id_ int, fed_
 	if exists (select * from User_Sport_ where user_id_ = id_ and sport_id_ = sid_ and is_absent_ = true)
 		update 	User_Sport_ set is_absent_ = false where user_id_ = id_ and sport_id_ = sid_;
 	
-	insert into User_Sport_ (user_id_, sport_id_, type_, fed_id_ ,fed_name_ ,years_federated)
-	values (id_, sid_, fed_id_, type_, fed_id_ ,fed_name_ ,years_federated)
+	insert into User_Sport_ (user_id_, sport_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated)
+	values (id_, sid_, fed_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated)
 }
 
 /**
