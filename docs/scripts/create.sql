@@ -7,10 +7,10 @@ create table Candidate_ (
 	birth_date_		varchar(30),
 	location_		varchar(30),
 	address_ 		varchar(40),
-	postal_code_ 	varchar(20) check (postal_code_ like '%-%'),
+	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
 	email_ 			varchar(30) check (email_ like '%@%') unique,
 	phone_number_	int unique,
-	pword_			varchar(100),
+	pword_			text,
 	
 	primary key(id_)
 );
@@ -65,7 +65,7 @@ create table Contact_ (
 	member_id_ 	 	int,
 	location_		varchar(30),
 	address_ 		varchar(40),
-	postal_code_ 	varchar(20) check (postal_code_ like '%-%'),
+	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
 	email_ 			varchar(30) check (email_ like '%@%') unique,
 	phone_number_	int unique,
 	
@@ -120,9 +120,9 @@ create table User_Sport_ (
 	sport_id_ 	 	int,
 	type_			text [],
 	fed_id_			int,
-	name_			varchar(30),
+	fed_name_		varchar(30),
 	years_federated int [],
-	is_abesent_		bool default false,
+	is_absent_		bool default false,
 
 	primary key (user_id_, sport_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_),
