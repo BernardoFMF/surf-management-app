@@ -1,22 +1,9 @@
 'use strict'
 
 import express from 'express'
-import {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany, 
-	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompaniesQuota, updateCompanyQuota} from '../controllers/companyControllers.js'
+import {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany} from '../controllers/companyControllers.js'
 
 const app = express.Router()
-
-// quotas
-
-app.get('/quotas', getCompaniesQuotas)
-
-app.get('/:cid/quotas', getCompanyQuotasById)
-
-app.post('/quotas', postCompaniesQuota)
-
-app.put('/quotas', updateCompaniesQuota)
-
-app.put('/quotas/:qid', updateCompanyQuota)
 
 // companies
 

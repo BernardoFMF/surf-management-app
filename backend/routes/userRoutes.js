@@ -1,23 +1,10 @@
 'use strict'
 
 import express from 'express'
-import {getUsers, getUserById, postUser, updateUser, deleteUser, 
-	getUsersQuotas, getUserQuotasById, postUsersQuota, updateUserQuota, updateUsersQuota,
+import {getUsers, getUserById, postUser, updateUser, deleteUser,
 	getUsersSports, getUsersSport, getUserSportsById, postUserSport, deleteUserSport, updateUserSport} from '../controllers/userControllers.js'
 
 const app = express.Router()
-
-// quotas
-
-app.get('/quotas', getUsersQuotas)
-
-app.get('/:id/quotas', getUserQuotasById)
-
-app.post('/quotas', postUsersQuota)
-
-app.put('/quotas', updateUsersQuota)
-
-app.put('/quotas/:qid', updateUserQuota)
 
 // sports
 

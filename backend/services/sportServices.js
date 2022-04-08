@@ -1,7 +1,7 @@
 'use strict'
 
 import error from '../utils/error.js'
-import {getSports, getSportById, postSport, deleteSport} from '../data/sportDataMem.js'
+import {getSports, getSportById, postSport, deleteSport} from '../data/sportData.js'
 
 const getSportsServices = async () => {
 	return await getSports()

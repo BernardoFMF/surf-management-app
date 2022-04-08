@@ -1,7 +1,7 @@
 'use strict'
 
 import error from '../utils/error.js'
-import {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance, getEventByIdAttendance} from '../data/eventDataMem.js'
+import {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance, getEventByIdAttendance} from '../data/eventData.js'
 
 const getEventsServices = async() => {
 	return await getEvents()

@@ -1,8 +1,7 @@
 'use strict'
 
 import error from '../utils/error.js'
-import {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUserQuotasById,
-	postUsersQuota, updateUserQuota, updateUsersQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport } from '../data/userDataMem.js'
+import {getUsers, getUserById, postUser, updateUser, deleteUser, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport } from '../data/userData.js'
 
 const getUsersServices = async () => {
 	return await getUsers()
@@ -50,32 +49,6 @@ const deleteUserServices = async (id) => {
 	return await deleteUser(id)
 }
 
-const getUsersQuotasServices = async () => {
-	return await getUsersQuotas()
-}
-
-const getUserQuotasByIdServices = async (id) => {
-	if(!id) throw error(400, 'Parameter not found: id')
-	return await getUserQuotasById(id)
-}
-
-const postUsersQuotaServices = async (date) => {
-	if(!date) throw error(400, 'Parameter not found: date')
-	return await postUsersQuota(date)
-}
-
-const updateUserQuotaServices = async (qid, paymentDate) => {
-	if(!qid) throw error(400, 'Parameter not found: qid')
-	if(!paymentDate) throw error(400, 'Parameter not found: paymentDate')
-	return await updateUserQuota(qid, paymentDate)
-}
-
-const updateUsersQuotaServices = async (oldDate, newDate) => {
-	if(!oldDate) throw error(400, 'Parameter not found: oldDate')
-	if(!newDate) throw error(400, 'Parameter not found: newDate')
-	return await updateUsersQuota(oldDate, newDate)
-}
-
 const getUsersSportsServices = async () => {
 	return await getUsersSports()
 }
@@ -116,4 +89,4 @@ const deleteUserSportServices = async (id, sid) => {
 	return await deleteUserSport(id, sid)
 }
 
-export { getUsersServices, getUserByIdServices, postUserServices, updateUserServices, deleteUserServices, getUsersQuotasServices, getUserQuotasByIdServices, postUsersQuotaServices, updateUsersQuotaServices, updateUserQuotaServices, getUsersSportsServices, getUsersSportServices, getUserSportsByIdServices, postUserSportServices, updateUserSportServices, deleteUserSportServices }
+export {getUsersServices, getUserByIdServices, postUserServices, updateUserServices, deleteUserServices, getUsersSportsServices, getUsersSportServices, getUserSportsByIdServices, postUserSportServices, updateUserSportServices, deleteUserSportServices}

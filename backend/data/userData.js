@@ -3,7 +3,6 @@
 import error from '../utils/error.js'
 let users = []
 let autoId = 0
-let quotaAutoId = 0
 
 const getUsers = async () => {
 	return users
@@ -36,70 +35,6 @@ const deleteUser = async (id) => {
 	await getUserById(id)
 	users = users.filter(user => user.id != id)
 	return users
-}
-
-const getUsersQuotas = async () => {
-	let quotas = []
-	for (let user of users) {
-		for(let quota of user.quotas) {
-			quotas.push(quota)
-		}
-	}
-	return quotas
-}
-
-const getUserQuotasById = async (id) => {
-	const user = users.filter(user => user.id == id)[0]
-	if (!user) throw error(404, 'User does not exist')
-	return user.quotas
-}
-
-const postUsersQuota = async (date) => {
-	let created_quotas = []
-	users = users.map(user => {
-		let quotaIfExists = user.quotas.filter(quota => quota.date == date)[0]
-		if (!quotaIfExists) {
-			quotaAutoId++
-			const newQuota = {
-				uid: user.id,
-				qid: quotaAutoId,
-				amount: user.quota_value,
-				payment_date: 'NULL',
-				date
-			}
-			user.quotas.push(newQuota)
-			created_quotas.push(newQuota)
-		}
-		return user
-	})
-	return created_quotas
-}
-
-const updateUserQuota = async (qid, paymentDate) => {
-	let idx = 0
-	for (let user in users) {
-		const quotaIfExists = users[user].quotas.filter(quota => quota.qid == qid)[0]
-		if(quotaIfExists) break
-		idx++
-	}
-	const idxQ = users[idx].quotas.findIndex((obj => obj.qid == qid))
-	users[idx].quotas[idxQ].payment_date = paymentDate
-	return users[idx].quotas[idxQ]
-}
-
-const updateUsersQuota = async (oldDate, newDate) => {
-	let quotas = []
-	users = users.map(user => {
-		user.quotas = user.quotas.map(quota => {
-			if (quota.date == oldDate) {
-				quota.date = newDate
-				quotas.push(quota)
-			}
-			return quota
-		})
-		return user
-	})
-	return quotas
 }
 
 const getUsersSports = async () => {
@@ -177,5 +112,4 @@ const deleteUserSport = async (id, sid) => {
 	return users[idx]
 }
 
-export { getUsers, getUserById, postUser, updateUser, deleteUser, getUsersQuotas, getUserQuotasById,
-	postUsersQuota, updateUserQuota, updateUsersQuota, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport }
+export { getUsers, getUserById, postUser, updateUser, deleteUser, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport }

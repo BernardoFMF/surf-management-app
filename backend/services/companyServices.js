@@ -1,8 +1,7 @@
 'use strict'
 
 import error from '../utils/error.js'
-import {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany, 
-	getCompaniesQuotas, getCompanyQuotasById, postCompaniesQuota, updateCompanyQuota, updateCompaniesQuota} from '../data/companyDataMem.js'
+import {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany} from '../data/companyData.js'
 
 const getCompaniesServices = async() => {
 	return await getCompanies()
@@ -41,33 +40,6 @@ const deleteCompanyServices = async(id) => {
 	return await deleteCompany(id)
 }
 
-const getCompaniesQuotasServices = async() => {
-	return await getCompaniesQuotas()
-}
-
-const getCompanyQuotasByIdServices = async(id) => {
-	if(!id) throw error(400,'Parameter not found: id')
-	return await getCompanyQuotasById(id)
-}
-
-const postCompaniesQuotaServices = async(date) => {
-	if(!date) throw error(400,'Parameter not found: date')
-	return await postCompaniesQuota(date)
-}
-
-const updateCompanyQuotaServices = async(qid, paymentDate) => {
-	if(!qid) throw error(400,'Parameter not found: qid')
-	if(!paymentDate) throw error(400,'Parameter not found: paymentDate')
-	return await updateCompanyQuota(qid, paymentDate)
-}
-
-const updateCompaniesQuotaServices = async(oldDate, newDate) => {
-	if(!oldDate) throw error(400,'Parameter not found: oldDate')
-	if(!newDate) throw error(400,'Parameter not found: newDate')
-	return await updateCompaniesQuota(oldDate, newDate)
-}
-
-export { getCompaniesServices, getCompanyByIdServices, postCompanyServices, updateCompanyServices, deleteCompanyServices, 
-	getCompaniesQuotasServices, getCompanyQuotasByIdServices, postCompaniesQuotaServices, updateCompanyQuotaServices, updateCompaniesQuotaServices }
+export { getCompaniesServices, getCompanyByIdServices, postCompanyServices, updateCompanyServices, deleteCompanyServices }
 
 
