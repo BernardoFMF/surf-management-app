@@ -1,115 +1,90 @@
 'use strict'
 
 import error from '../utils/error.js'
-let users = []
-let autoId = 0
 
-const getUsers = async () => {
-	return users
-}
-
-const getUserById = async (id) => {
-	const user = users.filter(user => user.id == id)[0]
-	if (!user) throw error(404, 'Could not find any user.')
-	return user
-}
-
-const postUser = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
-	autoId++
-	let quotaValue = 0
-	if (type == 'effective') quotaValue = 15
-	const newUser = {id: autoId, cc, nif, type, birth_date, nationality, full_name, has_debt: true, paid_enrollment: false, quota_value: quotaValue, password, contact: {phone_number, email, postal_code, address, location}, quotas: [], sports: []}
-	users.push(newUser)
-	return newUser
-}
-
-const updateUser = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
-	const user = await getUserById(id)
-	await deleteUser(id)
-	const newUser = {id, cc, nif, type, birth_date, nationality, full_name, has_debt: user.has_debt, paid_enrollment: user.paid_enrollment, quota_value: user.quota_value, password, contact: {phone_number, email, postal_code, address, location}, quotas: user.quotas, sports: user.sports}
-	users.push(newUser)
-	return newUser
-}
-
-const deleteUser = async (id) => {
-	await getUserById(id)
-	users = users.filter(user => user.id != id)
-	return users
-}
-
-const getUsersSports = async () => {
-	let userSports = []
-	for (let user of users) {
-		for (let sport of user.sports) {
-			if (sport.length != 0) userSports.push(sport)
-		}
+const userData = (db) => {
+	const getUsers = async () => {
+		return db.getUsersData()
 	}
-	return userSports
-}
-
-const getUsersSport = async (sid) => {
-	let usersSport = []
-	for (let user of users) {
-		const sport = user.sports.filter(sport => sport.id == sid)
-		if (sport.length != 0) usersSport.push(sport[0])
-	}
-	return usersSport
-}
-
-const getUserSportsById = async (id) => {
-	const user = users.filter(user => user.id == id)[0]
-	return user.sports
-}
-
-const postUserSport = async (id, sid, type, federationNumber, federationId, yearsFederated) => {
-	let retSport = {
-		id: sid,
-		uid: id,
-		type,
-		federationNumber,
-		federationId,
-		yearsFederated
-	}
-	users = users.map(user => {
-		if (user.id == id) {
-			let sportIfExists = user.sports.filter(sport => sport.id == sid)[0]
-			if (sportIfExists) throw error(409, 'sport already exists')
-			user.sports.push(retSport)
-		}
+	
+	const getUserById = async (id_) => {
+		const user = db.getUserByIdData(id_)
+		if (!user) throw error(404, 'User does not exist')
 		return user
-	})
-	return retSport
-}
-
-const updateUserSport = async (id, sid, type, federationNumber, federationId, yearsFederated) => {
-	let retSport = {
-		id: sid,
-		uid: id,
-		type,
-		federationNumber,
-		federationId,
-		yearsFederated
 	}
-	users = users.map(user => {
-		if (user.id == id) {
-			let sportIfExists = user.sports.filter(sport => sport.id == sid)[0]
-			if (!sportIfExists) throw error(409, 'sport does not exists')
-			user.sports = user.sports.filter(sport => sport.id != sid)
-			user.sports.push(retSport)
-		}
-		return user
-	})
-	return retSport
+	
+	const postUser = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_) => {
+		//encrypt password
+
+		//generate qrcode
+		const qrcode_ = null
+
+		return db.postUserData(cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, qrcode_, paid_enrollment_)
+	}
+	
+	const updateUser = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, img_, img_name_, paid_enrollment_, is_admin_) => {
+		await getUserById(id_)
+		return db.updateUserData(id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, img_, img_name_, paid_enrollment_, is_admin_)
+	}
+	
+	const deleteUser = async (id_) => {
+		await getUserById(id_)
+		return db.deleteUserData(id_)
+	}
+	
+	const getUsersSports = async () => {
+		return db.getUsersSportsData()
+	}
+	
+	const getUsersSport = async (id_) => {
+		const sport = db.getSportByIdData(id_)
+		if (!sport) throw error(404, 'Sport does not exist')
+		return db.getUsersSportData(id_)
+	}
+	
+	const getUserSportsById = async (id_) => {
+		await getUserById(id_)
+		return db.getUserSportsByIdData(id_)
+	}
+	
+	const postUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
+		await getUserById(id_)
+		const sport = db.getSportByIdData(sid_)
+		if (!sport) throw error(404, 'Sport does not exist')
+		const user_sport = db.getUserSportsByIdData(id_).filter(tuple => tuple.id_ == sid_)[0]
+		if (user_sport)
+			throw error(409, 'User is already related to this Sport')
+		return db.postUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
+	}
+	
+	const updateUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
+		await getUserById(id_)
+		const sports = db.getUserSportsByIdData(id_)
+		const sport = sports.filter(s => s.id_ == sid_)[0]
+		if (!sport) throw error(404, 'User is not related to this Sport')
+		return db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
+	}
+	
+	const deleteUserSport = async (id_, sid_) => {
+		await getUserById(id_)
+		const sport = db.getSportByIdData(sid_)
+		if (!sport) throw error(404, 'Sport does not exist')
+		return db.deleteUserSportData(id_, sid_)
+	}
+
+	return { 
+		getUsers, 
+		getUserById, 
+		postUser, 
+		updateUser, 
+		deleteUser, 
+		getUsersSports, 
+		getUsersSport, 
+		getUserSportsById, 
+		postUserSport, 
+		updateUserSport, 
+		deleteUserSport 
+	}
 }
 
-const deleteUserSport = async (id, sid) => {
-	users.forEach(user => {
-		if (user.id == id) {
-			user.sports = user.sports.filter(sport => sport.id != sid)
-		}
-	})
-	const idx = users.findIndex((user => user.id == id))
-	return users[idx]
-}
-
-export { getUsers, getUserById, postUser, updateUser, deleteUser, getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport }
+export default userData

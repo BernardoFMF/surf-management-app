@@ -1,20 +1,25 @@
 'use strict'
 
 import express from 'express'
-import {getCompanies, getCompanyById, postCompany, updateCompany, deleteCompany} from '../controllers/companyControllers.js'
 
-const app = express.Router()
+import companyController from '../controllers/companyControllers.js'
 
-// companies
+const companyRoutes = (data) => {
+	const app = express.Router()
 
-app.get('/', getCompanies)
+	const controller = companyController(data)
+	
+	app.get('/', controller.getCompanies)
+    
+	app.get('/:cid', controller.getCompanyById)
+    
+	app.post('/', controller.postCompany)
+    
+	app.put('/:cid', controller.updateCompany)
+    
+	app.delete('/:cid', controller.deleteCompany)
+    
+	return app
+}
 
-app.get('/:cid', getCompanyById)
-
-app.post('/', postCompany)
-
-app.put('/:cid', updateCompany)
-
-app.delete('/:cid', deleteCompany)
-
-export default app
+export default companyRoutes

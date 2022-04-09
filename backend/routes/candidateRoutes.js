@@ -1,18 +1,25 @@
 'use strict'
 
 import express from 'express'
-import {getCandidates, getCandidateById, postCandidate, deleteCandidate, approveCandidate} from '../controllers/candidateControllers.js'
 
-const app = express.Router()
+import candidateController from '../controllers/candidateControllers.js'
 
-app.get('/', getCandidates)
+const candidateRoutes = (data) => {
+	const app = express.Router()
 
-app.get('/:cid', getCandidateById)
+	const controller = candidateController(data)
+	
+	app.get('/', controller.getCandidates)
+    
+	app.get('/:cid', controller.getCandidateById)
+    
+	app.post('/', controller.postCandidate)
+    
+	app.delete('/:cid', controller.deleteCandidate)
+    
+	app.put('/:cid', controller.approveCandidate)
+    
+	return app
+}
 
-app.post('/', postCandidate)
-
-app.delete('/:cid', deleteCandidate)
-
-app.put('/:cid', approveCandidate)
-
-export default app
+export default candidateRoutes

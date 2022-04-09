@@ -1,56 +1,68 @@
 'use strict'
 
 import error from '../utils/error.js'
-let events = []
-let attendance = []
-let autoId = 0
 
-const getEvents = async () => {
-	return events
+const eventData = (db) => {
+	const getEvents = async () => {
+		return db.getEventsData()
+	}
+	
+	const getEventById = async (id_) => {
+		const event = db.getEventByIdData(id_)
+		if (!event) throw error(404, 'Event does not exist')
+		return event
+	}
+	
+	const postEvent = async (name_, initial_date_, final_date_) => {
+		return db.postEventData(name_, initial_date_, final_date_)
+	}
+	
+	const updateEvent = async (id_, name_, initial_date_, final_date_) => {
+		await getEventById(id_)
+		return db.updateEventData(id_, name_, initial_date_, final_date_)
+	}
+	
+	const deleteEvent = async (id_) => {
+		await getEventById(id_)
+		return db.deleteEventData(id_)
+	}
+	
+	const postMemberAttendance = async (eid_, id_, state_) => {
+		await getEventById(eid_)
+		const user = db.getUserByIdData(id_)
+		if (!user) throw error(404, 'User does not exist')
+		const attendance = db.getEventByIdAttendanceData(eid_)
+		if (attendance.filter(att => att.member_id_ == id_)[0])
+			throw error(409, 'User is already related to this Event')
+		return db.postMemberAttendanceData(eid_, id_, state_)
+	}
+	
+	const updateMemberAttendance = async (eid_, id_, state_) => {
+		await getEventById(eid_)
+		const user = db.getUserByIdData(id_)
+		if (!user) throw error(404, 'User does not exist')
+		const attendance = db.getEventByIdAttendanceData(eid_)
+		console.log(attendance)
+		if (!attendance.filter(att => att.member_id_ == id_)[0])
+			throw error(409, 'User is not related to this Event')
+		return db.updateMemberAttendanceData(eid_, id_, state_)
+	}
+	
+	const getEventByIdAttendance = async (eid_) => {
+		await getEventById(eid_)
+		return db.getEventByIdAttendanceData(eid_)
+	}
+
+	return {
+		getEvents, 
+		getEventById, 
+		postEvent,
+		updateEvent, 
+		deleteEvent, 
+		postMemberAttendance, 
+		updateMemberAttendance, 
+		getEventByIdAttendance
+	} 
 }
 
-const getEventById = async (eid) => {
-	const event = events.filter(event => event.eid == eid)[0]
-	if (!event) throw error(404, 'Could not find any event.')
-	return event
-}
-
-const postEvent = async (name, initial_date, final_date) => {
-	autoId++
-	const newEvent = {eid : autoId, name, initial_date, final_date}
-	events.push(newEvent)
-	return newEvent
-}
-
-const updateEvent = async (eid, name, initial_date, final_date) => {
-	const idx = events.findIndex((obj => obj.eid == eid))
-	if(idx == undefined) throw Error(404, 'Could not find any event with that Id')
-	events[idx].name = name
-	events[idx].initial_date = initial_date
-	events[idx].final_date = final_date
-	return events[idx]	
-}
-
-const deleteEvent = async (eid) => {
-	events = events.filter(event => event.eid != eid)
-	return events
-}
-
-const postMemberAttendance = async (event_id, id, state) => {
-	let event_user = {eid: event_id, uid: id, state}
-	attendance.push(event_user)
-	return event_user
-}
-
-const updateMemberAttendance = async (event_id, id, state) => {
-	const idx = attendance.findIndex((obj => obj.eid == event_id && obj.uid == id))
-	if(idx == undefined) throw Error(404, 'User does not have attendance to this event')
-	attendance[idx].state = state
-	return attendance[idx]
-}
-
-const getEventByIdAttendance = async (event_id) => {
-	return attendance.filter(attendance_tuple => attendance_tuple.eid == event_id)[0]
-}
-
-export {getEvents, getEventById, postEvent,updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance, getEventByIdAttendance} 
+export default eventData

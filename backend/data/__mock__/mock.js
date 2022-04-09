@@ -161,7 +161,7 @@ const getEventByIdData = (id_) => {
 const postEventData = (name_, initial_date_, final_date_) => {
 	indexObj.idxEvents++
 	const event = {
-		id_: indexObj.idxEvents++, 
+		id_: indexObj.idxEvents, 
 		name_, 
 		initial_date_, 
 		final_date_}
@@ -179,13 +179,14 @@ const updateEventData = (id_, name_, initial_date_, final_date_) => {
 
 const deleteEventData = (id_) => {
 	events = events.filter(event => event.id_ != id_)
+	attendance = attendance.filter(att => att.event_id_ != id_)
 	return events
 }
 
 const postMemberAttendanceData = (eid_, id_, state_) => {
 	const event_user = {
 		member_id_: id_,
-		event_id: eid_,
+		event_id_: eid_,
 		state_
 	}
 	attendance.push(event_user)
@@ -193,13 +194,13 @@ const postMemberAttendanceData = (eid_, id_, state_) => {
 }
 
 const updateMemberAttendanceData = (eid_, id_, state_) => {
-	const idx = attendance.findIndex(att => att.member_id_ == id_ && att.event_id == eid_)
+	const idx = attendance.findIndex(att => att.member_id_ == id_ && att.event_id_ == eid_)
 	attendance[idx].state_ = state_
 	return attendance[idx]
 }
 
 const getEventByIdAttendanceData = (eid_) => {
-	return attendance.filter(att => att.eid_ == eid_)
+	return attendance.filter(att => att.event_id_ == eid_)
 }
 
 /**
@@ -207,12 +208,13 @@ const getEventByIdAttendanceData = (eid_) => {
  */
 
 const getSportsData = () => {
-	return sports.filter(sport => sport.is_deleted_ == false)
+	return sports.filter(sport => !sport.is_deleted_)
 }
 
 const getSportByIdData = (id_) => {
-	const sport = sports.filter(sport => sport.id_ == id_ && sport.is_deleted_ == false)[0]
-	return sport
+	const sport = sports.filter(sport => sport.id_ == id_)[0]
+	if (sport && !sport.is_deleted_) return sport
+	return undefined
 }
 
 const postSportData = (name_) => {
@@ -231,17 +233,33 @@ const deleteSportData = (id_) => {
 }
 
 /**
+ * Member
+ */
+
+const getMemberByIdData = (id_) => {
+	const member = members.filter(member => member.id_ == id_ && !member.is_deleted_)[0]
+	return member
+}
+
+/**
  * Users
  */
 
 const getUsersData = () => {
-	return users.filter(user => user.is_deleted_ == false)
+	return users.filter(user => {
+		const member = getMemberByIdData(user.member_id_)
+		if (member) return true
+		return false
+	})
 }
 
 const getUserByIdData = (id_) => {
-	const user = users.filter(user => user.member_id_ == id_ 
-		&& members.filter(member => member.id_ == id_)[0].is_deleted_ == false)[0]
-	return user
+	const user = users.filter(user => user.member_id_ == id_)[0]
+	if (user) {
+		const member = getMemberByIdData(user.member_id_)
+		if (member) return user
+	}
+	return undefined
 }
 
 const postUserData = (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, qrcode_, paid_enrollment_) => {
@@ -262,7 +280,7 @@ const postUserData = (cc_, nif_, type_, quota_value_, birth_date_, nationality_,
 		full_name_,
 		pword_,
 		username_,
-		enrollment_date_: new Date().toLocaleDateString().replace('/', '-'),
+		enrollment_date_: new Date().toLocaleDateString().split('/').join('-'),
 		paid_enrollment_,
 		is_admin_: false
 	}
@@ -278,14 +296,15 @@ const postUserData = (cc_, nif_, type_, quota_value_, birth_date_, nationality_,
 		user_id_ : indexObj.idxMember,
 		qrcode_
 	}
-	const date = quotas[quotas.length - 1].date_
-	if (new Date().getFullYear() == date.split('-')[2]) {
+	const temp_quota = quotas[quotas.length - 1]
+
+	if (temp_quota && new Date().getFullYear() == temp_quota.date_.split('-')[2]) {
 		indexObj.idxQuotas++
 		const quota = {
 			id_: indexObj.idxQuotas,
 			member_id_: member.id_,
 			payment_date: null,
-			date_: date
+			date_: temp_quota.date_
 		}
 		quotas.push(quota)
 	}
@@ -331,22 +350,29 @@ const updateUserData = (id_, cc_, nif_, type_, quota_value_, birth_date_, nation
 } 
 
 const deleteUserData = (id_) => {
-	users = users.map(user => {
-		if (user.member_id_ == id_) user.is_deleted_ = true
+	members = members.map(member => {
+		if (member.id_ == id_) member.is_deleted_ = true
+		return member
 	})
 	return users
 }
 
 const getUsersSportsData = () => {
-	return users_sports
+	return users_sports.filter(tuple => {
+		const user = getUserByIdData(tuple.user_id_)
+		const sport = getSportByIdData(tuple.sport_id_)
+		if (user && sport && !tuple.is_absent_) return true
+		return false
+	})
 }
 
 const getUsersSportData = (id_) => {
 	let users_tuples = []
-	const sports_tuples = users_sports.filter(sport => sport.sport_id_ == id_ && sport.is_absent_ == false)
+	const sports_tuples = users_sports.filter(sport => sport.sport_id_ == id_)
 	sports_tuples.forEach(tuple => {
 		const user = getUserByIdData(tuple.user_id_)
-		if (user)
+		const sport = getSportByIdData(tuple.sport_id_)
+		if (user && sport && !tuple.is_absent_)
 			users_tuples.push(user)
 	})
 	return users_tuples
@@ -354,10 +380,11 @@ const getUsersSportData = (id_) => {
 
 const getUserSportsByIdData = (id_) => {
 	let sports_tuples = []
-	const users_tuples = users_sports.filter(user => user.user_id_ == id_ && user.is_absent_ == false)
+	const users_tuples = users_sports.filter(user => user.user_id_ == id_)
 	users_tuples.forEach(tuple => {
+		const user = getUserByIdData(tuple.user_id_)
 		const sport = getSportByIdData(tuple.sport_id_)
-		if (sport)
+		if (sport && user && !tuple.is_absent_)
 			sports_tuples.push(sport)
 	})
 	return sports_tuples
@@ -392,7 +419,9 @@ const updateUserSportData = (id_, sid_, fed_id_, fed_number_, fed_name_, type_, 
 		users_sports[user_sport_idx].fed_name_ = fed_name_
 		users_sports[user_sport_idx].type_ = type_
 		users_sports[user_sport_idx].years_federated_ = years_federated_
+		users_sports[user_sport_idx].is_absent_ = false
 	}
+	return users_sports[user_sport_idx]
 }
 
 const deleteUserSportData = (id_, sid_) => {
@@ -400,7 +429,69 @@ const deleteUserSportData = (id_, sid_) => {
 	if(user_sport_idx != -1) {
 		users_sports[user_sport_idx].is_absent_ = true
 	}
+	return users_sports[user_sport_idx]
 }
 
-export {getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, 
-	getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData} 
+/**
+ * Quotas
+ */
+
+const getQuotasData = () => {
+	return quotas
+}
+
+const getCompaniesQuotasData = () => {
+	return quotas.filter(quota => {
+		if (getCompanyByIdData(quota.member_id_)) {
+			return true
+		}
+		return false
+	})
+}
+
+const getUsersQuotasData = () => {
+	return quotas.filter(quota => {
+		if (getUserByIdData(quota.member_id_)) {
+			return true
+		}
+		return false
+	})
+}
+
+const getMemberQuotasByIdData = (id_) => {
+	return quotas.filter(quota => quota.member_id_ == id_)[0]
+}
+
+const postQuotaData = (date_) => {
+	let cnt = indexObj.idxQuotas
+	members.forEach(member => {
+		indexObj.idxQuotas++
+		const quota = {
+			id_: indexObj.idxQuotas,
+			member_id_: member.id_,
+			payment_date: null,
+			date_
+		}
+		quotas.push(quota)
+	})
+	return indexObj.idxQuotas - cnt
+}
+
+const updateMemberQuotaData = (qid_, payment_date_) => {
+	quotas = quotas.map(quota => {
+		if (quota.id_ == qid_) {
+			quota.payment_date_ = payment_date_
+		}
+		return quota
+	})
+	return quotas.filter(quota => quota.id_ == qid_)[0]
+}
+
+const getQuotaByIdData = (qid_) => {
+	const quota = quotas.filter(quota => quota.id_ == qid_)[0]
+	return quota
+}
+
+export const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getQuotaByIdData }
+
+export default mock_data

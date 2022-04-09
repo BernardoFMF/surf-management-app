@@ -2,28 +2,43 @@
 
 import error from '../utils/error.js'
 
-const getEvents = async () => {
+const quotaData = (db) => {
+	const getQuotas = async () => {
+		return db.getQuotasData()
+	} 
+    
+	const getCompaniesQuotas = async () => {
+		return db.getCompaniesQuotasData()
+	}
+    
+	const getUsersQuotas = async () => {
+		return db.getUsersQuotasData()
+	} 
+    
+	const getMemberQuotasById = async (id_) => {
+		const member = db.getMemberByIdData(id_)
+		if (!member) throw error(404, 'Member does not exist')
+		return db.getMemberQuotasByIdData(id_)
+	}
+    
+	const postQuota = async (date_) => {
+		return db.postQuotaData(date_)
+	}
+    
+	const updateMemberQuota = async (qid_, payment_date_) => {
+		const quota = db.getMemberQuotasByIdData(qid_)
+		if (!quota) throw error(404, 'Quota does not exist')
+		return db.updateMemberQuotaData(qid_, payment_date_)
+	}
+
+	return {
+		getQuotas, 
+		getCompaniesQuotas, 
+		getUsersQuotas,
+		getMemberQuotasById, 
+		postQuota, 
+		updateMemberQuota
+	} 
 }
 
-const getEventById = async (eid) => {
-}
-
-const postEvent = async (name, initial_date, final_date) => {
-}
-
-const updateEvent = async (eid, name, initial_date, final_date) => {
-}
-
-const deleteEvent = async (eid) => {
-}
-
-const postMemberAttendance = async (event_id, id, state) => {
-}
-
-const updateMemberAttendance = async (event_id, id, state) => {
-}
-
-const getEventByIdAttendance = async (event_id) => {
-}
-
-export {getEvents, getEventById, postEvent,updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance, getEventByIdAttendance} 
+export default quotaData

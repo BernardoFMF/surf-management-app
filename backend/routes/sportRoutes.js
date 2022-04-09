@@ -1,16 +1,23 @@
 'use strict'
 
 import express from 'express'
-import {getSports, getSportById, postSport, deleteSport} from '../controllers/sportControllers.js'
 
-const app = express.Router()
+import sportController from '../controllers/sportControllers.js'
 
-app.get('/', getSports)
+const sportRoutes = (data) => {
+	const app = express.Router()
 
-app.get('/:sid', getSportById)
+	const controller = sportController(data)
+	
+	app.get('/', controller.getSports)
+    
+	app.get('/:sid', controller.getSportById)
+    
+	app.post('/', controller.postSport)
+    
+	app.delete('/:sid', controller.deleteSport)
+    
+	return app
+}
 
-app.post('/', postSport)
-
-app.delete('/:sid', deleteSport)
-
-export default app
+export default sportRoutes

@@ -1,35 +1,41 @@
 'use strict'
 
 import express from 'express'
-import {getUsers, getUserById, postUser, updateUser, deleteUser,
-	getUsersSports, getUsersSport, getUserSportsById, postUserSport, deleteUserSport, updateUserSport} from '../controllers/userControllers.js'
 
-const app = express.Router()
+import userController from '../controllers/userControllers.js'
 
-// sports
+const userRoutes = (data) => {
+	const app = express.Router()
 
-app.get('/sports', getUsersSports)
+	const controller = userController(data)
 
-app.get('/sports/:sid', getUsersSport)
+	// sports
+	
+	app.get('/sports', controller.getUsersSports)
+	
+	app.get('/sports/:sid', controller.getUsersSport)
+	
+	app.get('/:id/sports', controller.getUserSportsById)
+	
+	app.post('/:id/sports', controller.postUserSport)
+	
+	app.put('/:id/sports/:sid', controller.updateUserSport)
+	
+	app.delete('/:id/sports/:sid', controller.deleteUserSport)
+	
+	// users
+	
+	app.get('/', controller.getUsers)
+	
+	app.get('/:id', controller.getUserById)
+	
+	app.post('/', controller.postUser)
+	
+	app.put('/:id', controller.updateUser)
+	
+	app.delete('/:id', controller.deleteUser)
+	
+	return app
+}
 
-app.get('/:id/sports', getUserSportsById)
-
-app.post('/:id/sports', postUserSport)
-
-app.put('/:id/sports/:sid', updateUserSport)
-
-app.delete('/:id/sports/:sid', deleteUserSport)
-
-// users
-
-app.get('/', getUsers)
-
-app.get('/:id', getUserById)
-
-app.post('/', postUser)
-
-app.put('/:id', updateUser)
-
-app.delete('/:id', deleteUser)
-
-export default app
+export default userRoutes

@@ -1,18 +1,28 @@
 'use strict'
 
 import express from 'express'
-import {getQuotas, getCompaniesQuotas, getUserQuotas, getMemberQuotasById, postQuota, updateMemberQuota} from '../controllers/quotaControllers.js'
 
-const app = express.Router()
+import quotaController from '../controllers/quotaControllers.js'
 
-app.get('/', getQuotas)
 
-app.get('/companies', getCompaniesQuotas)
+const quotaRoutes = (data) => {
+	const app = express.Router()
 
-app.get('/users', getUserQuotas)
+	const controller = quotaController(data)
 
-app.get('/:id', getMemberQuotasById)
+	app.get('/', controller.getQuotas)
+    
+	app.get('/companies', controller.getCompaniesQuotas)
+    
+	app.get('/users', controller.getUsersQuotas)
+    
+	app.get('/:id', controller.getMemberQuotasById)
+    
+	app.post('/', controller.postQuota)
+    
+	app.put('/:id', controller.updateMemberQuota)
 
-app.post('/', postQuota)
+	return app
+}
 
-app.put('/quotas/:qid', updateMemberQuota)
+export default quotaRoutes

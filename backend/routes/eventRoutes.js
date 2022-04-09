@@ -1,24 +1,32 @@
 'use strict'
 
 import express from 'express'
-import {getEvents, getEventById, postEvent, updateEvent, deleteEvent, postMemberAttendance, updateMemberAttendance, getEventByIdAttendance} from '../controllers/eventControllers.js'
 
-const app = express.Router()
+import eventController from '../controllers/eventControllers.js'
 
-app.get('/', getEvents)
 
-app.get('/:eid', getEventById)
+const eventRoutes = (data) => {
+	const app = express.Router()
 
-app.post('/', postEvent)
+	const controller = eventController(data)
 
-app.put('/:eid', updateEvent)
+	app.get('/', controller.getEvents)
+    
+	app.get('/:eid', controller.getEventById)
+    
+	app.post('/', controller.postEvent)
+    
+	app.put('/:eid', controller.updateEvent)
+    
+	app.delete('/:eid', controller.deleteEvent)
+    
+	app.post('/:eid/attendance', controller.postMemberAttendance)
+    
+	app.put('/:eid/attendance', controller.updateMemberAttendance)
+    
+	app.get('/:eid/attendance', controller.getEventByIdAttendance)
 
-app.delete('/:eid', deleteEvent)
+	return app
+}
 
-app.post('/:eid/attendance', postMemberAttendance)
-
-app.put('/:eid/attendance', updateMemberAttendance)
-
-app.get('/:eid/attendance', getEventByIdAttendance)
-
-export default app
+export default eventRoutes

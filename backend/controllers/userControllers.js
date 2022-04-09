@@ -2,68 +2,87 @@
 
 import asyncHandler from 'express-async-handler'
 
-import {getUsersServices, getUserByIdServices, postUserServices, updateUserServices, deleteUserServices,
-	getUsersSportsServices, getUsersSportServices, getUserSportsByIdServices, postUserSportServices, updateUserSportServices, deleteUserSportServices} from '../services/userServices.js'
+import userServices from '../services/userServices.js'
 
-const getUsers = asyncHandler(async (req, res) => {
-	const users = await getUsersServices()
-	res.json(users)
-})
+const userController = (data) => {
+	const services = userServices(data)
 
-const getUserById = asyncHandler(async (req, res) => {
-	const user = await getUserByIdServices(req.params.id)
-	if (user) res.json(user)
-})
+	const getUsers = asyncHandler(async (req, res) => {
+		const users = await services.getUsersServices()
+		res.json(users)
+	})
+	
+	const getUserById = asyncHandler(async (req, res) => {
+		const user = await services.getUserByIdServices(req.params.id)
+		if (user) res.json(user)
+	})
+	
+	const postUser = asyncHandler(async (req, res) => {
+		const user = await services.postUserServices(req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password, req.body.username, req.body.paid_enrollment)
+		if (user) {
+			res.status(201)
+			res.json(user)
+		}
+	})
+	
+	const updateUser = asyncHandler(async (req, res) => {
+		const user = await services.updateUserServices(req.params.id, req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password, req.body.username, req.body.img, req.body.img_name, req.body.paid_enrollment, req.body.is_admin)
+		if (user) res.json(user)
+	})
+	
+	const deleteUser = asyncHandler(async (req, res) => {
+		const user = await services.deleteUserServices(req.params.id)
+		if (user) res.json({ message: 'User deleted sucessfully' })
+	})
+	
+	const getUsersSports = asyncHandler(async (req,res) => {
+		const usersWithsports = await services.getUsersSportsServices()
+		if (usersWithsports) res.json(usersWithsports)
+	})
+	
+	const getUsersSport = asyncHandler(async (req,res) => {
+		const usersWithsport = await services.getUsersSportServices(req.params.sid)
+		if (usersWithsport) res.json(usersWithsport)
+	})
+	
+	const getUserSportsById = asyncHandler(async (req,res) => {
+		const userSports = await services.getUserSportsByIdServices(req.params.id)
+		if (userSports) res.json(userSports)
+	})
+	
+	const postUserSport = asyncHandler(async (req,res) => {
+		const userSport = await services.postUserSportServices(req.params.id, req.body.sid, req.body.fed_id, req.body.fed_number, req.body.fed_name, req.body.type, req.body.years_federated)
+		if (userSport) {
+			res.status(201)
+			res.json(userSport)
+		}
+	})
+	
+	const updateUserSport = asyncHandler(async (req,res) => {
+		const userSport = await services.updateUserSportServices(req.params.id, req.body.sid, req.body.fed_id, req.body.fed_number, req.body.fed_name, req.body.type, req.body.years_federated)
+		if (userSport) res.json(userSport)
+	})
+	
+	const deleteUserSport = asyncHandler(async (req,res) => {
+		const userSport = await services.deleteUserSportServices(req.params.id,req.params.sid)
+		if(userSport) {
+			res.json({ message: 'Sport deleted sucessfully from user' })
+		}
+	})
 
-const postUser = asyncHandler(async (req, res) => {
-	const user = await postUserServices(req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password)
-	if (user) {
-		res.status(201)
-		res.json(user)
+	return {
+		getUsers,
+		getUserById,
+		postUser,
+		updateUser,
+		deleteUser,
+		getUsersSports,
+		getUsersSport,
+		getUserSportsById,
+		postUserSport,
+		updateUserSport,
+		deleteUserSport
 	}
-})
+}
 
-const updateUser = asyncHandler(async (req, res) => {
-	const users = await updateUserServices(req.params.id, req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password)
-	if (users) res.json(users)
-})
-
-const deleteUser = asyncHandler(async (req, res) => {
-	const user = await deleteUserServices(req.params.id)
-	if (user) res.json({ message: 'User deleted sucessfully' })
-})
-
-const getUsersSports = asyncHandler(async (req,res) => {
-	const usersWithsports = await getUsersSportsServices()
-	if (usersWithsports) res.json(usersWithsports)
-})
-
-const getUsersSport = asyncHandler(async (req,res) => {
-	const usersWithsport = await getUsersSportServices(req.params.sid)
-	if (usersWithsport) res.json(usersWithsport)
-})
-
-const getUserSportsById = asyncHandler(async (req,res) => {
-	const userSports = await getUserSportsByIdServices(req.params.id)
-	if (userSports) res.json(userSports)
-})
-
-const postUserSport = asyncHandler(async (req,res) => {
-	const userSport = await postUserSportServices(req.params.id, req.body.sid, req.body.type, req.body.federation_number, req.body.federation_id, req.body.years_federated)
-	if (userSport) {
-		res.status(201)
-		res.json(userSport)
-	}
-})
-
-const updateUserSport = asyncHandler(async (req,res) => {
-	const userSport = await updateUserSportServices(req.params.id, req.body.sid, req.body.type, req.body.federation_number, req.body.federation_id, req.body.years_federated)
-	if (userSport) res.json(userSport)
-})
-
-const deleteUserSport = asyncHandler(async (req,res) => {
-	const userSport = await deleteUserSportServices(req.params.id,req.params.sid)
-	if(userSport) res.json({ message: 'Sport deleted sucessfully from user' })
-})
-
-export {getUsers, getUserById, postUser, updateUser, deleteUser,getUsersSports, getUsersSport, getUserSportsById, postUserSport, updateUserSport, deleteUserSport}
+export default userController

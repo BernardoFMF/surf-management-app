@@ -21,10 +21,10 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "start": "node backend/server",
-    "server": "npx nodemon backend/server",
+    "start": "node backend/index",
+    "server": "npx nodemon backend/index",
     "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\" "
+    "dev": "concurrently \"npm run index\" \"npm run client\" "
   },
   "repository": {
     "type": "git",
