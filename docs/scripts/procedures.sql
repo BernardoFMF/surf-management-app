@@ -8,7 +8,7 @@
  * Creates a quota (optional - check if there is already a quota for the current year, 
  * if not creates it)
  */
-create or replace procedure post_user(cc_ bigint, nif_ bigint, type_ varchar(40), quota_value_ int, birth_date_ date, nationality_ varchar(30), full_name_ varchar(60),
+create or replace procedure post_user(cc_ bigint, nif_ bigint, type_ varchar(40), quota_value_ int, birth_date_ varchar(30), nationality_ varchar(30), full_name_ varchar(60),
 										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), pword_ text, username_ varchar(30), qrcode_ text, paid_enrollment_ bool)
 LANGUAGE plpgsql  
 as
@@ -32,8 +32,7 @@ begin
 	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, pword_, username_)
 	values (mid, nif_, cc_, full_name_, nationality_, birth_date_, curr_date, paid_enrollment_, pword_, username_); 
 	
-	insert into Membership_card_ (user_id_, qrcode_)
-	values (mid, qrcode_);
+	insert into Membership_card_ (user_id_, qrcode_) values (mid, qrcode_);
 
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;
@@ -82,16 +81,10 @@ begin
 		update 	User_Sport_ set is_absent_ = false where user_id_ = id_ and sport_id_ = sid_;
 	end if;
 	
-<<<<<<< HEAD
-	insert into User_Sport_ (user_id_, sport_id_, fed_id_, type_ ,fed_name_ ,years_federated_)
-	values (id_, sid_, fed_id_, type_, fed_name_ ,years_federated_);
+	insert into User_Sport_ (user_id_, sport_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_)
+	values (id_, sid_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_);
 end
 $$;
-=======
-	insert into User_Sport_ (user_id_, sport_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated)
-	values (id_, sid_, fed_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated)
-}
->>>>>>> 86f41cf75ac2d48d4b69f3597e9a67a81c82080e
 
 /**
  * Updates user_sport
@@ -101,7 +94,7 @@ LANGUAGE plpgsql
 as
 $$
 begin
-	update User_Sport_ set (user_id_, sport_id_, type_, fed_id_ , fed_name_ , years_federated) = (id_, sid_, fed_id_, type_, fed_id_, fed_name_, years_federated);
+	update User_Sport_ set (user_id_, sport_id_, type_, fed_id_ , fed_name_ , years_federated_) = (id_, sid_, fed_id_, type_, fed_id_, fed_name_, years_federated_);
 end
 $$;
 
@@ -248,7 +241,7 @@ LANGUAGE plpgsql
 as
 $$
 begin
-	UPDATE Contact_ SET phone_number_ = p_phone_number_, email_ = p_email_,postal_code_ = p_postal_code_,address_ = p_address_, location_ = p_location_ WHERE member_id_ = cid_;
+	UPDATE Contact_ SET phone_number_ = p_phone_number_, postal_code_ = p_postal_code_,address_ = p_address_, location_ = p_location_ WHERE member_id_ = cid_;
 	UPDATE Company_ SET name_ = p_name_, nif_ = p_nif_ WHERE member_id_ = cid_;
 end
 $$;
@@ -263,14 +256,16 @@ $$;
 /**
  * Creates a quota selecting every member to its respective quota
  */
-create or replace procedure post_quotas(date_ date) 
+create or replace procedure post_quotas(p_date_ date) 
 LANGUAGE plpgsql  
 as
 $$
 begin
-	INSERT INTO Quota_(member_id_, payment_date_, date_) SELECT id_,NULL,date_ FROM Member_;
+	if not exists(select * from quota_ where date_ = p_date_) then
+		INSERT INTO Quota_(member_id_, payment_date_, date_) SELECT id_,NULL,p_date_ FROM Member_;
+	end if;
 end
-$$
+$$;
 
 /**
  * Updates the payment in a specific quota

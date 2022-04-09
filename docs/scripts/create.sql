@@ -9,7 +9,7 @@ create table Candidate_ (
 	address_ 		varchar(40),
 	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
 	email_ 			varchar(50) check (email_ like '%@%') unique,
-	phone_number_	int unique,
+	phone_number_	int,
 	pword_			text,
 	username_		varchar(30) unique,
 	
@@ -62,7 +62,7 @@ create table Contact_ (
 	address_ 		varchar(40),
 	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
 	email_ 			varchar(50) check (email_ like '%@%') unique,
-	phone_number_	int unique,
+	phone_number_	int,
 	
 	primary key (member_id_),
 	constraint fk_member foreign key(member_id_) references Member_(id_)
@@ -70,7 +70,7 @@ create table Contact_ (
 
 create table Company_ (
 	member_id_ 	 	int,
-	nif_			bigint,
+	nif_			bigint unique,
 	name_ 			varchar(40),
 
 	primary key (member_id_),
@@ -105,7 +105,7 @@ create table User_Img_ (
 
 create table Sport_ (
 	id_ 	 		serial,
-	name_			varchar(30),
+	name_			varchar(30) unique,
 	is_deleted_ 	bool default false,
 
 	primary key (id_)
@@ -116,7 +116,7 @@ create table User_Sport_ (
 	sport_id_ 	 	int,
 	type_			text [],
 	fed_number_		int,
-	fed_id_			int,
+	fed_id_			int unique,
 	fed_name_		varchar(60),
 	years_federated_ int [],
 	is_absent_		bool default false,
@@ -128,7 +128,7 @@ create table User_Sport_ (
 
 create table Membership_card_ (
 	user_id_ 	 	int,
-	qrcode_			text,
+	qrcode_			text unique,
 	
 	primary key(user_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_)

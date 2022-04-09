@@ -19,6 +19,6 @@ insert into User_img_ values (1,'profilephoto.jpeg','\xDEADBEEF'), (2,'ppic.png'
 
 insert into Sport_(name_, is_deleted_) values ('Surf',false), ('Bodyboard',false);
 
-insert into User_sport_ values (2,1,array['aprendice'],54,'Federacao Portuguesa de Surf',array[2021,2022],false), (2,2,array['aprendice'],53,'Federacao Portuguesa de Bodyboard',array[2022],false);
+insert into User_sport_ values (2,1,array['aprendice'],4890, 54,'Federacao Portuguesa de Surf',array[2021,2022],false), (2,2,array['aprendice'],4891,53,'Federacao Portuguesa de Bodyboard',array[2022],false);
 
 insert into Membership_card_ values (1,'qrcodebuedabarilgostomuito'), (2,'comopoderdaamizadetudoepossivel');
