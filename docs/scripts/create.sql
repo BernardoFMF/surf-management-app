@@ -1,14 +1,14 @@
 create table Candidate_ (
-	id_ 			serial,
-	nif_			int unique,
-	cc_ 			varchar(30) unique,
+	id_ 			int generated always as identity,
+	nif_			bigint unique,
+	cc_ 			bigint unique,
 	full_name_ 		varchar(60),
 	nationality_ 	varchar(30),
 	birth_date_		varchar(30),
 	location_		varchar(30),
 	address_ 		varchar(40),
 	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
-	email_ 			varchar(30) check (email_ like '%@%') unique,
+	email_ 			varchar(50) check (email_ like '%@%') unique,
 	phone_number_	int unique,
 	pword_			text,
 	username_		varchar(30) unique,
@@ -17,7 +17,7 @@ create table Candidate_ (
 );
 
 create table Member_ (
-	id_ 			serial,
+	id_ 			int generated always as identity,
 	member_type_	varchar(40) check (member_type_ in ('founder', 'effective', 'merit', 'corporate')),
 	has_debt_ 		bool default true,
 	quota_value_ 	int,
@@ -27,7 +27,7 @@ create table Member_ (
 );
 
 create table Event_ (
-	id_ 			serial,
+	id_ 			int generated always as identity,
 	name_ 			varchar(50),
 	initial_date_	date,
 	end_date_ 		date,
@@ -47,7 +47,7 @@ create table Attendance_ (
 );
 
 create table Quota_ (
-	id_ 	 		serial,
+	id_ 	 		int generated always as identity,
 	member_id_ 	 	int,
 	payment_date_	date,
 	date_			date,
@@ -61,7 +61,7 @@ create table Contact_ (
 	location_		varchar(30),
 	address_ 		varchar(40),
 	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
-	email_ 			varchar(30) check (email_ like '%@%') unique,
+	email_ 			varchar(50) check (email_ like '%@%') unique,
 	phone_number_	int unique,
 	
 	primary key (member_id_),
@@ -70,7 +70,7 @@ create table Contact_ (
 
 create table Company_ (
 	member_id_ 	 	int,
-	nif_			int,
+	nif_			bigint,
 	name_ 			varchar(40),
 
 	primary key (member_id_),
@@ -79,8 +79,8 @@ create table Company_ (
 
 create table User_ (
 	member_id_ 	 	int,
-	nif_			int,
-	cc_ 			varchar(30),
+	nif_			bigint unique,
+	cc_ 			bigint unique,
 	full_name_ 		varchar(60),
 	nationality_ 	varchar(30),
 	birth_date_		varchar(30),
@@ -97,7 +97,7 @@ create table User_ (
 create table User_Img_ (
 	user_id_ 	 	int,
 	img_name_		varchar(30),
-	img_value 		bytea,
+	img_value_ 		bytea,
 
 	primary key (user_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_)
@@ -117,8 +117,8 @@ create table User_Sport_ (
 	type_			text [],
 	fed_number_		int,
 	fed_id_			int,
-	fed_name_		varchar(30),
-	years_federated int [],
+	fed_name_		varchar(60),
+	years_federated_ int [],
 	is_absent_		bool default false,
 
 	primary key (user_id_, sport_id_),
