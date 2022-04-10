@@ -15,7 +15,8 @@ const candidateServices = (db) => {
 		return await data.getCandidateById(id)
 	}
 	
-	const postCandidateServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
+	const postCandidateServices = async (username, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
+		if(!username) throw error(400, 'Parameter not found: username')
 		if(!cc) throw error(400, 'Parameter not found: cc')
 		if(!nif) throw error(400, 'Parameter not found: nif')
 		if(!type) throw error(400, 'Parameter not found: type')
@@ -28,7 +29,7 @@ const candidateServices = (db) => {
 		if(!address) throw error(400, 'Parameter not found: address')
 		if(!location) throw error(400, 'Parameter not found: location')
 		if(!password) throw error(400, 'Parameter not found: password')
-		return await data.postCandidate(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
+		return await data.postCandidate(username, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
 	}
 	
 	const deleteCandidateServices = async (cid) => {
