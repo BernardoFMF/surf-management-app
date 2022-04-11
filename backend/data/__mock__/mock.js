@@ -75,13 +75,20 @@ const approveCandidateData = (id_, type_, quota_value_, qrcode_, paid_enrollment
  */
 
 const getCompaniesData = () => {
-	return companies.filter(company => company.is_deleted_ == false)
+	return companies.filter(company => {
+		const member = getMemberByIdData(company.member_id_)
+		if (member) return true
+		return false
+	})
 }
 
 const getCompanyByIdData = (id_) => {
-	const company = companies.filter(c => c.member_id_ == id_ 
-		&& members.filter(member => member.id_ == id_)[0].is_deleted_ == false)[0]
-	return company
+	const company = companies.filter(company => company.member_id_ == id_)[0]
+	if (company) {
+		const member = getMemberByIdData(company.member_id_)
+		if (member) return company
+	}
+	return undefined
 }
 
 const postCompanyData = (name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
@@ -106,16 +113,17 @@ const postCompanyData = (name_, nif_, phone_number_, email_, postal_code_, addre
 		email_,
 		phone_number_
 	}
-	const date = quotas[quotas.length - 1].date_
-	if (new Date().getFullYear() == date.split('-')[2]) {
+	const temp_quota = quotas[quotas.length - 1]
+
+	if (temp_quota && new Date().getFullYear() == temp_quota.date_.split('-')[2]) {
 		indexObj.idxQuotas++
 		const quota = {
 			id_: indexObj.idxQuotas,
 			member_id_: member.id_,
 			payment_date: null,
-			date_: date
+			date_: temp_quota.date_
 		}
-		quota.push(quota)
+		quotas.push(quota)
 	}
 	members.push(member)
 	companies.push(company)
@@ -139,8 +147,9 @@ const updateCompanyData = (id_, name_, nif_, phone_number_, email_, postal_code_
 }
 
 const deleteCompanyData = (id_) => {
-	companies = companies.map(company => {
-		if (company.member_id_ == id_) company.is_deleted_ = true
+	members = members.map(member => {
+		if (member.id_ == id_) member.is_deleted_ = true
+		return member
 	})
 	return companies
 }
@@ -492,6 +501,6 @@ const getQuotaByIdData = (qid_) => {
 	return quota
 }
 
-export const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getQuotaByIdData }
+const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getQuotaByIdData }
 
 export default mock_data

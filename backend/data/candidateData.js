@@ -1,30 +1,40 @@
 'use strict'
 
 import error from '../utils/error.js'
-import {getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData} from './__mock__/mock.js'
 
-const getCandidates = async () => {
-	return getCandidatesData()
+const candidateData = (db) => {
+	const getCandidates = async () => {
+		return db.getCandidatesData()
+	}
+	
+	const getCandidateById = async (id_) => {
+		const candidate = db.getCandidateByIdData(id_)
+		if (!candidate) throw error(404, 'Candidate does not exist')
+		return candidate
+	}
+	
+	const postCandidate = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_) => {
+		return db.postCandidateData(username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_)
+	}
+	
+	const deleteCandidate = async (id_) => {
+		await getCandidateById(id_)
+		return db.deleteCandidateData(id_)
+	}
+	
+	const approveCandidate = async (id_) => {
+		await getCandidateById(id_)
+		return db.approveCandidateData(id_)
+	}
+
+	return {
+		getCandidates, 
+		getCandidateById, 
+		postCandidate, 
+		deleteCandidate, 
+		approveCandidate
+	} 
 }
 
-const getCandidateById = async (id) => {
-	const candidate = getCandidateByIdData(id)
-	if (!candidate) throw error(404, 'Could not find any candidate.')
-	return candidate
-}
 
-const postCandidate = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password) => {
-	return postCandidateData(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
-}
-
-const deleteCandidate = async (id) => {
-	getCandidateById(id)
-	return deleteCandidateData(id)
-}
-
-const approveCandidate = async (id) => {
-	getCandidateById(id)
-	return approveCandidateData(id)
-}
-
-export {getCandidates, getCandidateById, postCandidate, deleteCandidate, approveCandidate} 
+export default candidateData

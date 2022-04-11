@@ -12,8 +12,8 @@ import errorHandler from './middlewares/errorMiddleware.js'
 
 import userRoutes from './routes/userRoutes.js'
 import sportRoutes from './routes/sportRoutes.js'
-//import candidateRoutes from './routes/candidateRoutes.js'
-//import companyRoutes from './routes/companyRoutes.js'
+import candidateRoutes from './routes/candidateRoutes.js'
+import companyRoutes from './routes/companyRoutes.js'
 import eventRoutes from './routes/eventRoutes.js'
 import quotaRoutes from './routes/quotaRoutes.js'
 
@@ -32,8 +32,8 @@ const router = (app, data) => {
 	
 	app.use('/api/users', userRoutes(data))
 	app.use('/api/sports', sportRoutes(data))
-	//app.use('/api/candidates', candidateRoutes(data))
-	//app.use('/api/companies', companyRoutes(data))
+	app.use('/api/candidates', candidateRoutes(data))
+	app.use('/api/companies', companyRoutes(data))
 	app.use('/api/events', eventRoutes(data))
 	app.use('/api/quotas', quotaRoutes(data))
 	

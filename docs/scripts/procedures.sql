@@ -113,7 +113,7 @@ LANGUAGE plpgsql
 as
 $$
 begin
-	insert into Sport_ (name_) values (name_);
+	insert into Sport_ (name_) values (name_); --on conflict (name_) raise exception concat('There is already a sport with the name ', name_)  ;
 end
 $$;
 
