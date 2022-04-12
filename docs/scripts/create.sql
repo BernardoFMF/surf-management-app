@@ -22,6 +22,8 @@ create table Member_ (
 	has_debt_ 		bool default true,
 	quota_value_ 	int,
 	is_deleted_ 	bool default false,
+	username_		varchar(30) unique,
+	pword_			varchar(100),
 	
 	primary key(id_)
 );
@@ -86,9 +88,7 @@ create table User_ (
 	birth_date_		varchar(30),
 	enrollment_date_	date,
 	paid_enrollment_	bool,
-	pword_			varchar(100),
 	is_admin_		bool default false,
-	username_		varchar(30) unique,
 
 	primary key (member_id_),
 	constraint fk_member foreign key(member_id_) references Member_(id_)

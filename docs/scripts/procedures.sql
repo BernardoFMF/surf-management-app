@@ -21,7 +21,7 @@ declare
 	curr_date DATE;
 begin
 	
-	insert into Member_ (member_type_, quota_value_) values (type_, quota_value_);
+	insert into Member_ (member_type_, quota_value_, username_, pword_) values (type_, quota_value_, username_, pword_);
 
 	SELECT id_ into mid FROM Member_ ORDER BY id_ DESC LIMIT 1;
 	
@@ -29,8 +29,8 @@ begin
 	values (mid, location_, address_, postal_code_, email_, phone_number_);
 	
 	select current_date into curr_date;
-	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, pword_, username_)
-	values (mid, nif_, cc_, full_name_, nationality_, birth_date_, curr_date, paid_enrollment_, pword_, username_); 
+	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_)
+	values (mid, nif_, cc_, full_name_, nationality_, birth_date_, curr_date, paid_enrollment_); 
 	
 	insert into Membership_card_ (user_id_, qrcode_) values (mid, qrcode_);
 
@@ -55,7 +55,9 @@ $$
 begin
 	update Contact_ set location_ = p_location_, address_ = p_address_, postal_code_ = p_postal_code_, phone_number_= p_phone_number_ where member_id_ = p_id_;
 
-	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, pword_ = p_pword_, username_ = p_username_, is_admin_ = p_is_admin_ where member_id_ = p_id_;
+	update Member_ set pword_ = p_pword_, username_ = p_username_ where id_ = p_id_;
+
+	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, is_admin_ = p_is_admin_ where member_id_ = p_id_;
 	
 	if p_img_ is not null and not exists(select * from User_img_ where user_id_ = p_id_) then
 		insert into User_Img_ (user_id_, img_name_, img_value_) values (p_id_, p_img_name_, p_img_);
@@ -210,7 +212,7 @@ $$;
  * if not creates it)
  */
 
-create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30))
+create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), username_ varchar(30), pword_ text)
 LANGUAGE plpgsql  
 as
 $$
@@ -220,7 +222,7 @@ DECLARE
 	curr_date int;
 	year1 int;
 begin
-	INSERT INTO Member_(member_type_,has_debt_,quota_value_,is_deleted_) VALUES ('corporate',true,50,false);
+	INSERT INTO Member_(member_type_,has_debt_,quota_value_,is_deleted_,username_,pword_) VALUES ('corporate',true,50,false,username_,pword_);
 	SELECT id_ into cid FROM Member_ ORDER BY id_ DESC LIMIT 1;
 	INSERT INTO Contact_(member_id_,location_,address_,postal_code_,email_,phone_number_) VALUES (cid,location_,address_,postal_code_,email_,phone_number_);
 	INSERT INTO Company_(member_id_,nif_,name_) VALUES (cid, nif_, name_);
@@ -236,11 +238,12 @@ $$;
 /**
  * Updates contact & company
  */
-create or replace procedure put_company(cid_ int, p_name_ varchar(40), p_nif_ bigint, p_phone_number_ int, p_email_ varchar(30), p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30))
+create or replace procedure put_company(cid_ int, p_name_ varchar(40), p_nif_ bigint, p_phone_number_ int, p_email_ varchar(30), p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_username_ varchar(30), p_pword_ text)
 LANGUAGE plpgsql  
 as
 $$
 begin
+	update Member_ set username_ = p_username_, pword_ = p_pword_ where id_ = cid;
 	UPDATE Contact_ SET phone_number_ = p_phone_number_, postal_code_ = p_postal_code_,address_ = p_address_, location_ = p_location_ WHERE member_id_ = cid_;
 	UPDATE Company_ SET name_ = p_name_, nif_ = p_nif_ WHERE member_id_ = cid_;
 end
@@ -262,7 +265,7 @@ as
 $$
 begin
 	if not exists(select * from quota_ where date_ = p_date_) then
-		INSERT INTO Quota_(member_id_, payment_date_, date_) SELECT id_,NULL,p_date_ FROM Member_;
+		INSERT INTO Quota_(member_id_, payment_date_, date_) SELECT id_, NULL, p_date_ FROM Member_ where quota_value_ <> 0;
 	end if;
 end
 $$;
