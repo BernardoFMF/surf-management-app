@@ -15,7 +15,7 @@ const companyServices = (db) => {
 		return await data.getCompanyById(id)
 	}
 	
-	const postCompanyServices = async(name, nif, phone_number, email, postal_code, address, location) => {
+	const postCompanyServices = async(name, nif, phone_number, email, postal_code, address, location, username, password) => {
 		if(!name) throw error(400,'Parameter not found: name')
 		if(!nif) throw error(400,'Parameter not found: nif')
 		if(!phone_number) throw error(400, 'Parameter not found: phone_number')
@@ -23,10 +23,12 @@ const companyServices = (db) => {
 		if(!postal_code) throw error(400, 'Parameter not found: postal_code')
 		if(!address) throw error(400, 'Parameter not found: address')
 		if(!location) throw error(400, 'Parameter not found: location')
-		return await data.postCompany(name, nif)
+		if(!username) throw error(400, 'Parameter not found: username')
+		if(!password) throw error(400, 'Parameter not found: password')
+		return await data.postCompany(name, nif, phone_number, email, postal_code, address, location, username, password)
 	}
 	
-	const updateCompanyServices = async(id, name, nif, phone_number, email, postal_code, address, location) => {
+	const updateCompanyServices = async(id, name, nif, phone_number, email, postal_code, address, location, username, password) => {
 		if(!id) throw error(400,'Parameter not found: id')
 		if(!name) throw error(400,'Parameter not found: name')
 		if(!nif) throw error(400,'Parameter not found: nif')
@@ -35,7 +37,9 @@ const companyServices = (db) => {
 		if(!postal_code) throw error(400, 'Parameter not found: postal_code')
 		if(!address) throw error(400, 'Parameter not found: address')
 		if(!location) throw error(400, 'Parameter not found: location')
-		return await data.updateCompany(id, name, nif, phone_number, email, postal_code, address, location)
+		if(!username) throw error(400, 'Parameter not found: username')
+		if(!password) throw error(400, 'Parameter not found: password')
+		return await data.updateCompany(id, name, nif, phone_number, email, postal_code, address, location, username, password)
 	}
 	
 	const deleteCompanyServices = async(id) => {

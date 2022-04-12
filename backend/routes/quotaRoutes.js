@@ -2,6 +2,8 @@
 
 import express from 'express'
 
+import authentication from '../middlewares/authMiddleware.js'
+
 import quotaController from '../controllers/quotaControllers.js'
 
 
@@ -10,17 +12,17 @@ const quotaRoutes = (data) => {
 
 	const controller = quotaController(data)
 
-	app.get('/', controller.getQuotas)
+	app.get('/', authentication.authAdmin, controller.getQuotas)
     
-	app.get('/companies', controller.getCompaniesQuotas)
+	app.get('/companies', authentication.authAdmin, controller.getCompaniesQuotas)
     
-	app.get('/users', controller.getUsersQuotas)
+	app.get('/users', authentication.authAdmin, controller.getUsersQuotas)
     
-	app.get('/:id', controller.getMemberQuotasById)
+	app.get('/:id', authentication.authMember, controller.getMemberQuotasById)
     
-	app.post('/', controller.postQuota)
+	app.post('/', authentication.authAdmin, controller.postQuota)
     
-	app.put('/:id', controller.updateMemberQuota)
+	app.put('/:id', authentication.authAdmin, controller.updateMemberQuota)
 
 	return app
 }

@@ -2,6 +2,8 @@
 
 import express from 'express'
 
+import authentication from '../middlewares/authMiddleware.js'
+
 import userController from '../controllers/userControllers.js'
 
 const userRoutes = (data) => {
@@ -11,29 +13,29 @@ const userRoutes = (data) => {
 
 	// sports
 	
-	app.get('/sports', controller.getUsersSports)
+	app.get('/sports', authentication.authAdmin, controller.getUsersSports)
 	
-	app.get('/sports/:sid', controller.getUsersSport)
+	app.get('/sports/:sid', authentication.authAdmin, controller.getUsersSport)
 	
-	app.get('/:id/sports', controller.getUserSportsById)
+	app.get('/:id/sports', authentication.authMember, controller.getUserSportsById)
 	
-	app.post('/:id/sports', controller.postUserSport)
+	app.post('/:id/sports', authentication.authMember, controller.postUserSport)
 	
-	app.put('/:id/sports/:sid', controller.updateUserSport)
+	app.put('/:id/sports/:sid', authentication.authMember, controller.updateUserSport)
 	
-	app.delete('/:id/sports/:sid', controller.deleteUserSport)
+	app.delete('/:id/sports/:sid', authentication.authMember, controller.deleteUserSport)
 	
 	// users
 	
-	app.get('/', controller.getUsers)
+	app.get('/', authentication.authAdmin, controller.getUsers)
 	
-	app.get('/:id', controller.getUserById)
+	app.get('/:id', authentication.authMember, controller.getUserById)
 	
-	app.post('/', controller.postUser)
+	app.post('/', authentication.authAdmin, controller.postUser)
 	
-	app.put('/:id', controller.updateUser)
+	app.put('/:id', authentication.authMember, controller.updateUser)
 	
-	app.delete('/:id', controller.deleteUser)
+	app.delete('/:id', authentication.authAdmin, controller.deleteUser)
 	
 	return app
 }
