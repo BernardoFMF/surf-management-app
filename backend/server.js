@@ -7,7 +7,7 @@ import passport from 'passport'
 import localStrategy from 'passport-local'
 import cookieParser from 'cookie-parser'
 import expressSession from 'express-session'
-
+import crypto from './utils/crypto.js'
 import errorHandler from './middlewares/errorMiddleware.js'
 
 import userRoutes from './routes/userRoutes.js'
@@ -57,8 +57,7 @@ const router = (app, data) => {
 				if(!member) {
 					done(null, false, {message: 'Incorrect username'})
 				} else {
-					//crypto.
-					if(member.pword_ === password) {
+					if(crypto.comparepassword(password, await member.pword_)) {
 						done(null, member)
 					} else {
 						done(null, false, {message: 'Incorrect password'})

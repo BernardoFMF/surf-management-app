@@ -2,6 +2,7 @@
 
 import error from '../utils/error.js'
 import userData from '../data/userData.js'
+import crypto from '../utils/crypto.js'
 
 const userServices = (db) => {
 	const data = userData(db)
@@ -35,7 +36,8 @@ const userServices = (db) => {
 		if (type == 'effective') quota_value = 15
 		else if (type == 'corporate') quota_value = 50
 
-		return await data.postUser(cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, paid_enrollment)
+		const pwordhashed = await crypto.hashpassword(password)
+		return await data.postUser(cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment)
 	}
 	
 	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, img, img_name, paid_enrollment, is_admin) => {
@@ -59,7 +61,9 @@ const userServices = (db) => {
 		let quota_value = 0
 		if (type == 'effective') quota_value = 15
 		else if (type == 'corporate') quota_value = 50
-		return await data.updateUser(id, cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, img, img_name, paid_enrollment, is_admin)
+
+		const pwordhashed = await crypto.hashpassword(password)
+		return await data.updateUser(id, cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, img, img_name, paid_enrollment, is_admin)
 	}
 	
 	const deleteUserServices = async (id) => {
