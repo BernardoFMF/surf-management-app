@@ -74,7 +74,7 @@ beforeAll( async () => {
 	await insertCompanyDummies()
 	await insertEventDummies()
 	await insertSportsforUsersDummies()
-	return await await insertAttendanceDummies()
+	return await insertAttendanceDummies()
 })
 
 //Sports
@@ -149,7 +149,7 @@ test('Create a attendance', async () => {
 test('Get specific attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventByIdAttendance(1)
-	expect(attendance[0].state_).toBe('going') //corrigir o metodo pq está a retornar todos
+	expect(attendance[0].state_).toBe('going')
 })
 
 test('Update specific attendance', async () => {
@@ -315,13 +315,13 @@ test('Update a user quota', async () => {
 test('Get all sports for users', async () => {
 	expect.assertions(1)
 	const userSports = await dbUser.getUsersSports()
-	expect(userSports[0].sport_id_).toBe(3) // ????
+	expect(userSports[0].sport_id_).toBe(3) 
 })
 
 test('Get users that practice a given sport ', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsersSport(2)
-	expect(users.length).toBe(0) // ????
+	expect(users.length).toBe(0) 
 })	
 
 test('Get sports that a given user practice', async () => {

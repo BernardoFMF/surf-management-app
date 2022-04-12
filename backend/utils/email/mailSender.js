@@ -1,13 +1,17 @@
 'use strict'
 
-import nodemailer from 'nodemailer'
+import {createTransport, getTestMessageUrl } from 'nodemailer'
 
 const mailSender = async(receivers, subject, content) => {
 
-	let transporter = nodemailer.createTransport({
-		host: 'hotmail',
-		port: 587,
-		secure: false, 
+	let transporter = createTransport({
+		host: 'smtp-mail.outlook.com', // hostname
+		service: 'outlook',
+		secureConnection: false, // TLS requires secureConnection to be false
+		port: 587, // port for secure SMTP
+		tls: {
+			rejectUnauthorized: false
+		},
 		auth: {
 			user: 'ericeirasurfclub@outlook.com', 
 			pass: 'Miguelbernardogoncalo2022', 
@@ -22,7 +26,7 @@ const mailSender = async(receivers, subject, content) => {
 	})
 
 	console.log('Message sent: %s', info.messageId)
-	console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
+	console.log('Preview URL: %s', getTestMessageUrl(info))
 }
 
-export{mailSender}
+export default mailSender

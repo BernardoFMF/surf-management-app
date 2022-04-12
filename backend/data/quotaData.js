@@ -1,6 +1,8 @@
 'use strict'
 
 import error from '../utils/error.js'
+import mailSender from '../utils/email/mailSender.js'
+import { quotaAlertTemplate } from  '../utils/email/mailTemplates.js'
 
 const quotaData = (db) => {
 	const getQuotas = async () => {
@@ -22,6 +24,9 @@ const quotaData = (db) => {
 	}
     
 	const postQuota = async (date_) => {
+		let allEmails = await db.getEmails()
+		console.log(allEmails)
+		//await mailSender(allEmails,`Novo Evento: ${name_}`, quotaAlertTemplate(name_, initial_date_, final_date_))
 		return await db.postQuotaData(date_)
 	}
     
