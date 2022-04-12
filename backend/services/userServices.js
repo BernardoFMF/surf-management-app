@@ -16,7 +16,7 @@ const userServices = (db) => {
 		return await data.getUserById(id)
 	}
 	
-	const postUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, paid_enrollment) => {
+	const postUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, paid_enrollment, url) => {
 		if(!cc) throw error(400, 'Parameter not found: cc')
 		if(!nif) throw error(400, 'Parameter not found: nif')
 		if(!type) throw error(400, 'Parameter not found: type')
@@ -37,7 +37,8 @@ const userServices = (db) => {
 		else if (type == 'corporate') quota_value = 50
 
 		const pwordhashed = await crypto.hashpassword(password)
-		return await data.postUser(cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment)
+		
+		return await data.postUser(cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment, url)
 	}
 	
 	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, img, img_name, paid_enrollment, is_admin) => {

@@ -38,9 +38,9 @@ const candidateServices = (db) => {
 		return await data.deleteCandidate(cid)
 	}
 	
-	const approveCandidateServices = async (cid, type_, quota_value_, qr_code_, paid_enrollment_) => {
+	const approveCandidateServices = async (cid, type_, quota_value_, qr_code_, paid_enrollment_, url) => {
 		if(!cid) throw error(400, 'Parameter not found: cid')
-		return await data.approveCandidate(cid, type_, quota_value_, qr_code_, paid_enrollment_)
+		return await data.approveCandidate(cid, type_, quota_value_, qr_code_, paid_enrollment_, url)
 	}
 
 	return {

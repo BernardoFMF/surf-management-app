@@ -225,12 +225,12 @@ test('Delete specific company', async () => {
 	expect(companies.length).toBe(3)
 })
 
-//Company quotas
+//Quotas
 
-test('Create a company quota', async () => {
+test('Create a quota', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.postQuota('01-01-2022')
-	expect(quotas).toBe(6)
+	expect(quotas).toBe(7)
 })
 
 test('Get all companies quotas', async () => {
@@ -256,11 +256,10 @@ test('Update a company quota', async () => {
 test('Get all users', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsers()
-	expect(users.length).toBe(3)
+	expect(users.length).toBe(4)
 })
 
-
-test('Get a specif user', async () => {
+test('Get a specific user', async () => {
 	expect.assertions(1)
 	const user = await dbUser.getUserById(1)
 	expect(user.birth_date_).toBe('09-03-1987')
@@ -281,33 +280,7 @@ test('Update a user', async () => {
 test('Delete user', async () => {
 	expect.assertions(1)
 	const users = await dbUser.deleteUser(1)
-	expect(users.length).toBe(4)
-})
-
-//User Quotas
-
-test('Create a user quota', async () => {
-	expect.assertions(1)
-	const quotas = await dbQuota.postQuota('01-01-2021')
-	expect(quotas).toBe(7)
-})
-
-test('Get all user quotas', async () => {
-	expect.assertions(1)
-	const quotas = await dbQuota.getUsersQuotas()
-	expect(quotas.length).toBe(6)
-})	
-
-test('Get specific user quota', async () => {
-	expect.assertions(1)
-	const quotas = await dbQuota.getMemberQuotasById(4)
-	expect(quotas.date_).toBe('01-01-2022')
-})
-
-test('Update a user quota', async () => {
-	expect.assertions(1)
-	const quota = await dbQuota.updateMemberQuota(4, '07-06-2022')
-	expect(quota.payment_date_).toBe('07-06-2022')
+	expect(users.length).toBe(5)
 })
 
 //User Sports
@@ -315,7 +288,7 @@ test('Update a user quota', async () => {
 test('Get all sports for users', async () => {
 	expect.assertions(1)
 	const userSports = await dbUser.getUsersSports()
-	expect(userSports[0].sport_id_).toBe(3) 
+	expect(userSports.length).toBe(4) 
 })
 
 test('Get users that practice a given sport ', async () => {
@@ -347,4 +320,3 @@ test('Delete a sport for a user', async () => {
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.user_id_).toBe(2)
 })
-

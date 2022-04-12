@@ -1,6 +1,7 @@
 'use strict'
 
 import error from '../utils/error.js'
+import { toDataURL } from 'qrcode'
 
 const userData = (db) => {
 	const getUsers = async () => {
@@ -13,16 +14,17 @@ const userData = (db) => {
 		return user
 	}
 	
-	const postUser = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_) => {
+	const postUser = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, url) => {
 		const member = await db.getMemberByUsernameData(username_)
 		if (member) throw error(409, 'Member with that username already exists')
-		
-		//encrypt password
 
-		//generate qrcode
-		const qrcode_ = null
+		const userId = await db.postUserData(cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_)
 
-		return await db.postUserData(cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, qrcode_, paid_enrollment_)
+		const qrcode_ = await toDataURL(`${url}/members/validate/${userId}`)
+
+		await db.updateUserQrCodeData(userId, qrcode_)
+
+		return userId
 	}
 	
 	const updateUser = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, img_, img_name_, paid_enrollment_, is_admin_) => {
@@ -54,7 +56,8 @@ const userData = (db) => {
 		await getUserById(id_)
 		const sport = await db.getSportByIdData(sid_)
 		if (!sport) throw error(404, 'Sport does not exist')
-		const user_sport = await db.getUserSportsByIdData(id_).filter(tuple => tuple.id_ == sid_)[0]
+		let user_sport = await db.getUserSportsByIdData(id_)
+		user_sport = user_sport.filter(tuple => tuple.id_ == sid_)[0]
 		if (user_sport)
 			throw error(409, 'User is already related to this Sport')
 		return await db.postUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_)

@@ -31,7 +31,8 @@ const candidateController = (data) => {
 	})
 	
 	const approveCandidate = asyncHandler(async (req, res) => {
-		const candidate = await services.approveCandidateServices(req.params.cid, req.body.type_, req.body.quota_value_, req.body.qr_code_, req.body.paid_enrollment_)
+		const url = req.protocol + '://' + req.get('host')
+		const candidate = await services.approveCandidateServices(req.params.cid, req.body.type_, req.body.quota_value_, req.body.paid_enrollment_, url)
 		if (candidate) res.json({ message: 'Candidate approved sucessfully' })
 	})
 

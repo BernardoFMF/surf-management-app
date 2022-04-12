@@ -48,8 +48,6 @@ let users_sports = []
 let membership_cards = []
 let quotas = []
 
-
-
 /**
  * Candidates
  */
@@ -315,7 +313,7 @@ const getUserByIdData = async (id_) => {
 	return undefined
 }
 
-const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, qrcode_, paid_enrollment_) => {
+const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_) => {
 	indexObj.idxMember++
 	const member = {
 		id_: indexObj.idxMember,
@@ -345,10 +343,6 @@ const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationa
 		email_,
 		phone_number_
 	}
-	const membership_card = {
-		user_id_ : indexObj.idxMember,
-		qrcode_
-	}
 	const temp_quota = quotas[quotas.length - 1]
 
 	if (temp_quota && new Date().getFullYear() == temp_quota.date_.split('-')[2]) {
@@ -364,9 +358,16 @@ const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationa
 	members.push(member)
 	users.push(user)
 	contacts.push(contact)
-	membership_cards.push(membership_card)
     
 	return user.member_id_
+}
+
+const updateUserQrCodeData = async (id_, qrcode_) => {
+	const membership_card = {
+		user_id_ : id_,
+		qrcode_
+	}
+	membership_cards.push(membership_card)
 }
 
 const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, img_, img_name_, paid_enrollment_, is_admin_) => {
@@ -426,7 +427,9 @@ const getUsersSportData = async (id_) => {
 	const sports_tuples = users_sports.filter(sport => sport.sport_id_ == id_)
 	sports_tuples.forEach(async (tuple) => {
 		const user = await getUserByIdData(tuple.user_id_)
+		console.log(user)
 		const sport = await getSportByIdData(tuple.sport_id_)
+		console.log(sport)
 		if (user && sport && !tuple.is_absent_)
 			users_tuples.push(user)
 	})
@@ -436,7 +439,7 @@ const getUsersSportData = async (id_) => {
 const getUserSportsByIdData = async (id_) => {
 	let sports_tuples = []
 	const users_tuples = users_sports.filter(user => user.user_id_ == id_)
-	users_tuples.forEach(async (tuple) => {
+	await users_tuples.forEach(async (tuple) => {
 		const user = await getUserByIdData(tuple.user_id_)
 		const sport = await getSportByIdData(tuple.sport_id_)
 		if (sport && user && !tuple.is_absent_)
@@ -496,8 +499,9 @@ const getQuotasData = async () => {
 }
 
 const getCompaniesQuotasData = async () => {
-	return quotas.filter(async (quota) => {
-		if (await getCompanyByIdData(quota.member_id_)) {
+	return quotas.filter(quota => {
+		const member = members.filter(member => member.id_ == quota.member_id_ && !member.is_deleted_ && member.member_type_ == 'corporate')[0]
+		if (member) {
 			return true
 		}
 		return false
@@ -520,14 +524,17 @@ const getMemberQuotasByIdData = async (id_) => {
 const postQuotaData = async (date_) => {
 	let cnt = indexObj.idxQuotas
 	members.forEach(member => {
-		indexObj.idxQuotas++
-		const quota = {
-			id_: indexObj.idxQuotas,
-			member_id_: member.id_,
-			payment_date: null,
-			date_
+		const year_quota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_.split('-')[2] == date_.split('-')[2])[0]
+		if (!year_quota) {
+			indexObj.idxQuotas++
+			const quota = {
+				id_: indexObj.idxQuotas,
+				member_id_: member.id_,
+				payment_date: null,
+				date_
+			}
+			quotas.push(quota)
 		}
-		quotas.push(quota)
 	})
 	return indexObj.idxQuotas - cnt
 }
@@ -555,6 +562,6 @@ const getEmails = async() => {
 	return emails
 }
 
-const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails }
+const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData }
 
 export default mock_data

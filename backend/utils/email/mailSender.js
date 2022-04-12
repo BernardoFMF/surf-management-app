@@ -24,9 +24,6 @@ const mailSender = async(receivers, subject, content) => {
 		text: content.text, 
 		html: content.html, 
 	})
-
-	console.log('Message sent: %s', info.messageId)
-	console.log('Preview URL: %s', getTestMessageUrl(info))
 }
 
 export default mailSender
