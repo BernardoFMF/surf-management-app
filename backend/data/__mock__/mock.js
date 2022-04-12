@@ -29,12 +29,12 @@ const getCandidatesData = () => {
 	return candidates
 }
 
-const getCandidateByIdData = (id_) => {
+const getCandidateByIdData = async (id_) => {
 	const candidate = candidates.filter(c => c.id_ == id_)[0]
 	return candidate
 }
 
-const postCandidateData = (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_) => {
+const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_) => {
 	indexObj.idxCandidates++
 	const candidate = {
 		id_: indexObj.idxCandidates, 
@@ -55,12 +55,12 @@ const postCandidateData = (username_, cc_, nif_, birth_date_, nationality_, full
 	return candidate
 }
 
-const deleteCandidateData = (id_) => {
+const deleteCandidateData = async (id_) => {
 	candidates = candidates.filter(candidate => candidate.id_ != id_)
 	return candidates
 }
 
-const approveCandidateData = (id_, type_, quota_value_, qrcode_, paid_enrollment_) => {
+const approveCandidateData = async (id_, type_, quota_value_, qrcode_, paid_enrollment_) => {
 	const candidate = getCandidateByIdData(id_)
 
 	candidates = candidates.filter(candidate => candidate.id_ != id_)
@@ -70,11 +70,16 @@ const approveCandidateData = (id_, type_, quota_value_, qrcode_, paid_enrollment
 	return uid_
 }
 
+const getCandidateByUsernameData = async (username_) => {
+	const candidate = candidates.filter(c => c.username_ == username_)[0]
+	return candidate
+}
+
 /**
  * Companies
  */
 
-const getCompaniesData = () => {
+const getCompaniesData = async () => {
 	return companies.filter(company => {
 		const member = getMemberByIdData(company.member_id_)
 		if (member) return true
@@ -82,7 +87,7 @@ const getCompaniesData = () => {
 	})
 }
 
-const getCompanyByIdData = (id_) => {
+const getCompanyByIdData = async (id_) => {
 	const company = companies.filter(company => company.member_id_ == id_)[0]
 	if (company) {
 		const member = getMemberByIdData(company.member_id_)
@@ -91,7 +96,7 @@ const getCompanyByIdData = (id_) => {
 	return undefined
 }
 
-const postCompanyData = (name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
+const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
 	indexObj.idxMember++
 	const member = {
 		id_: indexObj.idxMember,
@@ -132,7 +137,7 @@ const postCompanyData = (name_, nif_, phone_number_, email_, postal_code_, addre
 	return company.member_id_
 }
 
-const updateCompanyData = (id_, name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
+const updateCompanyData = async (id_, name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
 	const idxCompany = companies.findIndex((company => company.member_id_ == id_))
 	companies[idxCompany].name_ = name_
 	companies[idxCompany].nif_ = nif_
@@ -146,7 +151,7 @@ const updateCompanyData = (id_, name_, nif_, phone_number_, email_, postal_code_
 	return companies[idxCompany].member_id_
 }
 
-const deleteCompanyData = (id_) => {
+const deleteCompanyData = async (id_) => {
 	members = members.map(member => {
 		if (member.id_ == id_) member.is_deleted_ = true
 		return member
@@ -158,16 +163,16 @@ const deleteCompanyData = (id_) => {
  * Event
  */
 
-const getEventsData = () => {
+const getEventsData = async () => {
 	return events
 }
 
-const getEventByIdData = (id_) => {
+const getEventByIdData = async (id_) => {
 	const event = events.filter(event => event.id_ == id_)[0]
 	return event
 }
 
-const postEventData = (name_, initial_date_, final_date_) => {
+const postEventData = async (name_, initial_date_, final_date_) => {
 	indexObj.idxEvents++
 	const event = {
 		id_: indexObj.idxEvents, 
@@ -178,7 +183,7 @@ const postEventData = (name_, initial_date_, final_date_) => {
 	return event
 }
 
-const updateEventData = (id_, name_, initial_date_, final_date_) => {
+const updateEventData = async (id_, name_, initial_date_, final_date_) => {
 	const idx = events.findIndex(event => event.id_ == id_)
 	events[idx].name_ = name_
 	events[idx].initial_date_ = initial_date_
@@ -186,13 +191,13 @@ const updateEventData = (id_, name_, initial_date_, final_date_) => {
 	return events[idx]	
 }
 
-const deleteEventData = (id_) => {
+const deleteEventData = async (id_) => {
 	events = events.filter(event => event.id_ != id_)
 	attendance = attendance.filter(att => att.event_id_ != id_)
 	return events
 }
 
-const postMemberAttendanceData = (eid_, id_, state_) => {
+const postMemberAttendanceData = async (eid_, id_, state_) => {
 	const event_user = {
 		member_id_: id_,
 		event_id_: eid_,
@@ -202,13 +207,13 @@ const postMemberAttendanceData = (eid_, id_, state_) => {
 	return event_user
 }
 
-const updateMemberAttendanceData = (eid_, id_, state_) => {
+const updateMemberAttendanceData = async (eid_, id_, state_) => {
 	const idx = attendance.findIndex(att => att.member_id_ == id_ && att.event_id_ == eid_)
 	attendance[idx].state_ = state_
 	return attendance[idx]
 }
 
-const getEventByIdAttendanceData = (eid_) => {
+const getEventByIdAttendanceData = async (eid_) => {
 	return attendance.filter(att => att.event_id_ == eid_)
 }
 
@@ -216,17 +221,17 @@ const getEventByIdAttendanceData = (eid_) => {
  * Sports
  */
 
-const getSportsData = () => {
+const getSportsData = async () => {
 	return sports.filter(sport => !sport.is_deleted_)
 }
 
-const getSportByIdData = (id_) => {
+const getSportByIdData = async (id_) => {
 	const sport = sports.filter(sport => sport.id_ == id_)[0]
 	if (sport && !sport.is_deleted_) return sport
 	return undefined
 }
 
-const postSportData = (name_) => {
+const postSportData = async (name_) => {
 	indexObj.idxSports++
 	const sport = {
 		id_: indexObj.idxSports, 
@@ -236,7 +241,7 @@ const postSportData = (name_) => {
 	return sport.id_
 }
 
-const deleteSportData = (id_) => {
+const deleteSportData = async (id_) => {
 	sports = sports.filter(sport => sport.id_ != id_)
 	return sports
 }
@@ -245,8 +250,13 @@ const deleteSportData = (id_) => {
  * Member
  */
 
-const getMemberByIdData = (id_) => {
+const getMemberByIdData = async (id_) => {
 	const member = members.filter(member => member.id_ == id_ && !member.is_deleted_)[0]
+	return member
+}
+
+const getMemberByUsernameData = async (username_) => {
+	const member = members.filter(member => member.username_ == username_ && !member.is_deleted_)[0]
 	return member
 }
 
@@ -254,7 +264,7 @@ const getMemberByIdData = (id_) => {
  * Users
  */
 
-const getUsersData = () => {
+const getUsersData = async () => {
 	return users.filter(user => {
 		const member = getMemberByIdData(user.member_id_)
 		if (member) return true
@@ -262,7 +272,7 @@ const getUsersData = () => {
 	})
 }
 
-const getUserByIdData = (id_) => {
+const getUserByIdData = async (id_) => {
 	const user = users.filter(user => user.member_id_ == id_)[0]
 	if (user) {
 		const member = getMemberByIdData(user.member_id_)
@@ -271,13 +281,15 @@ const getUserByIdData = (id_) => {
 	return undefined
 }
 
-const postUserData = (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, qrcode_, paid_enrollment_) => {
+const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, qrcode_, paid_enrollment_) => {
 	indexObj.idxMember++
 	const member = {
 		id_: indexObj.idxMember,
 		member_type_: type_,
 		has_debt_: true,
 		quota_value_,
+		pword_,
+		username_,
 		is_deleted_: false
 	}
 	const user = {
@@ -287,8 +299,6 @@ const postUserData = (cc_, nif_, type_, quota_value_, birth_date_, nationality_,
 		birth_date_,
 		nationality_,
 		full_name_,
-		pword_,
-		username_,
 		enrollment_date_: new Date().toLocaleDateString().split('/').join('-'),
 		paid_enrollment_,
 		is_admin_: false
@@ -325,8 +335,8 @@ const postUserData = (cc_, nif_, type_, quota_value_, birth_date_, nationality_,
 	return user.member_id_
 }
 
-const updateUserData = (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, img_, img_name_, paid_enrollment_, is_admin_) => {
-	const idxUser = users.findIndex((user => user.member_id_ == id_))
+const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, img_, img_name_, paid_enrollment_, is_admin_) => {
+	const idxUser = users.findIndex(user => user.member_id_ == id_)
 	users[idxUser].cc_ = cc_
 	users[idxUser].nif_ = nif_
 	users[idxUser].type_ = type_
@@ -334,17 +344,19 @@ const updateUserData = (id_, cc_, nif_, type_, quota_value_, birth_date_, nation
 	users[idxUser].birth_date_ = birth_date_
 	users[idxUser].nationality_ = nationality_
 	users[idxUser].full_name_ = full_name_
-	users[idxUser].pword_ = pword_
-	users[idxUser].username_ = username_
 	users[idxUser].paid_enrollment_ = paid_enrollment_
 	users[idxUser].is_admin_ = is_admin_
 
-	const idxContact = contacts.findIndex((contact => contact.member_id_ == id_))
+	const idxContact = contacts.findIndex(contact => contact.member_id_ == id_)
 	contacts[idxContact].phone_number_ = phone_number_
 	contacts[idxContact].email_ = email_
 	contacts[idxContact].postal_code_ = postal_code_
 	contacts[idxContact].address_ = address_
 	contacts[idxContact].location_ = location_
+
+	const idxMember = members.findIndex(member => member.id_ == id_)
+	members[idxMember].username = username_
+	members[idxMember].username = pword_
 
 	if (img_) {
 		const user_img_ = {
@@ -358,7 +370,7 @@ const updateUserData = (id_, cc_, nif_, type_, quota_value_, birth_date_, nation
 	return users[idxUser].member_id_
 } 
 
-const deleteUserData = (id_) => {
+const deleteUserData = async (id_) => {
 	members = members.map(member => {
 		if (member.id_ == id_) member.is_deleted_ = true
 		return member
@@ -366,7 +378,7 @@ const deleteUserData = (id_) => {
 	return users
 }
 
-const getUsersSportsData = () => {
+const getUsersSportsData = async () => {
 	return users_sports.filter(tuple => {
 		const user = getUserByIdData(tuple.user_id_)
 		const sport = getSportByIdData(tuple.sport_id_)
@@ -375,7 +387,7 @@ const getUsersSportsData = () => {
 	})
 }
 
-const getUsersSportData = (id_) => {
+const getUsersSportData = async (id_) => {
 	let users_tuples = []
 	const sports_tuples = users_sports.filter(sport => sport.sport_id_ == id_)
 	sports_tuples.forEach(tuple => {
@@ -387,7 +399,7 @@ const getUsersSportData = (id_) => {
 	return users_tuples
 }
 
-const getUserSportsByIdData = (id_) => {
+const getUserSportsByIdData = async (id_) => {
 	let sports_tuples = []
 	const users_tuples = users_sports.filter(user => user.user_id_ == id_)
 	users_tuples.forEach(tuple => {
@@ -399,7 +411,7 @@ const getUserSportsByIdData = (id_) => {
 	return sports_tuples
 }
 
-const postUserSportData = (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
+const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
 	if(user_sport_idx == -1) {
 		const user_sport = {
@@ -420,7 +432,7 @@ const postUserSportData = (id_, sid_, fed_id_, fed_number_, fed_name_, type_, ye
 	}
 } 
 
-const updateUserSportData = (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
+const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
 	if(user_sport_idx != -1) {
 		users_sports[user_sport_idx].fed_id_ = fed_id_
@@ -433,7 +445,7 @@ const updateUserSportData = (id_, sid_, fed_id_, fed_number_, fed_name_, type_, 
 	return users_sports[user_sport_idx]
 }
 
-const deleteUserSportData = (id_, sid_) => {
+const deleteUserSportData = async (id_, sid_) => {
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
 	if(user_sport_idx != -1) {
 		users_sports[user_sport_idx].is_absent_ = true
@@ -445,11 +457,11 @@ const deleteUserSportData = (id_, sid_) => {
  * Quotas
  */
 
-const getQuotasData = () => {
+const getQuotasData = async () => {
 	return quotas
 }
 
-const getCompaniesQuotasData = () => {
+const getCompaniesQuotasData = async () => {
 	return quotas.filter(quota => {
 		if (getCompanyByIdData(quota.member_id_)) {
 			return true
@@ -458,7 +470,7 @@ const getCompaniesQuotasData = () => {
 	})
 }
 
-const getUsersQuotasData = () => {
+const getUsersQuotasData = async () => {
 	return quotas.filter(quota => {
 		if (getUserByIdData(quota.member_id_)) {
 			return true
@@ -467,11 +479,11 @@ const getUsersQuotasData = () => {
 	})
 }
 
-const getMemberQuotasByIdData = (id_) => {
+const getMemberQuotasByIdData = async (id_) => {
 	return quotas.filter(quota => quota.member_id_ == id_)[0]
 }
 
-const postQuotaData = (date_) => {
+const postQuotaData = async (date_) => {
 	let cnt = indexObj.idxQuotas
 	members.forEach(member => {
 		indexObj.idxQuotas++
@@ -486,7 +498,7 @@ const postQuotaData = (date_) => {
 	return indexObj.idxQuotas - cnt
 }
 
-const updateMemberQuotaData = (qid_, payment_date_) => {
+const updateMemberQuotaData = async (qid_, payment_date_) => {
 	quotas = quotas.map(quota => {
 		if (quota.id_ == qid_) {
 			quota.payment_date_ = payment_date_
@@ -496,11 +508,11 @@ const updateMemberQuotaData = (qid_, payment_date_) => {
 	return quotas.filter(quota => quota.id_ == qid_)[0]
 }
 
-const getQuotaByIdData = (qid_) => {
+const getQuotaByIdData = async (qid_) => {
 	const quota = quotas.filter(quota => quota.id_ == qid_)[0]
 	return quota
 }
 
-const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getQuotaByIdData }
+const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData }
 
 export default mock_data

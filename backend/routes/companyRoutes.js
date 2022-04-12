@@ -6,11 +6,11 @@ import companyController from '../controllers/companyControllers.js'
 
 const companyRoutes = (data) => {
 	const app = express.Router()
-
+	
 	const controller = companyController(data)
 	
 	app.get('/', controller.getCompanies)
-    
+
 	app.get('/:cid', controller.getCompanyById)
     
 	app.post('/', controller.postCompany)
