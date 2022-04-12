@@ -1,18 +1,5 @@
 'use strict'
 
-let members = []
-let users = []
-let companies = []
-let candidates = []
-let events = []
-let attendance = []
-let sports = []
-let contacts = []
-let user_imgs = []
-let users_sports = []
-let membership_cards = []
-let quotas = []
-
 let indexObj = {
 	idxMember: 0,
 	idxCandidates: 0,
@@ -20,6 +7,46 @@ let indexObj = {
 	idxSports: 0,
 	idxQuotas: 0
 }
+
+let members = [{
+	id_: indexObj.idxMember,
+	member_type_: 'founder',
+	has_debt_: false,
+	quota_value_: 0,
+	pword_: '123',
+	username_: 'miguelbarata',
+	is_deleted_: false
+}]
+let users = [{
+	member_id_: indexObj.idxMember, 
+	cc_: 987654321,
+	nif_: 123456789,
+	birth_date_: '01-01-1970',
+	nationality_: 'Portuguesa',
+	full_name_: 'Miguel Barata',
+	enrollment_date_: '01-01-1970',
+	paid_enrollment_: true,
+	is_admin_: true
+}]
+let companies = []
+let candidates = []
+let events = []
+let attendance = []
+let sports = []
+let contacts = [{
+	member_id_: indexObj.idxMember, 
+	location_: 'Ericeira',
+	address_: 'Rua do surf, n543',
+	postal_code_:'1890-987',
+	email_:'mbarata@clix.pt',
+	phone_number_:'912345432'
+}]
+let user_imgs = []
+let users_sports = []
+let membership_cards = []
+let quotas = []
+
+
 
 /**
  * Candidates
@@ -61,11 +88,11 @@ const deleteCandidateData = async (id_) => {
 }
 
 const approveCandidateData = async (id_, type_, quota_value_, qrcode_, paid_enrollment_) => {
-	const candidate = getCandidateByIdData(id_)
+	const candidate = await getCandidateByIdData(id_)
 
 	candidates = candidates.filter(candidate => candidate.id_ != id_)
 
-	const uid_ = postUserData(candidate.cc_, candidate.nif_, type_, quota_value_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, qrcode_, paid_enrollment_)
+	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, quota_value_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, qrcode_, paid_enrollment_)
 
 	return uid_
 }
@@ -80,8 +107,8 @@ const getCandidateByUsernameData = async (username_) => {
  */
 
 const getCompaniesData = async () => {
-	return companies.filter(company => {
-		const member = getMemberByIdData(company.member_id_)
+	return companies.filter(async (company) => {
+		const member = await getMemberByIdData(company.member_id_)
 		if (member) return true
 		return false
 	})
@@ -90,7 +117,7 @@ const getCompaniesData = async () => {
 const getCompanyByIdData = async (id_) => {
 	const company = companies.filter(company => company.member_id_ == id_)[0]
 	if (company) {
-		const member = getMemberByIdData(company.member_id_)
+		const member = await getMemberByIdData(company.member_id_)
 		if (member) return company
 	}
 	return undefined
@@ -256,8 +283,13 @@ const getMemberByIdData = async (id_) => {
 }
 
 const getMemberByUsernameData = async (username_) => {
-	const member = members.filter(member => member.username_ == username_ && !member.is_deleted_)[0]
-	return member
+	let member = members.filter(member => member.username_ == username_ && !member.is_deleted_)[0]
+	if (member && member.member_type_ != 'corporate') {
+		const user = await getUserByIdData(member.id_)
+		member.is_admin_ = user.is_admin_
+		return member
+	}
+	return undefined
 }
 
 /**
@@ -265,8 +297,8 @@ const getMemberByUsernameData = async (username_) => {
  */
 
 const getUsersData = async () => {
-	return users.filter(user => {
-		const member = getMemberByIdData(user.member_id_)
+	return users.filter(async (user) => {
+		const member = await getMemberByIdData(user.member_id_)
 		if (member) return true
 		return false
 	})
@@ -275,7 +307,7 @@ const getUsersData = async () => {
 const getUserByIdData = async (id_) => {
 	const user = users.filter(user => user.member_id_ == id_)[0]
 	if (user) {
-		const member = getMemberByIdData(user.member_id_)
+		const member = await getMemberByIdData(user.member_id_)
 		if (member) return user
 	}
 	return undefined
@@ -379,9 +411,9 @@ const deleteUserData = async (id_) => {
 }
 
 const getUsersSportsData = async () => {
-	return users_sports.filter(tuple => {
-		const user = getUserByIdData(tuple.user_id_)
-		const sport = getSportByIdData(tuple.sport_id_)
+	return users_sports.filter(async (tuple) => {
+		const user = await getUserByIdData(tuple.user_id_)
+		const sport = await getSportByIdData(tuple.sport_id_)
 		if (user && sport && !tuple.is_absent_) return true
 		return false
 	})
@@ -390,9 +422,9 @@ const getUsersSportsData = async () => {
 const getUsersSportData = async (id_) => {
 	let users_tuples = []
 	const sports_tuples = users_sports.filter(sport => sport.sport_id_ == id_)
-	sports_tuples.forEach(tuple => {
-		const user = getUserByIdData(tuple.user_id_)
-		const sport = getSportByIdData(tuple.sport_id_)
+	sports_tuples.forEach(async (tuple) => {
+		const user = await getUserByIdData(tuple.user_id_)
+		const sport = await getSportByIdData(tuple.sport_id_)
 		if (user && sport && !tuple.is_absent_)
 			users_tuples.push(user)
 	})
@@ -402,9 +434,9 @@ const getUsersSportData = async (id_) => {
 const getUserSportsByIdData = async (id_) => {
 	let sports_tuples = []
 	const users_tuples = users_sports.filter(user => user.user_id_ == id_)
-	users_tuples.forEach(tuple => {
-		const user = getUserByIdData(tuple.user_id_)
-		const sport = getSportByIdData(tuple.sport_id_)
+	users_tuples.forEach(async (tuple) => {
+		const user = await getUserByIdData(tuple.user_id_)
+		const sport = await getSportByIdData(tuple.sport_id_)
 		if (sport && user && !tuple.is_absent_)
 			sports_tuples.push(sport)
 	})
@@ -462,8 +494,8 @@ const getQuotasData = async () => {
 }
 
 const getCompaniesQuotasData = async () => {
-	return quotas.filter(quota => {
-		if (getCompanyByIdData(quota.member_id_)) {
+	return quotas.filter(async (quota) => {
+		if (await getCompanyByIdData(quota.member_id_)) {
 			return true
 		}
 		return false
@@ -471,8 +503,8 @@ const getCompaniesQuotasData = async () => {
 }
 
 const getUsersQuotasData = async () => {
-	return quotas.filter(quota => {
-		if (getUserByIdData(quota.member_id_)) {
+	return quotas.filter(async (quota) => {
+		if (await getUserByIdData(quota.member_id_)) {
 			return true
 		}
 		return false

@@ -1,6 +1,7 @@
 'use strict'
 
 import asyncHandler from 'express-async-handler'
+import error from '../utils/error.js'
 
 import eventServices from '../services/eventServices.js'
 
@@ -36,6 +37,9 @@ const eventController = (data) => {
 	})
 	
 	const postMemberAttendance = asyncHandler(async (req,res) => {
+		if(req.user.id_ != req.body.id) {
+			throw error(401, 'Unauthorized')
+		}
 		const event = await services.postMemberAttendanceServices(req.params.eid, req.body.id, req.body.state)
 		if (event) {
 			res.status(201)
@@ -44,6 +48,9 @@ const eventController = (data) => {
 	})
 	
 	const updateMemberAttendance = asyncHandler(async (req,res) => {
+		if(req.user.id_ != req.body.id) {
+			throw error(401, 'Unauthorized')
+		}
 		const event = await services.updateMemberAttendanceServices(req.params.eid, req.body.id, req.body.state)
 		if (event) res.json(event)
 	})

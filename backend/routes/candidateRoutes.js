@@ -2,6 +2,8 @@
 
 import express from 'express'
 
+import authentication from '../middlewares/authMiddleware.js'
+
 import candidateController from '../controllers/candidateControllers.js'
 
 const candidateRoutes = (data) => {
@@ -9,15 +11,15 @@ const candidateRoutes = (data) => {
 
 	const controller = candidateController(data)
 	
-	app.get('/', controller.getCandidates)
+	app.get('/', authentication.authAdmin, controller.getCandidates)
     
-	app.get('/:cid', controller.getCandidateById)
+	app.get('/:cid', authentication.authAdmin, controller.getCandidateById)
     
 	app.post('/', controller.postCandidate)
     
-	app.delete('/:cid', controller.deleteCandidate)
+	app.delete('/:cid', authentication.authAdmin, controller.deleteCandidate)
     
-	app.put('/:cid', controller.approveCandidate)
+	app.put('/:cid', authentication.authAdmin, controller.approveCandidate)
     
 	return app
 }

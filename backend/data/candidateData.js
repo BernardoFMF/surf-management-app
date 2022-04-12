@@ -26,9 +26,9 @@ const candidateData = (db) => {
 		return await db.deleteCandidateData(id_)
 	}
 	
-	const approveCandidate = async (id_) => {
+	const approveCandidate = async (id_, type_, quota_value_, qr_code_, paid_enrollment_) => {
 		await getCandidateById(id_)
-		return await db.approveCandidateData(id_)
+		return await db.approveCandidateData(id_, type_, quota_value_, qr_code_, paid_enrollment_)
 	}
 
 	return {

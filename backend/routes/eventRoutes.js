@@ -2,6 +2,8 @@
 
 import express from 'express'
 
+import authentication from '../middlewares/authMiddleware.js'
+
 import eventController from '../controllers/eventControllers.js'
 
 
@@ -10,21 +12,21 @@ const eventRoutes = (data) => {
 
 	const controller = eventController(data)
 
-	app.get('/', controller.getEvents)
+	app.get('/', authentication.authMember, controller.getEvents)
     
-	app.get('/:eid', controller.getEventById)
+	app.get('/:eid', authentication.authMember, controller.getEventById)
     
-	app.post('/', controller.postEvent)
+	app.post('/', authentication.authAdmin, controller.postEvent)
     
-	app.put('/:eid', controller.updateEvent)
+	app.put('/:eid', authentication.authAdmin, controller.updateEvent)
     
-	app.delete('/:eid', controller.deleteEvent)
+	app.delete('/:eid', authentication.authAdmin, controller.deleteEvent)
     
-	app.post('/:eid/attendance', controller.postMemberAttendance)
+	app.post('/:eid/attendance', authentication.authMember, controller.postMemberAttendance)
     
-	app.put('/:eid/attendance', controller.updateMemberAttendance)
+	app.put('/:eid/attendance', authentication.authMember, controller.updateMemberAttendance)
     
-	app.get('/:eid/attendance', controller.getEventByIdAttendance)
+	app.get('/:eid/attendance', authentication.authMember, controller.getEventByIdAttendance)
 
 	return app
 }

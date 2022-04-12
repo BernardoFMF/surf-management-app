@@ -1,6 +1,7 @@
 'use strict'
 
 import asyncHandler from 'express-async-handler'
+import error from '../utils/error.js'
 
 import quotaServices from '../services/quotaServices.js'
 
@@ -23,6 +24,11 @@ const quotaController = (data) => {
 	})
 	
 	const getMemberQuotasById = asyncHandler(async (req, res) => {
+		if(!req.user.is_admin) {
+			if(req.user.id_ != req.params.id) {
+				throw error(401, 'Unauthorized')
+			}
+		}
 		const quotas = await services.getMemberQuotasByIdServices(req.params.id)
 		if (quotas) res.json(quotas)
 	})
