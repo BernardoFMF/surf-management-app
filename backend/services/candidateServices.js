@@ -2,6 +2,7 @@
 
 import error from '../utils/error.js'
 import candidateData from '../data/candidateData.js'
+import crypto from '../utils/crypto.js'
 
 const candidateServices = (db) => {
 	const data = candidateData(db)
@@ -28,7 +29,8 @@ const candidateServices = (db) => {
 		if(!address) throw error(400, 'Parameter not found: address')
 		if(!location) throw error(400, 'Parameter not found: location')
 		if(!password) throw error(400, 'Parameter not found: password')
-		return await data.postCandidate(username, cc, nif, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password)
+		const pwordhashed = await crypto.hashpassword(password)
+		return await data.postCandidate(username, cc, nif, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed)
 	}
 	
 	const deleteCandidateServices = async (cid) => {

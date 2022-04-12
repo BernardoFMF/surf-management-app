@@ -1,5 +1,7 @@
 'use strict'
 
+import crypto from '../../utils/crypto.js'
+
 let indexObj = {
 	idxMember: 0,
 	idxCandidates: 0,
@@ -13,7 +15,7 @@ let members = [{
 	member_type_: 'founder',
 	has_debt_: false,
 	quota_value_: 0,
-	pword_: '123',
+	pword_: crypto.hashpassword('123'),
 	username_: 'miguelbarata',
 	is_deleted_: false
 }]

@@ -2,6 +2,7 @@
 
 import error from '../utils/error.js'
 import companyData from '../data/companyData.js'
+import crypto from '../utils/crypto.js'
 
 const companyServices = (db) => {
 	const data = companyData(db)
@@ -25,7 +26,8 @@ const companyServices = (db) => {
 		if(!location) throw error(400, 'Parameter not found: location')
 		if(!username) throw error(400, 'Parameter not found: username')
 		if(!password) throw error(400, 'Parameter not found: password')
-		return await data.postCompany(name, nif, phone_number, email, postal_code, address, location, username, password)
+		const pwordhashed = await crypto.hashpassword(password)
+		return await data.postCompany(name, nif, phone_number, email, postal_code, address, location, username, pwordhashed)
 	}
 	
 	const updateCompanyServices = async(id, name, nif, phone_number, email, postal_code, address, location, username, password) => {
