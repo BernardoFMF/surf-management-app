@@ -1,6 +1,6 @@
 import pool from '../../utils/dbConnection.js'
 import error from '../../utils/error.js'
-import {QUERY_GET_CANDIDATES, QUERY_GET_CANDIDATE_BY_ID, QUERY_POST_CANDIDATE, QUERY_DELETE_CANDIDATE, QUERY_APPROVE_CANDIDATE, QUERY_GET_CANDIDATE_BY_USERNAME, QUERY_GET_COMPANIES, QUERY_GET_COMPANY_BY_ID, QUERY_POST_COMPANY, QUERY_UPDATE_COMPANY, QUERY_DELETE_COMPANY, QUERY_GET_SPORTS, QUERY_GET_SPORT_BY_ID, QUERY_POST_SPORT, QUERY_DELETE_SPORT, QUERY_GET_EVENTS, QUERY_GET_EVENT_BY_ID, QUERY_POST_EVENT, QUERY_UPDATE_EVENT, QUERY_DELETE_EVENT, QUERY_GET_USERS, QUERY_GET_USER_BY_ID, QUERY_POST_USER, QUERY_UPDATE_USER, QUERY_DELETE_USER, QUERY_GET_USERS_SPORTS, QUERY_GET_USERS_SPORT, QUERY_GET_USER_SPORTS_BY_ID, QUERY_POST_USER_SPORT, QUERY_UPDATE_USER_SPORT, QUERY_DELETE_USER_SPORT, QUERY_GET_QUOTAS, QUERY_GET_COMPANIES_QUOTAS, QUERY_GET_USERS_QUOTAS, QUERY_GET_MEMBERS_QUOTAS_BY_ID, QUERY_POST_QUOTA, QUERY_UPDATE_MEMBER_QUOTA, QUERY_GET_MEMBER_BY_ID, QUERY_GET_MEMBER_BY_USERNAME, QUERY_QUOTA_BY_ID, QUERY_GET_EMAILS, QUERY_UPDATE_QRCODE} from './dbQueries.js'
+import queries from './dbQueries.js'
 
 
 /**
@@ -10,7 +10,7 @@ import {QUERY_GET_CANDIDATES, QUERY_GET_CANDIDATE_BY_ID, QUERY_POST_CANDIDATE, Q
 const getCandidatesData = async () => {
 	try {
 		await pool.query('Begin')
-		const candidates = await pool.query(QUERY_GET_CANDIDATES)
+		const candidates = await pool.query(queries.QUERY_GET_CANDIDATES)
 		await pool.query('Commit')
 		return candidates.rows
 	} catch(e) {
@@ -24,7 +24,7 @@ const getCandidatesData = async () => {
 const getCandidateByIdData = async (id_) => {
 	try {
 		await pool.query('Begin')
-		const candidates = await pool.query(QUERY_GET_CANDIDATE_BY_ID, [id_])
+		const candidates = await pool.query(queries.QUERY_GET_CANDIDATE_BY_ID, [id_])
 		await pool.query('Commit')
 		return candidates.rows[0]
 	} catch(e) {
@@ -36,9 +36,9 @@ const getCandidateByIdData = async (id_) => {
 }
 
 const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		const candidate = await pool.query(QUERY_POST_CANDIDATE, [nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_])
+		const candidate = await pool.query(queries.QUERY_POST_CANDIDATE, [nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_])
 		await pool.query('Commit')
 		return candidate.rows[0].id_
 	} catch(e) {
@@ -50,9 +50,9 @@ const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_
 }
 
 const deleteCandidateData = async (id_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		await pool.query(QUERY_DELETE_CANDIDATE, [id_])
+		await pool.query(queries.QUERY_DELETE_CANDIDATE, [id_])
 		await pool.query('Commit')
 		return id_
 	} catch(e) {
@@ -66,7 +66,7 @@ const deleteCandidateData = async (id_) => {
 const approveCandidateData = async (id_, type_, quota_value_, qrcode_, paid_enrollment_) => {
 	try {
 		await pool.query('Begin')
-		const result = await pool.query(QUERY_APPROVE_CANDIDATE, [id_, type_, quota_value_, qrcode_, paid_enrollment_, 0])
+		const result = await pool.query(queries.QUERY_APPROVE_CANDIDATE, [id_, type_, quota_value_, qrcode_, paid_enrollment_, 0])
 		await pool.query('Commit')
 		return result.rows[0].id_
 	} catch(e) {
@@ -78,9 +78,9 @@ const approveCandidateData = async (id_, type_, quota_value_, qrcode_, paid_enro
 }
 
 const getCandidateByUsernameData = async (username_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		const candidates = await pool.query(QUERY_GET_CANDIDATE_BY_USERNAME, [username_])
+		const candidates = await pool.query(queries.QUERY_GET_CANDIDATE_BY_USERNAME, [username_])
 		await pool.query('Commit')
 		return candidates.rows
 	} catch(e) {
@@ -96,9 +96,9 @@ const getCandidateByUsernameData = async (username_) => {
  */
 
 const getCompaniesData = async () => {
-    try {
+	try {
 		await pool.query('Begin')
-		const candidates = await pool.query(QUERY_GET_COMPANIES)
+		const candidates = await pool.query(queries.QUERY_GET_COMPANIES)
 		await pool.query('Commit')
 		return candidates.rows
 	} catch(e) {
@@ -110,9 +110,9 @@ const getCompaniesData = async () => {
 }
 
 const getCompanyByIdData = async (id_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		const candidates = await pool.query(QUERY_GET_COMPANY_BY_ID, [id_])
+		const candidates = await pool.query(queries.QUERY_GET_COMPANY_BY_ID, [id_])
 		await pool.query('Commit')
 		return candidates.rows[0]
 	} catch(e) {
@@ -126,7 +126,7 @@ const getCompanyByIdData = async (id_) => {
 const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_) => {
 	try {
 		await pool.query('Begin')
-		const result = await pool.query(QUERY_POST_COMPANY, [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, 0])
+		const result = await pool.query(queries.QUERY_POST_COMPANY, [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, 0])
 		await pool.query('Commit')
 		return result.rows[0].id_
 	} catch(e) {
@@ -138,9 +138,9 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 }
 
 const updateCompanyData = async (cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		const result = await pool.query(QUERY_UPDATE_COMPANY, [cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, 0])
+		const result = await pool.query(queries.QUERY_UPDATE_COMPANY, [cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, 0])
 		await pool.query('Commit')
 		return result.rows[0].id_
 	} catch(e) {
@@ -152,9 +152,9 @@ const updateCompanyData = async (cid_, name_, nif_, phone_number_, email_, posta
 }
 
 const deleteCompanyData = async (id_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		await pool.query(QUERY_DELETE_COMPANY, [id_])
+		await pool.query(queries.QUERY_DELETE_COMPANY, [id_])
 		await pool.query('Commit')
 		return id_
 	} catch(e) {
@@ -169,10 +169,10 @@ const deleteCompanyData = async (id_) => {
  * Sports
  */
 
- const getSportsData = async () => {
-    try {
+const getSportsData = async () => {
+	try {
 		await pool.query('Begin')
-		const sports = await pool.query(QUERY_GET_SPORTS)
+		const sports = await pool.query(queries.QUERY_GET_SPORTS)
 		await pool.query('Commit')
 		return sports.rows
 	} catch(e) {
@@ -184,9 +184,9 @@ const deleteCompanyData = async (id_) => {
 }
 
 const getSportByIdData = async (sid_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		const sports = await pool.query(QUERY_GET_SPORT_BY_ID, [sid_])
+		const sports = await pool.query(queries.QUERY_GET_SPORT_BY_ID, [sid_])
 		await pool.query('Commit')
 		return sports.rows[0]
 	} catch(e) {
@@ -198,9 +198,9 @@ const getSportByIdData = async (sid_) => {
 }
 
 const postSportData = async (name_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		const sports = await pool.query(QUERY_POST_SPORT, [name_])
+		const sports = await pool.query(queries.QUERY_POST_SPORT, [name_])
 		await pool.query('Commit')
 		return sports.rows[0].id_
 	} catch(e) {
@@ -212,9 +212,9 @@ const postSportData = async (name_) => {
 }
 
 const deleteSportData = async (sid_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		await pool.query(QUERY_DELETE_SPORT, [sid_])
+		await pool.query(queries.QUERY_DELETE_SPORT, [sid_])
 		await pool.query('Commit')
 		return sid_
 	} catch(e) {
@@ -230,9 +230,9 @@ const deleteSportData = async (sid_) => {
  */
 
 const getEventsData = async () => {
-    try {
+	try {
 		await pool.query('Begin')
-		const events = await pool.query(QUERY_GET_EVENTS)
+		const events = await pool.query(queries.QUERY_GET_EVENTS)
 		await pool.query('Commit')
 		return events.rows
 	} catch(e) {
@@ -244,9 +244,9 @@ const getEventsData = async () => {
 }
 
 const getEventByIdData = async (id_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		const event = await pool.query(QUERY_GET_EVENT_BY_ID, [id_])
+		const event = await pool.query(queries.QUERY_GET_EVENT_BY_ID, [id_])
 		await pool.query('Commit')
 		return event.rows[0]
 	} catch(e) {
@@ -258,9 +258,9 @@ const getEventByIdData = async (id_) => {
 }
 
 const postEventData = async (name_,initial_date_,end_date_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		const event = await pool.query(QUERY_POST_EVENT, [name_,initial_date_,end_date_])
+		const event = await pool.query(queries.QUERY_POST_EVENT, [name_,initial_date_,end_date_])
 		await pool.query('Commit')
 		return event.rows[0].id_
 	} catch(e) {
@@ -272,9 +272,9 @@ const postEventData = async (name_,initial_date_,end_date_) => {
 }
 
 const updateEventData = async (id_, name_, initial_date_, end_date_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		const event = await pool.query(QUERY_UPDATE_EVENT, [name_,initial_date_,end_date_, id_])
+		const event = await pool.query(queries.QUERY_UPDATE_EVENT, [name_,initial_date_,end_date_, id_])
 		await pool.query('Commit')
 		return event.rows[0].id_
 	} catch(e) {
@@ -286,9 +286,9 @@ const updateEventData = async (id_, name_, initial_date_, end_date_) => {
 }
 
 const deleteEventData = async (id_) => {
-    try {
+	try {
 		await pool.query('Begin')
-		await pool.query(QUERY_DELETE_EVENT, [id_])
+		await pool.query(queries.QUERY_DELETE_EVENT, [id_])
 		await pool.query('Commit')
 		return id_
 	} catch(e) {
@@ -318,7 +318,7 @@ const getEventByIdAttendanceData = async () => {
 const getUsersData = async () => {
 	const client = await pool.connect()
 	try {
-		const result = await pool.query(QUERY_GET_USERS)
+		const result = await pool.query(queries.QUERY_GET_USERS)
 		return result.rows
 	} catch (e) {
 		throw error(500, 'Internal server error')
@@ -330,7 +330,7 @@ const getUsersData = async () => {
 const getUserByIdData = async (id_) => {
 	const client = await pool.connect()
 	try {
-		const result = await pool.query(QUERY_GET_USER_BY_ID, [id_])
+		const result = await pool.query(queries.QUERY_GET_USER_BY_ID, [id_])
 		return result.rows[0]
 	} catch (e) {
 		throw error(500, 'Internal server error')
@@ -339,11 +339,11 @@ const getUserByIdData = async (id_) => {
 	}
 }
 
-const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_) => {
+const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, qr_code_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_POST_USER, [cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, 0])
+		const result = await pool.query(queries.QUERY_POST_USER, [cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, qr_code_, paid_enrollment_, 0])
 		await client.query('commit')
 		return result.rows.id
 	} catch (e) {
@@ -354,13 +354,13 @@ const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationa
 	}
 }
 
-const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, img_name_, paid_enrollment_, is_admin_) => {
+const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_UPDATE_USER, [id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, img_name_, paid_enrollment_, is_admin_, 0])
+		await pool.query(queries.QUERY_UPDATE_USER, [id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, is_admin_, paid_enrollment_])
 		await client.query('commit')
-		return result.rows[0].id_
+		return id_
 	} catch (e) {
 		await client.query('rollback')
 		throw error(500, 'Internal server error')
@@ -373,7 +373,7 @@ const deleteUserData = async (id_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await pool.query(QUERY_DELETE_USER, [id_])
+		await pool.query(queries.QUERY_DELETE_USER, [id_])
 		await client.query('commit')
 		return id_
 	} catch (e) {
@@ -388,7 +388,7 @@ const getUsersSportsData = async (id_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_GET_USERS_SPORTS, [id_])
+		const result = await pool.query(queries.QUERY_GET_USERS_SPORTS, [id_])
 		await client.query('commit')
 		return result.rows
 	} catch (e) {
@@ -403,7 +403,7 @@ const getUsersSportData = async (id_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_GET_USERS_SPORT, [id_])
+		const result = await pool.query(queries.QUERY_GET_USERS_SPORT, [id_])
 		await client.query('commit')
 		return result.rows
 	} catch (e) {
@@ -418,7 +418,7 @@ const getUserSportsByIdData = async (id_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_GET_USER_SPORTS_BY_ID, [id_])
+		const result = await pool.query(queries.QUERY_GET_USER_SPORTS_BY_ID, [id_])
 		await client.query('commit')
 		return result.rows
 	} catch (e) {
@@ -433,7 +433,7 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await pool.query(QUERY_POST_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_])
+		await pool.query(queries.QUERY_POST_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_])
 		await client.query('commit')
 		return {id_, sid_}
 	} catch (e) {
@@ -448,7 +448,7 @@ const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, t
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await pool.query(QUERY_UPDATE_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_])
+		await pool.query(queries.QUERY_UPDATE_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_])
 		await client.query('commit')
 		return {id_, sid_}
 	} catch (e) {
@@ -463,7 +463,7 @@ const deleteUserSportData = async (id_, sid_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await pool.query(QUERY_DELETE_USER_SPORT, [id_, sid_])
+		await pool.query(queries.QUERY_DELETE_USER_SPORT, [id_, sid_])
 		await client.query('commit')
 		return {id_, sid_}
 	} catch (e) {
@@ -478,7 +478,7 @@ const getQuotasData = async () => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_GET_QUOTAS)
+		const result = await pool.query(queries.QUERY_GET_QUOTAS)
 		await client.query('commit')
 		return result.rows
 	} catch (e) {
@@ -493,7 +493,7 @@ const getCompaniesQuotasData = async () => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_GET_COMPANIES_QUOTAS)
+		const result = await pool.query(queries.QUERY_GET_COMPANIES_QUOTAS)
 		await client.query('commit')
 		return result.rows
 	} catch (e) {
@@ -508,7 +508,7 @@ const getUsersQuotasData = async () => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_GET_USERS_QUOTAS)
+		const result = await pool.query(queries.QUERY_GET_USERS_QUOTAS)
 		await client.query('commit')
 		return result.rows
 	} catch (e) {
@@ -523,7 +523,7 @@ const getMemberQuotasByIdData = async (id_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_GET_MEMBERS_QUOTAS_BY_ID, [id_])
+		const result = await pool.query(queries.QUERY_GET_MEMBERS_QUOTAS_BY_ID, [id_])
 		await client.query('commit')
 		return result.rows
 	} catch (e) {
@@ -538,7 +538,7 @@ const postQuotaData = async (date_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_POST_QUOTA, [date_])
+		const result = await pool.query(queries.QUERY_POST_QUOTA, [date_])
 		await client.query('commit')
 		return result.rows[0].num_
 	} catch (e) {
@@ -553,7 +553,7 @@ const updateMemberQuotaData = async (qid_, payment_date_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await pool.query(QUERY_UPDATE_MEMBER_QUOTA, [qid_, payment_date_])
+		await pool.query(queries.QUERY_UPDATE_MEMBER_QUOTA, [qid_, payment_date_])
 		await client.query('commit')
 		return qid_
 	} catch (e) {
@@ -568,7 +568,7 @@ const getMemberByIdData = async (id_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_GET_MEMBER_BY_ID, [id_])
+		const result = await pool.query(queries.QUERY_GET_MEMBER_BY_ID, [id_])
 		await client.query('commit')
 		return result.rows[0]
 	} catch (e) {
@@ -583,7 +583,7 @@ const getMemberByUsernameData = async (username_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_GET_MEMBER_BY_USERNAME, [username_])
+		const result = await pool.query(queries.QUERY_GET_MEMBER_BY_USERNAME, [username_])
 		await client.query('commit')
 		return result.rows[0]
 	} catch (e) {
@@ -598,7 +598,7 @@ const getQuotaByIdData = async (qid_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_QUOTA_BY_ID, [qid_])
+		const result = await pool.query(queries.QUERY_GET_QUOTA_BY_ID, [qid_])
 		await client.query('commit')
 		return result.rows[0]
 	} catch (e) {
@@ -613,7 +613,7 @@ const getEmails = async () => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_GET_EMAILS)
+		const result = await pool.query(queries.QUERY_GET_EMAILS)
 		await client.query('commit')
 		return result.rows
 	} catch (e) {
@@ -628,9 +628,9 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(QUERY_UPDATE_QRCODE, [id_, qrcode_])
+		await pool.query(queries.QUERY_UPDATE_QRCODE, [id_, qrcode_])
 		await client.query('commit')
-		return result.rows
+		return id_
 	} catch (e) {
 		await client.query('rollback')
 		throw error(500, 'Internal server error')
