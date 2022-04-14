@@ -1,6 +1,6 @@
 import pool from '../../utils/dbConnection.js'
 import error from '../../utils/error.js'
-import {QUERY_GET_USERS, QUERY_GET_USER_BY_ID, QUERY_POST_USER, QUERY_UPDATE_USER, QUERY_DELETE_USER, QUERY_GET_USERS_SPORTS, QUERY_GET_USERS_SPORT, QUERY_GET_USER_SPORTS_BY_ID, QUERY_POST_USER_SPORT, QUERY_UPDATE_USER_SPORT, QUERY_DELETE_USER_SPORT, QUERY_GET_QUOTAS, QUERY_GET_COMPANIES_QUOTAS, QUERY_GET_USERS_QUOTAS, QUERY_GET_MEMBERS_QUOTAS_BY_ID, QUERY_POST_QUOTA, QUERY_UPDATE_MEMBER_QUOTA, QUERY_GET_MEMBER_BY_ID, QUERY_GET_MEMBER_BY_USERNAME, QUERY_QUOTA_BY_ID, QUERY_GET_EMAILS, QUERY_UPDATE_QRCODE} from './dbQueries.js'
+import {QUERY_GET_CANDIDATES, QUERY_GET_CANDIDATE_BY_ID, QUERY_POST_CANDIDATE, QUERY_DELETE_CANDIDATE, QUERY_APPROVE_CANDIDATE, QUERY_GET_CANDIDATE_BY_USERNAME, QUERY_GET_COMPANIES, QUERY_GET_COMPANY_BY_ID, QUERY_POST_COMPANY, QUERY_UPDATE_COMPANY, QUERY_DELETE_COMPANY, QUERY_GET_SPORTS, QUERY_GET_SPORT_BY_ID, QUERY_POST_SPORT, QUERY_DELETE_SPORT, QUERY_GET_EVENTS, QUERY_GET_EVENT_BY_ID, QUERY_POST_EVENT, QUERY_UPDATE_EVENT, QUERY_DELETE_EVENT, QUERY_GET_USERS, QUERY_GET_USER_BY_ID, QUERY_POST_USER, QUERY_UPDATE_USER, QUERY_DELETE_USER, QUERY_GET_USERS_SPORTS, QUERY_GET_USERS_SPORT, QUERY_GET_USER_SPORTS_BY_ID, QUERY_POST_USER_SPORT, QUERY_UPDATE_USER_SPORT, QUERY_DELETE_USER_SPORT, QUERY_GET_QUOTAS, QUERY_GET_COMPANIES_QUOTAS, QUERY_GET_USERS_QUOTAS, QUERY_GET_MEMBERS_QUOTAS_BY_ID, QUERY_POST_QUOTA, QUERY_UPDATE_MEMBER_QUOTA, QUERY_GET_MEMBER_BY_ID, QUERY_GET_MEMBER_BY_USERNAME, QUERY_QUOTA_BY_ID, QUERY_GET_EMAILS, QUERY_UPDATE_QRCODE} from './dbQueries.js'
 
 
 /**
@@ -10,7 +10,7 @@ import {QUERY_GET_USERS, QUERY_GET_USER_BY_ID, QUERY_POST_USER, QUERY_UPDATE_USE
 const getCandidatesData = async () => {
 	try {
 		await pool.query('Begin')
-		const candidates = await pool.query('select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_ from candidate_;')
+		const candidates = await pool.query(QUERY_GET_CANDIDATES)
 		await pool.query('Commit')
 		return candidates.rows
 	} catch(e) {
@@ -24,7 +24,7 @@ const getCandidatesData = async () => {
 const getCandidateByIdData = async (id_) => {
 	try {
 		await pool.query('Begin')
-		const candidates = await pool.query('select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_ from candidate_ where id_ = $1;', [id_])
+		const candidates = await pool.query(QUERY_GET_CANDIDATE_BY_ID, [id_])
 		await pool.query('Commit')
 		return candidates.rows[0]
 	} catch(e) {
@@ -38,7 +38,7 @@ const getCandidateByIdData = async (id_) => {
 const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_) => {
     try {
 		await pool.query('Begin')
-		const candidate = await pool.query('insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) returning id_;', [nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_])
+		const candidate = await pool.query(QUERY_POST_CANDIDATE, [nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_])
 		await pool.query('Commit')
 		return candidate.rows[0].id_
 	} catch(e) {
@@ -52,7 +52,7 @@ const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_
 const deleteCandidateData = async (id_) => {
     try {
 		await pool.query('Begin')
-		await pool.query('delete from candidate_ where id_ = $1;', [id_])
+		await pool.query(QUERY_DELETE_CANDIDATE, [id_])
 		await pool.query('Commit')
 		return id_
 	} catch(e) {
@@ -66,7 +66,7 @@ const deleteCandidateData = async (id_) => {
 const approveCandidateData = async (id_, type_, quota_value_, qrcode_, paid_enrollment_) => {
 	try {
 		await pool.query('Begin')
-		const result = await pool.query('call aproove_candidate($1, $2, $3, $4, $5, $6)', [id_, type_, quota_value_, qrcode_, paid_enrollment_, 0])
+		const result = await pool.query(QUERY_APPROVE_CANDIDATE, [id_, type_, quota_value_, qrcode_, paid_enrollment_, 0])
 		await pool.query('Commit')
 		return result.rows[0].id_
 	} catch(e) {
@@ -80,7 +80,7 @@ const approveCandidateData = async (id_, type_, quota_value_, qrcode_, paid_enro
 const getCandidateByUsernameData = async (username_) => {
     try {
 		await pool.query('Begin')
-		const candidates = await pool.query('select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_ from candidate_ where username_ = $1;', [username_])
+		const candidates = await pool.query(QUERY_GET_CANDIDATE_BY_USERNAME, [username_])
 		await pool.query('Commit')
 		return candidates.rows
 	} catch(e) {
@@ -98,7 +98,7 @@ const getCandidateByUsernameData = async (username_) => {
 const getCompaniesData = async () => {
     try {
 		await pool.query('Begin')
-		const candidates = await pool.query('select member_id_, nif_, name_, username_, has_debt_, member_type_ from company_ c join member_ m on (c.member_id_ = m.id_) where is_deleted_ = false;')
+		const candidates = await pool.query(QUERY_GET_COMPANIES)
 		await pool.query('Commit')
 		return candidates.rows
 	} catch(e) {
@@ -112,7 +112,7 @@ const getCompaniesData = async () => {
 const getCompanyByIdData = async (id_) => {
     try {
 		await pool.query('Begin')
-		const candidates = await pool.query('select member_id_, nif_, name_ from company_ where member_id_ = $1;', [id_])
+		const candidates = await pool.query(QUERY_GET_COMPANY_BY_ID, [id_])
 		await pool.query('Commit')
 		return candidates.rows[0]
 	} catch(e) {
@@ -126,7 +126,7 @@ const getCompanyByIdData = async (id_) => {
 const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_) => {
 	try {
 		await pool.query('Begin')
-		const result = await pool.query('call post_company($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, 0])
+		const result = await pool.query(QUERY_POST_COMPANY, [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, 0])
 		await pool.query('Commit')
 		return result.rows[0].id_
 	} catch(e) {
@@ -140,7 +140,7 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 const updateCompanyData = async (cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
     try {
 		await pool.query('Begin')
-		const result = await pool.query('call put_company($1, $2, $3, $4, $5, $6, $7, $8, $9)', [cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, 0])
+		const result = await pool.query(QUERY_UPDATE_COMPANY, [cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, 0])
 		await pool.query('Commit')
 		return result.rows[0].id_
 	} catch(e) {
@@ -154,7 +154,7 @@ const updateCompanyData = async (cid_, name_, nif_, phone_number_, email_, posta
 const deleteCompanyData = async (id_) => {
     try {
 		await pool.query('Begin')
-		await pool.query('update member_ set is_deleted_ = true where id_ = $1;', [id_])
+		await pool.query(QUERY_DELETE_COMPANY, [id_])
 		await pool.query('Commit')
 		return id_
 	} catch(e) {
@@ -172,7 +172,7 @@ const deleteCompanyData = async (id_) => {
  const getSportsData = async () => {
     try {
 		await pool.query('Begin')
-		const sports = await pool.query('select id_, name_ from Sport_ where is_deleted = false;')
+		const sports = await pool.query(QUERY_GET_SPORTS)
 		await pool.query('Commit')
 		return sports.rows
 	} catch(e) {
@@ -186,7 +186,7 @@ const deleteCompanyData = async (id_) => {
 const getSportByIdData = async (sid_) => {
     try {
 		await pool.query('Begin')
-		const sports = await pool.query('select id_, name_ from Sport_ where is_deleted = false and id_ = $1;', [sid_])
+		const sports = await pool.query(QUERY_GET_SPORT_BY_ID, [sid_])
 		await pool.query('Commit')
 		return sports.rows[0]
 	} catch(e) {
@@ -200,7 +200,7 @@ const getSportByIdData = async (sid_) => {
 const postSportData = async (name_) => {
     try {
 		await pool.query('Begin')
-		const sports = await pool.query('insert into Sport_ (name_) values ($1) returning id_;', [name_])
+		const sports = await pool.query(QUERY_POST_SPORT, [name_])
 		await pool.query('Commit')
 		return sports.rows[0].id_
 	} catch(e) {
@@ -214,7 +214,7 @@ const postSportData = async (name_) => {
 const deleteSportData = async (sid_) => {
     try {
 		await pool.query('Begin')
-		await pool.query('update sport_ set is_deleted_ = true where id_ = $1;', [sid_])
+		await pool.query(QUERY_DELETE_SPORT, [sid_])
 		await pool.query('Commit')
 		return sid_
 	} catch(e) {
@@ -232,7 +232,7 @@ const deleteSportData = async (sid_) => {
 const getEventsData = async () => {
     try {
 		await pool.query('Begin')
-		const events = await pool.query('select id_, name_, initial_date_, end_date_ from Event')
+		const events = await pool.query(QUERY_GET_EVENTS)
 		await pool.query('Commit')
 		return events.rows
 	} catch(e) {
@@ -246,7 +246,7 @@ const getEventsData = async () => {
 const getEventByIdData = async (id_) => {
     try {
 		await pool.query('Begin')
-		const event = await pool.query('select id_, name_, initial_date_, end_date_ from Event where id_ = $1', [id_])
+		const event = await pool.query(QUERY_GET_EVENT_BY_ID, [id_])
 		await pool.query('Commit')
 		return event.rows[0]
 	} catch(e) {
@@ -260,7 +260,7 @@ const getEventByIdData = async (id_) => {
 const postEventData = async (name_,initial_date_,end_date_) => {
     try {
 		await pool.query('Begin')
-		const event = await pool.query('insert into Event_ (name_,initial_date_,end_date_) values ($1, $2, $3) returning id_;', [name_,initial_date_,end_date_])
+		const event = await pool.query(QUERY_POST_EVENT, [name_,initial_date_,end_date_])
 		await pool.query('Commit')
 		return event.rows[0].id_
 	} catch(e) {
@@ -274,7 +274,7 @@ const postEventData = async (name_,initial_date_,end_date_) => {
 const updateEventData = async (id_, name_, initial_date_, end_date_) => {
     try {
 		await pool.query('Begin')
-		const event = await pool.query('update Event_ set name_ = $1, initial_date_ = $2, end_date_ = $3 where id_ = $4;', [name_,initial_date_,end_date_, id_])
+		const event = await pool.query(QUERY_UPDATE_EVENT, [name_,initial_date_,end_date_, id_])
 		await pool.query('Commit')
 		return event.rows[0].id_
 	} catch(e) {
@@ -288,7 +288,7 @@ const updateEventData = async (id_, name_, initial_date_, end_date_) => {
 const deleteEventData = async (id_) => {
     try {
 		await pool.query('Begin')
-		await pool.query('call delete_event($1);', [id_])
+		await pool.query(QUERY_DELETE_EVENT, [id_])
 		await pool.query('Commit')
 		return id_
 	} catch(e) {
