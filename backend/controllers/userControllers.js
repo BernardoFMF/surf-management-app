@@ -14,7 +14,7 @@ const userController = (data) => {
 	})
 	
 	const getUserById = asyncHandler(async (req, res) => {
-		if(!req.user.is_admin) {
+		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
 				throw error(401, 'Unauthorized')
 			}

@@ -10,7 +10,7 @@ const dbCompany = require('../data/companyData')
 const dbUser = require('../data/userData')
 const dbQuota = require('../data/quotaData')
 */
-
+/*
 import db from '../data/__mock__/mock.js'
 
 import sport from '../data/sportData.js'
@@ -319,4 +319,4 @@ test('Delete a sport for a user', async () => {
 	expect.assertions(1)
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.user_id_).toBe(2)
-})
+})*/

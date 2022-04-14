@@ -1,7 +1,7 @@
 insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_) values (15478233,'15678424','Miguel Gafanhoto da Silva Lopes','Portugues','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com',
 								967021559,'83AFECF217B446F5F040D1B18A804AA30463E200635C94B3AFC0D7807FC33004','miguelf');
 								
-insert into Member_(member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_) values ('founder',false,0,false, 'afonsoribeiro', 'EA98D5CDA5D40DD1889BA34628F0FA65D7921BDEFB791F420E2B9CA99F952BE8'), ('effective',true,15,FALSE, 'joselopes', 'BD31AD2503125F31258EE522EA82740798E5F56899DABE8BFB1F0D4A56E6E0F6'), ('corporate',false,50,FALSE, 'ripcurl','0BADE5D73DDA71378068AE31F341BB8F3448576CB452BCF6E63E561B5B01457E'), ('corporate',false, 50, FALSE,'billabong','403F45A096665D25F2B7B07E679E0BAD24AE2BCDAEBE6B0E98210F6B2C08D68C');
+insert into Member_(member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_) values ('founder',false,0,false, 'afonsoribeiro', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K'), ('effective',true,15,FALSE, 'joselopes', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K'), ('corporate',false,50,FALSE, 'ripcurl','0BADE5D73DDA71378068AE31F341BB8F3448576CB452BCF6E63E561B5B01457E'), ('corporate',false, 50, FALSE,'billabong','403F45A096665D25F2B7B07E679E0BAD24AE2BCDAEBE6B0E98210F6B2C08D68C');
 
 insert into Event_(name_, initial_date_, end_date_) values ('Assembleia Geral','2022-4-9','2022-4-9'), ('WSL','2022-07-08','2022-07-28');
 
