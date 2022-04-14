@@ -47,20 +47,20 @@ $$;
  * Updates contact & user
  * Creates the user_Img
  */
-create or replace procedure put_user(p_id_ int, p_cc_ bigint, p_nif_ bigint, p_type_ varchar(40), p_birth_date_ date, p_nationality_ varchar(30), p_full_name_ varchar(60), 
-										p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_pword_ text, p_username_ varchar(30), p_img_ bytea, p_is_admin_ bool, p_img_name_ varchar(30), p_paid_enrollment_ bool)
+create or replace procedure put_user(p_id_ int, p_cc_ bigint, p_nif_ bigint, p_type_ varchar(40), p_quota_value_ int, p_birth_date_ date, p_nationality_ varchar(30), p_full_name_ varchar(60), 
+										p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ bytea, p_is_admin_ bool, p_paid_enrollment_ bool)
 LANGUAGE plpgsql  
 as
 $$
 begin
 	update Contact_ set location_ = p_location_, address_ = p_address_, postal_code_ = p_postal_code_, phone_number_= p_phone_number_ where member_id_ = p_id_;
 
-	update Member_ set pword_ = p_pword_, username_ = p_username_ where id_ = p_id_;
+	update Member_ set p_quota_value_ = quota_value_ where id_ = p_id_;
 
 	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, is_admin_ = p_is_admin_ where member_id_ = p_id_;
 	
 	if p_img_ is not null and not exists(select * from User_img_ where user_id_ = p_id_) then
-		insert into User_Img_ (user_id_, img_name_, img_value_) values (p_id_, p_img_name_, p_img_);
+		insert into User_Img_ (user_id_, img_value_) values (p_id_, p_img_);
 	end if;
 end
 $$;

@@ -96,7 +96,6 @@ create table User_ (
 
 create table User_Img_ (
 	user_id_ 	 	int,
-	img_name_		varchar(30),
 	img_value_ 		bytea,
 
 	primary key (user_id_),

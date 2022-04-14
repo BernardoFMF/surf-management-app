@@ -15,7 +15,7 @@ insert into Company_ values (3,23451789,'Ripcurl shop'), (4,423213348,'Billabong
 
 insert into User_ values (1,25054936,45925485,'Afonso Melo Ribeiro','Portugues','1997-05-25','2020-03-14',true, true), (2,25054938,45925475,'José Elias Lopes','Portugues','1989-04-27','2021-03-14', true,false);
 
-insert into User_img_ values (1,'profilephoto.jpeg','\xDEADBEEF'), (2,'ppic.png', '\xEAABDFFA');
+insert into User_img_ values (1,'\xDEADBEEF'), (2, '\xEAABDFFA');
 
 insert into Sport_(name_, is_deleted_) values ('Surf',false), ('Bodyboard',false);
 
