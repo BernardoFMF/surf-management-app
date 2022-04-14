@@ -1,5 +1,5 @@
 insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_) values (15478233,'15678424','Miguel Gafanhoto da Silva Lopes','Portugues','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com',
-								967021559,'83AFECF217B446F5F040D1B18A804AA30463E200635C94B3AFC0D7807FC33004','miguelf');
+								967021559,'83AFECF217B446F5F040D1B18A804AA30463E200635C94B3AFC0D7807FC33004','miguelf') returning id_;
 								
 insert into Member_(member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_) values ('founder',false,0,false, 'afonsoribeiro', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K'), ('effective',true,15,FALSE, 'joselopes', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K'), ('corporate',false,50,FALSE, 'ripcurl','0BADE5D73DDA71378068AE31F341BB8F3448576CB452BCF6E63E561B5B01457E'), ('corporate',false, 50, FALSE,'billabong','403F45A096665D25F2B7B07E679E0BAD24AE2BCDAEBE6B0E98210F6B2C08D68C');
 
