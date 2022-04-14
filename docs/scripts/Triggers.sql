@@ -8,7 +8,7 @@ language plpgsql
 as
 $body$
 begin 
-	if not exists (select * from Quota_  where payment_date_ is null and member_id_ = new.member_id_) then 
+	if not exists (select * from Quota_  where payment_date_ is null and member_id_ = new.member_id_) and not exists (select * from User_ where member_id_ = new.member_id_ and paid_enrollment_ = false) then 
 	update member_ set has_debt_ = false;
 	end if;
 	return new;

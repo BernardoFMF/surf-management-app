@@ -17,4 +17,12 @@ const passwordChangeTemplate = (url) => {
 	const html = `<h1> Pedido de alteração de palavra-passe caso tenha sido você aceda ao seguinte url:${url}</h1>`
 	return {text, html}
 }
-export{eventTemplate, quotaAlertTemplate, passwordChangeTemplate}
+
+const passwordChangedTemplate = () => {
+	const text = 'A palavra pass foi alterado com sucesso:'
+	const html = '<h1> A palavra pass foi alterado com sucesso</h1>'
+	return {text, html}
+}
+
+
+export{eventTemplate, quotaAlertTemplate, passwordChangeTemplate,passwordChangedTemplate}
