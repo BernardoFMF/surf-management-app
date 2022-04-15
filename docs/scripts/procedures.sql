@@ -214,7 +214,7 @@ $$;
  * if not creates it)
  */
 
-create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), username_ varchar(30), pword_ text)
+create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), username_ varchar(30), pword_ text, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
@@ -224,7 +224,11 @@ DECLARE
 	curr_date int;
 	year1 int;
 begin
-	INSERT INTO Member_(member_type_,has_debt_,quota_value_,is_deleted_,username_,pword_) VALUES ('corporate',true,50,false,username_,pword_);
+	with new_id_table_ as (
+		INSERT INTO Member_(member_type_,has_debt_,quota_value_,is_deleted_,username_,pword_) VALUES ('corporate',true,50,false,username_,pword_) returning id_
+	)
+	select id_ into new_id_ from new_id_table_;
+	
 	SELECT id_ into cid FROM Member_ ORDER BY id_ DESC LIMIT 1;
 	INSERT INTO Contact_(member_id_,location_,address_,postal_code_,email_,phone_number_) VALUES (cid,location_,address_,postal_code_,email_,phone_number_);
 	INSERT INTO Company_(member_id_,nif_,name_) VALUES (cid, nif_, name_);
@@ -240,17 +244,18 @@ $$;
 /**
  * Updates contact & company
  */
-create or replace procedure put_company(cid_ int, p_name_ varchar(40), p_nif_ bigint, p_phone_number_ int, p_email_ varchar(30), p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_username_ varchar(30), p_pword_ text)
+create or replace procedure put_company(cid_ int, p_name_ varchar(40), p_nif_ bigint, p_phone_number_ int, p_email_ varchar(30), p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30))
 LANGUAGE plpgsql  
 as
 $$
 begin
-	update Member_ set username_ = p_username_, pword_ = p_pword_ where id_ = cid;
 	UPDATE Contact_ SET phone_number_ = p_phone_number_, postal_code_ = p_postal_code_,address_ = p_address_, location_ = p_location_ WHERE member_id_ = cid_;
 	UPDATE Company_ SET name_ = p_name_, nif_ = p_nif_ WHERE member_id_ = cid_;
 end
 $$;
 
+
+update Event_ set name_ = 'hiper super assembleia geral do imperio', initial_date_ = '04-06-2022', end_date_ = '05-06-2022' where id_ = 1
 /**
  * delete company is made by a simple update query (changes the member table)
  * no proc needed
