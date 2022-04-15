@@ -35,7 +35,7 @@ begin
 	SELECT extract(YEAR FROM date1) into year1;
 	SELECT extract(YEAR FROM current_date) into curr_year;
 	if year1 = curr_year then
-		INSERT INTO Quota_(member_id_,payment_date_,date_) VALUES (mid,NULL,date1);	
+		INSERT INTO Quota_(member_id_,payment_date_,date_) VALUES (new_id_,NULL,date1);	
 	end if;
 end
 $$;
