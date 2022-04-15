@@ -1,4 +1,4 @@
-insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_) values (15478233,'15678424','Miguel Gafanhoto da Silva Lopes','Portugues','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com',
+insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_) values (15478233,'15678424','Miguel Gafanhoto da Silva Lopes','Portuguesa','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com',
 								967021559,'83AFECF217B446F5F040D1B18A804AA30463E200635C94B3AFC0D7807FC33004','miguelf') returning id_;
 								
 insert into Member_(member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_) values ('founder',false,0,false, 'afonsoribeiro', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K'), ('effective',true,15,FALSE, 'joselopes', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K'), ('corporate',false,50,FALSE, 'ripcurl','0BADE5D73DDA71378068AE31F341BB8F3448576CB452BCF6E63E561B5B01457E'), ('corporate',false, 50, FALSE,'billabong','403F45A096665D25F2B7B07E679E0BAD24AE2BCDAEBE6B0E98210F6B2C08D68C');
@@ -7,7 +7,7 @@ insert into Event_(name_, initial_date_, end_date_) values ('Assembleia Geral','
 
 insert into Attendance_ values (1,1,'going'), (2,2,'going');
 
-insert into Quota_(member_id_, payment_date_, date_) values (2,'2021-06-23','2021-01-01'), (2,null,'2022-1-1'), (3,'2021-06-07','2021-01-01'), (3,'2022-09-28','2022-01-01'), (4,'2022-11-26','2022-01-01');
+insert into Quota_(member_id_, payment_date_, date_) values (2,'2021-06-23', '2021-01-01'), (2,null,'2022-1-1'), (3,'2021-06-07','2021-01-01'), (3,'2022-09-28','2022-01-01'), (4,'2022-11-26','2022-01-01');
 
 insert into Contact_ values (1,'Ericeira','Rua do Clérigos n2 3ºesq','2050-032','afonsoribs@hotmail.com', 962681730), (2,'Lisboa','Rua da Bobadela n43', '2000-561', 'jlopes@gmail.com', 925827332),(3,'Ericeira','Rua da ericeira','2812-829','ess@gmail.com', 938172388), (4,'Billacity','Rua da billa', '2220-829', 'billybonga@gmail.com', 932323238) ;
 
