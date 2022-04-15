@@ -15,7 +15,7 @@ const getCandidatesData = async () => {
 		return candidates.rows
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -29,7 +29,7 @@ const getCandidateByIdData = async (id_) => {
 		return candidates.rows[0]
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -43,7 +43,7 @@ const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_
 		return candidate.rows[0].id_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -57,7 +57,7 @@ const deleteCandidateData = async (id_) => {
 		return id_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -71,7 +71,7 @@ const approveCandidateData = async (id_, type_, quota_value_, qrcode_, paid_enro
 		return result.rows[0].id_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -85,7 +85,7 @@ const getCandidateByUsernameData = async (username_) => {
 		return candidates.rows
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -103,7 +103,7 @@ const getCompaniesData = async () => {
 		return candidates.rows
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -117,7 +117,7 @@ const getCompanyByIdData = async (id_) => {
 		return candidates.rows[0]
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -131,7 +131,7 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 		return result.rows[0].id_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -145,7 +145,7 @@ const updateCompanyData = async (cid_, name_, nif_, phone_number_, email_, posta
 		return result.rows[0].id_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -159,7 +159,7 @@ const deleteCompanyData = async (id_) => {
 		return id_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -177,7 +177,7 @@ const getSportsData = async () => {
 		return sports.rows
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -191,7 +191,7 @@ const getSportByIdData = async (sid_) => {
 		return sports.rows[0]
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -205,7 +205,7 @@ const postSportData = async (name_) => {
 		return sports.rows[0].id_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -219,7 +219,7 @@ const deleteSportData = async (sid_) => {
 		return sid_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -237,7 +237,7 @@ const getEventsData = async () => {
 		return events.rows
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -251,7 +251,7 @@ const getEventByIdData = async (id_) => {
 		return event.rows[0]
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -265,7 +265,7 @@ const postEventData = async (name_,initial_date_,end_date_) => {
 		return event.rows[0].id_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -279,7 +279,7 @@ const updateEventData = async (id_, name_, initial_date_, end_date_) => {
 		return event.rows[0].id_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
@@ -293,22 +293,52 @@ const deleteEventData = async (id_) => {
 		return id_
 	} catch(e) {
 		await pool.query('Rollback')
-		throw e
+		throw error(500,'Internal server error')
 	} finally {
 		pool.release()
 	}
 }
 
-const postMemberAttendanceData = async () => {
-    
+const postMemberAttendanceData = async (eid_, id_, state_ ) => {
+	try {
+		await pool.query('Begin')
+		await pool.query(queries.QUERY_POST_ATTENDANCE,[eid_, id_, state_ ])
+		await pool.query('Commit')
+		return {eid_, id_}
+	} catch(e) {
+		await pool.query('Rollback')
+		throw error(500,'Internal server error')
+	} finally {
+		pool.release()
+	}
 }
 
-const updateMemberAttendanceData = async () => {
-    
+const updateMemberAttendanceData = async (eid_, id_, state_) => {
+	try {
+		await pool.query('Begin')
+		await pool.query(queries.QUERY_UPDATE_ATTENDANCE,[eid_, id_, state_ ])
+		await pool.query('Commit')
+		return {eid_, id_}
+	} catch(e) {
+		await pool.query('Rollback')
+		throw error(500,'Internal server error')
+	} finally {
+		pool.release()
+	}
 }
 
-const getEventByIdAttendanceData = async () => {
-    
+const getEventByIdAttendanceData = async (eid_) => {
+	try {
+		await pool.query('Begin')
+		const result = await pool.query(queries.QUERY_GET_ATTENDANCE,[eid_])
+		await pool.query('Commit')
+		return result.rows
+	} catch(e) {
+		await pool.query('Rollback')
+		throw error(500,'Internal server error')
+	} finally {
+		pool.release()
+	}
 }
 
 /**
