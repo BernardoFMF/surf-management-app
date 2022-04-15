@@ -96,72 +96,77 @@ const getCandidateByUsernameData = async (username_) => {
  */
 
 const getCompaniesData = async () => {
+	const company = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const candidates = await pool.query(queries.QUERY_GET_COMPANIES)
-		await pool.query('Commit')
+		await company.query('Begin')
+		const candidates = await company.query(queries.QUERY_GET_COMPANIES)
+		await company.query('Commit')
 		return candidates.rows
 	} catch(e) {
-		await pool.query('Rollback')
+		await company.query('Rollback')
 		throw error(500,'Internal server error')
 	} finally {
-		pool.release()
+		company.release()
 	}
 }
 
 const getCompanyByIdData = async (id_) => {
+	const company = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const candidates = await pool.query(queries.QUERY_GET_COMPANY_BY_ID, [id_])
-		await pool.query('Commit')
+		await company.query('Begin')
+		const candidates = await company.query(queries.QUERY_GET_COMPANY_BY_ID, [id_])
+		await company.query('Commit')
 		return candidates.rows[0]
 	} catch(e) {
-		await pool.query('Rollback')
+		await company.query('Rollback')
 		throw error(500,'Internal server error')
 	} finally {
-		pool.release()
+		company.release()
 	}
 }
 
 const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_) => {
+	const company = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const result = await pool.query(queries.QUERY_POST_COMPANY, [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, 0])
-		await pool.query('Commit')
-		return result.rows[0].id_
+		await company.query('Begin')
+		const result = await company.query(queries.QUERY_POST_COMPANY, [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, 0])
+		await company.query('Commit')
+		return result.rows[0].new_id_
 	} catch(e) {
-		await pool.query('Rollback')
-		throw error(500,'Internal server error')
+		await company.query('Rollback')
+		throw e
 	} finally {
-		pool.release()
+		company.release()
 	}
 }
 
 const updateCompanyData = async (cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
+	const company = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const result = await pool.query(queries.QUERY_UPDATE_COMPANY, [cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, 0])
-		await pool.query('Commit')
-		return result.rows[0].id_
+		await company.query('Begin')
+		await company.query(queries.QUERY_UPDATE_COMPANY, [cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_])
+		await company.query('Commit')
+		return cid_
 	} catch(e) {
-		await pool.query('Rollback')
+		await company.query('Rollback')
 		throw error(500,'Internal server error')
 	} finally {
-		pool.release()
+		company.release()
 	}
 }
 
 const deleteCompanyData = async (id_) => {
+	const company = await pool.connect()
 	try {
-		await pool.query('Begin')
-		await pool.query(queries.QUERY_DELETE_COMPANY, [id_])
-		await pool.query('Commit')
+		await company.query('Begin')
+		await company.query(queries.QUERY_DELETE_COMPANY, [id_])
+		await company.query('Commit')
 		return id_
 	} catch(e) {
-		await pool.query('Rollback')
+		await company.query('Rollback')
 		throw error(500,'Internal server error')
 	} finally {
-		pool.release()
+		company.release()
 	}
 }
 
@@ -230,114 +235,122 @@ const deleteSportData = async (sid_) => {
  */
 
 const getEventsData = async () => {
+	const events = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const events = await pool.query(queries.QUERY_GET_EVENTS)
-		await pool.query('Commit')
-		return events.rows
+		await events.query('Begin')
+		const eventsResult = await events.query(queries.QUERY_GET_EVENTS)
+		await events.query('Commit')
+		return eventsResult.rows
 	} catch(e) {
-		await pool.query('Rollback')
+		await events.query('Rollback')
 		throw error(500,'Internal server error')
 	} finally {
-		pool.release()
+		events.release()
 	}
 }
 
 const getEventByIdData = async (id_) => {
+	const events = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const event = await pool.query(queries.QUERY_GET_EVENT_BY_ID, [id_])
-		await pool.query('Commit')
-		return event.rows[0]
+		await events.query('Begin')
+		const eventResult = await events.query(queries.QUERY_GET_EVENT_BY_ID, [id_])
+		await events.query('Commit')
+		return eventResult.rows[0]
 	} catch(e) {
-		await pool.query('Rollback')
+		await events.query('Rollback')
 		throw error(500,'Internal server error')
 	} finally {
-		pool.release()
+		events.release()
 	}
 }
 
 const postEventData = async (name_,initial_date_,end_date_) => {
+	const events = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const event = await pool.query(queries.QUERY_POST_EVENT, [name_,initial_date_,end_date_])
-		await pool.query('Commit')
-		return event.rows[0].id_
+		await events.query('Begin')
+		const eventResult = await events.query(queries.QUERY_POST_EVENT, [name_,initial_date_,end_date_])
+		await events.query('Commit')
+		return eventResult.rows[0].id_
 	} catch(e) {
-		await pool.query('Rollback')
+		await events.query('Rollback')
 		throw error(500,'Internal server error')
 	} finally {
-		pool.release()
+		events.release()
 	}
 }
 
 const updateEventData = async (id_, name_, initial_date_, end_date_) => {
+	const events = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const event = await pool.query(queries.QUERY_UPDATE_EVENT, [name_,initial_date_,end_date_, id_])
-		await pool.query('Commit')
-		return event.rows[0].id_
+		await events.query('Begin')
+		await events.query(queries.QUERY_UPDATE_EVENT, [name_,initial_date_,end_date_, id_])
+		await events.query('Commit')
+		return id_
 	} catch(e) {
-		await pool.query('Rollback')
+		await events.query('Rollback')
 		throw error(500,'Internal server error')
 	} finally {
-		pool.release()
+		events.release()
 	}
 }
 
 const deleteEventData = async (id_) => {
+	const events = await pool.connect()
 	try {
-		await pool.query('Begin')
-		await pool.query(queries.QUERY_DELETE_EVENT, [id_])
-		await pool.query('Commit')
+		await events.query('Begin')
+		await events.query(queries.QUERY_DELETE_EVENT, [id_])
+		await events.query('Commit')
 		return id_
 	} catch(e) {
-		await pool.query('Rollback')
+		await events.query('Rollback')
 		throw error(500,'Internal server error')
 	} finally {
-		pool.release()
+		events.release()
 	}
 }
 
 const postMemberAttendanceData = async (eid_, id_, state_ ) => {
+	const client = await pool.connect()
 	try {
-		await pool.query('Begin')
-		await pool.query(queries.QUERY_POST_ATTENDANCE,[eid_, id_, state_ ])
-		await pool.query('Commit')
+		await client.query('Begin')
+		await client.query(queries.QUERY_POST_ATTENDANCE,[id_, eid_, state_ ])
+		await client.query('Commit')
 		return {eid_, id_}
 	} catch(e) {
-		await pool.query('Rollback')
-		throw error(500,'Internal server error')
+		await client.query('Rollback')
+		throw e
 	} finally {
-		pool.release()
+		client.release()
 	}
 }
 
 const updateMemberAttendanceData = async (eid_, id_, state_) => {
+	const client = await pool.connect()
 	try {
-		await pool.query('Begin')
-		await pool.query(queries.QUERY_UPDATE_ATTENDANCE,[eid_, id_, state_ ])
-		await pool.query('Commit')
+		await client.query('Begin')
+		await client.query(queries.QUERY_UPDATE_ATTENDANCE,[eid_, id_, state_ ])
+		await client.query('Commit')
 		return {eid_, id_}
 	} catch(e) {
-		await pool.query('Rollback')
-		throw error(500,'Internal server error')
+		await client.query('Rollback')
+		throw e
 	} finally {
-		pool.release()
+		client.release()
 	}
 }
 
 const getEventByIdAttendanceData = async (eid_) => {
+	const client = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const result = await pool.query(queries.QUERY_GET_ATTENDANCE,[eid_])
-		await pool.query('Commit')
+		await client.query('Begin')
+		const result = await client.query(queries.QUERY_GET_ATTENDANCE,[eid_])
+		await client.query('Commit')
 		return result.rows
 	} catch(e) {
-		await pool.query('Rollback')
-		throw error(500,'Internal server error')
+		await client.query('Rollback')
+		throw e
 	} finally {
-		pool.release()
+		client.release()
 	}
 }
 

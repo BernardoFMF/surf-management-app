@@ -14,7 +14,7 @@ insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, locatio
 							
 call aproove_candidate(1, 'effective', 15, 'qrmtbaril', true);
 
-call post_company('BillaBonga',24567028,967022458,'billabong@clix.pt','2580-278','Mem Martins','Lisboa');
+call post_company('BillaBonga',24567028,967022458,'billabong@clix.pt','2580-278','Mem Martins','Lisboa','billi','$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',0);
 
 call put_company(1,'BillaBong',24567028,967022458,'billabong@hotmail.com','2580-278','Mem Martins','Lisboa');
 

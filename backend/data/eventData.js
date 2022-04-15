@@ -16,7 +16,7 @@ const eventData = (db) => {
 	}
 	
 	const postEvent = async (name_, initial_date_, final_date_) => {
-		let allEmails = await db.getEmails()
+		//let allEmails = await db.getEmails()
 		//await mailSender(allEmails,`Novo Evento: ${name_}`, eventTemplate(name_, initial_date_, final_date_))
 		return await db.postEventData(name_, initial_date_, final_date_)
 	}
@@ -38,6 +38,9 @@ const eventData = (db) => {
 		const attendance = await db.getEventByIdAttendanceData(eid_)
 		if (attendance.filter(att => att.member_id_ == id_)[0])
 			throw error(409, 'User is already related to this Event')
+		console.log(eid_)
+		console.log(id_)
+		console.log(state_)
 		return await db.postMemberAttendanceData(eid_, id_, state_)
 	}
 	
