@@ -663,6 +663,7 @@ const getQuotaByIdData = async (qid_) => {
 	}
 }
 
+// Not tested - 15/04
 const getEmails = async () => {
 	const client = await pool.connect()
 	try {

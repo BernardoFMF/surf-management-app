@@ -35,7 +35,7 @@ begin
 	SELECT extract(YEAR FROM date1) into year1;
 	SELECT extract(YEAR FROM current_date) into curr_year;
 	if year1 = curr_year then
-		INSERT INTO Quota_(member_id_,payment_date_,date_) VALUES (mid,NULL,date1);	
+		INSERT INTO Quota_(member_id_,payment_date_,date_) VALUES (new_id_,NULL,date1);	
 	end if;
 end
 $$;
@@ -254,8 +254,6 @@ begin
 end
 $$;
 
-
-update Event_ set name_ = 'hiper super assembleia geral do imperio', initial_date_ = '04-06-2022', end_date_ = '05-06-2022' where id_ = 1
 /**
  * delete company is made by a simple update query (changes the member table)
  * no proc needed

@@ -68,7 +68,7 @@ const userData = (db) => {
 		const sports = await db.getUserSportsByIdData(id_)
 		const sport = sports.filter(s => s.sport_id_ == sid_)[0]
 		if (!sport) throw error(404, 'User is not related to this Sport')
-		return await db.updateUserSportData(id_, sid_, type_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
+		return await db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
 	}
 	
 	const deleteUserSport = async (id_, sid_) => {

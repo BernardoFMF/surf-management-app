@@ -37,8 +37,6 @@ const eventController = (data) => {
 	})
 	
 	const postMemberAttendance = asyncHandler(async (req,res) => {
-		console.log(req.user.id_)
-		console.log()
 		if(req.user.id_ != req.body.id) {
 			throw error(401, 'Unauthorized')
 		}
