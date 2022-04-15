@@ -14,7 +14,6 @@ LANGUAGE plpgsql
 as
 $$
 declare 
-	mid int default 1;
 	date1 DATE;
 	curr_year int;
 	year1 int;
@@ -28,7 +27,7 @@ begin
 	insert into Contact_ (member_id_, location_, address_, postal_code_, email_, phone_number_) 
 	values (new_id_, location_, address_, postal_code_, email_, phone_number_);
 	
-	select to_char(current_date, 'DD-MM-YYYY') into curr_date;
+	select current_date into curr_date;
 	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_)
 	values (new_id_, nif_, cc_, full_name_, nationality_, birth_date_, curr_date, paid_enrollment_); 
 
@@ -53,12 +52,14 @@ $$
 begin
 	update Contact_ set location_ = p_location_, address_ = p_address_, postal_code_ = p_postal_code_, phone_number_= p_phone_number_ where member_id_ = p_id_;
 
-	update Member_ set p_quota_value_ = quota_value_ where id_ = p_id_;
+	update Member_ set quota_value_ = p_quota_value_ where id_ = p_id_;
 
 	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, is_admin_ = p_is_admin_ where member_id_ = p_id_;
 	
 	if p_img_ is not null and not exists(select * from User_img_ where user_id_ = p_id_) then
 		insert into User_Img_ (user_id_, img_value_) values (p_id_, p_img_);
+	elseif p_img_ is not null then
+		update User_Img_ set img_value_ = p_img_ where user_id_ = p_id_;
 	end if;
 end
 $$;
@@ -89,12 +90,12 @@ $$;
 /**
  * Updates user_sport
  */
-create or replace procedure put_user_sport(id_ int, sid_ int, fed_id_ int, fed_number int, fed_name varchar(30), type_ text [], years_federated_ int []) 
+create or replace procedure put_user_sport(p_id_ int, p_sid_ int, p_fed_id_ int, p_fed_number_ int, p_fed_name_ varchar(30), p_type_ text [], p_years_federated_ int []) 
 LANGUAGE plpgsql  
 as
 $$
 begin
-	update User_Sport_ set (user_id_, sport_id_, type_, fed_id_ , fed_name_ , years_federated_) = (id_, sid_, fed_id_, type_, fed_id_, fed_name_, years_federated_);
+	update User_Sport_ set type_ = p_type_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 end
 $$;
 
@@ -174,7 +175,7 @@ $$;
  * Deletes a candidate
  * Creates a user
  */
-create or replace procedure aproove_candidate(cid int, type_ varchar(40), quota_value_ int, qrcode_ text, paid_enrollment_ bool)
+create or replace procedure approve_candidate(cid int, type_ varchar(40), quota_value_ int, paid_enrollment_ bool, out new_id int)
 LANGUAGE plpgsql  
 as
 $$
@@ -191,11 +192,14 @@ DECLARE
 	 candidate_phone_number_ int;
 	 candidate_pword_ text;
 	 candidate_username_ varchar(30);
+	 candidate_id_ int;
 begin
 	select nif_,cc_,full_name_,nationality_,birth_date_,location_, address_, postal_code_, email_, phone_number_,pword_, username_ into candidate_nif_, candidate_cc_, candidate_full_name_, candidate_nationality_, candidate_birth_date_, candidate_location_, candidate_address_, candidate_postal_code_, candidate_email_, candidate_phone_number_ , candidate_pword_ , candidate_username_ FROM Candidate_ WHERE id_ = cid;
-
-	call post_user(candidate_cc_, candidate_nif_, type_, quota_value_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, qrcode_, paid_enrollment_);
-
+	
+	call post_user(candidate_cc_, candidate_nif_, type_, quota_value_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_id_);
+	
+	select candidate_id_ into new_id;
+	
 	DELETE FROM Candidate_ WHERE id_ = cid;
 end
 $$;
@@ -262,13 +266,14 @@ update Event_ set name_ = 'hiper super assembleia geral do imperio', initial_dat
 /**
  * Creates a quota selecting every member to its respective quota
  */
-create or replace procedure post_quotas(p_date_ date) 
+create or replace procedure post_quotas(p_date_ date, out count_date int) 
 LANGUAGE plpgsql  
 as
 $$
 begin
 	if not exists(select * from quota_ where date_ = p_date_) then
 		INSERT INTO Quota_(member_id_, payment_date_, date_) SELECT id_, NULL, p_date_ FROM Member_ where quota_value_ <> 0;
+		select count(*) into count_date from quota_ where date_ = p_date_;
 	end if;
 end
 $$;

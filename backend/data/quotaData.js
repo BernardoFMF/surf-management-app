@@ -24,7 +24,7 @@ const quotaData = (db) => {
 	}
     
 	const postQuota = async (date_) => {
-		let allEmails = await db.getEmails()
+		//let allEmails = await db.getEmails()
 		//await mailSender(allEmails,`Novo Evento: ${name_}`, quotaAlertTemplate(name_, initial_date_, final_date_))
 		return await db.postQuotaData(date_)
 	}

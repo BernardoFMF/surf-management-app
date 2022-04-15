@@ -33,12 +33,12 @@ const userController = (data) => {
 	})
 	
 	const updateUser = asyncHandler(async (req, res) => {
-		if(!req.user.is_admin) {
+		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
 				throw error(401, 'Unauthorized')
 			}
 		}
-		const user = await services.updateUserServices(req.params.id, req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password, req.body.username, req.body.img, req.body.img_name, req.body.paid_enrollment, req.body.is_admin)
+		const user = await services.updateUserServices(req.params.id, req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.postal_code, req.body.address, req.body.location, req.body.img, req.body.paid_enrollment, req.body.is_admin)
 		if (user) res.json(user)
 	})
 	
@@ -58,7 +58,7 @@ const userController = (data) => {
 	})
 	
 	const getUserSportsById = asyncHandler(async (req,res) => {
-		if(!req.user.is_admin) {
+		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
 				throw error(401, 'Unauthorized')
 			}
@@ -68,7 +68,7 @@ const userController = (data) => {
 	})
 	
 	const postUserSport = asyncHandler(async (req,res) => {
-		if(!req.user.is_admin) {
+		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
 				throw error(401, 'Unauthorized')
 			}
@@ -81,7 +81,7 @@ const userController = (data) => {
 	})
 	
 	const updateUserSport = asyncHandler(async (req,res) => {
-		if(!req.user.is_admin) {
+		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
 				throw error(401, 'Unauthorized')
 			}
@@ -91,7 +91,7 @@ const userController = (data) => {
 	})
 	
 	const deleteUserSport = asyncHandler(async (req,res) => {
-		if(!req.user.is_admin) {
+		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
 				throw error(401, 'Unauthorized')
 			}
