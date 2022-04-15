@@ -43,6 +43,10 @@ const router = (app, data) => {
 			if(!member) {
 				done(null, false)
 			} else {
+				if (member.member_type_ != 'corporate') {
+					const user = await data.getUserByIdData(member.id_)
+					member.is_admin_ = user.is_admin_
+				}
 				done(null, member)
 			}
 		} catch (err) {

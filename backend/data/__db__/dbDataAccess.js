@@ -350,8 +350,6 @@ const getUsersData = async () => {
 	try {
 		const result = await pool.query(queries.QUERY_GET_USERS)
 		return result.rows
-	} catch (e) {
-		throw error(500, 'Internal server error')
 	} finally {
 		client.release()
 	}
@@ -363,22 +361,25 @@ const getUserByIdData = async (id_) => {
 		const result = await pool.query(queries.QUERY_GET_USER_BY_ID, [id_])
 		return result.rows[0]
 	} catch (e) {
-		throw error(500, 'Internal server error')
+		console.log('Bye')
+		throw e
 	} finally {
 		client.release()
 	}
 }
 
-const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, qr_code_) => {
+const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(queries.QUERY_POST_USER, [cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, qr_code_, paid_enrollment_, 0])
+		const result = await pool.query(queries.QUERY_POST_USER, [cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, 0])
 		await client.query('commit')
-		return result.rows.id
+		console.log(result)
+		return result.rows[0].new_id_
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		console.log('cheguei')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -393,7 +394,7 @@ const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, 
 		return id_
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -408,7 +409,7 @@ const deleteUserData = async (id_) => {
 		return id_
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -423,7 +424,7 @@ const getUsersSportsData = async (id_) => {
 		return result.rows
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -438,7 +439,7 @@ const getUsersSportData = async (id_) => {
 		return result.rows
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -453,7 +454,7 @@ const getUserSportsByIdData = async (id_) => {
 		return result.rows
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -468,7 +469,7 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 		return {id_, sid_}
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	} 
@@ -483,7 +484,7 @@ const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, t
 		return {id_, sid_}
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -498,7 +499,7 @@ const deleteUserSportData = async (id_, sid_) => {
 		return {id_, sid_}
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -513,7 +514,7 @@ const getQuotasData = async () => {
 		return result.rows
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -528,7 +529,7 @@ const getCompaniesQuotasData = async () => {
 		return result.rows
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -543,7 +544,7 @@ const getUsersQuotasData = async () => {
 		return result.rows
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}    
@@ -558,7 +559,7 @@ const getMemberQuotasByIdData = async (id_) => {
 		return result.rows
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -573,7 +574,7 @@ const postQuotaData = async (date_) => {
 		return result.rows[0].num_
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -588,7 +589,7 @@ const updateMemberQuotaData = async (qid_, payment_date_) => {
 		return qid_
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -603,7 +604,7 @@ const getMemberByIdData = async (id_) => {
 		return result.rows[0]
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -618,7 +619,8 @@ const getMemberByUsernameData = async (username_) => {
 		return result.rows[0]
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		console.log('hello')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -633,7 +635,7 @@ const getQuotaByIdData = async (qid_) => {
 		return result.rows[0]
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -648,7 +650,7 @@ const getEmails = async () => {
 		return result.rows
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}
@@ -657,13 +659,14 @@ const getEmails = async () => {
 const updateUserQrCodeData = async (id_, qrcode_) => {
 	const client = await pool.connect()
 	try {
+		console.log('cheguei ' + id_)
 		await client.query('begin')
 		await pool.query(queries.QUERY_UPDATE_QRCODE, [id_, qrcode_])
 		await client.query('commit')
 		return id_
 	} catch (e) {
 		await client.query('rollback')
-		throw error(500, 'Internal server error')
+		throw e
 	} finally {
 		client.release()
 	}

@@ -9,7 +9,7 @@
  * if not creates it)
  */
 create or replace procedure post_user(cc_ bigint, nif_ bigint, type_ varchar(40), quota_value_ int, birth_date_ varchar(30), nationality_ varchar(30), full_name_ varchar(60),
-										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), pword_ text, username_ varchar(30), qrcode_ text, paid_enrollment_ bool)
+										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
@@ -20,19 +20,17 @@ declare
 	year1 int;
 	curr_date DATE;
 begin
-	
-	insert into Member_ (member_type_, quota_value_, username_, pword_) values (type_, quota_value_, username_, pword_);
+	with new_id_table_ as (
+		insert into Member_ (member_type_, quota_value_, username_, pword_) values (type_, quota_value_, username_, pword_) returning id_
+	)
+	select id_ into new_id_ from new_id_table_;
 
-	SELECT id_ into mid FROM Member_ ORDER BY id_ DESC LIMIT 1;
-	
 	insert into Contact_ (member_id_, location_, address_, postal_code_, email_, phone_number_) 
-	values (mid, location_, address_, postal_code_, email_, phone_number_);
+	values (new_id_, location_, address_, postal_code_, email_, phone_number_);
 	
-	select current_date into curr_date;
+	select to_char(current_date, 'DD-MM-YYYY') into curr_date;
 	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_)
-	values (mid, nif_, cc_, full_name_, nationality_, birth_date_, curr_date, paid_enrollment_); 
-	
-	insert into Membership_card_ (user_id_, qrcode_) values (mid, qrcode_);
+	values (new_id_, nif_, cc_, full_name_, nationality_, birth_date_, curr_date, paid_enrollment_); 
 
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;
