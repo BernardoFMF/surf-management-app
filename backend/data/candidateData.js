@@ -1,6 +1,8 @@
 'use strict'
 
 import error from '../utils/error.js'
+import { toDataURL } from 'qrcode'
+
 
 const candidateData = (db) => {
 	const getCandidates = async () => {
@@ -26,9 +28,18 @@ const candidateData = (db) => {
 		return await db.deleteCandidateData(id_)
 	}
 	
-	const approveCandidate = async (id_, type_, quota_value_, qr_code_, paid_enrollment_) => {
+	const approveCandidate = async (id_, type_, paid_enrollment_, url) => {
 		await getCandidateById(id_)
-		return await db.approveCandidateData(id_, type_, quota_value_, qr_code_, paid_enrollment_)
+		
+		let quota_value = 0
+		if (type_ == 'effective') quota_value = 15
+
+		const qrcode_ = await toDataURL(`${url}/members/validate/${id_}`)
+		const u_id_ = await db.approveCandidateData(id_, type_, quota_value, paid_enrollment_)
+
+		await db.updateUserQrCodeData(u_id_, qrcode_)
+
+		return u_id_
 	}
 
 	return {

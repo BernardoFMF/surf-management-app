@@ -427,9 +427,7 @@ const getUsersSportData = async (id_) => {
 	const sports_tuples = users_sports.filter(sport => sport.sport_id_ == id_)
 	sports_tuples.forEach(async (tuple) => {
 		const user = await getUserByIdData(tuple.user_id_)
-		console.log(user)
 		const sport = await getSportByIdData(tuple.sport_id_)
-		console.log(sport)
 		if (user && sport && !tuple.is_absent_)
 			users_tuples.push(user)
 	})

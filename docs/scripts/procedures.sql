@@ -175,7 +175,7 @@ $$;
  * Deletes a candidate
  * Creates a user
  */
-create or replace procedure aproove_candidate(cid int, type_ varchar(40), quota_value_ int, qrcode_ text, paid_enrollment_ bool)
+create or replace procedure approve_candidate(cid int, type_ varchar(40), quota_value_ int, paid_enrollment_ bool, out new_id int)
 LANGUAGE plpgsql  
 as
 $$
@@ -192,11 +192,14 @@ DECLARE
 	 candidate_phone_number_ int;
 	 candidate_pword_ text;
 	 candidate_username_ varchar(30);
+	 candidate_id_ int;
 begin
 	select nif_,cc_,full_name_,nationality_,birth_date_,location_, address_, postal_code_, email_, phone_number_,pword_, username_ into candidate_nif_, candidate_cc_, candidate_full_name_, candidate_nationality_, candidate_birth_date_, candidate_location_, candidate_address_, candidate_postal_code_, candidate_email_, candidate_phone_number_ , candidate_pword_ , candidate_username_ FROM Candidate_ WHERE id_ = cid;
-
-	call post_user(candidate_cc_, candidate_nif_, type_, quota_value_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, qrcode_, paid_enrollment_);
-
+	
+	call post_user(candidate_cc_, candidate_nif_, type_, quota_value_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_id_);
+	
+	select candidate_id_ into new_id;
+	
 	DELETE FROM Candidate_ WHERE id_ = cid;
 end
 $$;
@@ -258,13 +261,14 @@ $$;
 /**
  * Creates a quota selecting every member to its respective quota
  */
-create or replace procedure post_quotas(p_date_ date) 
+create or replace procedure post_quotas(p_date_ date, out count_date int) 
 LANGUAGE plpgsql  
 as
 $$
 begin
 	if not exists(select * from quota_ where date_ = p_date_) then
 		INSERT INTO Quota_(member_id_, payment_date_, date_) SELECT id_, NULL, p_date_ FROM Member_ where quota_value_ <> 0;
+		select count(*) into count_date from quota_ where date_ = p_date_;
 	end if;
 end
 $$;
