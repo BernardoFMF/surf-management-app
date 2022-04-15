@@ -15,7 +15,7 @@ const authController = () => {
 		res.sendStatus(200)
 	})
 
-	const resetPasswordRequestController = asyncHandler(async (req, res) => {
+	const resetPasswordRequest = asyncHandler(async (req, res) => {
 		const requestPasswordResetService = await AuthServices.requestPasswordReset(req.body.id_)
 		res.json(requestPasswordResetService)
 	})
@@ -23,7 +23,7 @@ const authController = () => {
 	return {
 		postLogin,
 		postLogout,
-		resetPasswordRequestController
+		resetPasswordRequest
 	}
 }
 
