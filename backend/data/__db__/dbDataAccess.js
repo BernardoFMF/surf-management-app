@@ -170,58 +170,62 @@ const deleteCompanyData = async (id_) => {
  */
 
 const getSportsData = async () => {
+	const client = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const sports = await pool.query(queries.QUERY_GET_SPORTS)
-		await pool.query('Commit')
+		await client.query('Begin')
+		const sports = await client.query(queries.QUERY_GET_SPORTS)
+		await client.query('Commit')
 		return sports.rows
 	} catch(e) {
-		await pool.query('Rollback')
-		throw error(500,'Internal server error')
+		await client.query('Rollback')
+		throw e
 	} finally {
-		pool.release()
+		client.release()
 	}
 }
 
 const getSportByIdData = async (sid_) => {
+	const client = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const sports = await pool.query(queries.QUERY_GET_SPORT_BY_ID, [sid_])
-		await pool.query('Commit')
+		await client.query('Begin')
+		const sports = await client.query(queries.QUERY_GET_SPORT_BY_ID, [sid_])
+		await client.query('Commit')
 		return sports.rows[0]
 	} catch(e) {
-		await pool.query('Rollback')
-		throw error(500,'Internal server error')
+		await client.query('Rollback')
+		throw e
 	} finally {
-		pool.release()
+		client.release()
 	}
 }
 
 const postSportData = async (name_) => {
+	const client = await pool.connect()
 	try {
-		await pool.query('Begin')
-		const sports = await pool.query(queries.QUERY_POST_SPORT, [name_])
-		await pool.query('Commit')
+		await client.query('Begin')
+		const sports = await client.query(queries.QUERY_POST_SPORT, [name_])
+		await client.query('Commit')
 		return sports.rows[0].id_
 	} catch(e) {
-		await pool.query('Rollback')
-		throw error(500,'Internal server error')
+		await client.query('Rollback')
+		throw e
 	} finally {
-		pool.release()
+		client.release()
 	}
 }
 
 const deleteSportData = async (sid_) => {
+	const client = await pool.connect()
 	try {
-		await pool.query('Begin')
-		await pool.query(queries.QUERY_DELETE_SPORT, [sid_])
-		await pool.query('Commit')
+		await client.query('Begin')
+		await client.query(queries.QUERY_DELETE_SPORT, [sid_])
+		await client.query('Commit')
 		return sid_
 	} catch(e) {
-		await pool.query('Rollback')
-		throw error(500,'Internal server error')
+		await client.query('Rollback')
+		throw e
 	} finally {
-		pool.release()
+		client.release()
 	}
 }
 
@@ -348,7 +352,7 @@ const getEventByIdAttendanceData = async (eid_) => {
 const getUsersData = async () => {
 	const client = await pool.connect()
 	try {
-		const result = await pool.query(queries.QUERY_GET_USERS)
+		const result = await client.query(queries.QUERY_GET_USERS)
 		return result.rows
 	} finally {
 		client.release()
@@ -358,7 +362,7 @@ const getUsersData = async () => {
 const getUserByIdData = async (id_) => {
 	const client = await pool.connect()
 	try {
-		const result = await pool.query(queries.QUERY_GET_USER_BY_ID, [id_])
+		const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
 		return result.rows[0]
 	} catch (e) {
 		console.log('Bye')
@@ -372,7 +376,7 @@ const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationa
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(queries.QUERY_POST_USER, [cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, 0])
+		const result = await client.query(queries.QUERY_POST_USER, [cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, 0])
 		await client.query('commit')
 		console.log(result)
 		return result.rows[0].new_id_
@@ -389,7 +393,7 @@ const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, 
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await pool.query(queries.QUERY_UPDATE_USER, [id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, is_admin_, paid_enrollment_])
+		await client.query(queries.QUERY_UPDATE_USER, [id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, is_admin_, paid_enrollment_])
 		await client.query('commit')
 		return id_
 	} catch (e) {
@@ -404,7 +408,7 @@ const deleteUserData = async (id_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await pool.query(queries.QUERY_DELETE_USER, [id_])
+		await client.query(queries.QUERY_DELETE_USER, [id_])
 		await client.query('commit')
 		return id_
 	} catch (e) {
@@ -415,11 +419,11 @@ const deleteUserData = async (id_) => {
 	}
 }
 
-const getUsersSportsData = async (id_) => {
+const getUsersSportsData = async () => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(queries.QUERY_GET_USERS_SPORTS, [id_])
+		const result = await client.query(queries.QUERY_GET_USERS_SPORTS)
 		await client.query('commit')
 		return result.rows
 	} catch (e) {
@@ -434,7 +438,7 @@ const getUsersSportData = async (id_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		const result = await pool.query(queries.QUERY_GET_USERS_SPORT, [id_])
+		const result = await client.query(queries.QUERY_GET_USERS_SPORT, [id_])
 		await client.query('commit')
 		return result.rows
 	} catch (e) {
@@ -464,7 +468,7 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await pool.query(queries.QUERY_POST_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_])
+		await client.query(queries.QUERY_POST_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_])
 		await client.query('commit')
 		return {id_, sid_}
 	} catch (e) {
@@ -472,14 +476,14 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 		throw e
 	} finally {
 		client.release()
-	} 
+	}
 }
 
 const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await pool.query(queries.QUERY_UPDATE_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_])
+		await client.query(queries.QUERY_UPDATE_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_])
 		await client.query('commit')
 		return {id_, sid_}
 	} catch (e) {

@@ -1,4 +1,4 @@
-call post_user(45623876,87450157,'effective',15,'2000-06-09','Portugues','Miguel Andre Santos',967021667,'concursodatvi@gmail.com','2070-567','Rua Jose da Silva','Lisboa','5B63FACAB549DB1B8444DC1029DBAD4214BEC793B1186DBC855CF94D9BB6C9F0','miguel38','qrcodegandafixe',true);
+call post_user(45623876,87450157,'effective',15,'2000-06-09','Portugues','Miguel Andre Santos',967021667,'concursodatvi@gmail.com','2070-567','Rua Jose da Silva','Lisboa','5B63FACAB549DB1B8444DC1029DBAD4214BEC793B1186DBC855CF94D9BB6C9F0','miguel38',TRUE, 0);
 
 call put_user(1,45623876,87110157,'effective','2000-06-09','Portugues','Miguel Andre Santos',967021667,'2070-567','Rua Jose da Silva','Lisboa','5B63FACAB549DB1B8444DC1029DBAD4214BEC793B1186DBC855CF94D9BB6C9F0','miguel38','/x1321D33F',true, 'foto.png',true);
 

@@ -13,6 +13,7 @@ const authAdmin = asyncHandler(async (req, res, next) => {
 })
 
 const authMember = asyncHandler(async (req, res, next) => {
+	console.log(req.user)
 	if(!req.user) {
 		throw error(401, 'Unauthorized')
 	}

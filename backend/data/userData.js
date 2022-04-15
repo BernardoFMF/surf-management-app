@@ -27,9 +27,9 @@ const userData = (db) => {
 		return userId
 	}
 	
-	const updateUser = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, img_, img_name_, paid_enrollment_, is_admin_) => {
+	const updateUser = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_) => {
 		await getUserById(id_)
-		return await db.updateUserData(id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, img_, img_name_, paid_enrollment_, is_admin_)
+		return await db.updateUserData(id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_)
 	}
 	
 	const deleteUser = async (id_) => {
@@ -57,7 +57,7 @@ const userData = (db) => {
 		const sport = await db.getSportByIdData(sid_)
 		if (!sport) throw error(404, 'Sport does not exist')
 		let user_sport = await db.getUserSportsByIdData(id_)
-		user_sport = user_sport.filter(tuple => tuple.id_ == sid_)[0]
+		user_sport = user_sport.filter(tuple => tuple.sport_id_ == sid_)[0]
 		if (user_sport)
 			throw error(409, 'User is already related to this Sport')
 		return await db.postUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
@@ -66,9 +66,9 @@ const userData = (db) => {
 	const updateUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
 		await getUserById(id_)
 		const sports = await db.getUserSportsByIdData(id_)
-		const sport = sports.filter(s => s.id_ == sid_)[0]
+		const sport = sports.filter(s => s.sport_id_ == sid_)[0]
 		if (!sport) throw error(404, 'User is not related to this Sport')
-		return await db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
+		return await db.updateUserSportData(id_, sid_, type_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
 	}
 	
 	const deleteUserSport = async (id_, sid_) => {

@@ -20,9 +20,9 @@ const QUERY_UPDATE_COMPANY = 'call put_company($1, $2, $3, $4, $5, $6, $7, $8, $
 
 const QUERY_DELETE_COMPANY = 'update member_ set is_deleted_ = true where id_ = $1;'
 
-const QUERY_GET_SPORTS = 'select id_, name_ from Sport_ where is_deleted = false;'
+const QUERY_GET_SPORTS = 'select id_, name_ from Sport_ where is_deleted_ = false;'
 
-const QUERY_GET_SPORT_BY_ID = 'select id_, name_ from Sport_ where is_deleted = false and id_ = $1;'
+const QUERY_GET_SPORT_BY_ID = 'select id_, name_ from Sport_ where is_deleted_ = false and id_ = $1;'
 
 const QUERY_POST_SPORT = 'insert into Sport_ (name_) values ($1) returning id_;'
 
@@ -44,7 +44,7 @@ const QUERY_GET_USER_BY_ID = 'select member_id_, nif_, cc_, full_name_, national
 
 const QUERY_POST_USER = 'call post_user($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)'
 
-const QUERY_UPDATE_USER = 'call put_user($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)'
+const QUERY_UPDATE_USER = 'call put_user($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)'
 
 const QUERY_DELETE_USER = 'update Member_ set is_deleted_ = true where id_ = $1'
 
@@ -58,7 +58,7 @@ const QUERY_POST_USER_SPORT = 'call post_user_sport($1, $2, $3, $4, $5, $6, $7)'
 
 const QUERY_UPDATE_USER_SPORT = 'call put_user_sport($1, $2, $3, $4, $5, $6, $7)'
 
-const QUERY_DELETE_USER_SPORT = 'update User_sport_ set is_absent_ = true where user_id_ = $1'
+const QUERY_DELETE_USER_SPORT = 'update User_sport_ set is_absent_ = true where user_id_ = $1 and sport_id_ = $2'
 
 const QUERY_GET_QUOTAS = 'select id_, member_id_, username_, payment_date_, date_ from Quotas_'
 

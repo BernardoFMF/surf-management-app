@@ -41,7 +41,7 @@ const userServices = (db) => {
 		return await data.postUser(cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment, url)
 	}
 	
-	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, img, img_name, paid_enrollment, is_admin) => {
+	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin) => {
 		if(!id) throw error(400, 'Parameter not found: id')
 		if(!cc) throw error(400, 'Parameter not found: cc')
 		if(!nif) throw error(400, 'Parameter not found: nif')
@@ -50,12 +50,9 @@ const userServices = (db) => {
 		if(!nationality) throw error(400, 'Parameter not found: nationality')
 		if(!full_name) throw error(400, 'Parameter not found: full_name')
 		if(!phone_number) throw error(400, 'Parameter not found: phone_number')
-		if(!email) throw error(400, 'Parameter not found: email')
 		if(!postal_code) throw error(400, 'Parameter not found: postal_code')
 		if(!address) throw error(400, 'Parameter not found: address')
 		if(!location) throw error(400, 'Parameter not found: location')
-		if(!password) throw error(400, 'Parameter not found: password')
-		if(!username) throw error(400, 'Parameter not found: username')
 		if(paid_enrollment == undefined) throw error(400, 'Parameter not found: paid_enrollment')
 		if(is_admin == undefined) throw error(400, 'Parameter not found: is_admin')
 
@@ -63,8 +60,7 @@ const userServices = (db) => {
 		if (type == 'effective') quota_value = 15
 		else if (type == 'corporate') quota_value = 50
 
-		const pwordhashed = await crypto.hashpassword(password)
-		return await data.updateUser(id, cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, img, img_name, paid_enrollment, is_admin)
+		return await data.updateUser(id, cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin)
 	}
 	
 	const deleteUserServices = async (id) => {
