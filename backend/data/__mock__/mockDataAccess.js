@@ -305,8 +305,10 @@ const getUsersData = async () => {
 }
 
 const getUserByIdData = async (id_) => {
-	const user = users.filter(user => user.member_id_ == id_)[0]
+	let user = users.filter(user => user.member_id_ == id_)[0]
 	if (user) {
+		const contact = contacts[contacts.findIndex(c => c.member_id_ == id_)]
+		user = {...user, ...contact}
 		const member = await getMemberByIdData(user.member_id_)
 		if (member) return user
 	}
@@ -345,12 +347,12 @@ const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationa
 	}
 	const temp_quota = quotas[quotas.length - 1]
 
-	if (temp_quota && new Date().getFullYear() == temp_quota.date_.split('-')[2]) {
+	if (temp_quota && new Date().getFullYear() == temp_quota.date_.split('-')[0]) {
 		indexObj.idxQuotas++
 		const quota = {
 			id_: indexObj.idxQuotas,
 			member_id_: member.id_,
-			payment_date: null,
+			payment_date_: null,
 			date_: temp_quota.date_
 		}
 		quotas.push(quota)
@@ -370,7 +372,7 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 	membership_cards.push(membership_card)
 }
 
-const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, img_, img_name_, paid_enrollment_, is_admin_) => {
+const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_) => {
 	const idxUser = users.findIndex(user => user.member_id_ == id_)
 	users[idxUser].cc_ = cc_
 	users[idxUser].nif_ = nif_
@@ -384,20 +386,14 @@ const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, 
 
 	const idxContact = contacts.findIndex(contact => contact.member_id_ == id_)
 	contacts[idxContact].phone_number_ = phone_number_
-	contacts[idxContact].email_ = email_
 	contacts[idxContact].postal_code_ = postal_code_
 	contacts[idxContact].address_ = address_
 	contacts[idxContact].location_ = location_
 
-	const idxMember = members.findIndex(member => member.id_ == id_)
-	members[idxMember].username = username_
-	members[idxMember].username = pword_
-
 	if (img_) {
 		const user_img_ = {
-			user_id_ : indexObj.idxMember,
+			user_id_ : id_,
 			img_,
-			img_name_
 		}
 		user_imgs.push(user_img_)
 	}
@@ -414,69 +410,62 @@ const deleteUserData = async (id_) => {
 }
 
 const getUsersSportsData = async () => {
-	return users_sports.filter(async (tuple) => {
-		const user = await getUserByIdData(tuple.user_id_)
-		const sport = await getSportByIdData(tuple.sport_id_)
-		if (user && sport && !tuple.is_absent_) return true
-		return false
-	})
+	let users_sports_array = []
+	for (const user_sport of users_sports) {
+		const member = await getMemberByIdData(user_sport.user_id_)
+		const sport = await getSportByIdData(user_sport.sport_id_)
+		if (member && sport) users_sports_array.push({...user_sport, username_: member.username_, name_: sport.name_})
+	}
+	return users_sports_array
 }
 
 const getUsersSportData = async (id_) => {
-	let users_tuples = []
+	let users_array = []
 	const sports_tuples = users_sports.filter(sport => sport.sport_id_ == id_)
-	sports_tuples.forEach(async (tuple) => {
-		const user = await getUserByIdData(tuple.user_id_)
-		const sport = await getSportByIdData(tuple.sport_id_)
-		if (user && sport && !tuple.is_absent_)
-			users_tuples.push(user)
-	})
-	return users_tuples
+	for (const user_sport of sports_tuples) {
+		const member = await getMemberByIdData(user_sport.user_id_)
+		const user = await getUserByIdData(user_sport.user_id_)
+		const sport = await getSportByIdData(user_sport.sport_id_)
+		if (member && sport) users_array.push({...user, ...user_sport, name_: sport.name_})
+	}
+	return users_array
 }
 
 const getUserSportsByIdData = async (id_) => {
 	let sports_tuples = []
 	const users_tuples = users_sports.filter(user => user.user_id_ == id_)
-	await users_tuples.forEach(async (tuple) => {
-		const user = await getUserByIdData(tuple.user_id_)
-		const sport = await getSportByIdData(tuple.sport_id_)
-		if (sport && user && !tuple.is_absent_)
-			sports_tuples.push(sport)
-	})
+	for (const user_sport of users_tuples) {
+		const member = await getMemberByIdData(user_sport.user_id_)
+		const user = await getUserByIdData(user_sport.user_id_)
+		const sport = await getSportByIdData(user_sport.sport_id_)
+		if (member && sport) sports_tuples.push({...user, ...user_sport, name_: sport.name_})
+	}
 	return sports_tuples
 }
 
 const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
-	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
-	if(user_sport_idx == -1) {
-		const user_sport = {
-			user_id_: id_,
-			sport_id_: sid_,
-			type_,
-			fed_number_, 
-			fed_id_,
-			fed_name_,
-			years_federated_,
-			is_absent_: false
-		}
-		users_sports.push(user_sport)
-		return user_sport
-	} else {
-		users_sports[user_sport_idx].is_absent_ = false
-		return users_sports[user_sport_idx]
+	const user_sport = {
+		user_id_: id_,
+		sport_id_: sid_,
+		type_,
+		fed_number_, 
+		fed_id_,
+		fed_name_,
+		years_federated_,
+		is_absent_: false
 	}
+	users_sports.push(user_sport)
+	return user_sport
 } 
 
-const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
+const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_) => {
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
-	if(user_sport_idx != -1) {
-		users_sports[user_sport_idx].fed_id_ = fed_id_
-		users_sports[user_sport_idx].fed_number_ = fed_number_
-		users_sports[user_sport_idx].fed_name_ = fed_name_
-		users_sports[user_sport_idx].type_ = type_
-		users_sports[user_sport_idx].years_federated_ = years_federated_
-		users_sports[user_sport_idx].is_absent_ = false
-	}
+	users_sports[user_sport_idx].fed_id_ = fed_id_
+	users_sports[user_sport_idx].fed_number_ = fed_number_
+	users_sports[user_sport_idx].fed_name_ = fed_name_
+	users_sports[user_sport_idx].type_ = type_
+	users_sports[user_sport_idx].years_federated_ = years_federated_
+	users_sports[user_sport_idx].is_absent_ = is_absent_
 	return users_sports[user_sport_idx]
 }
 

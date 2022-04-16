@@ -89,12 +89,12 @@ $$;
 /**
  * Updates user_sport
  */
-create or replace procedure put_user_sport(p_id_ int, p_sid_ int, p_fed_id_ int, p_fed_number_ int, p_fed_name_ varchar(30), p_type_ text [], p_years_federated_ int []) 
+create or replace procedure put_user_sport(p_id_ int, p_sid_ int, p_fed_id_ int, p_fed_number_ int, p_fed_name_ varchar(30), p_type_ text [], p_years_federated_ int [], p_is_absent_ bool) 
 LANGUAGE plpgsql  
 as
 $$
 begin
-	update User_Sport_ set type_ = p_type_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_ where user_id_ = p_id_ and sport_id_ = p_sid_;
+	update User_Sport_ set type_ = p_type_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 end
 $$;
 

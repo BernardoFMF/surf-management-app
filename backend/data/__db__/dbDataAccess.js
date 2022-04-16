@@ -493,11 +493,11 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 	}
 }
 
-const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
+const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await client.query(queries.QUERY_UPDATE_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_])
+		await client.query(queries.QUERY_UPDATE_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_])
 		await client.query('commit')
 		return {id_, sid_}
 	} catch (e) {

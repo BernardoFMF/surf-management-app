@@ -63,12 +63,12 @@ const userData = (db) => {
 		return await db.postUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
 	}
 	
-	const updateUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
+	const updateUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_) => {
 		await getUserById(id_)
 		const sports = await db.getUserSportsByIdData(id_)
 		const sport = sports.filter(s => s.sport_id_ == sid_)[0]
 		if (!sport) throw error(404, 'User is not related to this Sport')
-		return await db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
+		return await db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_)
 	}
 	
 	const deleteUserSport = async (id_, sid_) => {
