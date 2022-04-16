@@ -4,7 +4,6 @@
  * Creates a member
  * Creates a contact
  * Creates a user
- * Creates a membership card
  * Creates a quota (optional - check if there is already a quota for the current year, 
  * if not creates it)
  */
@@ -180,25 +179,31 @@ LANGUAGE plpgsql
 as
 $$
 DECLARE 
-	 candidate_nif_ bigint;
-	 candidate_cc_  bigint;
-	 candidate_full_name_ varchar(60);
-	 candidate_nationality_ varchar(30);
-	 candidate_birth_date_ varchar(30);
-	 candidate_location_ varchar(30);
-	 candidate_address_ varchar(40);
-	 candidate_postal_code_ varchar(8);
-	 candidate_email_ varchar(50);
-	 candidate_phone_number_ int;
-	 candidate_pword_ text;
-	 candidate_username_ varchar(30);
-	 candidate_id_ int;
+	candidate_nif_ bigint;
+	candidate_cc_  bigint;
+	candidate_full_name_ varchar(60);
+	candidate_nationality_ varchar(30);
+	candidate_birth_date_ varchar(30);
+	candidate_location_ varchar(30);
+	candidate_address_ varchar(40);
+	candidate_postal_code_ varchar(8);
+	candidate_email_ varchar(50);
+	candidate_phone_number_ int;
+	candidate_pword_ text;
+ 	candidate_username_ varchar(30);
+ 	candidate_id_ int;
+ 	candidate_img_ bytea;
+	
 begin
-	select nif_,cc_,full_name_,nationality_,birth_date_,location_, address_, postal_code_, email_, phone_number_,pword_, username_ into candidate_nif_, candidate_cc_, candidate_full_name_, candidate_nationality_, candidate_birth_date_, candidate_location_, candidate_address_, candidate_postal_code_, candidate_email_, candidate_phone_number_ , candidate_pword_ , candidate_username_ FROM Candidate_ WHERE id_ = cid;
+	select nif_,cc_,full_name_,nationality_,birth_date_,location_, address_, postal_code_, email_, phone_number_,pword_, username_, img_ into candidate_nif_, candidate_cc_, candidate_full_name_, candidate_nationality_, candidate_birth_date_, candidate_location_, candidate_address_, candidate_postal_code_, candidate_email_, candidate_phone_number_ , candidate_pword_ , candidate_username_, candidate_img_ FROM Candidate_ WHERE id_ = cid;
 	
 	call post_user(candidate_cc_, candidate_nif_, type_, quota_value_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_id_);
 	
 	select candidate_id_ into new_id;
+
+	if img is not null then
+		insert into User_Img_ (user_id_, img_value_) values (new_id, candidate_img_);
+	end if;
 	
 	DELETE FROM Candidate_ WHERE id_ = cid;
 end
