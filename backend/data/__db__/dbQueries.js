@@ -2,7 +2,7 @@ const QUERY_GET_CANDIDATES = 'select id_, nif_, cc_, full_name_, nationality_, b
 
 const QUERY_GET_CANDIDATE_BY_ID = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_ from candidate_ where id_ = $1;'
 
-const QUERY_POST_CANDIDATE = 'insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) returning id_;'
+const QUERY_POST_CANDIDATE = 'insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_, img_) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) returning id_;'
 
 const QUERY_DELETE_CANDIDATE = 'delete from candidate_ where id_ = $1;'
 

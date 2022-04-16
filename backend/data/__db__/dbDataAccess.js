@@ -37,11 +37,11 @@ const getCandidateByIdData = async (id_) => {
 	}
 }
 
-const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_) => {
+const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('Begin')
-		const candidate = await client.query(queries.QUERY_POST_CANDIDATE, [nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_])
+		const candidate = await client.query(queries.QUERY_POST_CANDIDATE, [nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_, img_])
 		await client.query('Commit')
 		return candidate.rows[0].id_
 	} catch(e) {
