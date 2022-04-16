@@ -12,6 +12,7 @@ create table Candidate_ (
 	phone_number_	int,
 	pword_			text,
 	username_		varchar(30) unique,
+	img_ 			bytea,
 	
 	primary key(id_)
 );

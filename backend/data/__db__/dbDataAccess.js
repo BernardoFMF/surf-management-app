@@ -383,8 +383,6 @@ const getUserByIdData = async (id_) => {
 	try {
 		const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
 		return result.rows[0]
-	} catch (e) {
-		throw e
 	} finally {
 		client.release()
 	}
