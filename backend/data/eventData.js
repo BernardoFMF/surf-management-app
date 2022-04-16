@@ -38,9 +38,6 @@ const eventData = (db) => {
 		const attendance = await db.getEventByIdAttendanceData(eid_)
 		if (attendance.filter(att => att.member_id_ == id_)[0])
 			throw error(409, 'User is already related to this Event')
-		console.log(eid_)
-		console.log(id_)
-		console.log(state_)
 		return await db.postMemberAttendanceData(eid_, id_, state_)
 	}
 	

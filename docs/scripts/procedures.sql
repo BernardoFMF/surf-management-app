@@ -254,8 +254,6 @@ begin
 end
 $$;
 
-
-update Event_ set name_ = 'hiper super assembleia geral do imperio', initial_date_ = '04-06-2022', end_date_ = '05-06-2022' where id_ = 1
 /**
  * delete company is made by a simple update query (changes the member table)
  * no proc needed

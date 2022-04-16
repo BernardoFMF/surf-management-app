@@ -24,8 +24,6 @@ execute procedure verifyDebt();
 --Teste para o trigger 
 --update quota_ set payment_date_ = '2022-05-06' where id_ = 2;
 
-
-
 /**
  * Quando é posta uma nova quota todos os members ficam com has_debt_ a true
 */
