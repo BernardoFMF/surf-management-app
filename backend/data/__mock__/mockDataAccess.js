@@ -61,7 +61,7 @@ const getCandidateByIdData = async (id_) => {
 	return candidate
 }
 
-const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_) => {
+const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_) => {
 	indexObj.idxCandidates++
 	const candidate = {
 		id_: indexObj.idxCandidates, 
@@ -76,7 +76,8 @@ const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_
 		postal_code_, 
 		address_, 
 		location_, 
-		pword_
+		pword_,
+		img_
 	}
 	candidates.push(candidate)
 	return candidate
@@ -87,13 +88,20 @@ const deleteCandidateData = async (id_) => {
 	return candidates
 }
 
-const approveCandidateData = async (id_, type_, quota_value_, qrcode_, paid_enrollment_) => {
+const approveCandidateData = async (id_, type_, quota_value_, paid_enrollment_) => {
 	const candidate = await getCandidateByIdData(id_)
 
 	candidates = candidates.filter(candidate => candidate.id_ != id_)
 
-	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, quota_value_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, qrcode_, paid_enrollment_)
+	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, quota_value_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_)
 
+	if(!candidate.img_) {
+		const img = {
+			user_id_: uid_,
+			img_value_:candidate.img_
+		}
+		user_imgs.push(img)
+	}
 	return uid_
 }
 
@@ -116,21 +124,37 @@ const getCompaniesData = async () => {
 
 const getCompanyByIdData = async (id_) => {
 	const company = companies.filter(company => company.member_id_ == id_)[0]
+	const contact = contacts.filter(contact => contact.member_id_ == id_)[0]
 	if (company) {
 		const member = await getMemberByIdData(company.member_id_)
-		if (member) return company
+		const ret = {
+			member_id_:company.member_id_,
+			nif_:company.nif_,
+			name_:company.name_,
+			location_:contact.location_,
+			address_:contact.address_,
+			postal_code_:contact.postal_code_,
+			email_:contact.email_,
+			phone_number_:contact.phone_number_,
+			username_:member.username_,
+			has_debt_:member.has_debt_,
+			member_type_:member.member_type_
+		}
+		if (member) return ret
 	}
 	return undefined
 }
 
-const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
+const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_,username_, pword_) => {
 	indexObj.idxMember++
 	const member = {
 		id_: indexObj.idxMember,
 		member_type_: 'corporate',
 		has_debt_: true,
 		quota_value_: 50,
-		is_deleted_: false
+		is_deleted_: false,
+		username_,
+		pword_
 	}
 	const company = {
 		member_id_: indexObj.idxMember, 
@@ -241,7 +265,22 @@ const updateMemberAttendanceData = async (eid_, id_, state_) => {
 }
 
 const getEventByIdAttendanceData = async (eid_) => {
-	return attendance.filter(att => att.event_id_ == eid_)
+	const ret = []
+	for (const att of attendance) {
+		if(att.event_id_ == eid_) {
+			const member = await getMemberByIdData(att.member_id_)
+			const event = await getEventByIdData(eid_)
+			const obj = {
+				member_id_:att.member_id_,
+				username_:member.username_,
+				event_id_: eid_,
+				name_: event.name_,
+				state_:att.state_
+			}
+			ret.push(obj)
+		}
+	}
+	return ret
 }
 
 /**
@@ -511,12 +550,13 @@ const getMemberQuotasByIdData = async (id_) => {
 const postQuotaData = async (date_) => {
 	let cnt = indexObj.idxQuotas
 	members.forEach(member => {
-		const year_quota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_.split('-')[2] == date_.split('-')[2])[0]
+		const year_quota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_.split('-')[0] == date_.split('-')[0])[0]
 		if (!year_quota) {
 			indexObj.idxQuotas++
 			const quota = {
 				id_: indexObj.idxQuotas,
 				member_id_: member.id_,
+				username_: member.username_,
 				payment_date: null,
 				date_
 			}

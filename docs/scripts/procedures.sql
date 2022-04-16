@@ -201,7 +201,7 @@ begin
 	
 	select candidate_id_ into new_id;
 
-	if img is not null then
+	if candidate_img_ is not null then
 		insert into User_Img_ (user_id_, img_value_) values (new_id, candidate_img_);
 	end if;
 	
