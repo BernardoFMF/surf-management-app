@@ -19,7 +19,7 @@ const mailSender = async(receivers, subject, content) => {
 	})
 	let info = await transporter.sendMail({
 		from: 'ericeirasurfclub@outlook.com',
-		to: receivers.join(', '),
+		to: receivers, //verificar se é so um ent usar ou fazer o join
 		subject: subject, 
 		text: content.text, 
 		html: content.html, 

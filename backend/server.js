@@ -79,7 +79,7 @@ const router = (app, data) => {
 	app.use('/api/companies', companyRoutes(data))
 	app.use('/api/events', eventRoutes(data))
 	app.use('/api/quotas', quotaRoutes(data))
-	app.use('/api/members', authRoutes())
+	app.use('/api/members', authRoutes(data))
 
 	app.use(errorHandler)
 }

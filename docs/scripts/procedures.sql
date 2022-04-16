@@ -286,6 +286,18 @@ $$;
  * no proc needed
  */
 
+create or replace procedure post_token(p_member_id_ int, p_token_ text)
+LANGUAGE plpgsql  
+as
+$$
+DECLARE 
+	curr_date date;
+begin
+	select current_date into curr_date;
+	insert into member_token_(member_id_, token_, createdAt_) values (p_member_id_, p_token_, curr_date);
+end
+$$;
+
 
 
 

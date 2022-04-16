@@ -132,7 +132,18 @@ create table Membership_card_ (
 	
 	primary key(user_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_)
+);
+
+create table Member_token_ (
+	member_id_ 	 	int unique,
+	token_			text,
+	createdAt_		date,
+	
+	primary key(member_id_),
+	constraint fk_user foreign key(member_id_) references Member_(id_)
 )
+
+
 
 
 

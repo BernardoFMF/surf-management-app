@@ -677,6 +677,21 @@ const getEmails = async () => {
 	}
 }
 
+const getUserEmailByIdData = async (id_) => {
+	const client = await pool.connect()
+	try {
+		await client.query('begin')
+		const email = await client.query(queries.QUERY_GET_USER_EMAIL,[id_])
+		await client.query('commit')
+		return email
+	} catch (e) {
+		await client.query('rollback')
+		throw e
+	} finally {
+		client.release()
+	}
+}
+
 const updateUserQrCodeData = async (id_, qrcode_) => {
 	const client = await pool.connect()
 	try {
@@ -692,6 +707,66 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 	}
 }
 
-const db_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData }
+const postNewTokenData = async(user_id_, token) => {
+	const client = await pool.connect()
+	try {
+		await client.query('begin')
+		await client.query(queries.QUERY_POST_NEW_TOKEN, [user_id_, token])
+		await client.query('commit')
+		return user_id_
+	} catch (e) {
+		await client.query('rollback')
+		throw e
+	} finally {
+		client.release()
+	}
+}
+
+const getMemberTokenByIdData = async(id_) => {
+	const client = await pool.connect()
+	try {
+		await client.query('begin')
+		const result = await client.query(queries.QUERY_GET_MEMBER_TOKEN, [id_])
+		await client.query('commit')
+		return result
+	} catch (e) {
+		await client.query('rollback')
+		throw e
+	} finally {
+		client.release()
+	}
+}
+
+const deleteMemberTokenData = async(id_) => {
+	const client = await pool.connect()
+	try {
+		await client.query('begin')
+		await client.query(queries.QUERY_DELETE_MEMBER_TOKEN, [id_])
+		await client.query('commit')
+		return id_
+	} catch (e) {
+		await client.query('rollback')
+		throw e
+	} finally {
+		client.release()
+	}
+}
+
+const updateMemberTokenData = async(id_, new_token) => {
+	const client = await pool.connect()
+	try {
+		await client.query('begin')
+		await client.query(queries.QUERY_UPDATE_MEMBER_TOKEN, [id_, new_token])
+		await client.query('commit')
+		return id_
+	} catch (e) {
+		await client.query('rollback')
+		throw e
+	} finally {
+		client.release()
+	}
+}
+
+const db_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails,getUserEmailByIdData, updateUserQrCodeData, getMemberTokenByIdData, deleteMemberTokenData, updateMemberTokenData, postNewTokenData }
 
 export default db_data

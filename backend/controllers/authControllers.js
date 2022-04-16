@@ -4,7 +4,7 @@ import asyncHandler from 'express-async-handler'
 import AuthServices from '../services/authServices.js'
 
 
-const authController = () => {
+const authController = (data) => {
 
 	const postLogin = asyncHandler(async (req, res) => {
 		res.sendStatus(200)
@@ -16,7 +16,8 @@ const authController = () => {
 	})
 
 	const resetPasswordRequest = asyncHandler(async (req, res) => {
-		const requestPasswordResetService = await AuthServices.requestPasswordReset(req.body.id_)
+		const requestPasswordResetService = await AuthServices(data).requestPasswordReset(req.body.id_)
+		res.sendStatus(200)
 		res.json(requestPasswordResetService)
 	})
 
