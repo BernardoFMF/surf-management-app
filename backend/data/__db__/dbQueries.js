@@ -12,7 +12,7 @@ const QUERY_GET_CANDIDATE_BY_USERNAME = 'select id_, nif_, cc_, full_name_, nati
 
 const QUERY_GET_COMPANIES = 'select member_id_, nif_, name_, username_, has_debt_, member_type_ from company_ c join member_ m on (c.member_id_ = m.id_) where is_deleted_ = false;'
 
-const QUERY_GET_COMPANY_BY_ID = 'select member_id_, nif_, name_ from company_ where member_id_ = $1;'
+const QUERY_GET_COMPANY_BY_ID = 'select c.member_id_, c.nif_, c.name_, co.location_, co.address_, co.postal_code_, co.email_, co.phone_number_, m.has_debt_, m.member_type_, m.username_ from company_ c join contact_ co on c.member_id_ = co.member_id_ join member_ m on c.member_id_ = m.id_ where c.member_id_ = $1;'
 
 const QUERY_POST_COMPANY = 'call post_company($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);'
 
@@ -86,6 +86,6 @@ const QUERY_POST_ATTENDANCE = 'insert into Attendance_(member_id_, event_id_, st
 
 const QUERY_UPDATE_ATTENDANCE = 'update Attendance_ set state_ = $3 where event_id_ = $1 and member_id_ = $2'
 
-const QUERY_GET_ATTENDANCE = 'select member_id_, event_id_, state_ from Attendance_ where event_id_ = $1'
+const QUERY_GET_ATTENDANCE = 'select member_id_, username_, event_id_, name_, state_ from Attendance_ a join Member_ m on a.member_id_ = m.id_ join Event_ e on a.event_id_ = e.id_ where event_id_ = $1'
 
 export default {QUERY_GET_CANDIDATES, QUERY_GET_CANDIDATE_BY_ID, QUERY_POST_CANDIDATE, QUERY_DELETE_CANDIDATE, QUERY_APPROVE_CANDIDATE, QUERY_GET_CANDIDATE_BY_USERNAME, QUERY_GET_COMPANIES, QUERY_GET_COMPANY_BY_ID, QUERY_POST_COMPANY, QUERY_UPDATE_COMPANY, QUERY_DELETE_COMPANY, QUERY_GET_SPORTS, QUERY_GET_SPORT_BY_ID, QUERY_POST_SPORT, QUERY_DELETE_SPORT, QUERY_GET_EVENTS, QUERY_GET_EVENT_BY_ID, QUERY_POST_EVENT, QUERY_UPDATE_EVENT, QUERY_DELETE_EVENT, QUERY_GET_USERS, QUERY_GET_USER_BY_ID, QUERY_POST_USER, QUERY_UPDATE_USER, QUERY_DELETE_USER, QUERY_GET_USERS_SPORTS, QUERY_GET_USERS_SPORT, QUERY_GET_USER_SPORTS_BY_ID, QUERY_POST_USER_SPORT, QUERY_UPDATE_USER_SPORT, QUERY_DELETE_USER_SPORT, QUERY_GET_QUOTAS, QUERY_GET_COMPANIES_QUOTAS, QUERY_GET_USERS_QUOTAS, QUERY_GET_MEMBERS_QUOTAS_BY_ID, QUERY_POST_QUOTA, QUERY_UPDATE_MEMBER_QUOTA, QUERY_GET_MEMBER_BY_ID, QUERY_GET_MEMBER_BY_USERNAME, QUERY_GET_QUOTA_BY_ID, QUERY_GET_EMAILS, QUERY_UPDATE_QRCODE, QUERY_POST_ATTENDANCE, QUERY_UPDATE_ATTENDANCE, QUERY_GET_ATTENDANCE}
