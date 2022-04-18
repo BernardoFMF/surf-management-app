@@ -411,7 +411,7 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 	membership_cards.push(membership_card)
 }
 
-const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_) => {
+const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted) => {
 	const idxUser = users.findIndex(user => user.member_id_ == id_)
 	users[idxUser].cc_ = cc_
 	users[idxUser].nif_ = nif_
@@ -422,6 +422,7 @@ const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, 
 	users[idxUser].full_name_ = full_name_
 	users[idxUser].paid_enrollment_ = paid_enrollment_
 	users[idxUser].is_admin_ = is_admin_
+	users[idxUser].is_deleted = is_deleted
 
 	const idxContact = contacts.findIndex(contact => contact.member_id_ == id_)
 	contacts[idxContact].phone_number_ = phone_number_

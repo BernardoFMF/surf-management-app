@@ -275,7 +275,7 @@ as
 $$
 begin
 	if not exists(select * from quota_ where date_ = p_date_) then
-		INSERT INTO Quota_(member_id_, payment_date_, date_) SELECT id_, NULL, p_date_ FROM Member_ where quota_value_ <> 0;
+		INSERT INTO Quota_(member_id_, payment_date_, date_) SELECT id_, NULL, p_date_ FROM Member_ where quota_value_ <> 0 and is_deleted_ = false;
 		select count(*) into count_date from quota_ where date_ = p_date_;
 	end if;
 end
