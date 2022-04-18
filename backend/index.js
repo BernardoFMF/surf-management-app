@@ -4,8 +4,8 @@ import express from 'express'
 
 import dotenv from 'dotenv'
 
-//import data from './data/__mock__/mockDataAccess.js'
-import data from './data/__db__/dbDataAccess.js'
+import data from './data/__mock__/mockDataAccess.js'
+//import data from './data/__db__/dbDataAccess.js'
 
 import server from './server.js'
 

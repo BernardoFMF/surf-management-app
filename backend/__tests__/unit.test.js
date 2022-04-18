@@ -10,8 +10,8 @@ const dbCompany = require('../data/companyData')
 const dbUser = require('../data/userData')
 const dbQuota = require('../data/quotaData')
 */
-/*
-import db from '../data/__mock__/mock.js'
+
+import db from '../data/__mock__/mockDataAccess.js'
 
 import sport from '../data/sportData.js'
 import event from '../data/eventData.js'
@@ -288,7 +288,8 @@ test('Delete user', async () => {
 test('Get all sports for users', async () => {
 	expect.assertions(1)
 	const userSports = await dbUser.getUsersSports()
-	expect(userSports.length).toBe(4) 
+	console.log(userSports);
+	expect(userSports.length).toBe(1) 
 })
 
 test('Get users that practice a given sport ', async () => {
@@ -311,7 +312,7 @@ test('Create a sport for a user', async () => {
 
 test('Update a sport for a user', async () => {
 	expect.assertions(1)
-	const sport = await dbUser.updateUserSport(2, 4, 54, 1890547,'Federacao de Windsurf', ['trainer'],  [2019,2020,2021,2022])
+	const sport = await dbUser.updateUserSport(2, 3, 54, 1890547,'Federacao de Windsurf', ['trainer'],  [2019,2020,2021,2022])
 	expect(sport.fed_name_).toBe('Federacao de Windsurf')
 })
 
@@ -319,4 +320,4 @@ test('Delete a sport for a user', async () => {
 	expect.assertions(1)
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.user_id_).toBe(2)
-})*/
+})

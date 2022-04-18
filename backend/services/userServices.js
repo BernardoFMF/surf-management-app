@@ -82,7 +82,19 @@ const userServices = (db) => {
 		return await data.getUserSportsById(id)
 	}
 	
-	const postUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_) => {
+	const postUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated) => {
+		if(!id) throw error(400, 'Parameter not found: id')
+		if(!sid) throw error(400, 'Parameter not found: sid')
+		if(!type) throw error(400, 'Parameter not found: type')
+		if(!fed_number) throw error(400, 'Parameter not found: fed_number')
+		if(!fed_id) throw error(400, 'Parameter not found: fed_id')
+		if(!fed_name) throw error(400, 'Parameter not found: fed_name')
+		if(!type) throw error(400, 'Parameter not found: type')
+		if(!years_federated) throw error(400, 'Parameter not found: years_federated')
+		return await data.postUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated)
+	}
+	
+	const updateUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_) => {
 		if(!id) throw error(400, 'Parameter not found: id')
 		if(!sid) throw error(400, 'Parameter not found: sid')
 		if(!type) throw error(400, 'Parameter not found: type')
@@ -92,19 +104,7 @@ const userServices = (db) => {
 		if(!type) throw error(400, 'Parameter not found: type')
 		if(!years_federated) throw error(400, 'Parameter not found: years_federated')
 		if(!is_absent_) throw error(400, 'Parameter not found: is_absent_')
-		return await data.postUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_)
-	}
-	
-	const updateUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated) => {
-		if(!id) throw error(400, 'Parameter not found: id')
-		if(!sid) throw error(400, 'Parameter not found: sid')
-		if(!type) throw error(400, 'Parameter not found: type')
-		if(!fed_number) throw error(400, 'Parameter not found: fed_number')
-		if(!fed_id) throw error(400, 'Parameter not found: fed_id')
-		if(!fed_name) throw error(400, 'Parameter not found: fed_name')
-		if(!type) throw error(400, 'Parameter not found: type')
-		if(!years_federated) throw error(400, 'Parameter not found: years_federated')
-		return await data.updateUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated)
+		return await data.updateUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_)
 	}
 	
 	const deleteUserSportServices = async (id, sid) => {
