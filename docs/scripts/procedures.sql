@@ -44,14 +44,14 @@ $$;
  * Creates the user_Img
  */
 create or replace procedure put_user(p_id_ int, p_cc_ bigint, p_nif_ bigint, p_type_ varchar(40), p_quota_value_ int, p_birth_date_ date, p_nationality_ varchar(30), p_full_name_ varchar(60), 
-										p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ bytea, p_is_admin_ bool, p_paid_enrollment_ bool)
+										p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ bytea, p_is_admin_ bool, p_paid_enrollment_ bool, p_is_deleted_ bool)
 LANGUAGE plpgsql  
 as
 $$
 begin
 	update Contact_ set location_ = p_location_, address_ = p_address_, postal_code_ = p_postal_code_, phone_number_= p_phone_number_ where member_id_ = p_id_;
 
-	update Member_ set quota_value_ = p_quota_value_ where id_ = p_id_;
+	update Member_ set quota_value_ = p_quota_value_, is_deleted_ = p_is_deleted_  where id_ = p_id_;
 
 	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, is_admin_ = p_is_admin_ where member_id_ = p_id_;
 	
