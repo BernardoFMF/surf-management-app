@@ -18,7 +18,6 @@ $body$;
 create or replace trigger verifyDebtTrigger 
 after update 
 on Quota_
-for each row
 execute procedure verifyDebt();
 
 --Teste para o trigger 
@@ -42,10 +41,44 @@ $$;
 create or replace trigger setDebtTrigger
 after insert 
 on Quota_
-execute procedure setDebt()
+execute procedure setDebt();
 
 --Teste para o trigger 
 --call post_quotas('2023-01-01'); 
+
+create or replace function deleteSportsForDeletedUser()
+returns trigger 
+language plpgsql
+as
+$$
+begin 
+	update user_sport_  set is_absent_ = true where user_id_ in (select member_id_ from Member_ where is_deleted = true);
+	return new;
+end
+$$;
+
+create or replace trigger deleteSportsForDeletedUserTrigger
+after update 
+on User_
+execute procedure deleteSportsForDeletedUser();
+
+
+
+create or replace function deleteSportsForDeletedSport()
+returns trigger 
+language plpgsql
+as
+$$
+begin 
+	update user_sport_  set is_absent_ = true where sport_id_ in (select id_ from Sport_ where is_deleted = true);
+	return new;
+end
+$$;
+
+create or replace trigger deleteSportsForDeletedSportTrigger
+after update 
+on Sport_
+execute procedure deleteSportsForDeletedSport();
 
 
 

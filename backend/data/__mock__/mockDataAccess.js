@@ -266,16 +266,16 @@ const updateMemberAttendanceData = async (eid_, id_, state_) => {
 
 const getEventByIdAttendanceData = async (eid_) => {
 	const ret = []
-	for (const att of attendance) {
-		if(att.event_id_ == eid_) {
-			const member = await getMemberByIdData(att.member_id_)
+	for (const idx in attendance) {
+		if(attendance[idx].event_id_ == eid_) {
+			const member = await getMemberByIdData(attendance[idx].member_id_)
 			const event = await getEventByIdData(eid_)
 			const obj = {
-				member_id_:att.member_id_,
+				member_id_:attendance[idx].member_id_,
 				username_:member.username_,
 				event_id_: eid_,
 				name_: event.name_,
-				state_:att.state_
+				state_:attendance[idx].state_
 			}
 			ret.push(obj)
 		}
@@ -411,7 +411,7 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 	membership_cards.push(membership_card)
 }
 
-const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_) => {
+const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted) => {
 	const idxUser = users.findIndex(user => user.member_id_ == id_)
 	users[idxUser].cc_ = cc_
 	users[idxUser].nif_ = nif_
@@ -422,6 +422,7 @@ const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, 
 	users[idxUser].full_name_ = full_name_
 	users[idxUser].paid_enrollment_ = paid_enrollment_
 	users[idxUser].is_admin_ = is_admin_
+	users[idxUser].is_deleted = is_deleted
 
 	const idxContact = contacts.findIndex(contact => contact.member_id_ == id_)
 	contacts[idxContact].phone_number_ = phone_number_
@@ -450,36 +451,40 @@ const deleteUserData = async (id_) => {
 
 const getUsersSportsData = async () => {
 	let users_sports_array = []
-	for (const user_sport of users_sports) {
-		const member = await getMemberByIdData(user_sport.user_id_)
-		const sport = await getSportByIdData(user_sport.sport_id_)
-		if (member && sport) users_sports_array.push({...user_sport, username_: member.username_, name_: sport.name_})
+	for (const idx in users_sports) {
+		const member = await getMemberByIdData(users_sports[idx].user_id_)
+		const sport = await getSportByIdData(users_sports[idx].sport_id_)
+		if (member && sport) users_sports_array.push({...users_sports[idx], username_: member.username_, name_: sport.name_})
 	}
 	return users_sports_array
 }
 
 const getUsersSportData = async (id_) => {
-	let users_array = []
+	/*let users_array = []
 	const sports_tuples = users_sports.filter(sport => sport.sport_id_ == id_)
-	for (const user_sport of sports_tuples) {
-		const member = await getMemberByIdData(user_sport.user_id_)
-		const user = await getUserByIdData(user_sport.user_id_)
-		const sport = await getSportByIdData(user_sport.sport_id_)
-		if (member && sport) users_array.push({...user, ...user_sport, name_: sport.name_})
+	for (const idx in sports_tuples) {
+		const member = await getMemberByIdData(users_sports[idx].user_id_)
+		const user = await getUserByIdData(users_sports[idx].user_id_)
+		const sport = await getSportByIdData(users_sports[idx].sport_id_)
+		if (member && sport) users_array.push({...user, ...users_sports[idx], name_: sport.name_})
 	}
-	return users_array
+	return users_array*/
+	let sports_tuples = await getUsersSportsData()
+	return sports_tuples.filter(sport => sport.sport_id_ == id_)
 }
 
 const getUserSportsByIdData = async (id_) => {
-	let sports_tuples = []
+	/*let sports_tuples = []
 	const users_tuples = users_sports.filter(user => user.user_id_ == id_)
-	for (const user_sport of users_tuples) {
-		const member = await getMemberByIdData(user_sport.user_id_)
-		const user = await getUserByIdData(user_sport.user_id_)
-		const sport = await getSportByIdData(user_sport.sport_id_)
-		if (member && sport) sports_tuples.push({...user, ...user_sport, name_: sport.name_})
+	for (const idx in users_tuples) {
+		const member = await getMemberByIdData(users_sports[idx].user_id_)
+		const user = await getUserByIdData(users_sports[idx].user_id_)
+		const sport = await getSportByIdData(users_sports[idx].sport_id_)
+		if (member && sport) sports_tuples.push({...user, ...users_sports[idx], name_: sport.name_})
 	}
-	return sports_tuples
+	return sports_tuples*/
+	let sports_tuples = await getUsersSportsData()
+	return sports_tuples.filter(user => user.user_id_ == id_)
 }
 
 const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
@@ -583,8 +588,8 @@ const getQuotaByIdData = async (qid_) => {
 
 const getEmails = async() => {
 	let emails = []
-	for(let contact of contacts) {
-		emails.push(contact.email_)
+	for(let idx in contacts) {
+		emails.push(contacts[idx].email_)
 	}
 	return emails
 }

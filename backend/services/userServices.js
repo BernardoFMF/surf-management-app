@@ -41,7 +41,7 @@ const userServices = (db) => {
 		return await data.postUser(cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment, url)
 	}
 	
-	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin) => {
+	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted) => {
 		if(!id) throw error(400, 'Parameter not found: id')
 		if(!cc) throw error(400, 'Parameter not found: cc')
 		if(!nif) throw error(400, 'Parameter not found: nif')
@@ -55,12 +55,13 @@ const userServices = (db) => {
 		if(!location) throw error(400, 'Parameter not found: location')
 		if(paid_enrollment == undefined) throw error(400, 'Parameter not found: paid_enrollment')
 		if(is_admin == undefined) throw error(400, 'Parameter not found: is_admin')
+		if(is_deleted == undefined) throw error(400, 'Parameter not found: is_deleted')
 
 		let quota_value = 0
 		if (type == 'effective') quota_value = 15
 		else if (type == 'corporate') quota_value = 50
 
-		return await data.updateUser(id, cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin)
+		return await data.updateUser(id, cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted)
 	}
 	
 	const deleteUserServices = async (id) => {
@@ -82,7 +83,19 @@ const userServices = (db) => {
 		return await data.getUserSportsById(id)
 	}
 	
-	const postUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_) => {
+	const postUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated) => {
+		if(!id) throw error(400, 'Parameter not found: id')
+		if(!sid) throw error(400, 'Parameter not found: sid')
+		if(!type) throw error(400, 'Parameter not found: type')
+		if(!fed_number) throw error(400, 'Parameter not found: fed_number')
+		if(!fed_id) throw error(400, 'Parameter not found: fed_id')
+		if(!fed_name) throw error(400, 'Parameter not found: fed_name')
+		if(!type) throw error(400, 'Parameter not found: type')
+		if(!years_federated) throw error(400, 'Parameter not found: years_federated')
+		return await data.postUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated)
+	}
+	
+	const updateUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_) => {
 		if(!id) throw error(400, 'Parameter not found: id')
 		if(!sid) throw error(400, 'Parameter not found: sid')
 		if(!type) throw error(400, 'Parameter not found: type')
@@ -92,19 +105,7 @@ const userServices = (db) => {
 		if(!type) throw error(400, 'Parameter not found: type')
 		if(!years_federated) throw error(400, 'Parameter not found: years_federated')
 		if(!is_absent_) throw error(400, 'Parameter not found: is_absent_')
-		return await data.postUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_)
-	}
-	
-	const updateUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated) => {
-		if(!id) throw error(400, 'Parameter not found: id')
-		if(!sid) throw error(400, 'Parameter not found: sid')
-		if(!type) throw error(400, 'Parameter not found: type')
-		if(!fed_number) throw error(400, 'Parameter not found: fed_number')
-		if(!fed_id) throw error(400, 'Parameter not found: fed_id')
-		if(!fed_name) throw error(400, 'Parameter not found: fed_name')
-		if(!type) throw error(400, 'Parameter not found: type')
-		if(!years_federated) throw error(400, 'Parameter not found: years_federated')
-		return await data.updateUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated)
+		return await data.updateUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_)
 	}
 	
 	const deleteUserSportServices = async (id, sid) => {

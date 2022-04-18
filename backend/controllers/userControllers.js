@@ -38,7 +38,7 @@ const userController = (data) => {
 				throw error(401, 'Unauthorized')
 			}
 		}
-		const user = await services.updateUserServices(req.params.id, req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.postal_code, req.body.address, req.body.location, req.body.img, req.body.paid_enrollment, req.body.is_admin)
+		const user = await services.updateUserServices(req.params.id, req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.postal_code, req.body.address, req.body.location, req.body.img, req.body.paid_enrollment, req.body.is_admin, req.body.is_deleted)
 		if (user) res.json(user)
 	})
 	

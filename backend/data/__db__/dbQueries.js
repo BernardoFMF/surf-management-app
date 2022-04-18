@@ -44,7 +44,7 @@ const QUERY_GET_USER_BY_ID = 'select u.member_id_, nif_, cc_, full_name_, nation
 
 const QUERY_POST_USER = 'call post_user($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)'
 
-const QUERY_UPDATE_USER = 'call put_user($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)'
+const QUERY_UPDATE_USER = 'call put_user($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)'
 
 const QUERY_DELETE_USER = 'update Member_ set is_deleted_ = true where id_ = $1'
 

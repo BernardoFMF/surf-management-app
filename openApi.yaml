@@ -1,0 +1,575 @@
+---
+openapi: 3.0.0
+info:
+  title: SurfApp
+  description: Web API to manage games and groups composed by them
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/GoncaloJCA/SurfApp/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /api/users:
+    get:
+      summary: fetches list of users
+      operationId: getUsersApi
+      responses:
+        "200":
+          description: response body should be a user object array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: creates a user
+      operationId: postUserApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api_users_body'
+      responses:
+        "201":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/id'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "409":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/users/{id}:
+    get:
+      summary: fetches a single user
+      operationId: getUserByIdApi
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/userById'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    put:
+      summary: updates a user
+      operationId: updateUserApi
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_id_body'
+      responses:
+        "200":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/userById'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      summary: deletes a user
+      operationId: deleteUserApi
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/message'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/sports:
+    get:
+      summary: fetches a list of sports
+      operationId: getSportsApi
+      responses:
+        "200":
+          description: response body should be a user object array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/sport'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: creates a sport
+      operationId: postSportApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api_sports_body'
+      responses:
+        "201":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/id'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "409":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/sports/{sid}:
+    get:
+      summary: fetches a single sport
+      operationId: getSportByIdApi
+      parameters:
+      - name: sid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/sportById'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      summary: deletes a sport
+      operationId: deleteSportApi
+      parameters:
+      - name: sid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: response body should be a sport object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/message'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    message:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+    id:
+      type: integer
+    user:
+      required:
+      - birth_date_
+      - cc_
+      - enrollment_date_
+      - full_name_
+      - is_admin_
+      - member_id_
+      - nationality_
+      - nif_
+      - paid_enrollment_
+      type: object
+      properties:
+        member_id_:
+          type: integer
+        cc_:
+          type: integer
+        nif_:
+          type: integer
+        birth_date_:
+          type: string
+          format: date
+        full_name_:
+          type: string
+        enrollment_date_:
+          type: string
+          format: date
+        is_admin_:
+          type: boolean
+    userById:
+      required:
+      - address_
+      - birth_date_
+      - cc_
+      - email_
+      - enrollment_date_
+      - full_name_
+      - is_admin_
+      - location_
+      - member_id_
+      - nationality_
+      - nif_
+      - paid_enrollment_
+      - phone_number_
+      - postal_code_
+      type: object
+      properties:
+        member_id_:
+          type: integer
+        cc_:
+          type: integer
+        nif_:
+          type: integer
+        birth_date_:
+          type: string
+          format: date
+        full_name_:
+          type: string
+        enrollment_date_:
+          type: string
+          format: date
+        is_admin_:
+          type: boolean
+        location_:
+          type: string
+        address_:
+          type: string
+        postal_code_:
+          type: string
+          format: ^\d{4}-\d{3}$
+        email_:
+          type: string
+        phone_number_:
+          type: integer
+    sport:
+      required:
+      - id_
+      - name_
+      type: object
+      properties:
+        id_:
+          type: integer
+        name_:
+          type: string
+    sportById:
+      required:
+      - id_
+      - name_
+      type: object
+      properties:
+        id_:
+          type: integer
+        name_:
+          type: string
+    error:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: integer
+    html:
+      type: string
+      example: <html>HTML text</html>
+    api_users_body:
+      type: object
+      properties:
+        cc:
+          type: integer
+        nif:
+          type: integer
+        type:
+          type: string
+        birth_date:
+          type: string
+          format: date
+        full_name:
+          type: string
+        enrollment_date:
+          type: string
+          format: date
+        is_admin:
+          type: boolean
+        location:
+          type: string
+        address:
+          type: string
+        postal_code:
+          type: string
+          format: ^\d{4}-\d{3}$
+        email:
+          type: string
+        phone_number:
+          type: integer
+        password:
+          type: string
+          format: password
+        username:
+          type: string
+        paid_enrollment:
+          type: boolean
+    users_id_body:
+      type: object
+      properties:
+        cc:
+          type: integer
+        nif:
+          type: integer
+        type:
+          type: string
+        birth_date:
+          type: string
+          format: date
+        full_name:
+          type: string
+        enrollment_date:
+          type: string
+          format: date
+        is_admin:
+          type: boolean
+        location:
+          type: string
+        address:
+          type: string
+        postal_code:
+          type: string
+          format: ^\d{4}-\d{3}$
+        phone_number:
+          type: integer
+        paid_enrollment:
+          type: boolean
+        img:
+          type: string
+          format: byte
+    api_sports_body:
+      type: object
+      properties:
+        name:
+          type: string
+  parameters:
+    idParameter:
+      name: id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+    sidParameter:
+      name: sid
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer

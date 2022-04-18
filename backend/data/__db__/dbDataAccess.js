@@ -403,11 +403,11 @@ const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationa
 	}
 }
 
-const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_) => {
+const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_) => {
 	const client = await pool.connect()
 	try {
 		await client.query('begin')
-		await client.query(queries.QUERY_UPDATE_USER, [id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, is_admin_, paid_enrollment_])
+		await client.query(queries.QUERY_UPDATE_USER, [id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, is_admin_, paid_enrollment_, is_deleted_])
 		await client.query('commit')
 		return id_
 	} catch (e) {
