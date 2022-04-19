@@ -84,6 +84,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
   /api/users/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParameter'
     get:
       summary: fetches a single user
       operationId: getUserByIdApi
@@ -209,6 +211,280 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+  /api/users/sports:
+    get:
+      summary: fetches all sports associated with the users
+      operationId: getUsersSportsApi
+      responses:
+        "200":
+          description: response body should be a sport object joined with user object array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/sportJoinUser'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/users/sports/{sid}:
+    parameters:
+      - $ref: '#/components/parameters/sidParameter'
+    get:
+      summary: fetches all sports associated with the users
+      operationId: getUsersSportApi
+      responses:
+        "200":
+          description: response body should be a sport object joined with user object array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/sportJoinUser'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/users/{id}/sports:
+    parameters:
+      - $ref: '#/components/parameters/idParameter'
+    get:
+      summary: fetches all users associated with the sport
+      operationId: getUserSportsByIdApi
+      responses:
+        "200":
+          description: response body should be a sport object joined with user object array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/sportJoinUser'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: creates a user sport
+      operationId: postUserSportApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sid:
+                  type: integer
+                fed_id:
+                  type: integer
+                fed_number: 
+                  type: integer
+                fed_name:
+                  type: string
+                type:
+                  type: array
+                  items:
+                    type: string
+                years_federated:
+                  type: array
+                  items:
+                    type: integer
+      responses:
+        "201":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/id'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "409":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/users/{id}/sports/{sid}:
+    parameters:
+      - $ref: '#/components/parameters/idParameter'
+      - $ref: '#/components/parameters/sidParameter'
+    put:
+      summary: updates a user sport
+      operationId: updateUserSportApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sid:
+                  type: integer
+                fed_id:
+                  type: integer
+                fed_number: 
+                  type: integer
+                fed_name:
+                  type: string
+                type:
+                  type: array
+                  items:
+                    type: string
+                years_federated:
+                  type: array
+                  items:
+                    type: integer
+                is_absent:
+                  type: boolean
+      responses:
+        "201":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/id'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "409":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      summary: deleted a user sport
+      operationId: deleteUserSportApi
+      responses:
+        "200":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/id'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  
   /api/sports:
     get:
       summary: fetches a list of sports
@@ -364,6 +640,203 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+  
+  /api/quotas:
+    get:
+      summary: fetches all quotas
+      operationId: getQuotasApi
+      responses:
+        "200":
+          description: response body should be a quotas object  array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/quota'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: creates a quota
+      operationId: postQuotaApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+      responses:
+        "201":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/id'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/quotas/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParameter'
+    put:
+      summary: updates a quota
+      operationId: updateMemberQuotaApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+      responses:
+        "201":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/id'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/quotas/users:
+    get:
+      summary: fetches all quotas from users
+      operationId: getUsersQuotasApi
+      responses:
+        "200":
+          description: response body should be a quota object array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/quota'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/quotas/companies:
+    get:
+      summary: fetches all quotas from companies
+      operationId: getCompaniesQuotasApi
+      responses:
+        "200":
+          description: response body should be a quota object array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/quota'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/quotas/members/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParameter'
+    get:
+      summary: fetches all quotas from companies
+      operationId: getMembersQuotasApi
+      responses:
+        "200":
+          description: response body should be a quota object array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/quota'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'         
+                
 components:
   schemas:
     message:
@@ -556,7 +1029,77 @@ components:
       properties:
         name:
           type: string
+          
+    sportJoinUser:
+      type: object
+      required:
+        - username
+        - name
+        - user_id
+        - sport_id
+        - type
+        - fed_number
+        - fed_id
+        - fed_name
+        - years_federated
+        - is_absent
+      properties:
+        username:
+          type: string
+        name:
+          type: string
+        user_id:
+          type: integer
+        sport_id:
+          type: integer
+        type:
+          type: array
+          items:
+            type: string
+        fed_number:
+          type: integer
+        fed_id:
+          type: integer
+        fed_name:
+          type: string
+        years_federated:
+          type: array
+          items: 
+            type: integer
+        is_absent:
+          type: boolean
+          
+    quota:
+      type: object
+      required:
+        - id
+        - member_id
+        - username
+        - payment_date
+        - date
+      properties:
+        id:
+          type: integer
+        member_id:
+          type: integer
+        username:
+          type: string
+        payment_date:
+          type: string
+          format: date
+        date:
+          type: string
+          format: date
+
   parameters:
+    qidParameter:
+      name: qid
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
     idParameter:
       name: id
       in: path

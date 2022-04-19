@@ -18,7 +18,7 @@ const quotaRoutes = (data) => {
     
 	app.get('/users', authentication.authAdmin, controller.getUsersQuotas)
     
-	app.get('/member/:id', authentication.authMember, controller.getMemberQuotasById)
+	app.get('/members/:id', authentication.authMember, controller.getMemberQuotasById)
     
 	app.post('/', authentication.authAdmin, controller.postQuota)
     
