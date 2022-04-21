@@ -6,24 +6,23 @@ import { CssBaseline, StyledEngineProvider } from '@mui/material'
 // routing
 import Routes from './routes'
 
-// defaultTheme
-//import themes from './themes'
+//defaultTheme
+import themes from './themes'
 
 // project imports
 import NavigationScroll from './layout/NavigationScroll'
 
 function App() {
-  //const customization = useSelector((state) => state.customization)
 
   return (
-    //<StyledEngineProvider injectFirst>
-            //<ThemeProvider theme={themes(customization)}>
-                //<CssBaseline />
+    <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={themes()}>
+                <CssBaseline />
                 <NavigationScroll>
                     <Routes />
                 </NavigationScroll>
-            //</ThemeProvider>
-        //</StyledEngineProvider>
+            </ThemeProvider>
+        </StyledEngineProvider>
   )
 }
 

@@ -5,7 +5,7 @@ import RequireAuth from "../components/RequireAuth";
 
 const DashboardOverviewPage = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
 const DashboardAnalyticsPage = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
-const SignPage = Loadable(lazy(() => import('../Pages/LoginScreen')))
+const SignPage = Loadable(lazy(() => import('../Pages/auth/SignPage')))
 
 /**
  * <Route path="/dashboard/charts" element={<DashboardChartsPage />} />
