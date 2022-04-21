@@ -1,7 +1,12 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../../src/store/actions/userActions'
+import { useNavigate } from 'react-router-dom';
+
 import './login.css';
 
 const LoginScreen = () => {
+    let history = useNavigate();
     const [clicked, setClicked] = useState(false);
     const [signUpStage, setSignUpStage] = useState(1);
 
@@ -14,19 +19,37 @@ const LoginScreen = () => {
         setSignUpStage(signUpStage + 1)
     }
 
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+
+    const dispatch = useDispatch()
+
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
+
+    useEffect(() => {
+        if (userInfo) {
+          history('/dashboard/overview')
+        }
+      }, [history, userInfo])
+
+      const submitHandler = (e) => {
+        e.preventDefault()
+        dispatch(login(username, password))
+      }
   return (
     <div className={`container ${clicked ? 'sign-up-mode' : ''}`}>
         <div className="forms-container">
             <div className="signin-signup">
-                <form action="#" className="sign-in-form">
+                <form action="#" onSubmit={submitHandler} className="sign-in-form">
                     <h2 className="title">Sign in</h2>
                     <div className="input-field">
                         <i className="fas fa-user"></i>
-                        <input type="text" placeholder="Username" />
+                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
                     </div>
                     <div className="input-field">
                         <i className="fas fa-lock"></i>
-                        <input type="password" placeholder="Password" />
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}placeholder="Password" />
                     </div>
                     <input type="submit" value="Login" className="btn solid" />
                 </form>
@@ -100,7 +123,6 @@ const LoginScreen = () => {
                         Sign up
                     </button>
                 </div>
-                <img src="img/log.svg" className="image" alt="" />
             </div>
             <div className="panel right-panel">
                 <div className="content">
@@ -113,7 +135,6 @@ const LoginScreen = () => {
                         Sign in
                     </button>
                 </div>
-                <img src="img/register.svg" className="image" alt="" />
                 </div>
         </div>
     </div>
