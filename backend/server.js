@@ -10,6 +10,8 @@ import expressSession from 'express-session'
 import crypto from './utils/crypto.js'
 import errorHandler from './middlewares/errorMiddleware.js'
 
+import error from './utils/error.js'
+
 import userRoutes from './routes/userRoutes.js'
 import sportRoutes from './routes/sportRoutes.js'
 import candidateRoutes from './routes/candidateRoutes.js'
@@ -58,13 +60,15 @@ const router = (app, data) => {
 		async (username, password, done) => {
 			try {
 				const member = await data.getMemberByUsernameData(username)
+				console.log(username)
+				console.log(password)
 				if(!member) {
-					done(null, false, {message: 'Incorrect username'})
+					throw error(401, 'Incorrect username')
 				} else {
-					if(crypto.comparepassword(password, await member.pword_)) {
+					if(await crypto.comparepassword(password, member.pword_)) {
 						done(null, member)
 					} else {
-						done(null, false, {message: 'Incorrect password'})
+						throw error(401, 'Incorrect password')
 					}
 				}
 			} catch (err) {

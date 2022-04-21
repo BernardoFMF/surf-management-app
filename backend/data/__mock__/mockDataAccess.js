@@ -15,7 +15,7 @@ let members = [{
 	member_type_: 'founder',
 	has_debt_: false,
 	quota_value_: 0,
-	pword_: crypto.hashpassword('123'),
+	pword_: await crypto.hashpassword('123'),
 	username_: 'miguelbarata',
 	is_deleted_: false
 }]
