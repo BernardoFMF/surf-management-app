@@ -63,12 +63,12 @@ const router = (app, data) => {
 				console.log(username)
 				console.log(password)
 				if(!member) {
-					throw error(401, 'Incorrect username')
+					done(null, false, {message: 'Incorrect username'})
 				} else {
 					if(await crypto.comparepassword(password, member.pword_)) {
 						done(null, member)
 					} else {
-						throw error(401, 'Incorrect password')
+						done(null, false, {message: 'Incorrect password'})
 					}
 				}
 			} catch (err) {

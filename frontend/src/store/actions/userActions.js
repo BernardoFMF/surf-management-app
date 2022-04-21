@@ -10,15 +10,11 @@ export const login = (username, password) => async (dispatch) => {
     dispatch({
       type: USER_LOGIN_REQUEST,
     })
-    console.log("cheguei");
-    const response = await fetch('api/members/login', {
+    const response = await fetch('/api/members/login', {
         method: 'POST',
         body: JSON.stringify({ username, password }),
         headers: { "Content-Type": "application/json" }
     })
-
-    console.log(response)
-
     const text = await response.text()
     dispatch({
       type: USER_LOGIN_SUCCESS,
@@ -38,8 +34,8 @@ export const login = (username, password) => async (dispatch) => {
 }
 
 export const logout = () => async (dispatch) => {
+  await fetch('/api/members/logout', { method: 'POST' })
   localStorage.removeItem('userInfo')
-  await fetch('api/members/logout', { method: 'POST' })
   dispatch({ type: USER_LOGOUT })
   document.location.href = '/sign'
 }

@@ -1,10 +1,11 @@
 import { Routes, Route } from "react-router-dom";
 import { lazy } from 'react'
 import Loadable from '../components/Loadable'
+import RequireAuth from "../components/RequireAuth";
 
-const DashboardOverviewPage = Loadable(lazy(() => import('../pages/dashboard/DashboardOverviewPage')))
-const DashboardAnalyticsPage = Loadable(lazy(() => import('../pages/dashboard/DashboardAnalyticsPage')))
-const SignPage = Loadable(lazy(() => import('../pages/LoginScreen')))
+const DashboardOverviewPage = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
+const DashboardAnalyticsPage = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
+const SignPage = Loadable(lazy(() => import('../Pages/LoginScreen')))
 
 /**
  * <Route path="/dashboard/charts" element={<DashboardChartsPage />} />
@@ -27,10 +28,9 @@ const SignPage = Loadable(lazy(() => import('../pages/LoginScreen')))
 export default function ThemeRoutes() {
     return (
       <Routes>
-          <Route path="/dashboard/overview" element={<DashboardOverviewPage />} />
-          <Route path="/dashboard/analytics" element={<DashboardAnalyticsPage />} />
-          
-
+          <Route path="/" element={<RequireAuth><DashboardOverviewPage/></RequireAuth>} />
+          <Route path="/dashboard/overview" element={<RequireAuth><DashboardOverviewPage/></RequireAuth>} />
+          <Route path="/dashboard/analytics" element={<RequireAuth><DashboardAnalyticsPage/></RequireAuth>} />
           <Route path="/sign" element={<SignPage />} />
       </Routes>
     )

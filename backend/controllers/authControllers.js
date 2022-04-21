@@ -7,11 +7,11 @@ import AuthServices from '../services/authServices.js'
 const authController = (data) => {
 
 	const postLogin = asyncHandler(async (req, res) => {
-		console.log('cheguei')
 		res.json(req.user)
 	})
 
 	const postLogout = asyncHandler(async (req, res) => {
+		console.log('cheguei ao logout');
 		req.logout()
 		res.json({ message: 'User is logged out' })
 	})
