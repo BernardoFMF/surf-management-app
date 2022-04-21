@@ -7,7 +7,6 @@ const LoginScreen = () => {
 
     const toggleClass = () => {
         setClicked(!clicked)
-        console.log(clicked)
     }
 
     const changeStage = (e) => {
@@ -84,9 +83,7 @@ const LoginScreen = () => {
                         <div className="input-field">
                             <input type="file" id="image-input" accept="image/png, image/jpg"/>
                         </div></div>)}
-                    
                     {signUpStage < 4 ? (<input className="btn" type="submit" onClick={changeStage} value="Next"/>) : ""}
-                    
                 </form>
             </div>
         </div>
