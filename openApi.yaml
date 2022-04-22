@@ -84,8 +84,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
   /api/users/{id}:
-    parameters:
-      - $ref: '#/components/parameters/idParameter'
     get:
       summary: fetches a single user
       operationId: getUserByIdApi
@@ -186,7 +184,7 @@ paths:
           type: integer
       responses:
         "200":
-          description: response body should be a user object
+          description: response body should be a message object
           content:
             application/json:
               schema:
@@ -237,11 +235,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
   /api/users/sports/{sid}:
-    parameters:
-      - $ref: '#/components/parameters/sidParameter'
     get:
       summary: fetches all sports associated with the users
       operationId: getUsersSportApi
+      parameters:
+      - name: sid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
         "200":
           description: response body should be a sport object joined with user object array
@@ -276,11 +280,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
   /api/users/{id}/sports:
-    parameters:
-      - $ref: '#/components/parameters/idParameter'
     get:
       summary: fetches all users associated with the sport
       operationId: getUserSportsByIdApi
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
         "200":
           description: response body should be a sport object joined with user object array
@@ -317,28 +327,19 @@ paths:
     post:
       summary: creates a user sport
       operationId: postUserSportApi
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                sid:
-                  type: integer
-                fed_id:
-                  type: integer
-                fed_number: 
-                  type: integer
-                fed_name:
-                  type: string
-                type:
-                  type: array
-                  items:
-                    type: string
-                years_federated:
-                  type: array
-                  items:
-                    type: integer
+              $ref: '#/components/schemas/id_sports_body'
       responses:
         "201":
           description: response body should be a user object
@@ -379,36 +380,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
   /api/users/{id}/sports/{sid}:
-    parameters:
-      - $ref: '#/components/parameters/idParameter'
-      - $ref: '#/components/parameters/sidParameter'
     put:
       summary: updates a user sport
       operationId: updateUserSportApi
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: sid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                sid:
-                  type: integer
-                fed_id:
-                  type: integer
-                fed_number: 
-                  type: integer
-                fed_name:
-                  type: string
-                type:
-                  type: array
-                  items:
-                    type: string
-                years_federated:
-                  type: array
-                  items:
-                    type: integer
-                is_absent:
-                  type: boolean
+              $ref: '#/components/schemas/sports_sid_body'
       responses:
         "201":
           description: response body should be a user object
@@ -451,6 +445,21 @@ paths:
     delete:
       summary: deleted a user sport
       operationId: deleteUserSportApi
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: sid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
         "200":
           description: response body should be a user object
@@ -484,7 +493,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  
   /api/sports:
     get:
       summary: fetches a list of sports
@@ -640,7 +648,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  
   /api/quotas:
     get:
       summary: fetches all quotas
@@ -673,11 +680,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                date:
-                  type: string
-                  format: date
+              $ref: '#/components/schemas/api_quotas_body'
       responses:
         "201":
           description: response body should be a user object
@@ -706,22 +709,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
   /api/quotas/{id}:
-    parameters:
-      - $ref: '#/components/parameters/idParameter'
     put:
       summary: updates a quota
       operationId: updateMemberQuotaApi
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                date:
-                  type: string
-                  format: date
+              $ref: '#/components/schemas/quotas_id_body'
       responses:
-        "201":
+        "200":
           description: response body should be a user object
           content:
             application/json:
@@ -798,11 +803,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
   /api/quotas/members/{id}:
-    parameters:
-      - $ref: '#/components/parameters/idParameter'
     get:
       summary: fetches all quotas from companies
       operationId: getMembersQuotasApi
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
         "200":
           description: response body should be a quota object array
@@ -835,8 +846,205 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'         
-                
+                $ref: '#/components/schemas/error'
+  /api/companies:
+    get:
+      summary: fetches all companies
+      operationId: getCompaniesApi
+      responses:
+        "200":
+          description: response body should be a company object array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/company'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: creates a quota
+      operationId: postCompanyApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api_companies_body'
+      responses:
+        "201":
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/id'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/companies/{cid}:
+    get:
+      summary: fetches a specific company
+      operationId: getCompanyByIdApi
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: response body should be a company object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/companyById'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    put:
+      summary: updates a company
+      operationId: putCompanyApi
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/companies_cid_body'
+      responses:
+        "200":
+          description: response body should be an id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/id'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "500":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      summary: deletes a company
+      operationId: deleteCompanyApi
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: response body should be a message object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/message'
+        "400":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "401":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        "404":
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 components:
   schemas:
     message:
@@ -1029,20 +1237,19 @@ components:
       properties:
         name:
           type: string
-          
     sportJoinUser:
-      type: object
       required:
-        - username
-        - name
-        - user_id
-        - sport_id
-        - type
-        - fed_number
-        - fed_id
-        - fed_name
-        - years_federated
-        - is_absent
+      - fed_id
+      - fed_name
+      - fed_number
+      - is_absent
+      - name
+      - sport_id
+      - type
+      - user_id
+      - username
+      - years_federated
+      type: object
       properties:
         username:
           type: string
@@ -1064,19 +1271,18 @@ components:
           type: string
         years_federated:
           type: array
-          items: 
+          items:
             type: integer
         is_absent:
           type: boolean
-          
     quota:
-      type: object
       required:
-        - id
-        - member_id
-        - username
-        - payment_date
-        - date
+      - date
+      - id
+      - member_id
+      - payment_date
+      - username
+      type: object
       properties:
         id:
           type: integer
@@ -1090,7 +1296,145 @@ components:
         date:
           type: string
           format: date
-
+    company:
+      required:
+      - member_id_
+      - name_
+      - nif_
+      type: object
+      properties:
+        member_id_:
+          type: integer
+        name_:
+          type: string
+        nif_:
+          type: integer
+    companyById:
+      required:
+      - address_
+      - email_
+      - has_debt_
+      - location_
+      - member_id_
+      - name_
+      - nif_
+      - phone_number_
+      - postal_code_
+      - username_
+      type: object
+      properties:
+        member_id_:
+          type: integer
+        name_:
+          type: string
+        nif_:
+          type: integer
+        location_:
+          type: string
+        address_:
+          type: string
+        postal_code_:
+          type: string
+          format: ^\d{4}-\d{3}$
+        email_:
+          type: string
+        phone_number_:
+          type: integer
+        username_:
+          type: string
+        has_debt_:
+          type: boolean
+    id_sports_body:
+      type: object
+      properties:
+        sid:
+          type: integer
+        fed_id:
+          type: integer
+        fed_number:
+          type: integer
+        fed_name:
+          type: string
+        type:
+          type: array
+          items:
+            type: string
+        years_federated:
+          type: array
+          items:
+            type: integer
+    sports_sid_body:
+      type: object
+      properties:
+        sid:
+          type: integer
+        fed_id:
+          type: integer
+        fed_number:
+          type: integer
+        fed_name:
+          type: string
+        type:
+          type: array
+          items:
+            type: string
+        years_federated:
+          type: array
+          items:
+            type: integer
+        is_absent:
+          type: boolean
+    api_quotas_body:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+    quotas_id_body:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+    api_companies_body:
+      type: object
+      properties:
+        name:
+          type: string
+        nif:
+          type: integer
+        phone_number:
+          type: integer
+        email:
+          type: string
+        postal_code:
+          type: integer
+        address:
+          type: string
+        location:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+    companies_cid_body:
+      type: object
+      properties:
+        name:
+          type: string
+        nif:
+          type: integer
+        phone_number:
+          type: integer
+        email:
+          type: string
+        postal_code:
+          type: integer
+        address:
+          type: string
+        location:
+          type: string
   parameters:
     qidParameter:
       name: qid
@@ -1110,6 +1454,14 @@ components:
         type: integer
     sidParameter:
       name: sid
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+    cidParameter:
+      name: cid
       in: path
       required: true
       style: simple
