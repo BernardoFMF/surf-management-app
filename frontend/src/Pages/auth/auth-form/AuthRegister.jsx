@@ -38,7 +38,10 @@ import InputField from '../../../components/multi-step-form/InputField';
 import PasswordInputField from '../../../components/multi-step-form/PasswordInputField';
 import DateInputField from '../../../components/multi-step-form/DateInputField';
 import MultiStepForm, { FormStep } from '../../../components/multi-step-form/MultiStepForm';
+import DropdownInputField from '../../../components/multi-step-form/DropdownInputField';
 
+// data
+import countries from '../../../assets/data/countries.json'
 
 const AuthRegister = ({ ...others }) => {
     const theme = useTheme();
@@ -57,12 +60,12 @@ const AuthRegister = ({ ...others }) => {
         event.preventDefault();
     }
 
-    const parseDate = (value, originalValue) => {
-        const parsedDate = isDate(originalValue)
+    const parseDate = (originalValue) => {
+        let parsedDate = isDate(originalValue)
           ? originalValue
           : parse(originalValue, "yyyy-MM-dd", new Date());
-      
-        return parsedDate;
+
+        return parsedDate
       }
 
     return (
@@ -80,20 +83,72 @@ const AuthRegister = ({ ...others }) => {
                 </Grid>
             </Grid>
 
-            <MultiStepForm initialValues={{username: '', password: ''}} onSubmit={values => {
+            <MultiStepForm initialValues={{username: '', email: '', password: '', fullName: '', cc: '', nif: '', sex: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: ''}}
+            onSubmit={values => {
+                console.log(values.birthDate.toString());
+                values.birthDate = values.birthDate.toString().split('T')[0]
                 alert(JSON.stringify(values, null, 2))
             }}>
-                <FormStep stepName='Person' onSubmit={() => console.log('Step Person')} validationSchema={Yup.object().shape({
-                    username: Yup.string().required('Username is required')
+                <FormStep stepName='User' validationSchema={Yup.object().shape({
+                    username: Yup.string().required('Username is required'),
+                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+                    password: Yup.string().max(255).required('Password is required')
                 })}>
-                    <InputField name='username' label='Username'>
-                    </InputField>
+                    <InputField name='username' label='Username' type='text'></InputField>
+                    <InputField name='email' label='Email' type='text'></InputField>
+                    <PasswordInputField name='password' label='Password' 
+                        showPassword={showPassword} endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                    size="large"
+                                >
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        }>
+                    </PasswordInputField>
                 </FormStep>
-                <FormStep stepName='Dog' onSubmit={() => console.log('Step Dog')} validationSchema={Yup.object().shape({
-                    password: Yup.string().required('Password is required')
+                <FormStep stepName='Personal' validationSchema={Yup.object().shape({
+                    fullName: Yup.string().required('Full name is required'),
+                    cc: Yup.string().matches(/^[0-9]+$/, "Must be only digits").min(9, 'Must be exactly 9 digits').max(9, 'Must be exactly 9 digits').required('CC is required'),
+                    nif: Yup.string().required('Nif is required').matches(/^[0-9]+$/, "Must be only digits").min(9, 'Must be exactly 9 digits').max(9, 'Must be exactly 9 digits'),
+                    sex: Yup.string().required('Sex is required'),
+                    nationality: Yup.string().required('Nationality is required'),
+                    birthDate: Yup.date().transform(parseDate).max(new Date()).required('Birth Date is required')
+                    })}>
+                    <InputField name='fullName' label='Full Name' type='text'></InputField>
+                    <Grid container spacing={matchDownSM ? 0 : 2}>
+                        <Grid item xs={12} sm={6}>
+                            <InputField name='cc' label='CC' type='text'></InputField>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <InputField name='nif' label='NIF' type='text'></InputField>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={matchDownSM ? 0 : 2}>
+                        <Grid item xs={12} sm={6}>
+                            <DropdownInputField name='sex' label='Sex' options={{M:'Male', F:'Female', O:'Other'}}></DropdownInputField>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <DropdownInputField name='nationality' label='Nationality' options={countries}></DropdownInputField>
+                        </Grid>
+                    </Grid>
+                    <DateInputField name='birthDate' label='BirthDate'></DateInputField>
+                </FormStep>
+                <FormStep stepName='Personal' validationSchema={Yup.object().shape({
+                    location: Yup.string().required('Location is required'),
+                    address: Yup.string().required('Address is required'),
+                    postalCode: Yup.string().matches(/^\d{4}[-]\d{3}?$/, "Must be follow this pattern DDDD-DDD").required('Postal Code is required'),
+                    phoneNumber: Yup.string().matches(/^[0-9]+$/, "Must be only digits").min(9, 'Must be exactly 9 digits').max(9, 'Must be exactly 9 digits')
                 })}>
-                    <InputField name='password' label='Password'>
-                    </InputField>
+                    <InputField name='location' label='Location'></InputField>
+                    <InputField name='address' label='Address'></InputField>
+                    <InputField name='postalCode' label='PostalCode'></InputField>
+                    <InputField name='phoneNumber' label='PhoneNumber'></InputField>
                 </FormStep>
             </MultiStepForm>
 

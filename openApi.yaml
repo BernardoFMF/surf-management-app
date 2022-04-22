@@ -1202,34 +1202,34 @@ components:
     users_id_body:
       type: object
       properties:
-        cc:
+        cc_:
           type: integer
-        nif:
+        nif_:
           type: integer
-        type:
+        type_:
           type: string
-        birth_date:
+        birth_date_:
           type: string
           format: date
-        full_name:
+        full_name_:
           type: string
-        enrollment_date:
+        enrollment_date_:
           type: string
           format: date
-        is_admin:
+        is_admin_:
           type: boolean
-        location:
+        location_:
           type: string
-        address:
+        address_:
           type: string
-        postal_code:
+        postal_code_:
           type: string
           format: ^\d{4}-\d{3}$
-        phone_number:
+        phone_number_:
           type: integer
-        paid_enrollment:
+        paid_enrollment_:
           type: boolean
-        img:
+        img_:
           type: string
           format: byte
     api_sports_body:
@@ -1239,61 +1239,61 @@ components:
           type: string
     sportJoinUser:
       required:
-      - fed_id
-      - fed_name
-      - fed_number
-      - is_absent
-      - name
-      - sport_id
-      - type
-      - user_id
-      - username
-      - years_federated
+      - fed_id_
+      - fed_name_
+      - fed_number_
+      - is_absent_
+      - name_
+      - sport_id_
+      - type_
+      - user_id_
+      - username_
+      - years_federated_
       type: object
       properties:
-        username:
+        username_:
           type: string
-        name:
+        name_:
           type: string
-        user_id:
+        user_id_:
           type: integer
-        sport_id:
+        sport_id_:
           type: integer
-        type:
+        type_:
           type: array
           items:
             type: string
-        fed_number:
+        fed_number_:
           type: integer
-        fed_id:
+        fed_id_:
           type: integer
-        fed_name:
+        fed_name_:
           type: string
-        years_federated:
+        years_federated_:
           type: array
           items:
             type: integer
-        is_absent:
+        is_absent_:
           type: boolean
     quota:
       required:
-      - date
-      - id
-      - member_id
-      - payment_date
-      - username
+      - date_
+      - id_
+      - member_id_
+      - payment_date_
+      - username_
       type: object
       properties:
-        id:
+        id_:
           type: integer
-        member_id:
+        member_id_:
           type: integer
-        username:
+        username_:
           type: string
-        payment_date:
+        payment_date_:
           type: string
           format: date
-        date:
+        date_:
           type: string
           format: date
     company:
