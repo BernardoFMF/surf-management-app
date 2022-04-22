@@ -11,7 +11,7 @@ const DashboardOverviewPage = () => {
   const func = async () => {
     dispatch(logout())
     await logoutHook()
-   // history('/sign')
+    history('/sign')
   }
   return (
     <div><button onClick={func}>logout</button></div>

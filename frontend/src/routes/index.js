@@ -5,7 +5,8 @@ import RequireAuth from "../components/RequireAuth";
 
 const DashboardOverviewPage = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
 const DashboardAnalyticsPage = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
-const SignPage = Loadable(lazy(() => import('../Pages/auth/SignPage')))
+const SignInPage = Loadable(lazy(() => import('../Pages/auth/SignInPage')))
+const SignUpPage = Loadable(lazy(() => import('../Pages/auth/SignUpPage')))
 
 /**
  * <Route path="/dashboard/charts" element={<DashboardChartsPage />} />
@@ -31,7 +32,8 @@ export default function ThemeRoutes() {
           <Route path="/" element={<RequireAuth><DashboardOverviewPage/></RequireAuth>} />
           <Route path="/dashboard/overview" element={<RequireAuth><DashboardOverviewPage/></RequireAuth>} />
           <Route path="/dashboard/analytics" element={<RequireAuth><DashboardAnalyticsPage/></RequireAuth>} />
-          <Route path="/sign" element={<SignPage />} />
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
       </Routes>
     )
 }

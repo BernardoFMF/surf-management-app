@@ -13,7 +13,7 @@ import themeTypography from './typography';
  * @param {JsonObject} customization customization parameter object
  */
 
-export const theme = () => {
+export const theme = (customization) => {
     const color = colors;
 
     const themeOption = {
@@ -28,8 +28,7 @@ export const theme = () => {
         menuSelected: color.secondaryDark,
         menuSelectedBack: color.secondaryLight,
         divider: color.grey200,
-        fontFamily: `'Roboto', sans-serif`,
-        borderRadius: '14px'
+        customization
     };
 
     const themeOptions = {
@@ -49,6 +48,8 @@ export const theme = () => {
 
     const themes = createTheme(themeOptions);
     themes.components = componentStyleOverrides(themeOption);
+
+    console.log(themes.components);
 
     return themes;
 };

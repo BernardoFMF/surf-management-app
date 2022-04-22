@@ -40,7 +40,7 @@ export const logout = () => async (dispatch) => {
   await fetch('/api/members/logout', { method: 'POST' })
   localStorage.removeItem('userInfo')
   dispatch({ type: USER_LOGOUT })
-  document.location.href = '/sign'
+  //document.location.href = '/sign'
 }
 
 export const signUp = (username, email, password, fullName, nif, cc, nationality, birthDate, location, address, postalCode, phoneNumber) => async (dispatch) => {

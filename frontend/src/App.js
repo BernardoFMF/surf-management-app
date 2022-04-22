@@ -13,10 +13,13 @@ import themes from './themes'
 import NavigationScroll from './layout/NavigationScroll'
 
 function App() {
+  const customization = useSelector((state) => state.customization);
+
+  console.log(customization);
 
   return (
     <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={themes()}>
+            <ThemeProvider theme={themes(customization)}>
                 <CssBaseline />
                 <NavigationScroll>
                     <Routes />
