@@ -1,19 +1,19 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 // material-ui
-import { useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
 import AuthWrapper from './AuthWrapper'
 import AuthCardWrapper from './AuthCardWrapper'
-import AuthLogin from './auth-form/AuthLogin'
 import Logo from '../../components/Logo'
+import AuthRegister from './auth-form/AuthRegister'
 import AuthFooter from '../../components/cards/AuthFooter'
 
 // assets
 
-const SignPage = () => {
+const SignUp = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -41,24 +41,27 @@ const SignPage = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        Hi, Welcome Back
+                                                        Sign up
                                                     </Typography>
                                                 </Stack>
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AuthLogin />
+                                        <AuthRegister />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Divider />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid item container direction="column" alignItems="center" xs={12}>
                                             <Typography
                                                 component={Link}
-                                                to="/pages/register/register3"
+                                                to="/sign-in"
                                                 variant="subtitle1"
                                                 sx={{ textDecoration: 'none' }}
                                             >
-                                                Don&apos;t have an account?
+                                                Already have an account?
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -75,4 +78,4 @@ const SignPage = () => {
     );
 };
 
-export default SignPage
+export default SignUp

@@ -1,19 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles'
+import { Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
-import AuthWrapper from '../AuthWrapper'
-import AuthCardWrapper from '../AuthCardWrapper'
-import Logo from '../../../components/Logo'
-import AuthRegister from '../auth-forms/AuthRegister'
-import AuthFooter from '../../../components/cards/AuthFooter'
+import AuthWrapper from './AuthWrapper'
+import AuthCardWrapper from './AuthCardWrapper'
+import AuthLogin from './auth-form/AuthLogin'
+//import Logo from '../../components/Logo'
+import AuthFooter from '../../components/cards/AuthFooter'
 
 // assets
 
-const SignUp = () => {
+const SignInPage = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -26,9 +26,6 @@ const SignUp = () => {
                             <AuthCardWrapper>
                                 <Grid container spacing={2} alignItems="center" justifyContent="center">
                                     <Grid item sx={{ mb: 3 }}>
-                                        <Link to="#">
-                                            <Logo />
-                                        </Link>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid
@@ -44,34 +41,24 @@ const SignUp = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        Sign up
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="caption"
-                                                        fontSize="16px"
-                                                        textAlign={matchDownSM ? 'center' : 'inherit'}
-                                                    >
-                                                        Enter your credentials to continue
+                                                        Hi, Welcome Back
                                                     </Typography>
                                                 </Stack>
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AuthRegister />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Divider />
+                                        <AuthLogin />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid item container direction="column" alignItems="center" xs={12}>
                                             <Typography
                                                 component={Link}
-                                                to="/pages/login/login3"
+                                                to="/sign-up"
                                                 variant="subtitle1"
                                                 sx={{ textDecoration: 'none' }}
                                             >
-                                                Already have an account?
+                                                Don&apos;t have an account?
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -88,4 +75,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp
+export default SignInPage

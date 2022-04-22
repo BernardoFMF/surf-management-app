@@ -1,30 +1,11 @@
-import PropTypes from 'prop-types'
-
 // material-ui
-import { Box } from '@mui/material'
+import { styled } from '@mui/material/styles';
 
-// project import
-import MainCard from '../../components/cards/MainCard'
+// ==============================|| AUTHENTICATION 1 WRAPPER ||============================== //
 
-const AuthCardWrapper = ({ children, ...other }) => (
-    <MainCard
-        sx={{
-            maxWidth: { xs: 400, lg: 475 },
-            margin: { xs: 2.5, md: 3 },
-            '& > *': {
-                flexGrow: 1,
-                flexBasis: '50%'
-            }
-        }}
-        content={false}
-        {...other}
-    >
-        <Box sx={{ p: { xs: 2, sm: 3, xl: 5 } }}>{children}</Box>
-    </MainCard>
-);
+const AuthWrapper = styled('div')(({ theme }) => ({
+    backgroundColor: theme.palette.primary.light,
+    minHeight: '100vh'
+}));
 
-AuthCardWrapper.propTypes = {
-    children: PropTypes.node
-};
-
-export default AuthCardWrapper;
+export default AuthWrapper
