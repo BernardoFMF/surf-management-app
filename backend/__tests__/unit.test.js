@@ -41,8 +41,8 @@ async function insertEventDummies() {
 }
 
 async function insertCandidateDummies() {
-	await dbCandidate.postCandidate('jobileu', 74389323248, 342893489348, 'effective','Angolana', '12-06-1990', 'Jobileu Santos', 932727288, 'jobi@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbie2')
-	await dbCandidate.postCandidate('carlao', 34898942908, 109381908487, 'effective','Portuguesa', '15-03-1990','Carlitos Roger', 927182837, 'carliti@hotmail.com', '2423-829', 'Rua da banheira', 'Baixa da Banheira', 'duche2' )
+	await dbCandidate.postCandidate('jobileu', 74389323248, 342893489348, 'effective','Angolana', '12-06-1990', 'Jobileu Santos', 932727288, 'jobi@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbie2', 'Male')
+	await dbCandidate.postCandidate('carlao', 34898942908, 109381908487, 'effective','Portuguesa', '15-03-1990','Carlitos Roger', 927182837, 'carliti@hotmail.com', '2423-829', 'Rua da banheira', 'Baixa da Banheira', 'duche2', 'Male' )
 }
 
 async function insertCompanyDummies() {
@@ -51,8 +51,8 @@ async function insertCompanyDummies() {
 }
 
 async function insertUserDummies() {
-	await dbUser.postUser(383128318, 764271741145, 'founder', 0, '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true)
-	await dbUser.postUser(383123818, 763371741145, 'effective', 15,  '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true)
+	await dbUser.postUser(383128318, 764271741145, 'founder', 0, '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male')
+	await dbUser.postUser(383123818, 763371741145, 'effective', 15,  '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male')
 }
 
 async function insertSportsforUsersDummies() {
@@ -176,7 +176,7 @@ test('Get specific candidate', async () => {
 
 test('Create a candidate', async () => {
 	expect.assertions(1)
-	const candidate = await dbCandidate.postCandidate(6723355243, 123213213123, 'effective', '21-06-1990', 'Portuguesa', 'João Santos', 932333288, 'joao@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbi')
+	const candidate = await dbCandidate.postCandidate(6723355243, 123213213123, 'effective', '21-06-1990', 'Portuguesa', 'João Santos', 932333288, 'joao@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbi', 'Other')
 	expect(candidate.nationality_).toBe('Portuguesa')
 })
 
@@ -267,13 +267,13 @@ test('Get a specific user', async () => {
 
 test('Post User', async () => {
 	expect.assertions(1)
-	const user = await dbUser.postUser(383123909, 763399841145, 'effective', '03-10-1983', 'Senegales', 'Moussa Marega', 934077623, 'maregagrandefixe@outlook.com', '2835-081', 'Rua D.Batista', 'Lisboa','gandagolo')
+	const user = await dbUser.postUser(383123909, 763399841145, 'effective', '03-10-1983', 'Senegales', 'Moussa Marega', 934077623, 'maregagrandefixe@outlook.com', '2835-081', 'Rua D.Batista', 'Lisboa','gandagolo', 'Male')
 	expect(user).toBe(7)
 })
 
 test('Update a user', async () => {
 	expect.assertions(1)
-	const user_id = await dbUser.updateUser(1,383123818, 763371741145, 'effective',15, '27-10-1993', 'Portuguesa', 'Luis Marques', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','C1EBBEE46D8C6128B95FEB21C187C2ED2EDDE97994A9A2BAC822F78B71789F29','mariabeatriz','/xB33FDEAF','imagem.png',true,false)
+	const user_id = await dbUser.updateUser(1,383123818, 763371741145, 'effective',15, '27-10-1993', 'Portuguesa', 'Luis Marques', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','C1EBBEE46D8C6128B95FEB21C187C2ED2EDDE97994A9A2BAC822F78B71789F29','mariabeatriz','/xB33FDEAF','imagem.png',true,false, 'Other')
 	expect(user_id).toBe(1)
 })
 
@@ -288,7 +288,6 @@ test('Delete user', async () => {
 test('Get all sports for users', async () => {
 	expect.assertions(1)
 	const userSports = await dbUser.getUsersSports()
-	console.log(userSports);
 	expect(userSports.length).toBe(1) 
 })
 

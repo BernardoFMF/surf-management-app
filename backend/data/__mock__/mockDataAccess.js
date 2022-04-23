@@ -15,7 +15,7 @@ let members = [{
 	member_type_: 'founder',
 	has_debt_: false,
 	quota_value_: 0,
-	pword_: await crypto.hashpassword('123'),
+	pword_: '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',
 	username_: 'miguelbarata',
 	is_deleted_: false
 }]
@@ -28,7 +28,8 @@ let users = [{
 	full_name_: 'Miguel Barata',
 	enrollment_date_: '01-01-1970',
 	paid_enrollment_: true,
-	is_admin_: true
+	is_admin_: true,
+	gender_: 'Male'
 }]
 let companies = []
 let candidates = []
@@ -61,7 +62,7 @@ const getCandidateByIdData = async (id_) => {
 	return candidate
 }
 
-const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_) => {
+const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_, gender_) => {
 	indexObj.idxCandidates++
 	const candidate = {
 		id_: indexObj.idxCandidates, 
@@ -77,7 +78,8 @@ const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_
 		address_, 
 		location_, 
 		pword_,
-		img_
+		img_,
+		gender_
 	}
 	candidates.push(candidate)
 	return candidate
@@ -93,7 +95,7 @@ const approveCandidateData = async (id_, type_, quota_value_, paid_enrollment_) 
 
 	candidates = candidates.filter(candidate => candidate.id_ != id_)
 
-	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, quota_value_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_)
+	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, quota_value_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_, candidate.gender_)
 
 	if(!candidate.img_) {
 		const img = {
@@ -354,7 +356,7 @@ const getUserByIdData = async (id_) => {
 	return undefined
 }
 
-const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_) => {
+const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_) => {
 	indexObj.idxMember++
 	const member = {
 		id_: indexObj.idxMember,
@@ -374,7 +376,8 @@ const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationa
 		full_name_,
 		enrollment_date_: new Date().toLocaleDateString().split('/').join('-'),
 		paid_enrollment_,
-		is_admin_: false
+		is_admin_: false,
+		gender_
 	}
 	const contact = {
 		member_id_: user.member_id_,
@@ -411,18 +414,21 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 	membership_cards.push(membership_card)
 }
 
-const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted) => {
+const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted, gender_) => {
+	const idxMember = members.findIndex(member => member.id_ == id_)
+	members[idxMember].is_deleted = is_deleted
+	members[idxMember].type_ = type_
+	members[idxMember].quota_value_ = quota_value_
+
 	const idxUser = users.findIndex(user => user.member_id_ == id_)
 	users[idxUser].cc_ = cc_
 	users[idxUser].nif_ = nif_
-	users[idxUser].type_ = type_
-	users[idxUser].quota_value_ = quota_value_
 	users[idxUser].birth_date_ = birth_date_
 	users[idxUser].nationality_ = nationality_
 	users[idxUser].full_name_ = full_name_
 	users[idxUser].paid_enrollment_ = paid_enrollment_
 	users[idxUser].is_admin_ = is_admin_
-	users[idxUser].is_deleted = is_deleted
+	users[idxUser].gender_ = gender_
 
 	const idxContact = contacts.findIndex(contact => contact.member_id_ == id_)
 	contacts[idxContact].phone_number_ = phone_number_

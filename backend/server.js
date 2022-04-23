@@ -60,8 +60,6 @@ const router = (app, data) => {
 		async (username, password, done) => {
 			try {
 				const member = await data.getMemberByUsernameData(username)
-				console.log(username)
-				console.log(password)
 				if(!member) {
 					done(null, false, {message: 'Incorrect username'})
 				} else {

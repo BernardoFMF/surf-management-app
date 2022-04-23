@@ -8,7 +8,7 @@
  * if not creates it)
  */
 create or replace procedure post_user(cc_ bigint, nif_ bigint, type_ varchar(40), quota_value_ int, birth_date_ varchar(30), nationality_ varchar(30), full_name_ varchar(60),
-										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, out new_id_ int)
+										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, gender_ varchar(40), out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
@@ -27,8 +27,8 @@ begin
 	values (new_id_, location_, address_, postal_code_, email_, phone_number_);
 	
 	select current_date into curr_date;
-	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_)
-	values (new_id_, nif_, cc_, full_name_, nationality_, birth_date_, curr_date, paid_enrollment_); 
+	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, gender_)
+	values (new_id_, nif_, cc_, full_name_, nationality_, birth_date_, curr_date, paid_enrollment_, gender_); 
 
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;
@@ -44,7 +44,7 @@ $$;
  * Creates the user_Img
  */
 create or replace procedure put_user(p_id_ int, p_cc_ bigint, p_nif_ bigint, p_type_ varchar(40), p_quota_value_ int, p_birth_date_ date, p_nationality_ varchar(30), p_full_name_ varchar(60), 
-										p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ bytea, p_is_admin_ bool, p_paid_enrollment_ bool, p_is_deleted_ bool)
+										p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ bytea, p_is_admin_ bool, p_paid_enrollment_ bool, p_is_deleted_ bool, p_gender_ varchar(40))
 LANGUAGE plpgsql  
 as
 $$
@@ -53,7 +53,7 @@ begin
 
 	update Member_ set quota_value_ = p_quota_value_, is_deleted_ = p_is_deleted_  where id_ = p_id_;
 
-	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, is_admin_ = p_is_admin_ where member_id_ = p_id_;
+	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, is_admin_ = p_is_admin_, gender_ = p_gender_ where member_id_ = p_id_;
 	
 	if p_img_ is not null and not exists(select * from User_img_ where user_id_ = p_id_) then
 		insert into User_Img_ (user_id_, img_value_) values (p_id_, p_img_);
@@ -193,11 +193,12 @@ DECLARE
  	candidate_username_ varchar(30);
  	candidate_id_ int;
  	candidate_img_ bytea;
+ 	candidate_gender_ varchar(40);
 	
 begin
-	select nif_,cc_,full_name_,nationality_,birth_date_,location_, address_, postal_code_, email_, phone_number_,pword_, username_, img_ into candidate_nif_, candidate_cc_, candidate_full_name_, candidate_nationality_, candidate_birth_date_, candidate_location_, candidate_address_, candidate_postal_code_, candidate_email_, candidate_phone_number_ , candidate_pword_ , candidate_username_, candidate_img_ FROM Candidate_ WHERE id_ = cid;
+	select nif_,cc_,full_name_,nationality_,birth_date_,location_, address_, postal_code_, email_, phone_number_,pword_, username_, img_, gender_ into candidate_nif_, candidate_cc_, candidate_full_name_, candidate_nationality_, candidate_birth_date_, candidate_location_, candidate_address_, candidate_postal_code_, candidate_email_, candidate_phone_number_ , candidate_pword_ , candidate_username_, candidate_img_, candidate_gender_ FROM Candidate_ WHERE id_ = cid;
 	
-	call post_user(candidate_cc_, candidate_nif_, type_, quota_value_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_id_);
+	call post_user(candidate_cc_, candidate_nif_, type_, quota_value_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_gender_, candidate_id_);
 	
 	select candidate_id_ into new_id;
 

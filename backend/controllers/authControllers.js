@@ -11,7 +11,6 @@ const authController = (data) => {
 	})
 
 	const postLogout = asyncHandler(async (req, res) => {
-		console.log('cheguei ao logout');
 		req.logout()
 		res.json({ message: 'User is logged out' })
 	})

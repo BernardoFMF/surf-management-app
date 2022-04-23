@@ -25,7 +25,7 @@ const userController = (data) => {
 	
 	const postUser = asyncHandler(async (req, res) => {
 		const url = req.protocol + '://' + req.get('host')
-		const user = await services.postUserServices(req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password, req.body.username, req.body.paid_enrollment, url)
+		const user = await services.postUserServices(req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password, req.body.username, req.body.paid_enrollment, req.body.gender, url)
 		if (user) {
 			res.status(201)
 			res.json(user)
@@ -38,7 +38,7 @@ const userController = (data) => {
 				throw error(401, 'Unauthorized')
 			}
 		}
-		const user = await services.updateUserServices(req.params.id, req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.postal_code, req.body.address, req.body.location, req.body.img, req.body.paid_enrollment, req.body.is_admin, req.body.is_deleted)
+		const user = await services.updateUserServices(req.params.id, req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.postal_code, req.body.address, req.body.location, req.body.img, req.body.paid_enrollment, req.body.is_admin, req.body.is_deleted, req.body.gender)
 		if (user) res.json(user)
 	})
 	

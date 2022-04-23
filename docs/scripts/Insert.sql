@@ -1,5 +1,5 @@
-insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_) values (15478233,'15678424','Miguel Gafanhoto da Silva Lopes','Portuguesa','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com',
-								967021559,'83AFECF217B446F5F040D1B18A804AA30463E200635C94B3AFC0D7807FC33004','miguelf') returning id_;
+insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_, gender_) values (15478233,'15678424','Miguel Gafanhoto da Silva Lopes','Portuguesa','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com',
+								967021559,'83AFECF217B446F5F040D1B18A804AA30463E200635C94B3AFC0D7807FC33004','miguelf', 'Male') returning id_;
 								
 insert into Member_(member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_) values ('founder',false,0,false, 'afonsoribeiro', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K'), ('effective',true,15,FALSE, 'joselopes', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K'), ('corporate',false,50,FALSE, 'ripcurl','0BADE5D73DDA71378068AE31F341BB8F3448576CB452BCF6E63E561B5B01457E'), ('corporate',false, 50, FALSE,'billabong','403F45A096665D25F2B7B07E679E0BAD24AE2BCDAEBE6B0E98210F6B2C08D68C');
 
@@ -13,7 +13,7 @@ insert into Contact_ values (1,'Ericeira','Rua do Clérigos n2 3ºesq','2050-032',
 
 insert into Company_ values (3,23451789,'Ripcurl shop'), (4,423213348,'Billabong');
 
-insert into User_ values (1,25054936,45925485,'Afonso Melo Ribeiro','Portugues','1997-05-25','2020-03-14',true, true), (2,25054938,45925475,'José Elias Lopes','Portugues','1989-04-27','2021-03-14', true,false);
+insert into User_ values (1,25054936,45925485,'Afonso Melo Ribeiro','Portugues','1997-05-25','2020-03-14',true, true, 'Male'), (2,25054938,45925475,'José Elias Lopes','Portugues','1989-04-27','2021-03-14', true,false, 'Male');
 
 insert into User_img_ values (1,'\xDEADBEEF'), (2, '\xEAABDFFA');
 

@@ -15,12 +15,12 @@ const candidateData = (db) => {
 		return candidate
 	}
 	
-	const postCandidate = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_) => {
+	const postCandidate = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_, gender_) => {
 		const candidate = await db.getCandidateByUsernameData(username_)
 		if (candidate) throw error(409, 'Candidate with that username already exists')
 		const member = await db.getMemberByUsernameData(username_)
 		if (member) throw error(409, 'Member with that username already exists')
-		return await db.postCandidateData(username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_)
+		return await db.postCandidateData(username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_, gender_)
 	}
 	
 	const deleteCandidate = async (id_) => {
@@ -36,7 +36,6 @@ const candidateData = (db) => {
 
 		const qrcode_ = await toDataURL(`${url}/members/validate/${id_}`)
 		const u_id_ = await db.approveCandidateData(id_, type_, quota_value, paid_enrollment_)
-		console.log(u_id_)
 		await db.updateUserQrCodeData(u_id_, qrcode_)
 
 		return u_id_

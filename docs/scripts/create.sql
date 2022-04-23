@@ -13,6 +13,7 @@ create table Candidate_ (
 	pword_			text,
 	username_		varchar(30) unique,
 	img_ 			bytea,
+	gender_ 		varchar(40),
 	
 	primary key(id_)
 );
@@ -90,6 +91,7 @@ create table User_ (
 	enrollment_date_	date,
 	paid_enrollment_	bool,
 	is_admin_		bool default false,
+	gender_ 		varchar(40),
 
 	primary key (member_id_),
 	constraint fk_member foreign key(member_id_) references Member_(id_)
