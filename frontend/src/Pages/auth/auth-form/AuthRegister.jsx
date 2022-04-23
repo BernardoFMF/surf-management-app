@@ -39,6 +39,8 @@ import PasswordInputField from '../../../components/multi-step-form/PasswordInpu
 import DateInputField from '../../../components/multi-step-form/DateInputField';
 import MultiStepForm, { FormStep } from '../../../components/multi-step-form/MultiStepForm';
 import DropdownInputField from '../../../components/multi-step-form/DropdownInputField';
+import ImageInputField from '../../../components/multi-step-form/ImageInputField';
+
 
 // data
 import countries from '../../../assets/data/countries.json'
@@ -62,11 +64,11 @@ const AuthRegister = ({ ...others }) => {
 
     const parseDate = (originalValue) => {
         let parsedDate = isDate(originalValue)
-          ? originalValue
-          : parse(originalValue, "yyyy-MM-dd", new Date());
+            ? originalValue
+            : parse(originalValue, "yyyy-MM-dd", new Date())
 
         return parsedDate
-      }
+    }
 
     return (
         <>
@@ -83,11 +85,15 @@ const AuthRegister = ({ ...others }) => {
                 </Grid>
             </Grid>
 
-            <MultiStepForm initialValues={{username: '', email: '', password: '', fullName: '', cc: '', nif: '', sex: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: ''}}
-            onSubmit={values => {
-                console.log(values.birthDate.toString());
-                values.birthDate = values.birthDate.toString().split('T')[0]
+            <MultiStepForm initialValues={{username: '', email: '', password: '', fullName: '', cc: '', nif: '', sex: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image:''}}
+            onSubmit={ async values => {
+                const buffer = await values.image.arrayBuffer()
+                values.image = new Int8Array(buffer)
+                let bdate = values.birthDate.toLocaleString().split(',')[0]
+                bdate = bdate.split('/')
+                values.birthDate = `${bdate[2]}-${bdate[1]}-${bdate[0]}`
                 alert(JSON.stringify(values, null, 2))
+                console.log(values);
             }}>
                 <FormStep stepName='User' validationSchema={Yup.object().shape({
                     username: Yup.string().required('Username is required'),
@@ -118,7 +124,7 @@ const AuthRegister = ({ ...others }) => {
                     nif: Yup.string().required('Nif is required').matches(/^[0-9]+$/, "Must be only digits").min(9, 'Must be exactly 9 digits').max(9, 'Must be exactly 9 digits'),
                     sex: Yup.string().required('Sex is required'),
                     nationality: Yup.string().required('Nationality is required'),
-                    birthDate: Yup.date().transform(parseDate).max(new Date()).required('Birth Date is required')
+                    birthDate: Yup.date().transform(parseDate).typeError('Enter a valid date').max(new Date()).required('Birth Date is required')
                     })}>
                     <InputField name='fullName' label='Full Name' type='text'></InputField>
                     <Grid container spacing={matchDownSM ? 0 : 2}>
@@ -149,6 +155,11 @@ const AuthRegister = ({ ...others }) => {
                     <InputField name='address' label='Address'></InputField>
                     <InputField name='postalCode' label='PostalCode'></InputField>
                     <InputField name='phoneNumber' label='PhoneNumber'></InputField>
+                </FormStep>
+                <FormStep stepName='Photo' validationSchema={Yup.object().shape({
+                    image: Yup.mixed().test('FILE_SIZE', 'Image is too big', value => (value.size / 1024 / 1024) <= 10).test('FILE_FORMAT', 'Image has unsupported format', value => ['image/jpeg', 'image/png'].includes(value.type)).typeError('Choose a valid image').required('An image is required')
+                })}>
+                    <ImageInputField name='image' label='Image'></ImageInputField>
                 </FormStep>
             </MultiStepForm>
 

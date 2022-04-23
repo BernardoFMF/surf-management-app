@@ -28,10 +28,10 @@ const DropdownInputField = ({ label, options, ...props}) => {
             helperText={meta.touched && meta.error}
             style={{marginTop: '10px', marginBottom: '10px'}}
         >
-            {Object.keys(options).map((item, pos) => {
+            {Object.entries(options).map((item) => {
                 return (
-                    <MenuItem name={pos} key={pos} value={item}>
-                        {options[item]}
+                    <MenuItem name={item[0]} key={item[0]} value={item[1]}>
+                        {item[1]}
                     </MenuItem>
                 )
             })}
@@ -41,49 +41,3 @@ const DropdownInputField = ({ label, options, ...props}) => {
 }
 
 export default DropdownInputField
-/*
-import React from 'react';
-import { TextField, MenuItem } from '@mui/material';
-import { useField, useFormikContext } from 'formik';
-
-const DropdownInputField = ({
-  name,
-  options,
-  ...otherProps
-}) => {
-  const { setFieldValue } = useFormikContext();
-  const [field, meta] = useField(name);
-
-  const handleChange = evt => {
-    const { value } = evt.target;
-    setFieldValue(name, value);
-  };
-
-  const configSelect = {
-    ...field,
-    ...otherProps,
-    select: true,
-    variant: 'outlined',
-    fullWidth: true,
-    onChange: handleChange
-  };
-
-  if (meta && meta.touched && meta.error) {
-    configSelect.error = true;
-    configSelect.helperText = meta.error;
-  }
-
-  return (
-    <TextField {...configSelect}>
-      {Object.keys(options).map((item, pos) => {
-        return (
-          <MenuItem key={pos} value={item}>
-            {options[item]}
-          </MenuItem>
-        )
-      })}
-    </TextField>
-  );
-};
-
-export default DropdownInputField*/

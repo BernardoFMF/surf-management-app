@@ -31,7 +31,6 @@ const DateInputField = ({ label, ...props}) => {
                     <TextField 
                         {...params}
                         fullWidth
-                        onChange={handleDateChange}
                         value={date}
                         name={field.name}
                         error={meta.touched && Boolean(meta.error)}
