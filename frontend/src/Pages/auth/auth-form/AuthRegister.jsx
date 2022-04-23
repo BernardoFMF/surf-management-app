@@ -44,6 +44,7 @@ import ImageInputField from '../../../components/multi-step-form/ImageInputField
 
 // data
 import countries from '../../../assets/data/countries.json'
+import { borderRadius } from '@mui/system';
 
 const AuthRegister = ({ ...others }) => {
     const theme = useTheme();
@@ -70,6 +71,32 @@ const AuthRegister = ({ ...others }) => {
         return parsedDate
     }
 
+    const handleSubmit = async (values) => {
+        const body = new FormData()
+        if (values.image) {
+            const buffer = await values.image.arrayBuffer()
+            const array = new Int8Array(buffer)
+            body.append('image', array)
+        }
+        let bdate = values.birthDate.toLocaleString().split(',')[0]
+        bdate = bdate.split('/')
+        const date = `${bdate[2]}-${bdate[1]}-${bdate[0]}`
+        body.append('birth_date', date)
+        body.append('gender', values.gender)
+        body.append('cc', values.cc)
+        body.append('nif', values.nif)
+        body.append('username', values.username)
+        body.append('email', values.email)
+        body.append('password', values.password)
+        body.append('nationality', values.nationality)
+        body.append('full_name', values.fullName)
+        body.append('location', values.location)
+        body.append('address', values.address)
+        body.append('phone_number', values.phoneNumber)
+        body.append('postal_code', values.postalCode)
+        
+    }
+
     return (
         <>
             <Grid container direction="column" justifyContent="center" spacing={2}>
@@ -85,16 +112,8 @@ const AuthRegister = ({ ...others }) => {
                 </Grid>
             </Grid>
 
-            <MultiStepForm initialValues={{username: '', email: '', password: '', fullName: '', cc: '', nif: '', sex: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image:''}}
-            onSubmit={ async values => {
-                const buffer = await values.image.arrayBuffer()
-                values.image = new Int8Array(buffer)
-                let bdate = values.birthDate.toLocaleString().split(',')[0]
-                bdate = bdate.split('/')
-                values.birthDate = `${bdate[2]}-${bdate[1]}-${bdate[0]}`
-                alert(JSON.stringify(values, null, 2))
-                console.log(values);
-            }}>
+            <MultiStepForm initialValues={{username: '', email: '', password: '', fullName: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null}}
+            onSubmit={handleSubmit}>
                 <FormStep stepName='User' validationSchema={Yup.object().shape({
                     username: Yup.string().required('Username is required'),
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
@@ -122,7 +141,7 @@ const AuthRegister = ({ ...others }) => {
                     fullName: Yup.string().required('Full name is required'),
                     cc: Yup.string().matches(/^[0-9]+$/, "Must be only digits").min(9, 'Must be exactly 9 digits').max(9, 'Must be exactly 9 digits').required('CC is required'),
                     nif: Yup.string().required('Nif is required').matches(/^[0-9]+$/, "Must be only digits").min(9, 'Must be exactly 9 digits').max(9, 'Must be exactly 9 digits'),
-                    sex: Yup.string().required('Sex is required'),
+                    gender: Yup.string().required('Gender is required'),
                     nationality: Yup.string().required('Nationality is required'),
                     birthDate: Yup.date().transform(parseDate).typeError('Enter a valid date').max(new Date()).required('Birth Date is required')
                     })}>
@@ -137,7 +156,7 @@ const AuthRegister = ({ ...others }) => {
                     </Grid>
                     <Grid container spacing={matchDownSM ? 0 : 2}>
                         <Grid item xs={12} sm={6}>
-                            <DropdownInputField name='sex' label='Sex' options={{M:'Male', F:'Female', O:'Other'}}></DropdownInputField>
+                            <DropdownInputField name='gender' label='Gender' options={{M:'Male', F:'Female', O:'Other'}}></DropdownInputField>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <DropdownInputField name='nationality' label='Nationality' options={countries}></DropdownInputField>
@@ -157,7 +176,7 @@ const AuthRegister = ({ ...others }) => {
                     <InputField name='phoneNumber' label='PhoneNumber'></InputField>
                 </FormStep>
                 <FormStep stepName='Photo' validationSchema={Yup.object().shape({
-                    image: Yup.mixed().test('FILE_SIZE', 'Image is too big', value => (value.size / 1024 / 1024) <= 10).test('FILE_FORMAT', 'Image has unsupported format', value => ['image/jpeg', 'image/png'].includes(value.type)).typeError('Choose a valid image').required('An image is required')
+                    image: Yup.mixed().test('FILE_SIZE', 'Image is too big', value => value == null ? true : (value.size / 1024 / 1024) <= 10).test('FILE_FORMAT', 'Image has unsupported format', value => value == null ? true : ['image/jpeg', 'image/png'].includes(value.type)).typeError('Choose a valid image')
                 })}>
                     <ImageInputField name='image' label='Image'></ImageInputField>
                 </FormStep>
