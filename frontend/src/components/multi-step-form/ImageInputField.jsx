@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useFormikContext, useField } from 'formik'
 
-import { Button, Box, Avatar} from '@mui/material';
+import { Button, Box, Avatar } from '@mui/material';
 import AnimateButton from '../extended/AnimateButton'
-
-
-
 
 const ImageInputField = ({ label, ...props}) => {
     const [field, meta] = useField(props)
@@ -47,7 +44,6 @@ const ImageInputField = ({ label, ...props}) => {
                     </AnimateButton>
                 </label>
             </Box>            
-
             {imageUrl && selectedImage && (
                 <Box mt={2} display="flex" alignItems={'center'} justifyContent="center">
                     <Avatar
