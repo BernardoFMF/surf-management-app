@@ -6,9 +6,6 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0-oas3
-servers:
-  - url: https://virtserver.swaggerhub.com/GoncaloJCA/SurfApp/1.0.0
-    description: SwaggerHub API Auto Mocking
 paths:
   /api/users:
     get:
@@ -55,9 +52,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/id'
+                $ref: '#/components/schemas/id'
         '400':
           description: response body should be an error object
           content:
@@ -1585,15 +1580,16 @@ components:
       type: integer
     user:
       required:
-        - birth_date_
-        - cc_
-        - enrollment_date_
-        - full_name_
-        - is_admin_
         - member_id_
-        - nationality_
+        - cc_
         - nif_
+        - birth_date_
+        - nationality_
+        - full_name_
+        - enrollment_date_
         - paid_enrollment_
+        - is_admin_
+        - gender_
       type: object
       properties:
         member_id_:
@@ -1605,13 +1601,19 @@ components:
         birth_date_:
           type: string
           format: date
+        nationality_:
+          type: string
         full_name_:
           type: string
         enrollment_date_:
           type: string
           format: date
+        paid_enrollment_:
+          type: boolean
         is_admin_:
           type: boolean
+        gender_:
+          type: string
     userById:
       required:
         - address_

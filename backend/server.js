@@ -1,8 +1,8 @@
 'use strict'
 
 import express from 'express'
-//import yaml from 'yamljs'
-//import swaggerUi from 'swagger-ui-express'
+import yaml from 'yamljs'
+import swaggerUi from 'swagger-ui-express'
 import passport from 'passport'
 import localStrategy from 'passport-local'
 import cookieParser from 'cookie-parser'
@@ -22,7 +22,7 @@ import authRoutes from './routes/authRoutes.js'
 
 
 const router = (app, data) => {
-	//const openapi = yaml.load('./openapi.yaml')
+	const openapi = yaml.load(process.cwd() + '/backend/openApi.yaml')
 	
 	const LocalStrategy = localStrategy.Strategy
 
@@ -82,6 +82,7 @@ const router = (app, data) => {
 	app.use('/api/events', eventRoutes(data))
 	app.use('/api/quotas', quotaRoutes(data))
 	app.use('/api/members', authRoutes(data))
+	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openapi))
 
 	app.use(errorHandler)
 }

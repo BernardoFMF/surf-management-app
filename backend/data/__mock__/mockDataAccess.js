@@ -16,7 +16,7 @@ let members = [{
 	has_debt_: false,
 	quota_value_: 0,
 	pword_: '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',
-	username_: 'miguelbarata',
+	username_: 'senhorJoel',
 	is_deleted_: false
 }]
 let users = [{
@@ -25,7 +25,7 @@ let users = [{
 	nif_: 123456789,
 	birth_date_: '01-01-1970',
 	nationality_: 'Portuguesa',
-	full_name_: 'Miguel Barata',
+	full_name_: 'Joel Joelho',
 	enrollment_date_: '01-01-1970',
 	paid_enrollment_: true,
 	is_admin_: true,
