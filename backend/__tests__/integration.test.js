@@ -13,7 +13,7 @@ server(app, data)
 
 let session = null
 
-beforeEach(async () => {
+beforeAll(async () => {
     const res = await supertest(app)
         .post('/api/members/login')
         .send({
@@ -21,7 +21,6 @@ beforeEach(async () => {
          'password': '123'
         })
         .expect(200)
-    console.log("RESPONSE: " + res)
     session = res
         .headers['set-cookie'][0]
 });
@@ -32,7 +31,6 @@ test('Get all users', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
     expect(userRes).toSatisfyApiSpec()
-    console.log(userRes.body)
     expect(userRes.body[0]).toSatisfySchemaInApiSpec("user")
 })
 
