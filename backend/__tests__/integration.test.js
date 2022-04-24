@@ -13,7 +13,7 @@ server(app, data)
 
 let session = null
 
-beforeAll(async () => {
+beforeEach(async () => {
     const res = await supertest(app)
         .post('/api/members/login')
         .send({
@@ -21,6 +21,7 @@ beforeAll(async () => {
          'password': '123'
         })
         .expect(200)
+    console.log("RESPONSE: " + res)
     session = res
         .headers['set-cookie'][0]
 });
@@ -31,6 +32,7 @@ test('Get all users', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
     expect(userRes).toSatisfyApiSpec()
+    console.log(userRes.body)
     expect(userRes.body[0]).toSatisfySchemaInApiSpec("user")
 })
 
@@ -291,16 +293,6 @@ test('Update a company quota', async () => {
 	expect.assertions(1)
 	const quota = await dbQuota.updateMemberQuota(6, '02-03-2022')
 	expect(quota.payment_date_).toBe('02-03-2022')
-})
-
-//User
-
-
-
-test('Update a user', async () => {
-	expect.assertions(1)
-	const user_id = await dbUser.updateUser(1,383123818, 763371741145, 'effective',15, '27-10-1993', 'Portuguesa', 'Luis Marques', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','C1EBBEE46D8C6128B95FEB21C187C2ED2EDDE97994A9A2BAC822F78B71789F29','mariabeatriz','/xB33FDEAF','imagem.png',true,false, 'Other')
-	expect(user_id).toBe(1)
 })
 
 
