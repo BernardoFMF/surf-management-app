@@ -36,19 +36,28 @@ test('Get all users', async () => {
     expect(userRes.body[0]).toSatisfySchemaInApiSpec("user")
 })
 
-test('Post user', async () => {
+test('Get a specific user', async () => {
+	const userRes = await supertest(app)
+		.get('/api/users/0')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(userRes).toSatisfyApiSpec()
+    expect(userRes.body).toSatisfySchemaInApiSpec("userById")
+})
+
+test('Post, Put & Delete user', async () => {
     const userRes = await supertest(app)
         .post('/api/users')
         .set('Accept', 'application/json')
         .set('Cookie', session)
         .send({
-            "cc": "23456824",
-            "nif": "29067459",
+            "cc": 23456824,
+            "nif": 29067459,
             "type": "effective",
             "birth_date": "09-05-2000",
             "nationality": "Portuguesa",
             "full_name": "João Miguel",
-            "phone_number": "934509248",
+            "phone_number": 934509248,
             "email": "jmiguel@gmail.com",
             "postal_code": "2745-056",
             "address": "Rua da Borboletas n45 2esq",
@@ -61,32 +70,83 @@ test('Post user', async () => {
         .expect('Content-Type', /json/)
         .expect(201)
     expect(userRes).toSatisfyApiSpec()
+	expect(userRes.body).toSatisfySchemaInApiSpec("id")
+
+	const putRes = await supertest(app)
+		.put(`/api/users/${userRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			"cc": 23456824,
+			"nif": 29067459,
+			"type": "effective",
+			"birth_date": "09-05-2000",
+			"nationality": "Portuguesa",
+			"full_name": "João Miguel Santos",
+			"phone_number": 934509248,
+			"postal_code": "2745-056",
+			"address": "Rua da Borboletas n45 2esq",
+			"location": "Porto Covo",
+			"paid_enrollment": false,
+			"gender": "Male",
+			"is_admin": false,
+			"quota_value": 15,
+			"is_deleted": false,
+			"img": [13, 16, 83, 1]
+		})
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(putRes).toSatisfyApiSpec()
+	expect(putRes.body).toSatisfySchemaInApiSpec("id")
+
+	const deleteUser = await supertest(app)
+		.delete(`/api/users/${userRes.body}`)
+		.set('Accept', 'application/json')
+        .set('Cookie', session)
+		.expect('Content-Type', /json/)
+        .expect(200)
+
+	expect(deleteUser).toSatisfyApiSpec()
+    expect(deleteUser.body).toSatisfySchemaInApiSpec("message")
+
+})
+
+test('Post, Gets & Delete sport', async () => {
+	const createRes = await supertest(app)
+		.post('/api/sports')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			"name": "surf"
+		})
+		.expect('Content-Type', /json/)
+		.expect(201)
+	expect(createRes).toSatisfyApiSpec()
+	expect(createRes.body).toSatisfySchemaInApiSpec("id")
+
+	const sportRes = await supertest(app)
+		.get('/api/sports')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+	expect(sportRes).toSatisfyApiSpec()
+	expect(sportRes.body[0]).toSatisfySchemaInApiSpec("sport")
+
+	const sportByIdRes = await supertest(app)
+		.get(`/api/sports/${createRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+	expect(sportByIdRes).toSatisfyApiSpec()
+	expect(sportByIdRes.body).toSatisfySchemaInApiSpec("sport")
+
+	const deleteRes = await supertest(app)
+		.delete(`/api/sports/${createRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+	expect(deleteRes).toSatisfyApiSpec()
+	expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
+
 })
 /*
-test('Get all sports', async () => {
-	expect.assertions(2)
-	const sports = await dbSport.getSports()
-	expect(sports[0].name_).toBe('Surf')
-	expect(sports[1].name_).toBe('Bodyboard')
-})
-
-test('Get specific sport', async () => {
-	expect.assertions(1)
-	const sport = await dbSport.getSportById(1)
-	expect(sport.name_).toBe('Surf')
-})
-
-test('Delete specific sport', async () => {
-	expect.assertions(1)
-	const sports = await dbSport.deleteSport(1)
-	expect(sports.length).toBe(3)
-})
-
-test('Create a sport', async () => {
-	expect.assertions(1)
-	const sport_id = await dbSport.postSport('Skimboarding')
-	expect(sport_id).toBe(5)
-})
 
 //Events
 
@@ -237,17 +297,7 @@ test('Update a company quota', async () => {
 
 //User
 
-test('Get all users', async () => {
-	expect.assertions(1)
-	const users = await dbUser.getUsers()
-	expect(users.length).toBe(4)
-})
 
-test('Get a specific user', async () => {
-	expect.assertions(1)
-	const user = await dbUser.getUserById(1)
-	expect(user.birth_date_).toBe('09-03-1987')
-})
 
 test('Update a user', async () => {
 	expect.assertions(1)
@@ -255,11 +305,6 @@ test('Update a user', async () => {
 	expect(user_id).toBe(1)
 })
 
-test('Delete user', async () => {
-	expect.assertions(1)
-	const users = await dbUser.deleteUser(1)
-	expect(users.length).toBe(5)
-})
 
 //User Sports
 

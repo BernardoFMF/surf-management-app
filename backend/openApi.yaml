@@ -95,8 +95,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
                   $ref: '#/components/schemas/userById'
         '400':
           description: response body should be an error object
@@ -144,9 +142,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/userById'
+                  $ref: '#/components/schemas/id'
         '400':
           description: response body should be an error object
           content:
@@ -182,8 +178,6 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
                   $ref: '#/components/schemas/message'
         '400':
           description: response body should be an error object
@@ -532,8 +526,6 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
                   $ref: '#/components/schemas/id'
         '400':
           description: response body should be an error object
@@ -579,7 +571,7 @@ paths:
               schema:
                 type: object
                 items:
-                  $ref: '#/components/schemas/sportById'
+                  $ref: '#/components/schemas/sport'
         '400':
           description: response body should be an error object
           content:
@@ -1630,6 +1622,7 @@ components:
         - paid_enrollment_
         - phone_number_
         - postal_code_
+        - gender_
       type: object
       properties:
         member_id_:
@@ -1659,17 +1652,9 @@ components:
           type: string
         phone_number_:
           type: integer
-    sport:
-      required:
-        - id_
-        - name_
-      type: object
-      properties:
-        id_:
-          type: integer
-        name_:
+        gender_:
           type: string
-    sportById:
+    sport:
       required:
         - id_
         - name_
@@ -1731,34 +1716,39 @@ components:
     users_id_body:
       type: object
       properties:
-        cc_:
+        cc:
           type: integer
-        nif_:
+        nif:
           type: integer
-        type_:
+        type:
           type: string
-        birth_date_:
+        birth_date:
           type: string
           format: date
-        full_name_:
+        nationality:
           type: string
-        enrollment_date_:
+        gender:
           type: string
-          format: date
-        is_admin_:
+        quota_value:
+          type: integer
+        is_deleted:
           type: boolean
-        location_:
+        full_name:
           type: string
-        address_:
+        is_admin:
+          type: boolean
+        location:
           type: string
-        postal_code_:
+        address:
+          type: string
+        postal_code:
           type: string
           format: ^\d{4}-\d{3}$
-        phone_number_:
+        phone_number:
           type: integer
-        paid_enrollment_:
+        paid_enrollment:
           type: boolean
-        img_:
+        img:
           type: string
           format: byte
     api_sports_body:
