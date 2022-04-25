@@ -82,7 +82,7 @@ const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_
 		gender_
 	}
 	candidates.push(candidate)
-	return candidate
+	return candidate.id_
 }
 
 const deleteCandidateData = async (id_) => {
@@ -233,7 +233,7 @@ const postEventData = async (name_, initial_date_, final_date_) => {
 		initial_date_, 
 		final_date_}
 	events.push(event)
-	return event
+	return event.id_
 }
 
 const updateEventData = async (id_, name_, initial_date_, final_date_) => {
@@ -241,7 +241,7 @@ const updateEventData = async (id_, name_, initial_date_, final_date_) => {
 	events[idx].name_ = name_
 	events[idx].initial_date_ = initial_date_
 	events[idx].final_date_ = final_date_
-	return events[idx]	
+	return events[idx].id_
 }
 
 const deleteEventData = async (id_) => {
@@ -275,7 +275,7 @@ const getEventByIdAttendanceData = async (eid_) => {
 			const obj = {
 				member_id_:attendance[idx].member_id_,
 				username_:member.username_,
-				event_id_: eid_,
+				event_id_: event.id_,
 				name_: event.name_,
 				state_:attendance[idx].state_
 			}

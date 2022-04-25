@@ -37,8 +37,10 @@ const eventController = (data) => {
 	})
 	
 	const postMemberAttendance = asyncHandler(async (req,res) => {
-		if(req.user.id_ != req.body.id) {
-			throw error(401, 'Unauthorized')
+		if(!req.user.is_admin_) {
+			if(req.user.id_ != req.body.id) {
+				throw error(401, 'Unauthorized')
+			}
 		}
 		const event = await services.postMemberAttendanceServices(req.params.eid, req.body.id, req.body.state)
 		if (event) {
@@ -48,8 +50,10 @@ const eventController = (data) => {
 	})
 	
 	const updateMemberAttendance = asyncHandler(async (req,res) => {
-		if(req.user.id_ != req.body.id) {
-			throw error(401, 'Unauthorized')
+		if(!req.user.is_admin_) {
+			if(req.user.id_ != req.body.id) {
+				throw error(401, 'Unauthorized')
+			}
 		}
 		const event = await services.updateMemberAttendanceServices(req.params.eid, req.body.id, req.body.state)
 		if (event) res.json(event)

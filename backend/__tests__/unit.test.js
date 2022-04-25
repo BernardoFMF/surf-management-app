@@ -128,13 +128,13 @@ test('Delete specific event', async () => {
 test('Create a event', async () => {
 	expect.assertions(1)
 	const event = await dbEvent.postEvent('Entrega de troféus.', '12-07-2022', '12-07-2022')
-	expect(event.name_).toBe('Entrega de troféus.')
+	expect(event).toBe(3)
 })
 
 test('Update a event', async () => {
 	expect.assertions(1)
 	const event = await dbEvent.updateEvent(1, 'Assembleia geral.', '12-11-2022', '12-07-2022')
-	expect(event.initial_date_).toBe('12-11-2022')
+	expect(event).toBe(1)
 })
 
 //Attendance
@@ -177,7 +177,7 @@ test('Get specific candidate', async () => {
 test('Create a candidate', async () => {
 	expect.assertions(1)
 	const candidate = await dbCandidate.postCandidate(6723355243, 123213213123, 'effective', '21-06-1990', 'Portuguesa', 'João Santos', 932333288, 'joao@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbi', 'Other')
-	expect(candidate.nationality_).toBe('Portuguesa')
+	expect(candidate).toBe(3)
 })
 
 test('Delete specific candidate', async () => {

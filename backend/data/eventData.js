@@ -32,13 +32,13 @@ const eventData = (db) => {
 	}
 	
 	const postMemberAttendance = async (eid_, id_, state_) => {
-		await getEventById(eid_)
+		const event = await getEventById(eid_)
 		const user = await db.getUserByIdData(id_)
 		if (!user) throw error(404, 'User does not exist')
 		const attendance = await db.getEventByIdAttendanceData(eid_)
 		if (attendance.filter(att => att.member_id_ == id_)[0])
 			throw error(409, 'User is already related to this Event')
-		return await db.postMemberAttendanceData(eid_, id_, state_)
+		return await db.postMemberAttendanceData(event.id_, id_, state_)
 	}
 	
 	const updateMemberAttendance = async (eid_, id_, state_) => {
