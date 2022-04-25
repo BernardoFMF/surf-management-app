@@ -106,7 +106,7 @@ const userServices = (db) => {
 		if(!fed_name) throw error(400, 'Parameter not found: fed_name')
 		if(!type) throw error(400, 'Parameter not found: type')
 		if(!years_federated) throw error(400, 'Parameter not found: years_federated')
-		if(!is_absent_) throw error(400, 'Parameter not found: is_absent_')
+		if(is_absent_ == undefined) throw error(400, 'Parameter not found: is_absent_')
 		return await data.updateUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_)
 	}
 	

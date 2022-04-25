@@ -1,16 +1,5 @@
 'use strict'
 
-/*
-const db = require('../data/__mock__/mock')
-
-const dbSport = require('../data/sportData')
-const dbEvent = require('../data/eventData')
-const dbCandidate = require('../data/candidateData')
-const dbCompany = require('../data/companyData')
-const dbUser = require('../data/userData')
-const dbQuota = require('../data/quotaData')
-*/
-
 import db from '../data/__mock__/mockDataAccess.js'
 
 import sport from '../data/sportData.js'
@@ -233,6 +222,12 @@ test('Create a quota', async () => {
 	expect(quotas).toBe(7)
 })
 
+test('Get all users quotas', async () => {
+	expect.assertions(1)
+	const quotas = await dbQuota.getUsersQuotas()
+	expect(quotas.length).toBe(7)
+})	
+
 test('Get all companies quotas', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getCompaniesQuotas()
@@ -248,7 +243,7 @@ test('Get specific company quota', async () => {
 test('Update a company quota', async () => {
 	expect.assertions(1)
 	const quota = await dbQuota.updateMemberQuota(6, '02-03-2022')
-	expect(quota.payment_date_).toBe('02-03-2022')
+	expect(quota).toBe(6)
 })
 
 //User
@@ -306,13 +301,13 @@ test('Get sports that a given user practice', async () => {
 test('Create a sport for a user', async () => {
 	expect.assertions(1)
 	const sport = await dbUser.postUserSport(2, 4, 54, 1890547,'Federacao de Windsurf', ['trainer'],  [2019,2020,2021])
-	expect(sport.fed_id_).toBe(54)
+	expect(sport.id_).toBe(2)
 })
 
 test('Update a sport for a user', async () => {
 	expect.assertions(1)
 	const sport = await dbUser.updateUserSport(2, 3, 54, 1890547,'Federacao de Windsurf', ['trainer'],  [2019,2020,2021,2022])
-	expect(sport.fed_name_).toBe('Federacao de Windsurf')
+	expect(sport.id_).toBe(2)
 })
 
 test('Delete a sport for a user', async () => {

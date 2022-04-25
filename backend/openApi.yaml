@@ -334,9 +334,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/id'
+                  $ref: '#/components/schemas/user_sport_ids'
         '400':
           description: response body should be an error object
           content:
@@ -392,14 +390,12 @@ paths:
             schema:
               $ref: '#/components/schemas/sports_sid_body'
       responses:
-        '201':
+        '200':
           description: response body should be a user object
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/id'
+                $ref: '#/components/schemas/user_sport_ids'
         '400':
           description: response body should be an error object
           content:
@@ -454,9 +450,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/id'
+                $ref: '#/components/schemas/message'
         '400':
           description: response body should be an error object
           content:
@@ -666,16 +660,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api_quotas_body'
+              type: object
+              items:
+                $ref: '#/components/schemas/message'
       responses:
         '201':
           description: response body should be a user object
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/id'
+                  $ref: '#/components/schemas/message'
         '400':
           description: response body should be an error object
           content:
@@ -713,13 +707,11 @@ paths:
               $ref: '#/components/schemas/quotas_id_body'
       responses:
         '200':
-          description: response body should be a user object
+          description: response body should be a quotas object
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/id'
+                $ref: '#/components/schemas/id'
         '400':
           description: response body should be an error object
           content:
@@ -884,9 +876,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/id'
+                $ref: '#/components/schemas/id'
         '400':
           description: response body should be an error object
           content:
@@ -923,9 +913,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/companyById'
+                $ref: '#/components/schemas/companyById'
         '400':
           description: response body should be an error object
           content:
@@ -972,9 +960,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/id'
+                $ref: '#/components/schemas/id'
         '400':
           description: response body should be an error object
           content:
@@ -1010,9 +996,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/message'
+                $ref: '#/components/schemas/message'
         '400':
           description: response body should be an error object
           content:
@@ -1570,6 +1554,16 @@ components:
           type: string
     id:
       type: integer
+    user_sport_ids:
+      required:
+        - id_
+        - sid_
+      type: object
+      properties:
+        id_:
+          type: integer
+        sid_:
+          type: integer
     user:
       required:
         - member_id_
@@ -1812,6 +1806,7 @@ components:
         payment_date_:
           type: string
           format: date
+          nullable: true
         date_:
           type: string
           format: date
@@ -1885,8 +1880,6 @@ components:
     sports_sid_body:
       type: object
       properties:
-        sid:
-          type: integer
         fed_id:
           type: integer
         fed_number:
@@ -1912,7 +1905,7 @@ components:
     quotas_id_body:
       type: object
       properties:
-        date:
+        payment_date_:
           type: string
           format: date
     api_companies_body:
@@ -1927,7 +1920,7 @@ components:
         email:
           type: string
         postal_code:
-          type: integer
+          type: string
         address:
           type: string
         location:
