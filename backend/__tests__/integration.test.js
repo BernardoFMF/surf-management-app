@@ -21,31 +21,11 @@ beforeEach(async () => {
          'password': '123'
         })
         .expect(200)
-    console.log("RESPONSE: " + res)
     session = res
         .headers['set-cookie'][0]
 });
 
-test('Get all users', async () => {
-	const userRes = await supertest(app)
-        .get('/api/users')
-        .set('Accept', 'application/json')
-        .set('Cookie', session)
-    expect(userRes).toSatisfyApiSpec()
-    console.log(userRes.body)
-    expect(userRes.body[0]).toSatisfySchemaInApiSpec("user")
-})
-
-test('Get a specific user', async () => {
-	const userRes = await supertest(app)
-		.get('/api/users/0')
-        .set('Accept', 'application/json')
-        .set('Cookie', session)
-    expect(userRes).toSatisfyApiSpec()
-    expect(userRes.body).toSatisfySchemaInApiSpec("userById")
-})
-
-test('Post, Put & Delete user', async () => {
+test('Post, Gets, Put & Delete user', async () => {
     const userRes = await supertest(app)
         .post('/api/users')
         .set('Accept', 'application/json')
@@ -71,6 +51,20 @@ test('Post, Put & Delete user', async () => {
         .expect(201)
     expect(userRes).toSatisfyApiSpec()
 	expect(userRes.body).toSatisfySchemaInApiSpec("id")
+
+	const getRes = await supertest(app)
+        .get('/api/users')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(getRes).toSatisfyApiSpec()
+    expect(getRes.body[0]).toSatisfySchemaInApiSpec("user")
+
+	const getIdRes = await supertest(app)
+		.get(`/api/users/${userRes.body}`)
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(getIdRes).toSatisfyApiSpec()
+    expect(getIdRes.body).toSatisfySchemaInApiSpec("userById")
 
 	const putRes = await supertest(app)
 		.put(`/api/users/${userRes.body}`)
@@ -105,7 +99,6 @@ test('Post, Put & Delete user', async () => {
         .set('Cookie', session)
 		.expect('Content-Type', /json/)
         .expect(200)
-
 	expect(deleteUser).toSatisfyApiSpec()
     expect(deleteUser.body).toSatisfySchemaInApiSpec("message")
 
@@ -145,6 +138,249 @@ test('Post, Gets & Delete sport', async () => {
 	expect(deleteRes).toSatisfyApiSpec()
 	expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
 
+})
+
+//Company
+
+test('Post, Gets, Put & Delete company', async () => {
+	const companyRes = await supertest(app)
+        .post('/api/companies')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+        .send({
+            "name": "Footlocker",
+            "nif": 29067459,
+            "phone_number": 936666648,
+            "email": "flocker@gmail.com",
+            "postal_code": "2745-056",
+            "address": "Rua da Borboletas n45 2esq",
+            "location": "Porto Covo",
+            "password": "123",
+            "username": "flocker",
+        })
+        .expect('Content-Type', /json/)
+        .expect(201)
+    expect(companyRes).toSatisfyApiSpec()
+	expect(companyRes.body).toSatisfySchemaInApiSpec("id")
+
+	const getRes = await supertest(app)
+        .get('/api/companies')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(getRes).toSatisfyApiSpec()
+    expect(getRes.body[0]).toSatisfySchemaInApiSpec("company")
+
+	const getIdRes = await supertest(app)
+		.get(`/api/companies/${companyRes.body}`)
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(getIdRes).toSatisfyApiSpec()
+    expect(getIdRes.body).toSatisfySchemaInApiSpec("companyById")
+
+	const putRes = await supertest(app)
+		.put(`/api/companies/${companyRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			"name": "Footlocker Lda.",
+			"nif": 29067459,
+			"phone_number": 936666548,
+			"postal_code": "2745-056",
+			"address": "Rua da Borboletas n45 2esq",
+			"location": "Porto Covo",
+			"email": "flocker@gmail.com"
+		})
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(putRes).toSatisfyApiSpec()
+	expect(putRes.body).toSatisfySchemaInApiSpec("id")
+
+	const deleteRes = await supertest(app)
+		.delete(`/api/companies/${companyRes.body}`)
+		.set('Accept', 'application/json')
+        .set('Cookie', session)
+		.expect('Content-Type', /json/)
+        .expect(200)
+	expect(deleteRes).toSatisfyApiSpec()
+    expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
+})
+
+//Quotas
+
+test('Post, Gets, Put quotas', async () => {
+	// the company creation is needed because of the get companies quotas
+	const companyRes = await supertest(app)
+        .post('/api/companies')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+        .send({
+            "name": "Footlocker",
+            "nif": 29067459,
+            "phone_number": 936666648,
+            "email": "flocker@gmail.com",
+            "postal_code": "2745-056",
+            "address": "Rua da Borboletas n45 2esq",
+            "location": "Porto Covo",
+            "password": "123",
+            "username": "flocker",
+        })
+        .expect('Content-Type', /json/)
+        .expect(201)
+    expect(companyRes).toSatisfyApiSpec()
+	expect(companyRes.body).toSatisfySchemaInApiSpec("id")
+
+	const quotasRes = await supertest(app)
+        .post('/api/quotas')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+        .send({
+			"date": "2021-01-01"
+        })
+        .expect('Content-Type', /json/)
+        .expect(201)
+    expect(quotasRes).toSatisfyApiSpec()
+	expect(quotasRes.body).toSatisfySchemaInApiSpec("message")
+
+	const getRes = await supertest(app)
+        .get('/api/quotas')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(getRes).toSatisfyApiSpec()
+    expect(getRes.body[0]).toSatisfySchemaInApiSpec("quota")
+
+	const getUsersRes = await supertest(app)
+		.get(`/api/quotas/users`)
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(getUsersRes).toSatisfyApiSpec()
+    expect(getUsersRes.body[0]).toSatisfySchemaInApiSpec("quota")
+
+	const getCompaniesRes = await supertest(app)
+		.get(`/api/quotas/companies`)
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(getCompaniesRes).toSatisfyApiSpec()
+    expect(getCompaniesRes.body[0]).toSatisfySchemaInApiSpec("quota")
+
+	const putRes = await supertest(app)
+		.put('/api/quotas/1')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			"payment_date": "2022-01-01"
+		})
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(putRes).toSatisfyApiSpec()
+	expect(putRes.body).toSatisfySchemaInApiSpec("id")
+})
+
+//User Sports
+
+test('Post, Gets, Put & Delete company', async () => {
+	// the user creation is needed 
+	const userRes = await supertest(app)
+        .post('/api/users')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+        .send({
+            "cc": 23456824,
+            "nif": 29067459,
+            "type": "effective",
+            "birth_date": "09-05-2000",
+            "nationality": "Portuguesa",
+            "full_name": "João Miguel",
+            "phone_number": 934509248,
+            "email": "jmiguel@gmail.com",
+            "postal_code": "2745-056",
+            "address": "Rua da Borboletas n45 2esq",
+            "location": "Porto Covo",
+            "password": "123",
+            "username": "jmiguel",
+            "paid_enrollment": false,
+            "gender": "Male"
+        })
+        .expect('Content-Type', /json/)
+        .expect(201)
+    expect(userRes).toSatisfyApiSpec()
+	expect(userRes.body).toSatisfySchemaInApiSpec("id")
+
+	// the sport creation is needed 
+	const sportRes = await supertest(app)
+		.post('/api/sports')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			"name": "surf"
+		})
+		.expect('Content-Type', /json/)
+		.expect(201)
+	expect(sportRes).toSatisfyApiSpec()
+	expect(sportRes.body).toSatisfySchemaInApiSpec("id")
+
+	const uSportsRes = await supertest(app)
+        .post(`/api/users/${userRes.body}/sports`)
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+        .send({
+            "sid": sportRes.body,
+            "fed_id": 29067459,
+            "fed_number": 12333318,
+            "fed_name": "Federeção de surf",
+            "type": ["coach"],
+            "years_federated": [2018, 2019, 2020, 2021]
+        })
+        .expect('Content-Type', /json/)
+        .expect(201)
+    expect(uSportsRes).toSatisfyApiSpec()
+	expect(uSportsRes.body).toSatisfySchemaInApiSpec("user_sport_ids")
+
+	const getRes = await supertest(app)
+        .get('/api/users/sports')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(getRes).toSatisfyApiSpec()
+    expect(getRes.body[0]).toSatisfySchemaInApiSpec("sportJoinUser")
+
+	const getSidRes = await supertest(app)
+		.get(`/api/users/sports/${sportRes.body}`)
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(getSidRes).toSatisfyApiSpec()
+    expect(getSidRes.body[0]).toSatisfySchemaInApiSpec("sportJoinUser")
+
+	const getUidRes = await supertest(app)
+		.get(`/api/users/${userRes.body}/sports`)
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+    expect(getUidRes).toSatisfyApiSpec()
+    expect(getUidRes.body[0]).toSatisfySchemaInApiSpec("sportJoinUser")
+
+	const putRes = await supertest(app)
+		.put(`/api/users/${userRes.body}/sports/${sportRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			"fed_id": 29067459,
+            "fed_number": 12333318,
+            "fed_name": "Federeção de surf",
+            "type": ["coach"],
+            "years_federated": [2018, 2019, 2020, 2021],
+			"is_absent": false
+		})
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(putRes).toSatisfyApiSpec()
+	expect(putRes.body).toSatisfySchemaInApiSpec("user_sport_ids")
+
+	const deleteRes = await supertest(app)
+		.delete(`/api/users/${userRes.body}/sports/${sportRes.body}`)
+		.set('Accept', 'application/json')
+        .set('Cookie', session)
+		.expect('Content-Type', /json/)
+        .expect(200)
+	expect(deleteRes).toSatisfyApiSpec()
+    expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
 })
 /*
 
@@ -235,101 +471,7 @@ test('Approve a candidate', async () => {
 	const candidates = await dbCandidate.approveCandidate(1)
 	expect(candidates).toBe(5)
 })
-
-//Company
-
-test('Get all companies', async () => {
-	expect.assertions(2)
-	const companies = await dbCompany.getCompanies()
-	expect(companies[0].name_).toBe('Ericeira surf shop')
-	expect(companies[1].name_).toBe('Billabong')
-})
-
-test('Get specific company', async () => {
-	expect.assertions(1)
-	const company = await dbCompany.getCompanyById(3)
-	expect(company.name_).toBe('Ericeira surf shop')
-})
-
-test('Create a company', async () => {
-	expect.assertions(1)
-	const company_id = await dbCompany.postCompany('Ripcurl', 2313123216812, 967872388, 'rippy@gmail.com', '2112-829', 'Rua do rip', 'Rip on the curls')
-	expect(company_id).toBe(6)
-})
-
-test('Update a company', async () => {
-	expect.assertions(1)
-	const company_id = await dbCompany.updateCompany(3, 'Ericeira surf shop', 231312312312, 918923180, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira')
-	expect(company_id).toBe(3)
-})
-
-test('Delete specific company', async () => {
-	expect.assertions(1)
-	const companies = await dbCompany.deleteCompany(3)
-	expect(companies.length).toBe(3)
-})
-
-//Quotas
-
-test('Create a quota', async () => {
-	expect.assertions(1)
-	const quotas = await dbQuota.postQuota('01-01-2022')
-	expect(quotas).toBe(7)
-})
-
-test('Get all companies quotas', async () => {
-	expect.assertions(1)
-	const quotas = await dbQuota.getCompaniesQuotas()
-	expect(quotas.length).toBe(2)
-})	
-
-test('Get specific company quota', async () => {
-	expect.assertions(1)
-	const quotas = await dbQuota.getMemberQuotasById(6)
-	expect(quotas.date_).toBe('01-01-2022')
-})
-
-test('Update a company quota', async () => {
-	expect.assertions(1)
-	const quota = await dbQuota.updateMemberQuota(6, '02-03-2022')
-	expect(quota.payment_date_).toBe('02-03-2022')
-})
+*/
 
 
-//User Sports
 
-test('Get all sports for users', async () => {
-	expect.assertions(1)
-	const userSports = await dbUser.getUsersSports()
-	expect(userSports.length).toBe(1) 
-})
-
-test('Get users that practice a given sport ', async () => {
-	expect.assertions(1)
-	const users = await dbUser.getUsersSport(2)
-	expect(users.length).toBe(0) 
-})	
-
-test('Get sports that a given user practice', async () => {
-	expect.assertions(1)
-	const sports = await dbUser.getUserSportsById(2)
-	expect(sports.length).toBe(1)
-})
-
-test('Create a sport for a user', async () => {
-	expect.assertions(1)
-	const sport = await dbUser.postUserSport(2, 4, 54, 1890547,'Federacao de Windsurf', ['trainer'],  [2019,2020,2021])
-	expect(sport.fed_id_).toBe(54)
-})
-
-test('Update a sport for a user', async () => {
-	expect.assertions(1)
-	const sport = await dbUser.updateUserSport(2, 3, 54, 1890547,'Federacao de Windsurf', ['trainer'],  [2019,2020,2021,2022])
-	expect(sport.fed_name_).toBe('Federacao de Windsurf')
-})
-
-test('Delete a sport for a user', async () => {
-	expect.assertions(1)
-	const user = await dbUser.deleteUserSport(2,4)
-	expect(user.user_id_).toBe(2)
-})*/

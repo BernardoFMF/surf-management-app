@@ -505,7 +505,7 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 		is_absent_: false
 	}
 	users_sports.push(user_sport)
-	return user_sport
+	return {id_: user_sport.user_id_, sid_: user_sport.sport_id_}
 } 
 
 const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_) => {
@@ -516,7 +516,7 @@ const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, t
 	users_sports[user_sport_idx].type_ = type_
 	users_sports[user_sport_idx].years_federated_ = years_federated_
 	users_sports[user_sport_idx].is_absent_ = is_absent_
-	return users_sports[user_sport_idx]
+	return {id_: users_sports[user_sport_idx].user_id_, sid_: users_sports[user_sport_idx].sport_id_}
 }
 
 const deleteUserSportData = async (id_, sid_) => {
@@ -568,7 +568,7 @@ const postQuotaData = async (date_) => {
 				id_: indexObj.idxQuotas,
 				member_id_: member.id_,
 				username_: member.username_,
-				payment_date: null,
+				payment_date_: null,
 				date_
 			}
 			quotas.push(quota)
@@ -584,7 +584,7 @@ const updateMemberQuotaData = async (qid_, payment_date_) => {
 		}
 		return quota
 	})
-	return quotas.filter(quota => quota.id_ == qid_)[0]
+	return quotas.filter(quota => quota.id_ == qid_)[0].id_
 }
 
 const getQuotaByIdData = async (qid_) => {
