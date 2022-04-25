@@ -1,7 +1,5 @@
 'use strict'
 
-import crypto from '../../utils/crypto.js'
-
 let indexObj = {
 	idxMember: 0,
 	idxCandidates: 0,
@@ -257,13 +255,13 @@ const postMemberAttendanceData = async (eid_, id_, state_) => {
 		state_
 	}
 	attendance.push(event_user)
-	return event_user
+	return {id_, eid_}
 }
 
 const updateMemberAttendanceData = async (eid_, id_, state_) => {
 	const idx = attendance.findIndex(att => att.member_id_ == id_ && att.event_id_ == eid_)
 	attendance[idx].state_ = state_
-	return attendance[idx]
+	return {id_, eid_}
 }
 
 const getEventByIdAttendanceData = async (eid_) => {
@@ -303,7 +301,8 @@ const postSportData = async (name_) => {
 	indexObj.idxSports++
 	const sport = {
 		id_: indexObj.idxSports, 
-		name_
+		name_,
+		is_deleted_: false
 	}
 	sports.push(sport)
 	return sport.id_

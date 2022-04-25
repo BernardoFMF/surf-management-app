@@ -4,12 +4,13 @@ import express from 'express'
 
 import dotenv from 'dotenv'
 
-//import data from './data/__mock__/mockDataAccess.js'
-import data from './data/__db__/dbDataAccess.js'
-
 import server from './server.js'
 
 dotenv.config()
+
+//import data from './data/__mock__/mockDataAccess.js'
+import db from './data/__db__/dbDataAccess.js'
+const data = db(process.env.PG_USER, process.env.PG_PASSWORD, process.env.PG_HOST, process.env.PG_PORT, process.env.PG_DB)
 
 const app = express()
 

@@ -10,8 +10,6 @@ import expressSession from 'express-session'
 import crypto from './utils/crypto.js'
 import errorHandler from './middlewares/errorMiddleware.js'
 
-import error from './utils/error.js'
-
 import userRoutes from './routes/userRoutes.js'
 import sportRoutes from './routes/sportRoutes.js'
 import candidateRoutes from './routes/candidateRoutes.js'

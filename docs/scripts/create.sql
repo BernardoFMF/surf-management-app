@@ -82,7 +82,7 @@ create table Company_ (
 );
 
 create table User_ (
-	member_id_ 	 	int,
+	member_id_		int,
 	nif_			bigint unique,
 	cc_ 			bigint unique,
 	full_name_ 		varchar(60),
@@ -108,7 +108,7 @@ create table User_Img_ (
 create table Sport_ (
 	id_ 	 		serial,
 	name_			varchar(30) unique,
-	is_deleted_ 	bool default false,
+	is_deleted_		bool default false,
 
 	primary key (id_)
 );
