@@ -382,96 +382,229 @@ test('Post, Gets, Put & Delete company', async () => {
 	expect(deleteRes).toSatisfyApiSpec()
     expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
 })
-/*
 
 //Events
 
-test('Get all events', async () => {
-	expect.assertions(2)
-	const events = await dbEvent.getEvents()
-	expect(events[0].name_).toBe('Assembleia geral.')
-	expect(events[1].name_).toBe('Entrega de prémios.')
-})
+test('Post, Put, Gets & Delete event', async () => {
+	const createRes = await supertest(app)
+		.post('/api/events')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			'name': 'assembleia geral',
+			'initial_date': '08-08-2022',
+			'final_date': '10-08-2022',
+		})
+		.expect('Content-Type', /json/)
+		.expect(201)
+	expect(createRes).toSatisfyApiSpec()
+	expect(createRes.body).toSatisfySchemaInApiSpec('id')
 
-test('Get specific event', async () => {
-	expect.assertions(1)
-	const event = await dbEvent.getEventById(1)
-	expect(event.name_).toBe('Assembleia geral.')
-})
+	const getAllRes = await supertest(app)
+		.get('/api/events')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(getAllRes).toSatisfyApiSpec()
+	expect(getAllRes.body[0]).toSatisfySchemaInApiSpec('event')
 
-test('Delete specific event', async () => {
-	expect.assertions(1)
-	const events = await dbEvent.deleteEvent(2)
-	expect(events.length).toBe(1)
-})
+	const getByIdRes = await supertest(app)
+		.get(`/api/events/${createRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(getByIdRes).toSatisfyApiSpec()
+	expect(getByIdRes.body).toSatisfySchemaInApiSpec('event')
 
-test('Create a event', async () => {
-	expect.assertions(1)
-	const event = await dbEvent.postEvent('Entrega de troféus.', '12-07-2022', '12-07-2022')
-	expect(event.name_).toBe('Entrega de troféus.')
-})
+	const putRes = await supertest(app)
+		.put(`/api/events/${createRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			'name': 'assembleia geral v2',
+			'initial_date': '10-08-2022',
+			'final_date': '12-08-2022',
+		})
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(putRes).toSatisfyApiSpec()
+	expect(putRes.body).toSatisfySchemaInApiSpec('id')
 
-test('Update a event', async () => {
-	expect.assertions(1)
-	const event = await dbEvent.updateEvent(1, 'Assembleia geral.', '12-11-2022', '12-07-2022')
-	expect(event.initial_date_).toBe('12-11-2022')
+	const deleteRes = await supertest(app)
+		.delete(`/api/events/${createRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(deleteRes).toSatisfyApiSpec()
+	expect(deleteRes.body).toSatisfySchemaInApiSpec('message')
 })
 
 //Attendance
 
-test('Create a attendance', async () => {
-	expect.assertions(1)
-	const attendance = await dbEvent.postMemberAttendance(1,1,'going')
-	expect(attendance.state_).toBe('going')
-	
-})
+test('Post, Put & Get an attendance', async () => {
+	const userRes = await supertest(app)
+        .post('/api/users')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+        .send({
+            "cc": 23456834,
+            "nif": 29067439,
+            "type": "effective",
+            "birth_date": "09-05-2000",
+            "nationality": "Portuguesa",
+            "full_name": "João Miguel",
+            "phone_number": 934509248,
+            "email": "jmiguel12@gmail.com",
+            "postal_code": "2745-056",
+            "address": "Rua da Borboletas n45 2esq",
+            "location": "Porto Covo",
+            "password": "123",
+            "username": "jmiguel12",
+            "paid_enrollment": false,
+            "gender": "Male"
+        })
+        .expect('Content-Type', /json/)
+        .expect(201)
+    expect(userRes).toSatisfyApiSpec()
+	expect(userRes.body).toSatisfySchemaInApiSpec("id")
 
-test('Get specific attendance', async () => {
-	expect.assertions(1)
-	const attendance = await dbEvent.getEventByIdAttendance(1)
-	expect(attendance[0].state_).toBe('going')
-})
+	const createRes = await supertest(app)
+		.post('/api/events')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			'name': 'assembleia geral',
+			'initial_date': '08-08-2022',
+			'final_date': '10-08-2022',
+		})
+		.expect('Content-Type', /json/)
+		.expect(201)
+	expect(createRes).toSatisfyApiSpec()
+	expect(createRes.body).toSatisfySchemaInApiSpec('id')
 
-test('Update specific attendance', async () => {
-	expect.assertions(1)
-	const attendance = await dbEvent.updateMemberAttendance(1, 1, 'not going')
-	expect(attendance.state_).toBe('not going')
-})
+	const createAttRes = await supertest(app)
+		.post(`/api/events/${createRes.body}/attendance`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			'id': userRes.body,
+			'state': 'going',
+		})
+		.expect('Content-Type', /json/)
+		.expect(201)
+	expect(createAttRes).toSatisfyApiSpec()
+	expect(createAttRes.body).toSatisfySchemaInApiSpec('id_pair')
 
+	const putRes = await supertest(app)
+		.put(`/api/events/${createRes.body}/attendance`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			'id': userRes.body,
+			'state': 'not going',
+		})
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(putRes).toSatisfyApiSpec()
+	expect(putRes.body).toSatisfySchemaInApiSpec('id_pair')
+
+	const getRes = await supertest(app)
+		.get(`/api/events/${createRes.body}/attendance`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(getRes).toSatisfyApiSpec()
+	expect(getRes.body[0]).toSatisfySchemaInApiSpec('event_attendance')
+})
 
 //Candidate
 
-test('Get all candidates', async () => {
-	expect.assertions(2)
-	const candidates = await dbCandidate.getCandidates()
-	expect(candidates[0].nationality_).toBe('Angolana')
-	expect(candidates[1].nationality_).toBe('Portuguesa')
+test('Create, Get & Delete candidate', async () => {
+	const postRes = await supertest(app)
+		.post('/api/candidates')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			"cc": 23451224,
+			"nif": 29012459,
+			"birth_date": "09-05-2000",
+			"nationality": "Portuguesa",
+			"full_name": "João Miguel",
+			"phone_number": 934509248,
+			"email": "jmiguel12345@gmail.com",
+			"postal_code": "2745-056",
+			"address": "Rua da Borboletas n45 2esq",
+			"location": "Porto Covo",
+			"password": "123",
+			"username": "jmiguel12345",
+			"gender": "Male",
+			"img": [13, 16, 83, 1]
+		})
+		.expect('Content-Type', /json/)
+		.expect(201)
+	expect(postRes).toSatisfyApiSpec()
+	expect(postRes.body).toSatisfySchemaInApiSpec("id")
+
+	const getRes = await supertest(app)
+		.get('/api/candidates')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.expect(200)
+	expect(getRes).toSatisfyApiSpec()
+	expect(getRes.body[0]).toSatisfySchemaInApiSpec("candidate")
+
+	const getByIdRes = await supertest(app)
+		.get(`/api/candidates/${postRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.expect(200)
+	expect(getByIdRes).toSatisfyApiSpec()
+	expect(getByIdRes.body).toSatisfySchemaInApiSpec("candidate")
+
+	const deleteRes = await supertest(app)
+		.delete(`/api/candidates/${postRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.expect(200)
+	expect(deleteRes).toSatisfyApiSpec()
+	expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
 })
 
-test('Get specific candidate', async () => {
-	expect.assertions(1)
-	const candidate = await dbCandidate.getCandidateById(1)
-	expect(candidate.nationality_).toBe('Angolana')
+test('Approve candidate', async () => {
+	const postRes = await supertest(app)
+		.post('/api/candidates')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			"cc": 23451224,
+			"nif": 29012459,
+			"birth_date": "09-05-2000",
+			"nationality": "Portuguesa",
+			"full_name": "João Miguel",
+			"phone_number": 934509248,
+			"email": "jmiguel12345@gmail.com",
+			"postal_code": "2745-056",
+			"address": "Rua da Borboletas n45 2esq",
+			"location": "Porto Covo",
+			"password": "123",
+			"username": "jmiguel12345",
+			"gender": "Male",
+			"img": [13, 16, 83, 1]
+		})
+		.expect('Content-Type', /json/)
+		.expect(201)
+	expect(postRes).toSatisfyApiSpec()
+	expect(postRes.body).toSatisfySchemaInApiSpec("id")
+
+	const approveRes = await supertest(app)
+		.put(`/api/candidates/${postRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.expect(200)
+	expect(approveRes).toSatisfyApiSpec()
+	expect(approveRes.body).toSatisfySchemaInApiSpec("message")
 })
-
-test('Create a candidate', async () => {
-	expect.assertions(1)
-	const candidate = await dbCandidate.postCandidate(6723355243, 123213213123, 'effective', '21-06-1990', 'Portuguesa', 'João Santos', 932333288, 'joao@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbi', 'Other')
-	expect(candidate.nationality_).toBe('Portuguesa')
-})
-
-test('Delete specific candidate', async () => {
-	expect.assertions(1)
-	const candidates = await dbCandidate.deleteCandidate(2)
-	expect(candidates.length).toBe(2)
-})
-
-test('Approve a candidate', async () => {
-	expect.assertions(1)
-	const candidates = await dbCandidate.approveCandidate(1)
-	expect(candidates).toBe(5)
-})
-*/
-
-
-

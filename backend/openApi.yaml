@@ -1059,16 +1059,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/event'
+              $ref: '#/components/schemas/api_events_body'
       responses:
         '201':
           description: response body should be a event object
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/event'
+                $ref: '#/components/schemas/id'
         '400':
           description: response body should be an error object
           content:
@@ -1093,7 +1091,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  /api/events{id}:
+  /api/events/{id}:
     get:
       summary: fetches a specific event
       operationId: getEventByIdApi
@@ -1153,15 +1151,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/event'
+              $ref: '#/components/schemas/api_events_body'
       responses:
         '200':
           description: response body should be an id
           content:
             application/json:
               schema:
-                type: array
-                items:
                   $ref: '#/components/schemas/id'
         '400':
           description: response body should be an error object
@@ -1237,9 +1233,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                type: array
                 items:
-                  $ref: '#/components/schemas/eventAttendance'
+                  $ref: '#/components/schemas/event_attendance'
         '400':
           description: response body should be an error object
           content:
@@ -1253,6 +1249,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
         '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: updates a event
+      operationId: postEventAttendanceApi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api_attendance_body'
+      responses:
+        '201':
+          description: response body should be an id
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/id_pair'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
           description: response body should be an error object
           content:
             application/json:
@@ -1286,9 +1325,9 @@ paths:
           content:
             application/json:
               schema:
-                type: array
+                type: object
                 items:
-                  $ref: '#/components/schemas/id'
+                  $ref: '#/components/schemas/id_pair'
         '400':
           description: response body should be an error object
           content:
@@ -1390,9 +1429,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/candidate'
+                $ref: '#/components/schemas/id'
         '400':
           description: response body should be an error object
           content:
@@ -1484,9 +1521,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/id'
+                $ref: '#/components/schemas/message'
         '400':
           description: response body should be an error object
           content:
@@ -1960,7 +1995,7 @@ components:
         final_date_:
           type: string
           format: date
-    eventAttendance:
+    event_attendance:
       type: object
       properties:
         member_id_:
@@ -1968,6 +2003,10 @@ components:
         event_id_:
           type: integer
         state_:
+          type: string
+        username_:
+          type: string
+        name_:
           type: string
     candidate:
       type: object
@@ -2004,8 +2043,34 @@ components:
           type: array
           items:
             type: number
-        gender:
+        gender_:
           type: string
+          
+    api_events_body:
+      type: object
+      properties:
+        name:
+          type: string
+        initial_date:
+          type: string
+          format: date
+        final_date:
+          type: string
+          format: date
+    api_attendance_body:
+      type: object
+      properties:
+        id:
+          type: integer
+        state:
+          type: string
+    id_pair:
+      type: object
+      properties:
+        eid:
+          type: integer
+        id:
+          type: integer
           
   parameters:
     qidParameter:

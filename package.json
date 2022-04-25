@@ -24,7 +24,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "start": "node backend/index",
     "server": "npx nodemon backend/index",
     "client": "npm start --prefix frontend",
