@@ -4,12 +4,13 @@ import cryptoUtil from '../utils/crypto.js'
 import crypto from 'crypto'
 import mailSender from '../utils/email/mailSender.js'
 import { passwordChangeTemplate, passwordChangedTemplate } from  '../utils/email/mailTemplates.js'
+import error from '../utils/error.js'
 
 const authServices = (db) => { 
 
 	const requestPasswordReset = async (id) => {
 		const user = await db.getMemberByIdData(id)
-		if (!user) throw new Error('User does not exist')
+		if (!user) throw new error(404, 'User does not exist')
 	
 		let token = await db.getMemberTokenByIdData(id) //ir buscar o token do user
 		if (token) await db.deleteMemberTokenData(id) //se ja existir eliminá-lo
@@ -32,14 +33,14 @@ const authServices = (db) => {
 		let passwordResetToken = await db.getMemberTokenByIdData(userId) //verificar se o User tem um token
 
 		if (!passwordResetToken) {
-			throw new Error('Invalid or expired password reset token')
+			throw new error(409, 'Invalid or expired password reset token')
 		}
 
 	
 		let isValid = await cryptoUtil.comparepassword(token, passwordResetToken.token) //comparar o token
 	
 		if (!isValid) {
-			throw new Error('Invalid or expired password reset token')
+			throw new error(409, 'Invalid or expired password reset token')
 		}
 	
 		const hash = await cryptoUtil.hashpassword(password)

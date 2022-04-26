@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: SurfApp
-  description: Web API to manage games and groups composed by them
+  description: Web API to manage a surf club
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -1427,44 +1427,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
         '500':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    delete:
-      summary: deletes a event
-      operationId: deleteEventAttendanceApi
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: response body should be a message object
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/message'
-        '400':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '401':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '404':
           description: response body should be an error object
           content:
             application/json:
