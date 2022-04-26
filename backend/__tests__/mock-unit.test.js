@@ -222,7 +222,7 @@ test('Update a company', async () => {
 	expect(company_id).toBe(3)
 })
 
-/*
+
 test('Delete specific company', async () => {
 	expect.assertions(1)
 	try {
@@ -238,7 +238,7 @@ test('Delete specific company', async () => {
 test('Create a quota', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.postQuota('01-01-2022')
-	expect(quotas).toBe(4)
+	expect(quotas).toBe('01-01-2022')
 })
 
 test('Get all users quotas', async () => {
@@ -250,23 +250,23 @@ test('Get all users quotas', async () => {
 test('Get all companies quotas', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getCompaniesQuotas()
+	console.log(quotas)
 	expect(quotas.length).toBe(2)
 })	
-
 
 test('Get specific company quota', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getMemberQuotasById(6)
-	expect(quotas[0].date_.getFullYear()).toBe(2022)
+	console.log(quotas)
+	expect(parseInt(quotas[0].date_.split('-')[2])).toBe(2022)
 })
 
 test('Update a company quota', async () => {
 	expect.assertions(1)
-	const quota = await dbQuota.updateMemberQuota(6, '02-03-2022')
-	expect(quota).toBe(6)
+	const quota = await dbQuota.updateMemberQuota(5, '02-03-2022')
+	expect(quota).toBe(5)
 })
 
-*/
 //User
 
 test('Get all users', async () => {
@@ -287,14 +287,15 @@ test('Post User', async () => {
 	expect(user).toBe(7)
 })
 
-// erro da DB não do mock
-/*
 test('Update a user', async () => {
-	expect.assertions(1)
-	const user_id = await dbUser.updateUser(2,383123818, 763371741145, 'effective',15, '27-10-1993', 'Portuguesa', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',true, false, false, 'Other')
+	expect.assertions(2)
+	const user_id = await dbUser.updateUser(2,383123818, 763371741145, 'effective',15, '27-10-1993', 'Espanhola', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',true, false, false, 'Other')
 	expect(user_id).toBe(2)
+
+	const user = await dbUser.getUserById(2)
+	expect(user.nationality_).toBe('Espanhola')
 })
-*/
+
 test('Delete user', async () => {
 	expect.assertions(1)
 	try {
@@ -336,10 +337,9 @@ test('Update a sport for a user', async () => {
 	const sport = await dbUser.updateUserSport(2, 3, 54, 1890547,'Federacao de Windsurf', ['trainer'],  [2019,2020,2021,2022], false)
 	expect(sport.id_).toBe(2)
 })
-/*
+
 test('Delete a sport for a user', async () => {
 	expect.assertions(1)
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
 })
-*/

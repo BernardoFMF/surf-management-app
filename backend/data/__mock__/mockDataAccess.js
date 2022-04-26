@@ -85,7 +85,7 @@ const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_
 
 const deleteCandidateData = async (id_) => {
 	candidates = candidates.filter(candidate => candidate.id_ != id_)
-	return candidates
+	return id_
 }
 
 const approveCandidateData = async (id_, type_, quota_value_, paid_enrollment_) => {
@@ -127,20 +127,22 @@ const getCompanyByIdData = async (id_) => {
 	const contact = contacts.filter(contact => contact.member_id_ == id_)[0]
 	if (company) {
 		const member = await getMemberByIdData(company.member_id_)
-		const ret = {
-			member_id_:company.member_id_,
-			nif_:company.nif_,
-			name_:company.name_,
-			location_:contact.location_,
-			address_:contact.address_,
-			postal_code_:contact.postal_code_,
-			email_:contact.email_,
-			phone_number_:contact.phone_number_,
-			username_:member.username_,
-			has_debt_:member.has_debt_,
-			member_type_:member.member_type_
+		if (member) {
+			const ret = {
+				member_id_:company.member_id_,
+				nif_:company.nif_,
+				name_:company.name_,
+				location_:contact.location_,
+				address_:contact.address_,
+				postal_code_:contact.postal_code_,
+				email_:contact.email_,
+				phone_number_:contact.phone_number_,
+				username_:member.username_,
+				has_debt_:member.has_debt_,
+				member_type_:member.member_type_
+			}
+			return ret
 		}
-		if (member) return ret
 	}
 	return undefined
 }
@@ -207,7 +209,7 @@ const deleteCompanyData = async (id_) => {
 		if (member.id_ == id_) member.is_deleted_ = true
 		return member
 	})
-	return companies
+	return id_
 }
 
 /**
@@ -245,7 +247,7 @@ const updateEventData = async (id_, name_, initial_date_, final_date_) => {
 const deleteEventData = async (id_) => {
 	events = events.filter(event => event.id_ != id_)
 	attendance = attendance.filter(att => att.event_id_ != id_)
-	return events
+	return id_
 }
 
 const postMemberAttendanceData = async (eid_, id_, state_) => {
@@ -269,15 +271,17 @@ const getEventByIdAttendanceData = async (eid_) => {
 	for (const idx in attendance) {
 		if(attendance[idx].event_id_ == eid_) {
 			const member = await getMemberByIdData(attendance[idx].member_id_)
-			const event = await getEventByIdData(eid_)
-			const obj = {
-				member_id_:attendance[idx].member_id_,
-				username_:member.username_,
-				event_id_: event.id_,
-				name_: event.name_,
-				state_:attendance[idx].state_
+			if (member) {
+				const event = await getEventByIdData(eid_)
+				const obj = {
+					member_id_:attendance[idx].member_id_,
+					username_:member.username_,
+					event_id_: event.id_,
+					name_: event.name_,
+					state_:attendance[idx].state_
+				}
+				ret.push(obj)
 			}
-			ret.push(obj)
 		}
 	}
 	return ret
@@ -310,7 +314,7 @@ const postSportData = async (name_) => {
 
 const deleteSportData = async (id_) => {
 	sports = sports.filter(sport => sport.id_ != id_)
-	return sports
+	return id_
 }
 
 /**
@@ -413,9 +417,9 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 	membership_cards.push(membership_card)
 }
 
-const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted, gender_) => {
+const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_) => {
 	const idxMember = members.findIndex(member => member.id_ == id_)
-	members[idxMember].is_deleted = is_deleted
+	members[idxMember].is_deleted_ = is_deleted_
 	members[idxMember].type_ = type_
 	members[idxMember].quota_value_ = quota_value_
 
@@ -451,7 +455,7 @@ const deleteUserData = async (id_) => {
 		if (member.id_ == id_) member.is_deleted_ = true
 		return member
 	})
-	return users
+	return id_
 }
 
 const getUsersSportsData = async () => {
@@ -465,29 +469,11 @@ const getUsersSportsData = async () => {
 }
 
 const getUsersSportData = async (id_) => {
-	/*let users_array = []
-	const sports_tuples = users_sports.filter(sport => sport.sport_id_ == id_)
-	for (const idx in sports_tuples) {
-		const member = await getMemberByIdData(users_sports[idx].user_id_)
-		const user = await getUserByIdData(users_sports[idx].user_id_)
-		const sport = await getSportByIdData(users_sports[idx].sport_id_)
-		if (member && sport) users_array.push({...user, ...users_sports[idx], name_: sport.name_})
-	}
-	return users_array*/
 	let sports_tuples = await getUsersSportsData()
 	return sports_tuples.filter(sport => sport.sport_id_ == id_)
 }
 
 const getUserSportsByIdData = async (id_) => {
-	/*let sports_tuples = []
-	const users_tuples = users_sports.filter(user => user.user_id_ == id_)
-	for (const idx in users_tuples) {
-		const member = await getMemberByIdData(users_sports[idx].user_id_)
-		const user = await getUserByIdData(users_sports[idx].user_id_)
-		const sport = await getSportByIdData(users_sports[idx].sport_id_)
-		if (member && sport) sports_tuples.push({...user, ...users_sports[idx], name_: sport.name_})
-	}
-	return sports_tuples*/
 	let sports_tuples = await getUsersSportsData()
 	return sports_tuples.filter(user => user.user_id_ == id_)
 }
@@ -523,7 +509,7 @@ const deleteUserSportData = async (id_, sid_) => {
 	if(user_sport_idx != -1) {
 		users_sports[user_sport_idx].is_absent_ = true
 	}
-	return users_sports[user_sport_idx]
+	return {id_, sid_}
 }
 
 /**
@@ -545,8 +531,9 @@ const getCompaniesQuotasData = async () => {
 }
 
 const getUsersQuotasData = async () => {
-	return quotas.filter(async (quota) => {
-		if (await getUserByIdData(quota.member_id_)) {
+	return quotas.filter(quota => {
+		const member = members.filter(member => member.id_ == quota.member_id_ && !member.is_deleted_ && member.member_type_ != 'corporate')[0]
+		if (member) {
 			return true
 		}
 		return false
@@ -554,7 +541,10 @@ const getUsersQuotasData = async () => {
 }
 
 const getMemberQuotasByIdData = async (id_) => {
-	return quotas.filter(quota => quota.member_id_ == id_)[0]
+	const member = await getMemberByIdData(id_)
+	if (member)
+		return quotas.filter(quota => quota.member_id_ == id_)
+	return undefined
 }
 
 const postQuotaData = async (date_) => {
@@ -562,28 +552,33 @@ const postQuotaData = async (date_) => {
 	members.forEach(member => {
 		const year_quota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_.split('-')[0] == date_.split('-')[0])[0]
 		if (!year_quota) {
-			indexObj.idxQuotas++
-			const quota = {
-				id_: indexObj.idxQuotas,
-				member_id_: member.id_,
-				username_: member.username_,
-				payment_date_: null,
-				date_
+			if (member.quota_value_ != 0) {
+				indexObj.idxQuotas++
+				const quota = {
+					id_: indexObj.idxQuotas,
+					member_id_: member.id_,
+					username_: member.username_,
+					payment_date_: null,
+					date_
+				}
+				quotas.push(quota)
 			}
-			quotas.push(quota)
+				
 		}
 	})
-	return indexObj.idxQuotas - cnt
+	return date_
 }
 
 const updateMemberQuotaData = async (qid_, payment_date_) => {
+	let id
 	quotas = quotas.map(quota => {
 		if (quota.id_ == qid_) {
+			id = quota.id_
 			quota.payment_date_ = payment_date_
 		}
 		return quota
 	})
-	return quotas.filter(quota => quota.id_ == qid_)[0].id_
+	return id
 }
 
 const getQuotaByIdData = async (qid_) => {

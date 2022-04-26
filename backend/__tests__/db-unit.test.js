@@ -64,7 +64,7 @@ async function insertAttendanceDummies() {
 let drop = fs.readFileSync('./docs/scripts/drop.sql', 'utf8');
 let create = fs.readFileSync('./docs/scripts/create.sql', 'utf8');
 let trigger = fs.readFileSync('./docs/scripts/Triggers.sql', 'utf8');
-
+/*
 beforeAll( async () => {
 	const con = await data.pool.connect()
 	await con.query(drop)
@@ -105,7 +105,7 @@ test('Delete specific sport', async () => {
 		expect(e.message).toBe('Sport does not exist')
 	}
 })
-*/
+
 test('Create a sport', async () => {
 	expect.assertions(1)
 	const sport_id = await dbSport.postSport('Skimboarding')
@@ -298,13 +298,13 @@ test('Post User', async () => {
 	expect(user).toBe(7)
 })
 
-/*
+
 test('Update a user', async () => {
 	expect.assertions(1)
 	const user_id = await dbUser.updateUser(2,383123818, 763371741145, 'effective',15, '27-10-1993', 'Portuguesa', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',true, false, false, 'Other')
 	expect(user_id).toBe(2)
 })
-*/
+
 test('Delete user', async () => {
 	expect.assertions(1)
 	try {
@@ -352,3 +352,4 @@ test('Delete a sport for a user', async () => {
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
 })
+*/
