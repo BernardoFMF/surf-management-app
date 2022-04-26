@@ -161,7 +161,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			return cid_
 		} catch(e) {
 			await company.query('Rollback')
-			throw error(500,'Internal server error')
+			throw e
 		} finally {
 			company.release()
 		}
@@ -176,7 +176,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			return id_
 		} catch(e) {
 			await company.query('Rollback')
-			throw error(500,'Internal server error')
+			throw e
 		} finally {
 			company.release()
 		}
@@ -259,7 +259,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			return eventsResult.rows
 		} catch(e) {
 			await events.query('Rollback')
-			throw error(500,'Internal server error')
+			throw e
 		} finally {
 			events.release()
 		}
@@ -274,7 +274,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			return eventResult.rows[0]
 		} catch(e) {
 			await events.query('Rollback')
-			throw error(500,'Internal server error')
+			throw e
 		} finally {
 			events.release()
 		}
@@ -289,7 +289,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			return eventResult.rows[0].id_
 		} catch(e) {
 			await events.query('Rollback')
-			throw error(500,'Internal server error')
+			throw e
 		} finally {
 			events.release()
 		}
@@ -304,7 +304,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			return id_
 		} catch(e) {
 			await events.query('Rollback')
-			throw error(500,'Internal server error')
+			throw e
 		} finally {
 			events.release()
 		}
@@ -319,7 +319,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			return id_
 		} catch(e) {
 			await events.query('Rollback')
-			throw error(500,'Internal server error')
+			throw e
 		} finally {
 			events.release()
 		}
