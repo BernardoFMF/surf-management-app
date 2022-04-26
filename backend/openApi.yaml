@@ -628,6 +628,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+    put:
+      summary: updates a sport
+      operationId: updateSportApi
+      parameters:
+        - name: sid
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sports_id_body'
+      responses:
+        '200':
+          description: response body should be a sport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/id'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /api/quotas:
     get:
       summary: fetches all quotas
@@ -1215,6 +1256,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+  /api/events/members/{id}/attendance:
+    get: 
+      summary: fetches a specific member attendance
+      operationId: getEventAttendanceByMemberIdApi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a attendance object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/attendance_event'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /api/events/{id}/attendance:
     get:
       summary: fetches a specific event
@@ -1785,6 +1871,13 @@ components:
       properties:
         name:
           type: string
+    sports_id_body:
+      type: object
+      properties:
+        name_:
+          type: string
+        is_deleted_:
+          type: boolean
     sportJoinUser:
       required:
         - fed_id_
@@ -1996,6 +2089,23 @@ components:
           type: string
           format: date
     event_attendance:
+      type: object
+      properties:
+        member_id_:
+          type: integer
+        event_id_:
+          type: integer
+        name_:
+          type: string
+        state_:
+          type: string
+        initial_date_:
+          type: string
+          format: date
+        final_date_:
+          type: string
+          format: date
+    attendance_event:
       type: object
       properties:
         member_id_:

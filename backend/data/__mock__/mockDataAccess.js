@@ -287,6 +287,10 @@ const getEventByIdAttendanceData = async (eid_) => {
 	return ret
 }
 
+const getEventMemberByIdAttendanceData = async (id_) => {
+	const ret = attendance.filter(att => att.member_id_ == id_)
+	return ret
+}
 /**
  * Sports
  */
@@ -310,6 +314,13 @@ const postSportData = async (name_) => {
 	}
 	sports.push(sport)
 	return sport.id_
+}
+
+const updateSportData = async (id_, is_deleted_, name_) => {
+	const idxSport = sports.findIndex(sport => sport.id_ == id_)
+	sports[idxSport].is_deleted_ = is_deleted_
+	sports[idxSport].name_ = name_
+	return sports[idxSport].id_
 }
 
 const deleteSportData = async (id_) => {
@@ -594,6 +605,6 @@ const getEmails = async() => {
 	return emails
 }
 
-const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData }
+const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getEventMemberByIdAttendanceData, getSportsData, getSportByIdData, postSportData,updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData }
 
 export default mock_data

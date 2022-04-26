@@ -104,7 +104,7 @@ test('Post, Gets, Put & Delete user', async () => {
 
 })
 
-test('Post, Gets & Delete sport', async () => {
+test('Post, Put, Gets & Delete sport', async () => {
 	const createRes = await supertest(app)
 		.post('/api/sports')
 		.set('Accept', 'application/json')
@@ -116,6 +116,19 @@ test('Post, Gets & Delete sport', async () => {
 		.expect(201)
 	expect(createRes).toSatisfyApiSpec()
 	expect(createRes.body).toSatisfySchemaInApiSpec("id")
+
+	const putRes = await supertest(app)
+		.put(`/api/sports/${createRes.body}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			"is_deleted": false,
+			"name": "Surf"
+		})
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(putRes).toSatisfyApiSpec()
+	expect(putRes.body).toSatisfySchemaInApiSpec("id")
 
 	const sportRes = await supertest(app)
 		.get('/api/sports')
@@ -279,7 +292,6 @@ test('Post, Gets, Put quotas', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
     expect(getUsersRes).toSatisfyApiSpec()
-	//console.log(getUsersRes.body)
     expect(getUsersRes.body[0]).toSatisfySchemaInApiSpec("quota")
 
 	const getCompaniesRes = await supertest(app)
@@ -547,6 +559,15 @@ test('Post, Put & Get an attendance', async () => {
 		.expect(200)
 	expect(getRes).toSatisfyApiSpec()
 	expect(getRes.body[0]).toSatisfySchemaInApiSpec('event_attendance')
+
+	const getMemberRes = await supertest(app)
+		.get(`/api/events/members/${userRes.body}/attendance`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(getMemberRes).toSatisfyApiSpec()
+	expect(getMemberRes.body[0]).toSatisfySchemaInApiSpec('attendance_event')
 })
 
 //Candidate

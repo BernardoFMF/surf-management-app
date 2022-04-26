@@ -54,6 +54,11 @@ const eventServices = (db) => {
 		return await data.getEventByIdAttendance(event_id)
 	}
 
+	const getEventMemberByIdAttendanceServices = async(id) => {
+		if(!id) throw error(400,'Parameter not found: id')
+		return await data.getEventMemberByIdAttendance(id)
+	}
+
 	return { 
 		getEventsServices, 
 		getEventByIdServices, 
@@ -62,7 +67,8 @@ const eventServices = (db) => {
 		deleteEventServices, 
 		updateMemberAttendanceServices,
 		postMemberAttendanceServices, 
-		getEventByIdAttendanceServices 
+		getEventByIdAttendanceServices,
+		getEventMemberByIdAttendanceServices
 	}
 }
 

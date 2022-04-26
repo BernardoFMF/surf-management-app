@@ -21,7 +21,7 @@ async function insertSportDummies() {
 	await dbSport.postSport('Surf')
 	await dbSport.postSport('Bodyboard')
 	await dbSport.postSport('Skysurf')
-	await dbSport.postSport('Windsurf')
+	await dbSport.postSport('Winfsurf')
 }
 
 async function insertEventDummies() {
@@ -81,8 +81,13 @@ test('Get specific sport', async () => {
 	expect(sport.name_).toBe('Surf')
 })
 
-// erro da DB não do mock
-/*
+test('Update specific sport', async () => {
+	expect.assertions(1)
+	await dbSport.updateSport(4, false, 'Windsurf')
+	const sport = await dbSport.getSportById(4)
+	expect(sport.name_).toBe('Windsurf')
+})
+
 test('Delete specific sport', async () => {
 	expect.assertions(1)
 	try {
@@ -92,7 +97,7 @@ test('Delete specific sport', async () => {
 		expect(e.message).toBe('Sport does not exist')
 	}
 })
-*/
+
 test('Create a sport', async () => {
 	expect.assertions(1)
 	const sport_id = await dbSport.postSport('Skimboarding')
@@ -157,7 +162,11 @@ test('Update specific attendance', async () => {
 	expect(attendance.id_).toBe(1)
 })
 
-
+test('Get specific member attendance', async () => {
+	expect.assertions(1)
+	const attendance = await dbEvent.getEventMemberByIdAttendance(1)
+	expect(attendance[0].member_id_).toBe(1)
+})
 //Candidate
 
 test('Get all candidates', async () => {
@@ -250,14 +259,12 @@ test('Get all users quotas', async () => {
 test('Get all companies quotas', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getCompaniesQuotas()
-	console.log(quotas)
 	expect(quotas.length).toBe(2)
 })	
 
 test('Get specific company quota', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getMemberQuotasById(6)
-	console.log(quotas)
 	expect(parseInt(quotas[0].date_.split('-')[2])).toBe(2022)
 })
 
@@ -311,7 +318,7 @@ test('Delete user', async () => {
 test('Get all sports for users', async () => {
 	expect.assertions(1)
 	const userSports = await dbUser.getUsersSports()
-	expect(userSports.length).toBe(2) 
+	expect(userSports.length).toBe(1) 
 })
 
 test('Get users that practice a given sport ', async () => {
@@ -323,7 +330,7 @@ test('Get users that practice a given sport ', async () => {
 test('Get sports that a given user practice', async () => {
 	expect.assertions(1)
 	const sports = await dbUser.getUserSportsById(2)
-	expect(sports.length).toBe(2)
+	expect(sports.length).toBe(1)
 })
 
 test('Create a sport for a user', async () => {

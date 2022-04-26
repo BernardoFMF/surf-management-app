@@ -64,6 +64,11 @@ const eventController = (data) => {
 		res.json(attendance)
 	})
 
+	const getEventMemberByIdAttendance = asyncHandler(async (req,res) => {
+		const attendance = await services.getEventMemberByIdAttendanceServices(req.params.id)
+		res.json(attendance)
+	})
+
 	return {
 		getEvents,
 		getEventById,
@@ -72,7 +77,8 @@ const eventController = (data) => {
 		deleteEvent,
 		postMemberAttendance,
 		updateMemberAttendance,
-		getEventByIdAttendance
+		getEventByIdAttendance,
+		getEventMemberByIdAttendance
 	}
 }
 

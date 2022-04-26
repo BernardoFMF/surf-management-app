@@ -64,9 +64,18 @@ end
 $$;
 
 /**
- * delete user is made by a simple update query (changes the member table)
- * no proc needed
+ * delete user
  */
+
+create or replace procedure delete_user(p_id_ int)
+LANGUAGE plpgsql  
+as
+$$
+begin
+	update Member_ set is_deleted_ = true where id_ = p_id_; 
+	update User_Sport_ set is_absent_ = true where user_id_ = p_id_;
+end
+$$;
 
 /**
  * Creates a user_sport
@@ -231,7 +240,7 @@ DECLARE
 	year1 int;
 begin
 	with new_id_table_ as (
-		INSERT INTO Member_(member_type_,has_debt_,quota_value_,is_deleted_,username_,pword_) VALUES ('corporate',true,50,false,username_,pword_) returning id_
+		INSERT INTO Member_(member_type_,quota_value_,username_,pword_) VALUES ('corporate',50,username_,pword_) returning id_
 	)
 	select id_ into new_id_ from new_id_table_;
 	

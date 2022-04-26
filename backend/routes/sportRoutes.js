@@ -16,6 +16,8 @@ const sportRoutes = (data) => {
 	app.get('/:sid', authentication.authAdmin, controller.getSportById)
     
 	app.post('/', authentication.authAdmin, controller.postSport)
+
+	app.put('/:sid', authentication.authAdmin, controller.updateSport)
     
 	app.delete('/:sid', authentication.authAdmin, controller.deleteSport)
     

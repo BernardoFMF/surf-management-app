@@ -17,6 +17,11 @@ const sportData = (db) => {
 		return await db.postSportData(name_)
 	}
 	
+	const updateSport = async (id_, is_deleted_, name_) => {
+		await getSportById(id_)
+		return await db.updateSportData(id_, is_deleted_, name_)
+	}
+
 	const deleteSport = async (id_) => {
 		await getSportById(id_)
 		return await db.deleteSportData(id_)
@@ -25,7 +30,8 @@ const sportData = (db) => {
 	return {
 		getSports, 
 		getSportById, 
-		postSport, 
+		postSport,
+		updateSport,
 		deleteSport
 	}
 }

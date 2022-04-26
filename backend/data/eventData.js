@@ -56,6 +56,12 @@ const eventData = (db) => {
 		return await db.getEventByIdAttendanceData(eid_)
 	}
 
+	const getEventMemberByIdAttendance = async (id_) => {
+		const user = await db.getUserByIdData(id_)
+		if (!user) throw error(404, 'User does not exist')
+		return await db.getEventMemberByIdAttendanceData(id_)
+	}
+
 	return {
 		getEvents, 
 		getEventById, 
@@ -64,7 +70,8 @@ const eventData = (db) => {
 		deleteEvent, 
 		postMemberAttendance, 
 		updateMemberAttendance, 
-		getEventByIdAttendance
+		getEventByIdAttendance,
+		getEventMemberByIdAttendance
 	} 
 }
 

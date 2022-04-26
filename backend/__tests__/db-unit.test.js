@@ -27,7 +27,7 @@ async function insertSportDummies() {
 	await dbSport.postSport('Surf')
 	await dbSport.postSport('Bodyboard')
 	await dbSport.postSport('Skysurf')
-	await dbSport.postSport('Windsurf')
+	await dbSport.postSport('Winfsurf')
 }
 
 async function insertEventDummies() {
@@ -36,18 +36,18 @@ async function insertEventDummies() {
 }
 
 async function insertCandidateDummies() {
-	await dbCandidate.postCandidate('jobileu', 74389323248, 342893489348, '12-06-1990', 'Angolana', 'Jobileu Santos', 932727288, 'jobi@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbie2', '\\xEAABDFFA', 'Male')
-	await dbCandidate.postCandidate('carlao', 34898942908, 109381908487, '15-03-1990', 'Portuguesa', 'Carlitos Roger', 927182837, 'carliti@hotmail.com', '2423-829', 'Rua da banheira', 'Baixa da Banheira', 'duche2', '\\xEAABDFFA', 'Male' )
+	await dbCandidate.postCandidate('jobileu', 474389323, 342893489, '12-06-1990', 'Angolana', 'Jobileu Santos', 932727288, 'jobi@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbie2', '\\xEAABDFFA', 'Male')
+	await dbCandidate.postCandidate('carlao', 898942908, 109381908, '15-03-1990', 'Portuguesa', 'Carlitos Roger', 927182837, 'carliti@hotmail.com', '2423-829', 'Rua da banheira', 'Baixa da Banheira', 'duche2', '\\xEAABDFFA', 'Male' )
 }
 
 async function insertCompanyDummies() {
-	await dbCompany.postCompany('Ericeira surf shop', 231312312312, 938172388, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira', 'eric', 'ericeric')
-	await dbCompany.postCompany('Billabong', 42321331231, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity', 'billa', 'billabilla')
+	await dbCompany.postCompany('Ericeira surf shop', 231312312, 938172388, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira', 'eric', 'ericeric')
+	await dbCompany.postCompany('Billabong', 423213312, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity', 'billa', 'billabilla')
 }
 
 async function insertUserDummies() {
-	await dbUser.postUser(383128318, 764271741145, 'founder', 0, '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe')
-	await dbUser.postUser(383123818, 763371741145, 'effective', 15,  '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe')
+	await dbUser.postUser(383128318, 764291145, 'founder', 0, '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe')
+	await dbUser.postUser(383123818, 763371741, 'effective', 15,  '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe')
 }
 
 async function insertSportsforUsersDummies() {
@@ -64,12 +64,15 @@ async function insertAttendanceDummies() {
 let drop = fs.readFileSync('./docs/scripts/drop.sql', 'utf8');
 let create = fs.readFileSync('./docs/scripts/create.sql', 'utf8');
 let trigger = fs.readFileSync('./docs/scripts/Triggers.sql', 'utf8');
-/*
+let procedures = fs.readFileSync('./docs/scripts/procedures.sql', 'utf8');
+
+
 beforeAll( async () => {
 	const con = await data.pool.connect()
 	await con.query(drop)
 	await con.query(create)
-	await con.query(trigger) 
+	await con.query(trigger)
+	await con.query(procedures)  
 	await insertSportDummies()
 	await insertCandidateDummies()
 	await insertUserDummies()
@@ -79,7 +82,7 @@ beforeAll( async () => {
 	return await insertAttendanceDummies()
 })
 
-//Sports
+//Sports - verified 26/04/2022
 
 test('Get all sports', async () => {
 	expect.assertions(2)
@@ -95,7 +98,13 @@ test('Get specific sport', async () => {
 	expect(sport.name_).toBe('Surf')
 })
 
-/*
+test('Update specific sport', async () => {
+	expect.assertions(1)
+	const id = await dbSport.updateSport(4, false, 'Windsurf')
+	const sport = await dbSport.getSportById(id)
+	expect(sport.name_).toBe('Windsurf')
+})
+
 test('Delete specific sport', async () => {
 	expect.assertions(1)
 	try {
@@ -112,7 +121,7 @@ test('Create a sport', async () => {
 	expect(sport_id).toBe(5)
 })
 
-//Events
+//Events - verified 26/04/2022
 
 test('Get all events', async () => {
 	expect.assertions(2)
@@ -143,19 +152,19 @@ test('Create a event', async () => {
 	expect(event).toBe(3)
 })
 
+
 test('Update a event', async () => {
 	expect.assertions(1)
-	const event = await dbEvent.updateEvent(1, 'Assembleia geral.', '12-11-2022', '12-07-2022')
+	const event = await dbEvent.updateEvent(1, 'Assembleia geral.', '12-08-2022', '12-11-2022')
 	expect(event).toBe(1)
 })
 
-//Attendance
+//Attendance - verified 26/04/2022 (missing get attendance by user)
 
 test('Create a attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.postMemberAttendance(1,1,'going')
 	expect(attendance.id_).toBe(1)
-	
 })
 
 test('Get specific attendance', async () => {
@@ -170,8 +179,15 @@ test('Update specific attendance', async () => {
 	expect(attendance.id_).toBe(1)
 })
 
+test('Get specific member attendance', async () => {
+	expect.assertions(1)
+	const attendance = await dbEvent.getEventMemberByIdAttendance(1)
+	console.log(attendance);
+	expect(attendance[0].member_id_).toBe(1)
+})
 
-//Candidate
+
+//Candidate - verified 26/04/2022
 
 test('Get all candidates', async () => {
 	expect.assertions(2)
@@ -188,7 +204,7 @@ test('Get specific candidate', async () => {
 
 test('Create a candidate', async () => {
 	expect.assertions(1)
-	const candidate = await dbCandidate.postCandidate('ze', 6723355243, 123213213123, '21-06-1990', 'Portuguesa', 'João Santos', 932333288, 'joao@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbi', null, 'Other')
+	const candidate = await dbCandidate.postCandidate('ze', 672335523, 123213123, '21-06-1990', 'Portuguesa', 'João Santos', 932333288, 'joao@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbi', null, 'Other')
 	expect(candidate).toBe(3)
 })
 
@@ -208,7 +224,7 @@ test('Approve a candidate', async () => {
 	expect(userId).toBe(5)
 })
 
-//Company
+//Company - verified 26/04/2022
 
 test('Get all companies', async () => {
 	expect.assertions(2)
@@ -225,13 +241,13 @@ test('Get specific company', async () => {
 
 test('Create a company', async () => {
 	expect.assertions(1)
-	const company_id = await dbCompany.postCompany('Ripcurl', 2313123216812, 967872388, 'rippy@gmail.com', '2112-829', 'Rua do rip', 'Rip on the curls', 'rippy', 'roppypipy')
+	const company_id = await dbCompany.postCompany('Ripcurl', 999321681, 967872388, 'rippy@gmail.com', '2112-829', 'Rua do rip', 'Rip on the curls', 'rippy', 'roppypipy')
 	expect(company_id).toBe(6)
 })
 
 test('Update a company', async () => {
 	expect.assertions(1)
-	const company_id = await dbCompany.updateCompany(3, 'Ericeira surf shop', 231312312312, 918923180, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira')
+	const company_id = await dbCompany.updateCompany(3, 'Ericeira Surf shop', 354876321, 918923180, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira')
 	expect(company_id).toBe(3)
 })
 
@@ -245,7 +261,7 @@ test('Delete specific company', async () => {
 	}
 })
 
-//Quotas
+//Quotas - verified 26/04/2022
 
 test('Create a quota', async () => {
 	expect.assertions(1)
@@ -273,12 +289,11 @@ test('Get specific company quota', async () => {
 
 test('Update a company quota', async () => {
 	expect.assertions(1)
-	const quota = await dbQuota.updateMemberQuota(6, '02-03-2022')
-	expect(quota).toBe(6)
+	const quota = await dbQuota.updateMemberQuota(2, '02-03-2022')
+	expect(quota).toBe(2)
 })
 
-
-//User
+//User - verified 26/04/2022
 
 test('Get all users', async () => {
 	expect.assertions(1)
@@ -294,14 +309,13 @@ test('Get a specific user', async () => {
 
 test('Post User', async () => {
 	expect.assertions(1)
-	const user = await dbUser.postUser(383123909, 763399841145, 'effective', 15, '03-10-1983', 'Senegales', 'Moussa Marega', 934077623, 'maregagrandefixe@outlook.com', '2835-081', 'Rua D.Batista', 'Lisboa','gandagolo', 'marega', true, 'Male')
+	const user = await dbUser.postUser(383123909, 763841145, 'effective', 15, '03-10-1983', 'Senegales', 'Moussa Marega', 934077623, 'maregagrandefixe@outlook.com', '2835-081', 'Rua D.Batista', 'Lisboa','gandagolo', 'marega', true, 'Male')
 	expect(user).toBe(7)
 })
 
-
 test('Update a user', async () => {
 	expect.assertions(1)
-	const user_id = await dbUser.updateUser(2,383123818, 763371741145, 'effective',15, '27-10-1993', 'Portuguesa', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',true, false, false, 'Other')
+	const user_id = await dbUser.updateUser(2, 383123818, 763841444, 'effective', 15, '27-10-1993', 'Portuguesa', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',false, false, false, 'Other')
 	expect(user_id).toBe(2)
 })
 
@@ -315,12 +329,12 @@ test('Delete user', async () => {
 	}
 })
 
-//User Sports
+//User Sports - verified 26/04/2022
 
 test('Get all sports for users', async () => {
 	expect.assertions(1)
 	const userSports = await dbUser.getUsersSports()
-	expect(userSports.length).toBe(2) 
+	expect(userSports.length).toBe(1) 
 })
 
 test('Get users that practice a given sport ', async () => {
@@ -332,7 +346,7 @@ test('Get users that practice a given sport ', async () => {
 test('Get sports that a given user practice', async () => {
 	expect.assertions(1)
 	const sports = await dbUser.getUserSportsById(2)
-	expect(sports.length).toBe(2)
+	expect(sports.length).toBe(1)
 })
 
 test('Create a sport for a user', async () => {
@@ -352,4 +366,3 @@ test('Delete a sport for a user', async () => {
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
 })
-*/

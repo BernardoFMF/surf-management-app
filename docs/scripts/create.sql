@@ -1,7 +1,7 @@
 create table Candidate_ (
 	id_ 			int generated always as identity,
-	nif_			bigint unique,
-	cc_ 			bigint unique,
+	nif_			int unique check (nif_ <= 999999999),
+	cc_ 			int unique check (cc_ <= 999999999),
 	full_name_ 		varchar(60),
 	nationality_ 	varchar(30),
 	birth_date_		varchar(30),
@@ -21,7 +21,7 @@ create table Candidate_ (
 create table Member_ (
 	id_ 			int generated always as identity,
 	member_type_	varchar(40) check (member_type_ in ('founder', 'effective', 'merit', 'corporate')),
-	has_debt_ 		bool default true,
+	has_debt_ 		bool default false,
 	quota_value_ 	int,
 	is_deleted_ 	bool default false,
 	username_		varchar(30) unique,
@@ -34,7 +34,8 @@ create table Event_ (
 	id_ 			int generated always as identity,
 	name_ 			varchar(50),
 	initial_date_	date,
-	end_date_ 		date,
+	end_date_ 		date check (end_date_ >= initial_date_),
+	
 	
 	primary key(id_)
 		
@@ -74,7 +75,7 @@ create table Contact_ (
 
 create table Company_ (
 	member_id_ 	 	int,
-	nif_			bigint unique,
+	nif_			int unique check (nif_ <= 999999999),
 	name_ 			varchar(40),
 
 	primary key (member_id_),
@@ -83,8 +84,8 @@ create table Company_ (
 
 create table User_ (
 	member_id_		int,
-	nif_			bigint unique,
-	cc_ 			bigint unique,
+	nif_			int unique check (nif_ <= 999999999),
+	cc_ 			int unique check (cc_ <= 999999999),
 	full_name_ 		varchar(60),
 	nationality_ 	varchar(30),
 	birth_date_		varchar(30),

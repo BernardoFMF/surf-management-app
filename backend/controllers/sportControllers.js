@@ -25,6 +25,11 @@ const sportController = (data) => {
 		}
 	})
 	
+	const updateSport = asyncHandler(async (req, res) => {
+		const sport = await services.updateSportServices(req.params.sid, req.body.is_deleted, req.body.name)
+		if (sport) res.json(sport)
+	})
+
 	const deleteSport = asyncHandler(async (req, res) => {
 		const sport = await services.deleteSportServices(req.params.sid)
 		if (sport) res.json({ message: 'Sport deleted sucessfully' })
@@ -34,6 +39,7 @@ const sportController = (data) => {
 		getSports,
 		getSportById,
 		postSport,
+		updateSport,
 		deleteSport
 	}
 }

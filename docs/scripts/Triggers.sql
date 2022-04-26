@@ -9,8 +9,10 @@ as
 $body$
 begin 
 	if not exists (select * from Quota_  where payment_date_ is null and member_id_ = new.member_id_) 
-		and not exists (select * from User_ where member_id_ = new.member_id_ and paid_enrollment_ = false) then 
-	update member_ set has_debt_ = false;
+		and (exists (select * from User_ where member_id_ = new.member_id_ and paid_enrollment_ = true)
+			or exists (select * from Company_ where member_id_ = new.member_id_))
+	then 
+		update member_ set has_debt_ = false where id_ = new.member_id_;
 	end if;
 	return new;
 end
@@ -19,10 +21,11 @@ $body$;
 create or replace trigger verifyDebtTrigger 
 after update 
 on Quota_
+for each row
 execute procedure verifyDebt();
 
 --Teste para o trigger 
---update quota_ set payment_date_ = '2022-05-06' where id_ = 2;
+--update quota_ set payment_date_ = '2022-05-06' where id_ = 4;
 
 /**
  * Quando é posta uma nova quota todos os members ficam com has_debt_ a true
@@ -34,7 +37,7 @@ language plpgsql
 as
 $$
 begin 
-	update member_ set has_debt_ = true where quota_value_ <> 0;
+	update member_ set has_debt_ = true where quota_value_ <> 0 and is_deleted_ = false;
 	return new;
 end
 $$;
@@ -53,7 +56,7 @@ language plpgsql
 as
 $$
 begin 
-	update user_sport_  set is_absent_ = true where user_id_ in (select member_id_ from Member_ where is_deleted = true);
+	update user_sport_  set is_absent_ = true where user_id_ in (select id_ from Member_ where is_deleted_ = true);
 	return new;
 end
 $$;
@@ -71,7 +74,7 @@ language plpgsql
 as
 $$
 begin 
-	update user_sport_  set is_absent_ = true where sport_id_ in (select id_ from Sport_ where is_deleted = true);
+	update user_sport_  set is_absent_ = true where sport_id_ in (select id_ from Sport_ where is_deleted_ = true);
 	return new;
 end
 $$;

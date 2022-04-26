@@ -19,7 +19,14 @@ const sportServices = (db) => {
 		if(!name) throw error(400, 'Parameter not found: name')
 		return await data.postSport(name)
 	}
-	
+
+	const updateSportServices = async (sid, is_deleted, name) => {
+		if(!sid) throw error(400, 'Parameter not found: sid')
+		if(is_deleted == undefined) throw error(400, 'Parameter not found: is_deleted')
+		if(!name) throw error(400, 'Parameter not found: name')
+		return await data.updateSport(sid, is_deleted, name)
+	}
+
 	const deleteSportServices = async (sid) => {
 		if(!sid) throw error(400, 'Parameter not found: sid')
 		return await data.deleteSport(sid)
@@ -28,7 +35,8 @@ const sportServices = (db) => {
 	return {
 		getSportsServices, 
 		getSportByIdServices, 
-		postSportServices, 
+		postSportServices,
+		updateSportServices, 
 		deleteSportServices
 	}
 }

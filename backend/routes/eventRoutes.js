@@ -28,6 +28,8 @@ const eventRoutes = (data) => {
     
 	app.get('/:eid/attendance', authentication.authMember, controller.getEventByIdAttendance)
 
+	app.get('/members/:id/attendance', authentication.authMember, controller.getEventMemberByIdAttendance)
+
 	return app
 }
 
