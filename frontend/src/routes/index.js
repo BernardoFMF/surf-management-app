@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { lazy } from 'react'
 import Loadable from '../components/Loadable'
 import RequireAuth from "../components/RequireAuth";
+import HomePage from "../Pages/HomePage";
 
 const DashboardOverviewPage = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
 const DashboardAnalyticsPage = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
@@ -29,11 +30,12 @@ const SignUpPage = Loadable(lazy(() => import('../Pages/auth/SignUpPage')))
 export default function ThemeRoutes() {
     return (
       <Routes>
-          <Route path="/" element={<RequireAuth><DashboardOverviewPage/></RequireAuth>} />
+          <Route path="/" element={<HomePage/>} />
           <Route path="/dashboard/overview" element={<RequireAuth><DashboardOverviewPage/></RequireAuth>} />
           <Route path="/dashboard/analytics" element={<RequireAuth><DashboardAnalyticsPage/></RequireAuth>} />
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="*" element={<DashboardAnalyticsPage/>} />
       </Routes>
     )
 }

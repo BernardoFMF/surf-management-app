@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import { login } from '../../../store/actions/userActions'
 import useAuth from '../../../hooks/useAuth'
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,8 +20,10 @@ import {
     InputLabel,
     OutlinedInput,
     Stack,
-    Typography
+    Typography,
+    Alert
 } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton'
 
 // third party
 import * as Yup from 'yup'
@@ -44,25 +46,23 @@ const AuthLogin = ({ ...others }) => {
     const { state } = useLocation()
     const dispatch = useDispatch()
     const userLogin = useSelector((state) => state.userLogin)
-    const { userInfo } = userLogin
+    const { loading, error, userInfo } = userLogin
     const {authed, loginHook} = useAuth()
 
     useEffect(() => {
         async function logIn() {
-            if (userInfo && authed) {
-                console.log('passou por aqui');
+            if (userInfo) {
+                console.log(userInfo)
                 await loginHook()
                 navigate('/dashboard/overview')
             }
         }
         logIn()
-      }, [])
+    }, [userInfo, error])
 
     const handleSubmit = async ({username, password}) => {
-        console.log('deu login');
+        console.log('deu login')
         dispatch(login(username, password))
-        await loginHook()
-        navigate(state?.path || '/dashboard/overview')
     }
 
     const [showPassword, setShowPassword] = useState(false);
@@ -88,10 +88,13 @@ const AuthLogin = ({ ...others }) => {
                         <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
                     </Box>
                 </Grid>
-                <Grid item xs={12} container alignItems="center" justifyContent="center">
+                <Grid item xs={12} container alignItems="center" direction = "column" justifyContent="center">
                     <Box sx={{ mb: 2 }}>
                         <Typography variant="subtitle1">Sign in with username</Typography>
                     </Box>
+                    {error && <Box sx={{ mb: 2 }}>
+                    <Alert severity="error">Incorrect username or password</Alert>
+                    </Box>}
                 </Grid>
             </Grid>
 
@@ -191,7 +194,7 @@ const AuthLogin = ({ ...others }) => {
 
                         <Box sx={{ mt: 2 }}>
                             <AnimateButton>
-                                <Button
+                                <LoadingButton
                                     disableElevation
                                     disabled={isSubmitting}
                                     fullWidth
@@ -199,9 +202,10 @@ const AuthLogin = ({ ...others }) => {
                                     type="submit"
                                     variant="contained"
                                     color="secondary"
+                                    loading = {loading}
                                 >
                                     Sign in
-                                </Button>
+                                </LoadingButton>
                             </AnimateButton>
                         </Box>
                     </form>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useFormikContext, useField } from 'formik'
+import default_image from './../../../src/assets/data/blank-profile-picture.png'
 
 import { Button, Box, Avatar } from '@mui/material';
 import AnimateButton from '../extended/AnimateButton'
@@ -16,7 +17,7 @@ const ImageInputField = ({ label, ...props}) => {
             setImageUrl(URL.createObjectURL(selectedImage))
             setFieldValue(field.name, selectedImage)
         }
-    }, [selectedImage]);
+    }, [selectedImage])
 
 
     return (
@@ -27,7 +28,7 @@ const ImageInputField = ({ label, ...props}) => {
                 type="file"
                 id="select-image"
                 style={{ display: 'none' }}
-                onChange={e => setSelectedImage(e.target.files[0])}
+                onChange={e => {if(e.target.files[0])setSelectedImage(e.target.files[0])}}
             />
             <Box mt={2} textAlign="center">
                 <label htmlFor="select-image">
@@ -44,15 +45,21 @@ const ImageInputField = ({ label, ...props}) => {
                     </AnimateButton>
                 </label>
             </Box>            
-            {imageUrl && selectedImage && (
+            {imageUrl && selectedImage ?
                 <Box mt={2} display="flex" alignItems={'center'} justifyContent="center">
                     <Avatar
                         alt={selectedImage.name}
                         src={imageUrl}
                         sx={{ width: 200, height: 200}}
                     />
+                </Box> :  <Box mt={2} display="flex" alignItems={'center'} justifyContent="center">
+                    <Avatar
+                        alt='blank-profile-picture.png'
+                        src= {default_image} 
+                        sx={{ width: 200, height: 200}}
+                    />
                 </Box>
-            )}
+            }
         </>
     );
 };

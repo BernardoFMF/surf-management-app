@@ -1,6 +1,7 @@
 'use strict'
 
 import express from 'express'
+import bodyParser from 'body-parser'
 import yaml from 'yamljs'
 import swaggerUi from 'swagger-ui-express'
 import passport from 'passport'
@@ -24,9 +25,10 @@ const router = (app, data) => {
 	
 	const LocalStrategy = localStrategy.Strategy
 
-	app.use(express.json())
+	//app.use(express.json())
+	app.use(bodyParser.json({limit: "50mb"}))
 	
-	app.use(express.urlencoded({ extended: true }))
+	app.use(express.urlencoded({ extended: true, limit: "50mb" }))
 	app.use(express.static('public'))
 	app.use(cookieParser())
 	app.use(expressSession({ secret: 'keyboard cat', resave: true, saveUninitialized: true }))

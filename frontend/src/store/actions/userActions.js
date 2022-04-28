@@ -18,7 +18,8 @@ export const login = (username, password) => async (dispatch) => {
         body: JSON.stringify({ username, password }),
         headers: { "Content-Type": "application/json" }
     })
-    const text = await response.text()
+    const text = await response.json()
+    if(response.status !== 200) throw Error(text.message)
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: text,
@@ -26,6 +27,7 @@ export const login = (username, password) => async (dispatch) => {
 
     localStorage.setItem('userInfo', JSON.stringify(text))
   } catch (error) {
+    console.log("deu erro")
     dispatch({
       type: USER_LOGIN_FAIL,
       payload:
@@ -40,26 +42,27 @@ export const logout = () => async (dispatch) => {
   await fetch('/api/members/logout', { method: 'POST' })
   localStorage.removeItem('userInfo')
   dispatch({ type: USER_LOGOUT })
-  //document.location.href = '/sign'
+  document.location.href = '/sign-in'
 }
 
-export const signUp = (username, email, password, fullName, nif, cc, nationality, birthDate, location, address, postalCode, phoneNumber) => async (dispatch) => {
+export const signUp = (body) => async (dispatch) => {
   try {
     dispatch({
       type: USER_REGISTER_REQUEST,
     })
     const response = await fetch('/api/candidates', {
         method: 'POST',
-        body: JSON.stringify({ username, email, password, fullName, nif, cc, nationality, birthDate, location, address, postalCode, phoneNumber }),
+        body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
     })
-    const text = await response.text()
+    const text = await response.json()
+    console.log(text.message)
+    if(response.status !== 201) throw Error(text.message)
     dispatch({
       type: USER_REGISTER_SUCCESS,
       payload: text,
     })
 
-    localStorage.setItem('userInfo', JSON.stringify(text))
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
