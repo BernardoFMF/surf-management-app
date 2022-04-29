@@ -52,8 +52,6 @@ const HomePage = () => {
                                   </Button>
                             </AnimateButton>
                         </Link>
-                        
-                
                     </Grid>
                     <Grid item xs={12} sm={6} style={{marginTop: '10px'}}>
                         <Link href='/sign-in'>
