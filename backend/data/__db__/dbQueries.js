@@ -10,6 +10,12 @@ const QUERY_APPROVE_CANDIDATE = 'call approve_candidate($1, $2, $3, $4, $5);'
 
 const QUERY_GET_CANDIDATE_BY_USERNAME = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_ from candidate_ where username_ = $1;'
 
+const QUERY_GET_CANDIDATE_BY_CC = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_ from candidate_ where cc_ = $1;'
+
+const QUERY_GET_CANDIDATE_BY_NIF = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_ from candidate_ where nif_ = $1;'
+
+const QUERY_GET_CANDIDATE_BY_EMAIL = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_ from candidate_ where email_ = $1;'
+
 const QUERY_GET_COMPANIES = 'select member_id_, nif_, name_, username_, has_debt_, member_type_ from company_ c join member_ m on (c.member_id_ = m.id_) where is_deleted_ = false;'
 
 const QUERY_GET_COMPANY_BY_ID = 'select c.member_id_, c.nif_, c.name_, co.location_, co.address_, co.postal_code_, co.email_, co.phone_number_, m.has_debt_, m.member_type_, m.username_ from company_ c join contact_ co on c.member_id_ = co.member_id_ join member_ m on c.member_id_ = m.id_ where c.member_id_ = $1 and m.is_deleted_ = false;'
@@ -78,6 +84,14 @@ const QUERY_GET_MEMBER_BY_ID = 'select id_, member_type_, has_debt_, quota_value
 
 const QUERY_GET_MEMBER_BY_USERNAME = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_ from Member_ where username_ = $1'
 
+const QUERY_GET_MEMBER_BY_CC = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_ from Member_ m join User_ u on m.id_ = u.member_id_ where cc_ = $1'
+
+const QUERY_GET_USER_BY_NIF = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_ from Member_ m join User_ u on m.id_ = u.member_id_ where nif_ = $1'
+
+const QUERY_GET_COMPANY_BY_NIF = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_ from Member_ m join Company_ c on m.id_ = c.member_id_ where nif_ = $1'
+
+const QUERY_GET_MEMBER_BY_EMAIL = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_ from Member_ m join Contact_ c on m.id_ = c.member_id_ where email_ = $1'
+
 const QUERY_GET_QUOTA_BY_ID = 'select q.id_, member_id_, username_, payment_date_, date_ from Quota_ q join Member_ m on q.member_id_ = m.id_ where m.is_deleted_ = false and q.id_ = $1'
 
 const QUERY_GET_EMAILS = 'select email_ from Contact_'
@@ -102,4 +116,4 @@ const QUERY_UPDATE_MEMBER_TOKEN = 'update Member_token_ set token_ = $2, created
 
 const QUERY_POST_NEW_TOKEN = 'call post_token($1,$2)'
 
-export default {QUERY_GET_MEMBER_ATTENDANCE, QUERY_GET_CANDIDATES, QUERY_GET_CANDIDATE_BY_ID, QUERY_POST_CANDIDATE, QUERY_DELETE_CANDIDATE, QUERY_APPROVE_CANDIDATE, QUERY_GET_CANDIDATE_BY_USERNAME, QUERY_GET_COMPANIES, QUERY_GET_COMPANY_BY_ID, QUERY_POST_COMPANY, QUERY_UPDATE_COMPANY, QUERY_DELETE_COMPANY, QUERY_GET_SPORTS, QUERY_GET_SPORT_BY_ID, QUERY_POST_SPORT, QUERY_UPDATE_SPORT, QUERY_DELETE_SPORT, QUERY_GET_EVENTS, QUERY_GET_EVENT_BY_ID, QUERY_POST_EVENT, QUERY_UPDATE_EVENT, QUERY_DELETE_EVENT, QUERY_GET_USERS, QUERY_GET_USER_BY_ID, QUERY_POST_USER, QUERY_UPDATE_USER, QUERY_DELETE_USER, QUERY_GET_USERS_SPORTS, QUERY_GET_USERS_SPORT, QUERY_GET_USER_SPORTS_BY_ID, QUERY_POST_USER_SPORT, QUERY_UPDATE_USER_SPORT, QUERY_DELETE_USER_SPORT, QUERY_GET_QUOTAS, QUERY_GET_COMPANIES_QUOTAS, QUERY_GET_USERS_QUOTAS, QUERY_GET_MEMBERS_QUOTAS_BY_ID, QUERY_POST_QUOTA, QUERY_UPDATE_MEMBER_QUOTA, QUERY_GET_MEMBER_BY_ID, QUERY_GET_MEMBER_BY_USERNAME, QUERY_GET_QUOTA_BY_ID, QUERY_GET_EMAILS,QUERY_GET_USER_EMAIL, QUERY_UPDATE_QRCODE, QUERY_POST_ATTENDANCE, QUERY_UPDATE_ATTENDANCE, QUERY_GET_ATTENDANCE, QUERY_GET_MEMBER_TOKEN, QUERY_DELETE_MEMBER_TOKEN, QUERY_UPDATE_MEMBER_TOKEN, QUERY_POST_NEW_TOKEN}
+export default {QUERY_GET_MEMBER_ATTENDANCE, QUERY_GET_CANDIDATES, QUERY_GET_CANDIDATE_BY_ID, QUERY_POST_CANDIDATE, QUERY_DELETE_CANDIDATE, QUERY_APPROVE_CANDIDATE, QUERY_GET_CANDIDATE_BY_USERNAME, QUERY_GET_COMPANIES, QUERY_GET_COMPANY_BY_ID, QUERY_POST_COMPANY, QUERY_UPDATE_COMPANY, QUERY_DELETE_COMPANY, QUERY_GET_SPORTS, QUERY_GET_SPORT_BY_ID, QUERY_POST_SPORT, QUERY_UPDATE_SPORT, QUERY_DELETE_SPORT, QUERY_GET_EVENTS, QUERY_GET_EVENT_BY_ID, QUERY_POST_EVENT, QUERY_UPDATE_EVENT, QUERY_DELETE_EVENT, QUERY_GET_USERS, QUERY_GET_USER_BY_ID, QUERY_POST_USER, QUERY_UPDATE_USER, QUERY_DELETE_USER, QUERY_GET_USERS_SPORTS, QUERY_GET_USERS_SPORT, QUERY_GET_USER_SPORTS_BY_ID, QUERY_POST_USER_SPORT, QUERY_UPDATE_USER_SPORT, QUERY_DELETE_USER_SPORT, QUERY_GET_QUOTAS, QUERY_GET_COMPANIES_QUOTAS, QUERY_GET_USERS_QUOTAS, QUERY_GET_MEMBERS_QUOTAS_BY_ID, QUERY_POST_QUOTA, QUERY_UPDATE_MEMBER_QUOTA, QUERY_GET_MEMBER_BY_ID, QUERY_GET_MEMBER_BY_USERNAME, QUERY_GET_QUOTA_BY_ID, QUERY_GET_EMAILS,QUERY_GET_USER_EMAIL, QUERY_UPDATE_QRCODE, QUERY_POST_ATTENDANCE, QUERY_UPDATE_ATTENDANCE, QUERY_GET_ATTENDANCE, QUERY_GET_MEMBER_TOKEN, QUERY_DELETE_MEMBER_TOKEN, QUERY_UPDATE_MEMBER_TOKEN, QUERY_POST_NEW_TOKEN, QUERY_GET_MEMBER_BY_CC, QUERY_GET_COMPANY_BY_NIF, QUERY_GET_USER_BY_NIF, QUERY_GET_MEMBER_BY_EMAIL, QUERY_GET_CANDIDATE_BY_EMAIL, QUERY_GET_CANDIDATE_BY_NIF, QUERY_GET_CANDIDATE_BY_CC}

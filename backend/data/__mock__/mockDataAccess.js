@@ -110,6 +110,30 @@ const getCandidateByUsernameData = async (username_) => {
 	return candidate
 }
 
+const getCandidateByCCData = async (cc_) => {
+	let candidate = candidates.filter(candidate => candidate.cc_ == cc_)[0]
+	if (candidate) {
+		return candidate
+	}
+	return undefined
+}
+
+const getCandidateByNifData = async (nif_) => {
+	let candidate = candidates.filter(candidate => candidate.nif_ == nif_)[0]
+	if (candidate) {
+		return candidate
+	}
+	return undefined
+}
+
+const getCandidateByEmailData = async (email_) => {
+	let candidate = candidates.filter(candidate => candidate.email_ == email_)[0]
+	if (candidate) {
+		return candidate
+	}
+	return undefined
+}
+
 /**
  * Companies
  */
@@ -338,10 +362,46 @@ const getMemberByIdData = async (id_) => {
 }
 
 const getMemberByUsernameData = async (username_) => {
-	let member = members.filter(member => member.username_ == username_ && !member.is_deleted_)[0]
+	let member = members.filter(member => member.username_ == username_)[0]
 	if (member && member.member_type_ != 'corporate') {
 		const user = await getUserByIdData(member.id_)
 		member.is_admin_ = user.is_admin_
+		return member
+	}
+	return undefined
+}
+
+const getMemberByCCData = async (cc_) => {
+	let user = users.filter(user => user.cc_ == cc_)[0]
+	if (user) {
+		const member = await getMemberByIdData(user.member_id_)
+		user = {...user, ...member}
+		return user
+	}
+	return undefined
+}
+
+const getMemberByNifData = async (nif_) => {
+	let user = users.filter(user => user.nif_ == nif_)[0]
+	if (user) {
+		const member = await getMemberByIdData(user.member_id_)
+		user = {...user, ...member}
+		return user
+	}
+	let company = companies.filter(company => company.nif_ == nif_)[0]
+	if (company) {
+		const member = await getMemberByIdData(user.member_id_)
+		company = {...company, ...member}
+		return company
+	}
+	return undefined
+}
+
+const getMemberByEmailData = async (email_) => {
+	let contact = contacts.filter(contact => contact.email_ == email_)[0]
+	if (contact) {
+		const member = await getUserByIdData(contact.member_id_)
+		member = {...member, ...contact}
 		return member
 	}
 	return undefined
@@ -605,6 +665,6 @@ const getEmails = async() => {
 	return emails
 }
 
-const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getEventMemberByIdAttendanceData, getSportsData, getSportByIdData, postSportData,updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData }
+const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getEventMemberByIdAttendanceData, getSportsData, getSportByIdData, postSportData,updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByEmailData, getCandidateByCCData, getCandidateByNifData }
 
 export default mock_data
