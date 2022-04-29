@@ -103,6 +103,51 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		}
 	}
 
+	const getCandidateByCCData = async (cc_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('Begin')
+			const candidates = await client.query(queries.QUERY_GET_CANDIDATE_BY_CC, [cc_])
+			await client.query('Commit')
+			return candidates.rows[0]
+		} catch(e) {
+			await client.query('Rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getCandidateByNifData = async (nif_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('Begin')
+			const candidates = await client.query(queries.QUERY_GET_CANDIDATE_BY_NIF, [nif_])
+			await client.query('Commit')
+			return candidates.rows[0]
+		} catch(e) {
+			await client.query('Rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getCandidateByEmailData = async (email_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('Begin')
+			const candidates = await client.query(queries.QUERY_GET_CANDIDATE_BY_EMAIL, [email_])
+			await client.query('Commit')
+			return candidates.rows[0]
+		} catch(e) {
+			await client.query('Rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
 	/**
 	 * Companies
 	 */
@@ -700,7 +745,25 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const result = await client.query(queries.QUERY_GET_MEMBER_BY_NIF, [nif_])
+			const result_user = await client.query(queries.QUERY_GET_USER_BY_NIF, [nif_])
+			const result_company = await client.query(queries.QUERY_GET_COMPANY_BY_NIF, [nif_])
+			await client.query('commit')
+			if (result_user.rows.length != 0)
+				return result_user.rows[0]
+			return result_company.rows[0]
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getMemberByEmailData = async (email_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await client.query(queries.QUERY_GET_MEMBER_BY_EMAIL, [email_])
 			await client.query('commit')
 			return result.rows[0]
 		} catch (e) {
@@ -832,7 +895,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		}
 	}
 
-	return { getEventMemberByIdAttendanceData, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails,getUserEmailByIdData, updateUserQrCodeData, getMemberTokenByIdData, deleteMemberTokenData, updateMemberTokenData, postNewTokenData, pool }
+	return { getEventMemberByIdAttendanceData, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails,getUserEmailByIdData, updateUserQrCodeData, getMemberTokenByIdData, deleteMemberTokenData, updateMemberTokenData, postNewTokenData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByNifData, getCandidateByCCData, getCandidateByEmailData, pool }
 
 }
 
