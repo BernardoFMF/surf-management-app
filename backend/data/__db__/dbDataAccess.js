@@ -681,6 +681,36 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		}
 	}
 
+	const getMemberByCCData = async (cc_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await client.query(queries.QUERY_GET_MEMBER_BY_CC, [cc_])
+			await client.query('commit')
+			return result.rows[0]
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getMemberByNifData = async (nif_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await client.query(queries.QUERY_GET_MEMBER_BY_NIF, [nif_])
+			await client.query('commit')
+			return result.rows[0]
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
 	const getQuotaByIdData = async (qid_) => {
 		const client = await pool.connect()
 		try {

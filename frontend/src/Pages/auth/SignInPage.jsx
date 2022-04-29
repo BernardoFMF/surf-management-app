@@ -8,7 +8,7 @@ import { Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import AuthWrapper from './AuthWrapper'
 import AuthCardWrapper from './AuthCardWrapper'
 import AuthLogin from './auth-form/AuthLogin'
-//import Logo from '../../components/Logo'
+import Logo from '../../components/Logo'
 import AuthFooter from '../../components/cards/AuthFooter'
 
 // assets
@@ -25,7 +25,8 @@ const SignInPage = () => {
                         <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
                             <AuthCardWrapper>
                                 <Grid container spacing={2} alignItems="center" justifyContent="center">
-                                    <Grid item sx={{ mb: 3 }}>
+                                    <Grid item sx={{ mb: 3 }} alignSelf justifyContent="center" >
+                                        <Logo variant='blue' path='/' sx={{width: 150}}/>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid

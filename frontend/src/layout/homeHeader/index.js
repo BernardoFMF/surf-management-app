@@ -21,6 +21,11 @@ const HomeHeader = () => {
       <AppBar position="absolute" style={{ display: 'flex', background: 'transparent', boxShadow: 'none'}}>
         <Container maxWidth="x1">
           <Toolbar disableGutters>
+            <Logo variant='default' path='/' sx={{
+                marginLeft: { xs: 0, md: 20 },
+                width: { xs: 200, md: 200 },
+                maxWidth: { xs: 500, md: 500 },
+            }}></Logo>
             <Box justifyContent="flex-end" sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"
