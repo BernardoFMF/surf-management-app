@@ -3,7 +3,7 @@ const config = {
     // like '/berry-material-react/react/default'
     basename: '/xpto',
     defaultPath: '/dashboard/default',
-    fontFamily: `'Roboto', sans-serif`,
+    fontFamily: `'Arial', sans-serif`,
     borderRadius: 12
 }
 

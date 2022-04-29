@@ -35,12 +35,12 @@ import AnimateButton from '../../../components/extended/AnimateButton'
 // assets
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import InputField from '../../../components/multi-step-form/InputField';
-import PasswordInputField from '../../../components/multi-step-form/PasswordInputField';
-import DateInputField from '../../../components/multi-step-form/DateInputField';
-import MultiStepForm, { FormStep } from '../../../components/multi-step-form/MultiStepForm';
-import DropdownInputField from '../../../components/multi-step-form/DropdownInputField';
-import ImageInputField from '../../../components/multi-step-form/ImageInputField';
+import InputField from '../../../components/multiStepForm/InputField';
+import PasswordInputField from '../../../components/multiStepForm/PasswordInputField';
+import DateInputField from '../../../components/multiStepForm/DateInputField';
+import MultiStepForm, { FormStep } from '../../../components/multiStepForm/MultiStepForm';
+import DropdownInputField from '../../../components/multiStepForm/DropdownInputField';
+import ImageInputField from '../../../components/multiStepForm/ImageInputField';
 
 
 // data
