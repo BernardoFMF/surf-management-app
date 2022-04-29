@@ -2,7 +2,7 @@ import React from 'react'
 import { AppBar, MenuItem, Typography, Box, Link,
      Container, Toolbar, IconButton, Menu } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import logo from '../../assets/data/logo.svg'
+import Logo from '../../components/Logo'
 
 const pages = [{title: 'Home', ref: '/'}, {title: 'About', ref: '/about'}, {title: 'Contact us', ref: '/contact'}]
 
@@ -21,17 +21,6 @@ const HomeHeader = () => {
       <AppBar position="absolute" style={{ display: 'flex', background: 'transparent', boxShadow: 'none'}}>
         <Container maxWidth="x1">
           <Toolbar disableGutters>
-            <Box
-                component="img"
-                sx={{
-                    marginLeft: { xs: 0, md: 20 },
-                    width: { xs: 200, md: 200 },
-                    maxWidth: { xs: 500, md: 500 },
-                }}
-                alt='logo.svg'
-                src={logo} 
-            />  
-  
             <Box justifyContent="flex-end" sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"
@@ -63,7 +52,10 @@ const HomeHeader = () => {
               >
                 {pages.map((page) => (
                   <MenuItem key={page.title} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page.title}</Typography>
+                    <Link href={page.ref}>
+                        <Typography textAlign="center">{page.title}</Typography>
+                    </Link>
+                    
                   </MenuItem>
                 ))}
               </Menu>
@@ -81,7 +73,6 @@ const HomeHeader = () => {
                 </Link>
               ))}
             </Box>
-  
           </Toolbar>
         </Container>
       </AppBar>

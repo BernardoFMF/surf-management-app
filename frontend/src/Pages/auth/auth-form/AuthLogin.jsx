@@ -182,7 +182,7 @@ const AuthLogin = ({ ...others }) => {
                             )}
                         </FormControl>
                         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-                            <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+                            <Typography variant="subtitle1" color="primary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
                                 Forgot Password?
                             </Typography>
                         </Stack>
@@ -201,7 +201,7 @@ const AuthLogin = ({ ...others }) => {
                                     size="large"
                                     type="submit"
                                     variant="contained"
-                                    color="secondary"
+                                    color="primary"
                                     loading = {loading}
                                 >
                                     Sign in

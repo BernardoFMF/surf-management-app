@@ -66,7 +66,7 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
                                 size="normal"
                                 type="button"
                                 variant="contained"
-                                color="secondary"
+                                color="primary"
                                 onClick={() => previous(formik.values)}>
                                     Back
                                 </Button>
@@ -82,7 +82,7 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
                             size="normal"
                             type="submit"
                             variant="contained"
-                            color="secondary"
+                            color="primary"
                             >
                                 {isLastStep ? 'Submit' : 'Next'}
                             </Button>
