@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
 import { AppBar, MenuItem, Typography, Box, Link,
-     Container, Toolbar, IconButton, Menu, Avatar } from '@mui/material'
+     Container, Toolbar, IconButton, Menu } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import Logo from '../../components/Logo'
 import TranslationMenu from '../../components/TranslationMenu'
+import { useTranslation } from 'react-i18next'
 
-const pages = [{title: 'Home', ref: '/'}, {title: 'About', ref: '/about'}, {title: 'Contact us', ref: '/contact'}]
+
 
 const HomeHeader = () => {
     const [anchorElNav, setAnchorElNav] = useState(null);
-    const [anchorTranslationNav, setAnchorTranslationNav] = useState(null);
 
-  
+    const {t, i18n} = useTranslation()
+
+    const pages = [{title: t('front_page_home'), ref: '/'}, {title: t('front_page_about'), ref: '/about'}, {title: t('front_page_contact_us'), ref: '/contact'}]
     const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
     };

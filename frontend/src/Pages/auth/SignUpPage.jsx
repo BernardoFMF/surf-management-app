@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'
+import TranslationMenu from '../../components/TranslationMenu'
+
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -16,9 +18,11 @@ import AuthFooter from '../../components/cards/AuthFooter'
 const SignUp = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+    const {t, i18n} = useTranslation()
 
     return (
         <AuthWrapper>
+            <TranslationMenu ></TranslationMenu>
             <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
                 <Grid item xs={12}>
                     <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
@@ -42,7 +46,7 @@ const SignUp = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        Sign up
+                                                        {t('sign_up_welcome')}
                                                     </Typography>
                                                 </Stack>
                                             </Grid>
@@ -50,21 +54,6 @@ const SignUp = () => {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <AuthRegister />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Divider />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid item container direction="column" alignItems="center" xs={12}>
-                                            <Typography
-                                                component={Link}
-                                                to="/sign-in"
-                                                variant="subtitle1"
-                                                sx={{ textDecoration: 'none' }}
-                                            >
-                                                Already have an account?
-                                            </Typography>
-                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </AuthCardWrapper>

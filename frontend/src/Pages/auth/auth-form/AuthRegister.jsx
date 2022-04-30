@@ -1,24 +1,18 @@
 import { useState, useEffect} from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { parse, isDate } from "date-fns";
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom';
+
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
     Box,
-    Button,
-    Checkbox,
     Divider,
-    FormControl,
-    FormControlLabel,
-    FormHelperText,
     Grid,
     IconButton,
     InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    TextField,
     Typography,
     useMediaQuery,
     Alert
@@ -26,11 +20,7 @@ import {
 
 // third party
 import * as Yup from 'yup';
-import { Formik } from 'formik';
 
-// project imports
-import useScriptRef from '../../../hooks/useScriptRef'
-import AnimateButton from '../../../components/extended/AnimateButton'
 
 // assets
 import Visibility from '@mui/icons-material/Visibility'
@@ -45,19 +35,17 @@ import ImageInputField from '../../../components/multiStepForm/ImageInputField';
 
 // data
 import countries from '../../../assets/data/countries.json'
-import { borderRadius } from '@mui/system';
 import { signUp } from '../../../store/actions/userActions';
 
 const AuthRegister = ({ ...others }) => {
     const theme = useTheme()
-    const scriptedRef = useScriptRef()
     const dispatch = useDispatch()
+    const {t, i18n} = useTranslation()
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
     const userRegister = useSelector((state) => state.userRegister)
     const { loading, error, userRegistration } = userRegister
 
     const [showPassword, setShowPassword] = useState(false)
-    const [checked, setChecked] = useState(true)
     const [submitted, setSubmitted] = useState(false)
 
     const handleClickShowPassword = () => {
@@ -101,7 +89,7 @@ const AuthRegister = ({ ...others }) => {
         <>
             {submitted ? <Grid item xs={12} container alignItems="center" justifyContent="center">
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1">Thanks for applying. We will send you an email after verifying your application.</Typography>
+                        <Typography variant="subtitle1">{t('sign_up_thank_you')}</Typography>
                     </Box>
                 </Grid> : (<><Grid container direction="column" justifyContent="center" spacing={2}>
                     <Grid item xs={12}>
@@ -111,7 +99,7 @@ const AuthRegister = ({ ...others }) => {
                     </Grid>
                     <Grid item xs={12} container alignItems="center" justifyContent="center">
                         <Box sx={{ mb: 2 }}>
-                            <Typography variant="subtitle1">Still not part of the club? Apply here.</Typography>
+                            <Typography variant="subtitle1">{t('sign_up_suggestion')}</Typography>
                         </Box>
                         {error && <Box sx={{ mb: 2 }}>
                         <Alert severity="error">{error}</Alert>
@@ -120,13 +108,13 @@ const AuthRegister = ({ ...others }) => {
                 </Grid><MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null }}
                     onSubmit={handleSubmit}>
                         <FormStep stepName='User' validationSchema={Yup.object().shape({
-                            username: Yup.string().required('Username is required'),
-                            email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                            password: Yup.string().max(255).required('Password is required')
+                            username: Yup.string().required(t('sign_up_username_mandatory')),
+                            email: Yup.string().email(t('sign_up_email_valid')).max(255).required(t('sign_up_email_mandatory')),
+                            password: Yup.string().max(255).required(t('sign_up_password_mandatory'))
                         })}>
-                            <InputField name='username' label='Username' type='text'></InputField>
-                            <InputField name='email' label='Email' type='text'></InputField>
-                            <PasswordInputField name='password' label='Password'
+                            <InputField name='username' label={t('sign_up_username')} type='text'></InputField>
+                            <InputField name='email' label={t('sign_up_email')} type='text'></InputField>
+                            <PasswordInputField name='password' label={t('sign_up_password')}
                                 showPassword={showPassword} endAdornment={<InputAdornment position="end">
                                     <IconButton
                                         aria-label="toggle password visibility"
@@ -141,51 +129,65 @@ const AuthRegister = ({ ...others }) => {
                             </PasswordInputField>
                         </FormStep>
                         <FormStep stepName='Personal' validationSchema={Yup.object().shape({
-                            fullName: Yup.string().required('Full name is required'),
-                            cc: Yup.string().matches(/^[0-9]+$/, "Must be only digits").min(9, 'Must be exactly 9 digits').max(9, 'Must be exactly 9 digits').required('CC is required'),
-                            nif: Yup.string().required('Nif is required').matches(/^[0-9]+$/, "Must be only digits").min(9, 'Must be exactly 9 digits').max(9, 'Must be exactly 9 digits'),
-                            gender: Yup.string().required('Gender is required'),
-                            nationality: Yup.string().required('Nationality is required'),
-                            birthDate: Yup.date().transform(parseDate).typeError('Enter a valid date').max(new Date()).required('Birth Date is required')
+                            fullName: Yup.string().required(t('sign_up_full_name_mandatory')),
+                            cc: Yup.string().matches(/^[0-9]+$/, t('sign_up_only_digits')).min(9, t('sign_up_exact_nine')).max(9,  t('sign_up_exact_nine')).required( t('sign_up_cc_mandatory')),
+                            nif: Yup.string().required(t('sign_up_nif_mandatory')).matches(/^[0-9]+$/, t('sign_up_only_digits')).min(9,  t('sign_up_exact_nine')).max(9,  t('sign_up_exact_nine')),
+                            gender: Yup.string().required(t('sign_up_gender_mandatory')),
+                            nationality: Yup.string().required(t('sign_up_nationality_mandatory')),
+                            birthDate: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).max(new Date(), t('sign_up_max_date')).required(t('sign_up_birth_date_mandatory'))
                         })}>
-                            <InputField name='fullName' label='Full Name' type='text'></InputField>
+                            <InputField name='fullName' label={t('sign_up_full_name')} type='text'></InputField>
                             <Grid container spacing={matchDownSM ? 0 : 2}>
                                 <Grid item xs={12} sm={6}>
-                                    <InputField name='cc' label='CC' type='text'></InputField>
+                                    <InputField name='cc' label={t('sign_up_cc')} type='text'></InputField>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <InputField name='nif' label='NIF' type='text'></InputField>
+                                    <InputField name='nif' label={t('sign_up_nif')} type='text'></InputField>
                                 </Grid>
                             </Grid>
                             <Grid container spacing={matchDownSM ? 0 : 2}>
                                 <Grid item xs={12} sm={6}>
-                                    <DropdownInputField name='gender' label='Gender' options={{ M: 'Male', F: 'Female', O: 'Other' }}></DropdownInputField>
+                                    <DropdownInputField name='gender' label={t('sign_up_gender')} options={{ M: t('male'), F: t('female'), O: t('other') }}></DropdownInputField>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <DropdownInputField name='nationality' label='Nationality' options={countries}></DropdownInputField>
+                                    <DropdownInputField name='nationality' label={t('sign_up_nationality')} options={countries}></DropdownInputField>
                                 </Grid>
                             </Grid>
-                            <DateInputField name='birthDate' label='Birth Date'></DateInputField>
+                            <DateInputField name='birthDate' label={t('sign_up_birth_date')}></DateInputField>
                         </FormStep>
                         <FormStep stepName='Personal' validationSchema={Yup.object().shape({
-                            location: Yup.string().required('Location is required'),
-                            address: Yup.string().required('Address is required'),
-                            postalCode: Yup.string().matches(/^\d{4}[-]\d{3}?$/, "Must be follow this pattern DDDD-DDD").required('Postal Code is required'),
-                            phoneNumber: Yup.string().matches(/^[0-9]+$/, "Must be only digits").min(9, 'Must be exactly 9 digits').max(9, 'Must be exactly 9 digits')
+                            location: Yup.string().required(t('sign_up_location_mandatory')),
+                            address: Yup.string().required(t('sign_up_address_mandatory')),
+                            postalCode: Yup.string().matches(/^\d{4}[-]\d{3}?$/, t('sign_up_postal_code_pattern')).required(t('sign_up_postal_code_mandatory')),
+                            phoneNumber: Yup.string().matches(/^[0-9]+$/, t('sign_up_only_digits')).min(9, t('sign_up_exact_nine')).max(9, t('sign_up_exact_nine')).required(t('sign_up_phone_number_mandatory'))
                         })}>
-                            <InputField name='location' label='Location'></InputField>
-                            <InputField name='address' label='Address'></InputField>
-                            <InputField name='postalCode' label='Postal Code'></InputField>
-                            <InputField name='phoneNumber' label='Phone Number'></InputField>
+                            <InputField name='location' label={t('sign_up_location')}></InputField>
+                            <InputField name='address' label={t('sign_up_address')}></InputField>
+                            <InputField name='postalCode' label={t('sign_up_postal_code')}></InputField>
+                            <InputField name='phoneNumber' label={t('sign_up_phone_number')}></InputField>
                         </FormStep>
                         <FormStep stepName='Photo' validationSchema={Yup.object().shape({
-                            image: Yup.mixed().test('FILE_SIZE', 'Image is too big', value => value == null ? true : (value.size / 1024 / 1024) <= 10).test('FILE_FORMAT', 'Image has unsupported format', value => value == null ? true : ['image/jpeg', 'image/png'].includes(value.type)).typeError('Choose a valid image')
+                            image: Yup.mixed().test('FILE_SIZE', t('sign_up_image_too_big'), value => value == null ? true : (value.size / 1024 / 1024) <= 10).test('FILE_FORMAT', t('sign_up_image_format'), value => value == null ? true : ['image/jpeg', 'image/png'].includes(value.type)).typeError(t('sign_up_valid_image'))
                         })}>
-                            <ImageInputField name='image' label='Image'></ImageInputField>
+                            <ImageInputField name='image' label={t('sign_up_image')}></ImageInputField>
                         </FormStep>
-                    </MultiStepForm></>)}
-            
-
+                    </MultiStepForm>
+                    <Grid item xs={12}>
+                        <Divider />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Grid item container direction="column" alignItems="center" xs={12}>
+                            <Typography
+                                component={Link}
+                                to="/sign-in"
+                                variant="subtitle1"
+                                sx={{ textDecoration: 'none' }}
+                            >
+                                {t('sign_up_to_sign_in')}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </>)}
         </>
     );
 };

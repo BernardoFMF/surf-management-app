@@ -3,6 +3,7 @@ import { login } from '../../../store/actions/userActions'
 import useAuth from '../../../hooks/useAuth'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -41,6 +42,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 const AuthLogin = ({ ...others }) => {
     const theme = useTheme()
     const scriptedRef = useScriptRef()
+    const {t, i18n} = useTranslation()
+
 
     const navigate = useNavigate()
     const { state } = useLocation()
@@ -90,10 +93,10 @@ const AuthLogin = ({ ...others }) => {
                 </Grid>
                 <Grid item xs={12} container alignItems="center" direction = "column" justifyContent="center">
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1">Sign in with username</Typography>
+                        <Typography variant="subtitle1">{t('sign_in_suggestion')}</Typography>
                     </Box>
                     {error && <Box sx={{ mb: 2 }}>
-                    <Alert severity="error">Incorrect username or password</Alert>
+                    <Alert severity="error">{t('sign_in_incorret_user_or_pword')}</Alert>
                     </Box>}
                 </Grid>
             </Grid>
@@ -105,8 +108,8 @@ const AuthLogin = ({ ...others }) => {
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    username: Yup.string().max(255).required('Username is required'),
-                    password: Yup.string().max(255).required('Password is required')
+                    username: Yup.string().max(255).required(t('sign_in_username_mandatory')),
+                    password: Yup.string().max(255).required(t('sign_in_password_mandatory'))
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -116,7 +119,6 @@ const AuthLogin = ({ ...others }) => {
                             setSubmitting(false)
                         }
                     } catch (err) {
-                        console.error(err);
                         if (scriptedRef.current) {
                             setStatus({ success: false })
                             setErrors({ submit: err.message })
@@ -128,7 +130,7 @@ const AuthLogin = ({ ...others }) => {
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
                         <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-text-login">Username</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-text-login">{t('sign_in_username')}</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-text-login"
                                 type="text"
@@ -151,7 +153,7 @@ const AuthLogin = ({ ...others }) => {
                             error={Boolean(touched.password && errors.password)}
                             sx={{ ...theme.typography.customInput }}
                         >
-                            <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-password-login">{t('sign_in_password')}</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password-login"
                                 type={showPassword ? 'text' : 'password'}
@@ -183,7 +185,7 @@ const AuthLogin = ({ ...others }) => {
                         </FormControl>
                         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
                             <Typography variant="subtitle1" color="primary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-                                Forgot Password?
+                                {t('sign_in_new_password')}
                             </Typography>
                         </Stack>
                         {errors.submit && (
@@ -204,7 +206,7 @@ const AuthLogin = ({ ...others }) => {
                                     color="primary"
                                     loading = {loading}
                                 >
-                                    Sign in
+                                    {t('sign_in_button')}
                                 </LoadingButton>
                             </AnimateButton>
                         </Box>

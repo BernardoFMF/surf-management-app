@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import TranslationMenu from '../../components/TranslationMenu'
 
 // material-ui
 import { useTheme } from '@mui/material/styles'
@@ -16,9 +18,11 @@ import AuthFooter from '../../components/cards/AuthFooter'
 const SignInPage = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+    const {t, i18n} = useTranslation()
 
     return (
         <AuthWrapper>
+            <TranslationMenu sx={{ marginRight: { xs: 2, md: 2}}}></TranslationMenu>
             <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
                 <Grid item xs={12}>
                     <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
@@ -42,7 +46,7 @@ const SignInPage = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        Hi, Welcome Back
+                                                        {t('sign_in_welcome')}
                                                     </Typography>
                                                 </Stack>
                                             </Grid>
@@ -59,7 +63,7 @@ const SignInPage = () => {
                                                 variant="subtitle1"
                                                 sx={{ textDecoration: 'none' }}
                                             >
-                                                Don&apos;t have an account?
+                                                {t('sign_in_to_sign_up')}
                                             </Typography>
                                         </Grid>
                                     </Grid>

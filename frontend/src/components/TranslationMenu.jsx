@@ -17,7 +17,7 @@ const TranslationMenu = ({sx}) => {
       const handleChangeTranslationMenu = (lang) => {
           return () => {
             setAnchorTranslationNav(null)
-            console.log(lang);
+            localStorage.setItem('i18n-lang', lang)
             i18n.changeLanguage(lang)
           }
       }

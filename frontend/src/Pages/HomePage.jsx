@@ -35,10 +35,10 @@ const HomePage = () => {
         </video>
         <Box sx={{ marginLeft: { xs: 4, md: 25}, marginTop: { xs: 25, md: 30}, flexGrow: 1, display: 'absolute', width: { xs: 200, md: 500}}}>
               <Typography sx={{ fontSize: { xs: '2.5em', md: '4em'}, fontWeight: 700, color: 'white' }}>
-                  {t('front_page_welcome')}
+                {t('front_page_welcome')}
               </Typography>
               <Typography sx={{ fontSize: { xs: '1em', md: '1.5em'}, color: 'white', marginTop: 2, marginBottom: 2 }}>
-                  Log in or create your account below
+                {t('front_page_sign_suggestion')}
               </Typography>
               <Grid container spacing={matchDownSM ? 0 : 2} sx={{ width: { xs: 200, md: 400}}}>
                     <Grid item xs={12} sm={6} style={{marginTop: '10px'}}>
@@ -50,8 +50,9 @@ const HomePage = () => {
                                   size="normal"
                                   type="button"
                                   variant="contained"
-                                  color="primary">
-                                    Sign Up
+                                  color="primary"
+                                  >
+                                  {t('front_page_signup')}
                                   </Button>
                             </AnimateButton>
                         </Link>
@@ -67,7 +68,7 @@ const HomePage = () => {
                               variant="contained"
                               color='primary'
                               >
-                                Sign in
+                                {t('front_page_login')}
                               </Button>
                           </AnimateButton>
                         </Link>

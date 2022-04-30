@@ -4,6 +4,8 @@ import default_image from './../../../src/assets/data/blank-profile-picture.png'
 
 import { Button, Box, Avatar } from '@mui/material';
 import AnimateButton from '../extended/AnimateButton'
+import { useTranslation } from 'react-i18next'
+
 
 const ImageInputField = ({ label, ...props}) => {
     const [field, meta] = useField(props)
@@ -11,6 +13,7 @@ const ImageInputField = ({ label, ...props}) => {
     const [selectedImage, setSelectedImage] = useState(field.value)
     const [imageUrl, setImageUrl] = useState(Boolean(field.value)? URL.createObjectURL(selectedImage) : null)
     const { setFieldValue} = useFormikContext()
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
         if (selectedImage) {
@@ -38,9 +41,9 @@ const ImageInputField = ({ label, ...props}) => {
                             size="normal"
                             type="button"
                             variant="contained"
-                            color="secondary"
+                            color="primary"
                             component="span">
-                            Upload Image
+                            {t('sign_up_image')}
                         </Button>
                     </AnimateButton>
                 </label>

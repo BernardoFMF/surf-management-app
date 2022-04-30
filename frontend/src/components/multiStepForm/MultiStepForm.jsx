@@ -10,10 +10,13 @@ import {
 } from '@mui/material';
 import AnimateButton from '../extended/AnimateButton'
 import { useTheme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next'
+
 
 const MultiStepForm = ({ children, initialValues, onSubmit }) => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+    const {t, i18n} = useTranslation()
 
     const [stepNumber, setStepNumber] = useState(0)
     const steps = React.Children.toArray(children)
@@ -52,7 +55,7 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
             {formik => (
                 <Form>
                 <p>
-                    Step {stepNumber + 1} of {totalSteps}
+                    {t('sign_up_step')} {stepNumber + 1} {t('sign_up_of')} {totalSteps}
                 </p>
                 {step}
 
@@ -68,7 +71,7 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
                                 variant="contained"
                                 color="primary"
                                 onClick={() => previous(formik.values)}>
-                                    Back
+                                    {t('sign_up_back')} 
                                 </Button>
                             </AnimateButton>
                         )}
@@ -84,7 +87,7 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
                             variant="contained"
                             color="primary"
                             >
-                                {isLastStep ? 'Submit' : 'Next'}
+                                {isLastStep ? t('sign_up_submit')  : t('sign_up_next') }
                             </Button>
                         </AnimateButton>
                     </Grid>
