@@ -22,7 +22,7 @@ const SignInPage = () => {
 
     return (
         <AuthWrapper>
-            <TranslationMenu sx={{ marginRight: { xs: 2, md: 2}}}></TranslationMenu>
+            <TranslationMenu sx={{ pt: 2}}></TranslationMenu>
             <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
                 <Grid item xs={12}>
                     <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>

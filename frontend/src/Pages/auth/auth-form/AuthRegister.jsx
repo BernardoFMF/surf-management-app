@@ -15,7 +15,8 @@ import {
     InputAdornment,
     Typography,
     useMediaQuery,
-    Alert
+    Alert,
+    Stack
 } from '@mui/material';
 
 // third party
@@ -87,11 +88,33 @@ const AuthRegister = ({ ...others }) => {
 
     return (
         <>
+            <Grid item xs={12}>
+                <Grid
+                    container
+                    direction={matchDownSM ? 'column-reverse' : 'row'}
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <Grid item>
+                        <Stack alignItems="center" justifyContent="center" spacing={1}>
+                            <Typography
+                                color={theme.palette.primary.main}
+                                gutterBottom
+                                variant={matchDownSM ? 'h3' : 'h2'}
+                            >
+                                {submitted ? t('sign_up_thank_you_header') : t('sign_up_welcome')}
+                            </Typography>
+                        </Stack>
+                    </Grid>
+                </Grid>
+            </Grid>
             {submitted ? <Grid item xs={12} container alignItems="center" justifyContent="center">
                     <Box sx={{ mb: 2 }}>
                         <Typography variant="subtitle1">{t('sign_up_thank_you')}</Typography>
                     </Box>
-                </Grid> : (<><Grid container direction="column" justifyContent="center" spacing={2}>
+                </Grid> : (<>
+                
+                <Grid container direction="column" justifyContent="center" spacing={2}>
                     <Grid item xs={12}>
                         <Box sx={{ alignItems: 'center', display: 'flex' }}>
                             <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
@@ -105,7 +128,8 @@ const AuthRegister = ({ ...others }) => {
                         <Alert severity="error">{error}</Alert>
                         </Box>}
                     </Grid>
-                </Grid><MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null }}
+                </Grid>
+                <MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null }}
                     onSubmit={handleSubmit}>
                         <FormStep stepName='User' validationSchema={Yup.object().shape({
                             username: Yup.string().required(t('sign_up_username_mandatory')),
@@ -172,7 +196,7 @@ const AuthRegister = ({ ...others }) => {
                             <ImageInputField name='image' label={t('sign_up_image')}></ImageInputField>
                         </FormStep>
                     </MultiStepForm>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{ mt: { xs: 2, md: 2}, mb: { xs: 2, md: 2}}}>
                         <Divider />
                     </Grid>
                     <Grid item xs={12}>

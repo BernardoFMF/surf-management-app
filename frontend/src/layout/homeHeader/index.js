@@ -84,7 +84,10 @@ const HomeHeader = () => {
                 </Link>
               ))}
             </Box>
-            <TranslationMenu sx={{ marginRight: { xs: 0, md: 15}}}></TranslationMenu>
+            <Box sx={{ marginRight: { xs: 0, md: 15}}}>
+              <TranslationMenu></TranslationMenu>
+            </Box>
+            
           </Toolbar>
         </Container>
       </AppBar>

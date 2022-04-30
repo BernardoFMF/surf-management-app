@@ -10,7 +10,6 @@ const TranslationMenu = ({sx}) => {
     const [anchorTranslationNav, setAnchorTranslationNav] = useState(null);
     
     const handleOpenTranslationMenu = (event) => {
-        console.log("entrou");
         setAnchorTranslationNav(event.currentTarget)
       }
   
