@@ -14,10 +14,13 @@ import {
 } from '@mui/material'
 import AnimateButton from '../components/extended/AnimateButton'
 import { useTheme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next'
 
 const HomePage = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+
+  const {t, i18n} = useTranslation()
 
   return (
     <>
@@ -32,7 +35,7 @@ const HomePage = () => {
         </video>
         <Box sx={{ marginLeft: { xs: 4, md: 25}, marginTop: { xs: 25, md: 30}, flexGrow: 1, display: 'absolute', width: { xs: 200, md: 500}}}>
               <Typography sx={{ fontSize: { xs: '2.5em', md: '4em'}, fontWeight: 700, color: 'white' }}>
-                  Welcome To Ericeira Surf Club Management Application
+                  {t('front_page_welcome')}
               </Typography>
               <Typography sx={{ fontSize: { xs: '1em', md: '1.5em'}, color: 'white', marginTop: 2, marginBottom: 2 }}>
                   Log in or create your account below

@@ -12,10 +12,10 @@ import themes from './themes'
 // project imports
 import NavigationScroll from './layout/NavigationScroll'
 
+import './i18n'
+
 function App() {
   const customization = useSelector((state) => state.customization);
-
-  console.log(customization);
 
   return (
     <StyledEngineProvider injectFirst>
