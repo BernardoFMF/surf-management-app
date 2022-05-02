@@ -11,7 +11,7 @@ const eventData = (db) => {
 	
 	const getEventById = async (id_) => {
 		const event = await db.getEventByIdData(id_)
-		if (!event) throw error(404, 'Event does not exist')
+		if (!event) throw error(404, 'Event does not exist', 'MESSAGE_CODE_25')
 		return event
 	}
 	
@@ -34,20 +34,20 @@ const eventData = (db) => {
 	const postMemberAttendance = async (eid_, id_, state_) => {
 		const event = await getEventById(eid_)
 		const user = await db.getUserByIdData(id_)
-		if (!user) throw error(404, 'User does not exist')
+		if (!user) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
 		const attendance = await db.getEventByIdAttendanceData(eid_)
 		if (attendance.filter(att => att.member_id_ == id_)[0])
-			throw error(409, 'User is already related to this Event')
+			throw error(409, 'User is already related to this Event', 'MESSAGE_CODE_26')
 		return await db.postMemberAttendanceData(event.id_, id_, state_)
 	}
 	
 	const updateMemberAttendance = async (eid_, id_, state_) => {
 		await getEventById(eid_)
 		const user = await db.getUserByIdData(id_)
-		if (!user) throw error(404, 'User does not exist')
+		if (!user) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
 		const attendance = await db.getEventByIdAttendanceData(eid_)
 		if (!attendance.filter(att => att.member_id_ == id_)[0])
-			throw error(409, 'User is not related to this Event')
+			throw error(409, 'User is not related to this Event', 'MESSAGE_CODE_27')
 		return await db.updateMemberAttendanceData(eid_, id_, state_)
 	}
 	
@@ -58,7 +58,7 @@ const eventData = (db) => {
 
 	const getEventMemberByIdAttendance = async (id_) => {
 		const user = await db.getUserByIdData(id_)
-		if (!user) throw error(404, 'User does not exist')
+		if (!user) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
 		return await db.getEventMemberByIdAttendanceData(id_)
 	}
 

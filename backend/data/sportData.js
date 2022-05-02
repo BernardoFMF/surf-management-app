@@ -9,7 +9,7 @@ const sportData = (db) => {
 	
 	const getSportById = async (id_) => {
 		const sport = await db.getSportByIdData(id_)
-		if (!sport) throw error(404, 'Sport does not exist')
+		if (!sport) throw error(404, 'Sport does not exist', 'MESSAGE_CODE_30')
 		return sport
 	}
 	

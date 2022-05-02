@@ -16,7 +16,7 @@ const companyController = (data) => {
 	const getCompanyById = asyncHandler(async (req, res) => {
 		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.cid) {
-				throw error(401, 'Unauthorized')
+				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
 		const company = await services.getCompanyByIdServices(req.params.cid)
@@ -34,7 +34,7 @@ const companyController = (data) => {
 	const updateCompany = asyncHandler(async (req, res) => {
 		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.cid) {
-				throw error(401, 'Unauthorized')
+				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
 		const company = await services.updateCompanyServices(req.params.cid, req.body.name, req.body.nif, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location)
@@ -43,7 +43,7 @@ const companyController = (data) => {
 	
 	const deleteCompany = asyncHandler(async (req, res) => {
 		const company = await services.deleteCompanyServices(req.params.cid)
-		if (company) res.json({ message: 'Company deleted sucessfully' })
+		if (company) res.json({ message: 'Company deleted sucessfully', message_code: 'MESSAGE_CODE_6' })
 	})
 
 	return {

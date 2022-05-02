@@ -64,7 +64,6 @@ const AuthLogin = ({ ...others }) => {
     }, [userInfo, error])
 
     const handleSubmit = async ({username, password}) => {
-        console.log('deu login')
         dispatch(login(username, password))
     }
 
@@ -74,7 +73,7 @@ const AuthLogin = ({ ...others }) => {
     };
 
     const handleMouseDownPassword = (e) => {
-        console.log('mouse down password')
+
         e.preventDefault()
     };
 
@@ -96,7 +95,7 @@ const AuthLogin = ({ ...others }) => {
                         <Typography variant="subtitle1">{t('sign_in_suggestion')}</Typography>
                     </Box>
                     {error && <Box sx={{ mb: 2 }}>
-                    <Alert severity="error">{t('sign_in_incorret_user_or_pword')}</Alert>
+                    <Alert severity="error">{t(error)}</Alert>
                     </Box>}
                 </Grid>
             </Grid>

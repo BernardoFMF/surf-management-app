@@ -26,7 +26,7 @@ const quotaController = (data) => {
 	const getMemberQuotasById = asyncHandler(async (req, res) => {
 		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
-				throw error(401, 'Unauthorized')
+				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
 		const quotas = await services.getMemberQuotasByIdServices(req.params.id)
@@ -37,7 +37,7 @@ const quotaController = (data) => {
 		const quota = await services.postQuotaServices(req.body.date)
 		if (quota) {
 			res.status(201)
-			res.json({ message: 'Quotas created sucessfully' })
+			res.json({ message: 'Quotas created sucessfully', message_code: 'MESSAGE_CODE_8' })
 		}
 	})
 	

@@ -125,7 +125,7 @@ const AuthRegister = ({ ...others }) => {
                             <Typography variant="subtitle1">{t('sign_up_suggestion')}</Typography>
                         </Box>
                         {error && <Box sx={{ mb: 2 }}>
-                        <Alert severity="error">{error}</Alert>
+                        <Alert severity="error">{t(error)}</Alert>
                         </Box>}
                     </Grid>
                 </Grid>

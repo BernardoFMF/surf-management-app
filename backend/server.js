@@ -18,6 +18,7 @@ import companyRoutes from './routes/companyRoutes.js'
 import eventRoutes from './routes/eventRoutes.js'
 import quotaRoutes from './routes/quotaRoutes.js'
 import authRoutes from './routes/authRoutes.js'
+import error from './utils/error.js'
 
 
 const router = (app, data) => {
@@ -61,15 +62,16 @@ const router = (app, data) => {
 			try {
 				const member = await data.getMemberByUsernameData(username)
 				if(!member) {
-					done(null, false, {message: 'Incorrect username'})
+					done(error(401, 'Incorrect username', 'MESSAGE_CODE_1'), false, null)
 				} else {
 					if(await crypto.comparepassword(password, member.pword_)) {
 						done(null, member)
 					} else {
-						done(null, false, {message: 'Incorrect password'})
+						done(error(401, 'Incorrect password', 'MESSAGE_CODE_1'), false, null)
 					}
 				}
 			} catch (err) {
+				console.log(err)
 				done(err, false)
 			}
 		}

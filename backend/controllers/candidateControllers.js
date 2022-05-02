@@ -18,7 +18,6 @@ const candidateController = (data) => {
 	})
 	
 	const postCandidate = asyncHandler(async (req, res) => {
-		console.log(req.body)
 		const candidate = await services.postCandidateServices(req.body.username, req.body.cc, req.body.nif, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password, req.body.img, req.body.gender)
 		if (candidate) {
 			res.status(201)
@@ -28,13 +27,13 @@ const candidateController = (data) => {
 	
 	const deleteCandidate = asyncHandler(async (req, res) => {
 		const candidate = await services.deleteCandidateServices(req.params.cid)
-		if (candidate) res.json({ message: 'Candidate deleted sucessfully' })
+		if (candidate) res.json({ message: 'Candidate deleted sucessfully', message_code: 'MESSAGE_CODE_3' })
 	})
 	
 	const approveCandidate = asyncHandler(async (req, res) => {
 		const url = req.protocol + '://' + req.get('host')
 		const candidate = await services.approveCandidateServices(req.params.cid, req.body.type_, req.body.paid_enrollment_, url)
-		if (candidate) res.json({ message: 'Candidate approved sucessfully' })
+		if (candidate) res.json({ message: 'Candidate approved sucessfully', message_code: 'MESSAGE_CODE_4' })
 	})
 
 	return {

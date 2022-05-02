@@ -16,7 +16,7 @@ const userController = (data) => {
 	const getUserById = asyncHandler(async (req, res) => {
 		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
-				throw error(401, 'Unauthorized')
+				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
 		const user = await services.getUserByIdServices(req.params.id)
@@ -35,7 +35,7 @@ const userController = (data) => {
 	const updateUser = asyncHandler(async (req, res) => {
 		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
-				throw error(401, 'Unauthorized')
+				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
 		const user = await services.updateUserServices(req.params.id, req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.postal_code, req.body.address, req.body.location, req.body.img, req.body.paid_enrollment, req.body.is_admin, req.body.is_deleted, req.body.gender)
@@ -44,7 +44,7 @@ const userController = (data) => {
 	
 	const deleteUser = asyncHandler(async (req, res) => {
 		const user = await services.deleteUserServices(req.params.id)
-		if (user) res.json({ message: 'User deleted sucessfully' })
+		if (user) res.json({ message: 'User deleted sucessfully', message_code: 'MESSAGE_CODE_10' })
 	})
 	
 	const getUsersSports = asyncHandler(async (req,res) => {
@@ -60,7 +60,7 @@ const userController = (data) => {
 	const getUserSportsById = asyncHandler(async (req,res) => {
 		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
-				throw error(401, 'Unauthorized')
+				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
 		const userSports = await services.getUserSportsByIdServices(req.params.id)
@@ -70,7 +70,7 @@ const userController = (data) => {
 	const postUserSport = asyncHandler(async (req,res) => {
 		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
-				throw error(401, 'Unauthorized')
+				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
 		const userSport = await services.postUserSportServices(req.params.id, req.body.sid, req.body.fed_id, req.body.fed_number, req.body.fed_name, req.body.type, req.body.years_federated)
@@ -83,7 +83,7 @@ const userController = (data) => {
 	const updateUserSport = asyncHandler(async (req,res) => {
 		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
-				throw error(401, 'Unauthorized')
+				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
 		const userSport = await services.updateUserSportServices(req.params.id, req.params.sid, req.body.fed_id, req.body.fed_number, req.body.fed_name, req.body.type, req.body.years_federated, req.body.is_absent)
@@ -93,12 +93,12 @@ const userController = (data) => {
 	const deleteUserSport = asyncHandler(async (req,res) => {
 		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.params.id) {
-				throw error(401, 'Unauthorized')
+				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
 		const userSport = await services.deleteUserSportServices(req.params.id,req.params.sid)
 		if(userSport) {
-			res.json({ message: 'Sport deleted sucessfully from user' })
+			res.json({ message: 'Sport deleted sucessfully from user', message_code: 'MESSAGE_CODE_11' })
 		}
 	})
 

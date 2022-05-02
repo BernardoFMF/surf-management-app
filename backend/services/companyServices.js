@@ -12,38 +12,38 @@ const companyServices = (db) => {
 	}
 	
 	const getCompanyByIdServices = async(id) => {
-		if(!id) throw error(400,'Parameter not found: id')
+		if(!id) throw error(400,'Parameter not found: id', 'MESSAGE_CODE_14')
 		return await data.getCompanyById(id)
 	}
 	
 	const postCompanyServices = async(name, nif, phone_number, email, postal_code, address, location, username, password) => {
-		if(!name) throw error(400,'Parameter not found: name')
-		if(!nif) throw error(400,'Parameter not found: nif')
-		if(!phone_number) throw error(400, 'Parameter not found: phone_number')
-		if(!email) throw error(400, 'Parameter not found: email')
-		if(!postal_code) throw error(400, 'Parameter not found: postal_code')
-		if(!address) throw error(400, 'Parameter not found: address')
-		if(!location) throw error(400, 'Parameter not found: location')
-		if(!username) throw error(400, 'Parameter not found: username')
-		if(!password) throw error(400, 'Parameter not found: password')
+		if(!name) throw error(400,'Parameter not found: name', 'MESSAGE_CODE_14')
+		if(!nif) throw error(400,'Parameter not found: nif', 'MESSAGE_CODE_14')
+		if(!phone_number) throw error(400, 'Parameter not found: phone_number', 'MESSAGE_CODE_14')
+		if(!email) throw error(400, 'Parameter not found: email', 'MESSAGE_CODE_14')
+		if(!postal_code) throw error(400, 'Parameter not found: postal_code', 'MESSAGE_CODE_14')
+		if(!address) throw error(400, 'Parameter not found: address', 'MESSAGE_CODE_14')
+		if(!location) throw error(400, 'Parameter not found: location', 'MESSAGE_CODE_14')
+		if(!username) throw error(400, 'Parameter not found: username', 'MESSAGE_CODE_14')
+		if(!password) throw error(400, 'Parameter not found: password', 'MESSAGE_CODE_14')
 		const pwordhashed = await crypto.hashpassword(password)
 		return await data.postCompany(name, nif, phone_number, email, postal_code, address, location, username, pwordhashed)
 	}
 	
 	const updateCompanyServices = async(id, name, nif, phone_number, email, postal_code, address, location) => {
-		if(!id) throw error(400,'Parameter not found: id')
-		if(!name) throw error(400,'Parameter not found: name')
-		if(!nif) throw error(400,'Parameter not found: nif')
-		if(!phone_number) throw error(400, 'Parameter not found: phone_number')
-		if(!email) throw error(400, 'Parameter not found: email')
-		if(!postal_code) throw error(400, 'Parameter not found: postal_code')
-		if(!address) throw error(400, 'Parameter not found: address')
-		if(!location) throw error(400, 'Parameter not found: location')
+		if(!id) throw error(400,'Parameter not found: id', 'MESSAGE_CODE_14')
+		if(!name) throw error(400,'Parameter not found: name', 'MESSAGE_CODE_14')
+		if(!nif) throw error(400,'Parameter not found: nif', 'MESSAGE_CODE_14')
+		if(!phone_number) throw error(400, 'Parameter not found: phone_number', 'MESSAGE_CODE_14')
+		if(!email) throw error(400, 'Parameter not found: email', 'MESSAGE_CODE_14')
+		if(!postal_code) throw error(400, 'Parameter not found: postal_code', 'MESSAGE_CODE_14')
+		if(!address) throw error(400, 'Parameter not found: address', 'MESSAGE_CODE_14')
+		if(!location) throw error(400, 'Parameter not found: location', 'MESSAGE_CODE_14')
 		return await data.updateCompany(id, name, nif, phone_number, email, postal_code, address, location)
 	}
 	
 	const deleteCompanyServices = async(id) => {
-		if(!id) throw error(400,'Parameter not found: id')
+		if(!id) throw error(400,'Parameter not found: id', 'MESSAGE_CODE_14')
 		return await data.deleteCompany(id)
 	}
 

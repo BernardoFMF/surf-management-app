@@ -1750,6 +1750,8 @@ components:
           type: string
         status:
           type: integer
+        message_code:
+          type: integer
     html:
       type: string
       example: <html>HTML text</html>

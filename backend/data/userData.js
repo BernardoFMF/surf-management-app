@@ -10,28 +10,28 @@ const userData = (db) => {
 	
 	const getUserById = async (id_) => {
 		const user = await db.getUserByIdData(id_)
-		if (!user) throw error(404, 'User does not exist')
+		if (!user) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
 		return user
 	}
 	
 	const postUser = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, url) => {
 		const candidate = await db.getCandidateByUsernameData(username_)
-		if (candidate) throw error(409, 'Candidate with that username already exists')
+		if (candidate) throw error(409, 'Candidate with that username already exists', 'MESSAGE_CODE_12')
 		candidate = await db.getCandidateByCCData(cc_)
-		if (candidate) throw error(409, 'Candidate with that cc already exists')
+		if (candidate) throw error(409, 'Candidate with that cc already exists', 'MESSAGE_CODE_12')
 		candidate = await db.getCandidateByNifData(nif_)
-		if (candidate) throw error(409, 'Candidate with that nif already exists')
+		if (candidate) throw error(409, 'Candidate with that nif already exists', 'MESSAGE_CODE_12')
 		candidate = await db.getCandidateByEmailData(email_)
-		if (candidate) throw error(409, 'Candidate with that email already exists')
+		if (candidate) throw error(409, 'Candidate with that email already exists', 'MESSAGE_CODE_12')
 
 		const member = await db.getMemberByUsernameData(username_)
-		if (member) throw error(409, 'Member with that username already exists')
+		if (member) throw error(409, 'Member with that username already exists', 'MESSAGE_CODE_20')
 		member = await db.getMemberByCCData(cc_)
-		if (member) throw error(409, 'Member with that cc already exists')
+		if (member) throw error(409, 'Member with that cc already exists', 'MESSAGE_CODE_21')
 		member = await db.getMemberByNifData(nif_)
-		if (member) throw error(409, 'Member with that nif already exists')
+		if (member) throw error(409, 'Member with that nif already exists', 'MESSAGE_CODE_22')
 		member = await db.getMemberByEmailData(email_)
-		if (member) throw error(409, 'Member with that email already exists')
+		if (member) throw error(409, 'Member with that email already exists', 'MESSAGE_CODE_23')
 
 		const userId = await db.postUserData(cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender)
 
@@ -58,7 +58,7 @@ const userData = (db) => {
 	
 	const getUsersSport = async (id_) => {
 		const sport = await db.getSportByIdData(id_)
-		if (!sport) throw error(404, 'Sport does not exist')
+		if (!sport) throw error(404, 'Sport does not exist', 'MESSAGE_CODE_30')
 		return await db.getUsersSportData(id_)
 	}
 	
@@ -70,11 +70,11 @@ const userData = (db) => {
 	const postUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
 		const user = await getUserById(id_)
 		const sport = await db.getSportByIdData(sid_)
-		if (!sport) throw error(404, 'Sport does not exist')
+		if (!sport) throw error(404, 'Sport does not exist', 'MESSAGE_CODE_30')
 		let user_sport = await db.getUserSportsByIdData(id_)
 		user_sport = user_sport.filter(tuple => tuple.sport_id_ == sid_)[0]
 		if (user_sport)
-			throw error(409, 'User is already related to this Sport')
+			throw error(409, 'User is already related to this Sport', 'MESSAGE_CODE_31')
 		return await db.postUserSportData(user.member_id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
 	}
 	
@@ -82,14 +82,14 @@ const userData = (db) => {
 		await getUserById(id_)
 		const sports = await db.getUserSportsByIdData(id_)
 		const sport = sports.filter(s => s.sport_id_ == sid_)[0]
-		if (!sport) throw error(404, 'User is not related to this Sport')
+		if (!sport) throw error(404, 'User is not related to this Sport', 'MESSAGE_CODE_32')
 		return await db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_)
 	}
 	
 	const deleteUserSport = async (id_, sid_) => {
 		await getUserById(id_)
 		const sport = await db.getSportByIdData(sid_)
-		if (!sport) throw error(404, 'Sport does not exist')
+		if (!sport) throw error(404, 'Sport does not exist', 'MESSAGE_CODE_30')
 		return await db.deleteUserSportData(id_, sid_)
 	}
 

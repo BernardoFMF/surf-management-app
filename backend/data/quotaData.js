@@ -19,7 +19,7 @@ const quotaData = (db) => {
     
 	const getMemberQuotasById = async (id_) => {
 		const member = await db.getMemberByIdData(id_)
-		if (!member) throw error(404, 'Member does not exist')
+		if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_28')
 		return await db.getMemberQuotasByIdData(id_)
 	}
     
@@ -31,7 +31,7 @@ const quotaData = (db) => {
     
 	const updateMemberQuota = async (qid_, payment_date_) => {
 		const quota = await db.getQuotaByIdData(qid_)
-		if (!quota) throw error(404, 'Quota does not exist')
+		if (!quota) throw error(404, 'Quota does not exist', 'MESSAGE_CODE_29')
 		return await db.updateMemberQuotaData(qid_, payment_date_)
 	}
 

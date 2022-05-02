@@ -10,7 +10,7 @@ const authServices = (db) => {
 
 	const requestPasswordReset = async (id) => {
 		const user = await db.getMemberByIdData(id)
-		if (!user) throw new error(404, 'User does not exist')
+		if (!user) throw new error(404, 'User does not exist', 'MESSAGE_CODE_12')
 	
 		let token = await db.getMemberTokenByIdData(id) //ir buscar o token do user
 		if (token) await db.deleteMemberTokenData(id) //se ja existir eliminá-lo
@@ -33,14 +33,13 @@ const authServices = (db) => {
 		let passwordResetToken = await db.getMemberTokenByIdData(userId) //verificar se o User tem um token
 
 		if (!passwordResetToken) {
-			throw new error(409, 'Invalid or expired password reset token')
+			throw new error(409, 'Invalid or expired password reset token', 'MESSAGE_CODE_13')
 		}
 
-	
 		let isValid = await cryptoUtil.comparepassword(token, passwordResetToken.token) //comparar o token
 	
 		if (!isValid) {
-			throw new error(409, 'Invalid or expired password reset token')
+			throw new error(409, 'Invalid or expired password reset token', 'MESSAGE_CODE_13')
 		}
 	
 		const hash = await cryptoUtil.hashpassword(password)

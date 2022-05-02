@@ -32,7 +32,7 @@ const sportController = (data) => {
 
 	const deleteSport = asyncHandler(async (req, res) => {
 		const sport = await services.deleteSportServices(req.params.sid)
-		if (sport) res.json({ message: 'Sport deleted sucessfully' })
+		if (sport) res.json({ message: 'Sport deleted sucessfully', message_code: 'MESSAGE_CODE_9' })
 	})
 
 	return {
