@@ -162,8 +162,8 @@ test('Post, Gets, Put & Delete company', async () => {
         .set('Cookie', session)
         .send({
             "name": "Footlocker",
-            "nif": 29067459,
-            "phone_number": 936666648,
+            "nif": 155555666,
+            "phone_number": 912543345,
             "email": "flocker@gmail.com",
             "postal_code": "2745-056",
             "address": "Rua da Borboletas n45 2esq",
@@ -227,15 +227,15 @@ test('Post, Gets, Put quotas', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
         .send({
-            "name": "Footlocker",
-            "nif": 29067459,
-            "phone_number": 936666648,
-            "email": "flocker@gmail.com",
+            "name": "Nike",
+            "nif": 198272000,
+            "phone_number": 933356648,
+            "email": "nikie@gmail.com",
             "postal_code": "2745-056",
             "address": "Rua da Borboletas n45 2esq",
             "location": "Porto Covo",
             "password": "123",
-            "username": "flocker",
+            "username": "nikie",
         })
         .expect('Content-Type', /json/)
         .expect(201)
@@ -247,19 +247,19 @@ test('Post, Gets, Put quotas', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
         .send({
-            "cc": 23456824,
-            "nif": 29067459,
+            "cc": 299998204,
+            "nif": 290678979,
             "type": "effective",
             "birth_date": "09-05-2000",
             "nationality": "Portuguesa",
             "full_name": "Joca Joquissimo",
-            "phone_number": 934509248,
-            "email": "joca@gmail.com",
+            "phone_number": 934523248,
+            "email": "jocaoao@gmail.com",
             "postal_code": "2745-056",
             "address": "Rua da Borboletas n45 2esq",
             "location": "Porto Covo",
             "password": "123",
-            "username": "joca",
+            "username": "jocaoao",
             "paid_enrollment": false,
             "gender": "Male"
         })
@@ -286,7 +286,6 @@ test('Post, Gets, Put quotas', async () => {
         .set('Cookie', session)
     expect(getRes).toSatisfyApiSpec()
     expect(getRes.body[0]).toSatisfySchemaInApiSpec("quota")
-	console.log(getRes.body)
 	const getUsersRes = await supertest(app)
 		.get(`/api/quotas/users`)
         .set('Accept', 'application/json')
@@ -312,31 +311,30 @@ test('Post, Gets, Put quotas', async () => {
 		.expect(200)
 	expect(putRes).toSatisfyApiSpec()
 	expect(putRes.body).toSatisfySchemaInApiSpec("id")
-	console.log(putRes.body)
 })
 
 //User Sports
 
-test('Post, Gets, Put & Delete company', async () => {
+test('Post, Gets, Put & Delete user sport', async () => {
 	// the user creation is needed 
 	const userRes = await supertest(app)
         .post('/api/users')
         .set('Accept', 'application/json')
         .set('Cookie', session)
         .send({
-            "cc": 23456824,
-            "nif": 29067459,
+            "cc": 234568444,
+            "nif": 294547459,
             "type": "effective",
             "birth_date": "09-05-2000",
             "nationality": "Portuguesa",
             "full_name": "João Miguel",
             "phone_number": 934509248,
-            "email": "jmiguel@gmail.com",
+            "email": "mofiguel@gmail.com",
             "postal_code": "2745-056",
             "address": "Rua da Borboletas n45 2esq",
             "location": "Porto Covo",
             "password": "123",
-            "username": "jmiguel",
+            "username": "mofiguel",
             "paid_enrollment": false,
             "gender": "Male"
         })

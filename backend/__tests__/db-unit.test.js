@@ -182,7 +182,6 @@ test('Update specific attendance', async () => {
 test('Get specific member attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventMemberByIdAttendance(1)
-	console.log(attendance);
 	expect(attendance[0].member_id_).toBe(1)
 })
 
