@@ -1,33 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
-import { logout } from '../../../src/store/actions/userActions'
-import useAuth from '../../hooks/useAuth'
+import { useEffect, useState } from 'react';
 
-const DashboardOverviewPage = () => {
-  let history = useNavigate()
-  const dispatch = useDispatch()
-  const {logoutHook} = useAuth()
-  const func = async () => {
-    //await func2()
-    dispatch(logout())
-    await logoutHook()
-    //history('/sign-in')
-  }
-  const func2 = async () => {
-    const response = await fetch('/api/users', {
-      method: 'GET',
-      body: null,
-      headers: { "Content-Type": "application/json" }
-    })
-    const text = await response.text()
-    console.log(text)
-  }
-  
+// material-ui
+import { Grid } from '@mui/material';
 
-  return (
-    <div><button onClick={func}>logout</button></div>
-  )
-}
+// project imports
 
-export default DashboardOverviewPage
+import { gridSpacing } from '../../store/constants/themeConstants';
+
+// ==============================|| DEFAULT DASHBOARD ||============================== //
+
+const Dashboard = () => {
+    const [isLoading, setLoading] = useState(true);
+    useEffect(() => {
+        setLoading(false);
+    }, []);
+
+    return (
+        <Grid container spacing={gridSpacing}>
+            <h2>Dashboard Page</h2>
+        </Grid>
+    );
+};
+
+export default Dashboard;
