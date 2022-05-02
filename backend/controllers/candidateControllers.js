@@ -18,7 +18,6 @@ const candidateController = (data) => {
 	})
 	
 	const postCandidate = asyncHandler(async (req, res) => {
-		console.log(req.body)
 		const candidate = await services.postCandidateServices(req.body.username, req.body.cc, req.body.nif, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password, req.body.img, req.body.gender)
 		if (candidate) {
 			res.status(201)
