@@ -100,5 +100,7 @@
     "MESSAGE_CODE_30": "Desporto não existe",
     "MESSAGE_CODE_31": "Utilizador já se encontra associado a este desporto",
     "MESSAGE_CODE_32": "Utilizador não se encontra associado a este desporto",
-    "MESSAGE_CODE_33": "Acesso proibido"
+    "MESSAGE_CODE_33": "Acesso proibido",
+
+    "hello_profile": "Olá,"
 }

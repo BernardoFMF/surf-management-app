@@ -20,14 +20,18 @@ const pages = {
                     title: 'My Profile',
                     type: 'item',
                     url: '/profile',
-                    target: true
                 },
                 {
-                    id: 'allMembers',
-                    title: 'All Members',
+                    id: 'allUsers',
+                    title: 'All Users',
                     type: 'item',
-                    url: '/members',
-                    target: true
+                    url: '/application/users',
+                },
+                {
+                    id: 'allCompanies',
+                    title: 'All Companies',
+                    type: 'item',
+                    url: '/application/companies',
                 }
             ]
         },

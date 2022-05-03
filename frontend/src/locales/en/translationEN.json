@@ -101,5 +101,7 @@
     "MESSAGE_CODE_31": "User is already related to this Sport",
     "MESSAGE_CODE_32": "User is not related to this Sport",
     "MESSAGE_CODE_33": "Access forbidden",
-    "MESSAGE_CODE_34": "Internal server error"
+    "MESSAGE_CODE_34": "Internal server error",
+
+    "hello_profile": "Hello,"
 }
