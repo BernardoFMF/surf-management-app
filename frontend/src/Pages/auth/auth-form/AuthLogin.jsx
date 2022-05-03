@@ -55,7 +55,6 @@ const AuthLogin = ({ ...others }) => {
     useEffect(() => {
         async function logIn() {
             if (userInfo) {
-                console.log(userInfo)
                 await loginHook()
                 navigate('/dashboard/overview')
             }

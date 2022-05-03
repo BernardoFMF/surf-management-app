@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteUser, getUsers } from '../../store/actions/userActions'
 
-import {useMediaQuery,} from '@mui/material'
+import {  useMediaQuery, Box} from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import MainCard from '../../components/cards/MainCard';
 
 const AllMembersPage = () => {
     const theme = useTheme();
@@ -101,14 +102,17 @@ const columns = [
 
   return (
     <>
+      <MainCard title='Users'sx={{height: '100%'}}>
         <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-        experimentalFeatures={{ newEditingApi: true }}
-      />
+          autoHeight
+          rows={rows}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+          experimentalFeatures={{ newEditingApi: true }}
+        /> 
+      </MainCard> 
     </>
   )
 }

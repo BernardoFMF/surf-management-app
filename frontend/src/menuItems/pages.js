@@ -19,18 +19,21 @@ const pages = {
                     id: 'myprofile',
                     title: 'My Profile',
                     type: 'item',
-                    url: '/profile',
+                    hasParams: true,
+                    url: '/application/members/{id}',
                 },
                 {
                     id: 'allUsers',
                     title: 'All Users',
                     type: 'item',
+                    hasParams: false,
                     url: '/application/users',
                 },
                 {
                     id: 'allCompanies',
                     title: 'All Companies',
                     type: 'item',
+                    hasParams: false,
                     url: '/application/companies',
                 }
             ]
@@ -45,15 +48,15 @@ const pages = {
                     id: 'mysports',
                     title: 'My Sports',
                     type: 'item',
-                    url: '/profile',
-                    target: true
+                    hasParams: false,
+                    url: '/profile'
                 },
                 {
                     id: 'allSports',
                     title: 'All Sports',
                     type: 'item',
-                    url: '/sports',
-                    target: true
+                    hasParams: false,
+                    url: '/sports'
                 }
             ]
         },
@@ -67,15 +70,15 @@ const pages = {
                     id: 'myquotas',
                     title: 'My Quotas',
                     type: 'item',
-                    url: '/profile',
-                    target: true
+                    hasParams: false,
+                    url: '/profile'
                 },
                 {
                     id: 'allQuotas',
                     title: 'All Quotas',
                     type: 'item',
-                    url: '/sports',
-                    target: true
+                    hasParams: false,
+                    url: '/sports'
                 }
             ]
         },
@@ -89,15 +92,15 @@ const pages = {
                     id: 'myEvents',
                     title: 'My Events',
                     type: 'item',
-                    url: '/profile',
-                    target: true
+                    hasParams: false,
+                    url: '/profile'
                 },
                 {
                     id: 'allEvents',
                     title: 'All Events',
                     type: 'item',
-                    url: '/events',
-                    target: true
+                    hasParams: false,
+                    url: '/events'
                 }
             ]
         },
@@ -112,8 +115,8 @@ const pages = {
                     id: 'allCandidates',
                     title: 'All Candidates',
                     type: 'item',
-                    url: '/candidates',
-                    target: true
+                    hasParams: false,
+                    url: '/candidates'
                 }
             ]
         }

@@ -55,9 +55,7 @@ begin
 
 	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, is_admin_ = p_is_admin_, gender_ = p_gender_ where member_id_ = p_id_;
 	
-	if p_img_ is not null and not exists(select * from User_img_ where user_id_ = p_id_) then
-		insert into User_Img_ (user_id_, img_value_) values (p_id_, p_img_);
-	elseif p_img_ is not null then
+	if p_img_ is not null then
 		update User_Img_ set img_value_ = p_img_ where user_id_ = p_id_;
 	end if;
 end
@@ -211,9 +209,7 @@ begin
 	
 	select candidate_id_ into new_id;
 
-	if candidate_img_ is not null then
-		insert into User_Img_ (user_id_, img_value_) values (new_id, candidate_img_);
-	end if;
+	insert into User_Img_ (user_id_, img_value_) values (new_id, candidate_img_);
 	
 	DELETE FROM Candidate_ WHERE id_ = cid;
 end

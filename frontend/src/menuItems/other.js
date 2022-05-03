@@ -1,6 +1,4 @@
-import { IconBrandChrome, IconHelp } from '@tabler/icons'
-
-const icons = { IconBrandChrome, IconHelp }
+import InfoIcon from '@mui/icons-material/Info'
 
 const other = {
     id: 'sample-docs-roadmap',
@@ -11,7 +9,7 @@ const other = {
             title: 'About Us',
             type: 'item',
             url: '/about',
-            icon: icons.IconHelp,
+            icon: InfoIcon,
         }
     ]
 }

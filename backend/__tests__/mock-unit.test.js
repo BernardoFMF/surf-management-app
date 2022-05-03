@@ -200,7 +200,7 @@ test('Delete specific candidate', async () => {
 
 test('Approve a candidate', async () => {
 	expect.assertions(1)
-	const userId = await dbCandidate.approveCandidate(1, 'effective', true, 'candidatebemaneiro')
+	const userId = await dbCandidate.approveCandidate(1, 'effective', true, 15,'candidatebemaneiro')
 	expect(userId).toBe(5)
 })
 

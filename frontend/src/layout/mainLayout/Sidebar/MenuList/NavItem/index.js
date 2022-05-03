@@ -7,16 +7,20 @@ import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
 import { MENU_OPEN, SET_MENU } from '../../../../../store/constants/customizationConstants';
-import config from '../../../../../config';
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
+const parameterize = (path, parameter) => {
+    return path.replace(/{.*}/, parameter)
+}
 
 const NavItem = ({ item, level }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const customization = useSelector((state) => state.customization);
     const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
 
     const Icon = item.icon;
     const itemIcon = item?.icon ? (
@@ -37,7 +41,7 @@ const NavItem = ({ item, level }) => {
     }
 
     let listItemProps = {
-        component: forwardRef((props, ref) => <Link ref={ref} {...props} to={item.url} target={itemTarget} />)
+        component: forwardRef((props, ref) => <Link ref={ref} {...props} to={item.hasParams ? parameterize(item.url, userInfo.id_) : item.url} target={itemTarget} />)
     };
     if (item?.external) {
         listItemProps = { component: 'a', href: item.url, target: itemTarget };

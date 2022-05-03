@@ -3,11 +3,12 @@ import { lazy } from 'react';
 import MainLayout from '../layout/mainLayout'
 import Loadable from '../components/Loadable'
 import RequireAuth from '../components/RequireAuth'
-import { element } from 'prop-types';
 
 const DashboardDefault = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
 const DashboardAnalytics = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
 const AllMembersPage = Loadable(lazy(() => import('../Pages/application/AllMembersPage')))
+const MemberProfile = Loadable(lazy(() => import('../Pages/application/MemberProfile')))
+
 //const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
 
 const mainRoutes = {
@@ -25,6 +26,10 @@ const mainRoutes = {
         {
             path: '/application/users',
             element: <RequireAuth><AllMembersPage/></RequireAuth>
+        },
+        {
+            path: '/application/members/:id',
+            element: <RequireAuth><MemberProfile/></RequireAuth>
         }
     ]
 };

@@ -11,7 +11,10 @@ import {
     USER_DELETE_REQUEST,
     USERS_FETCH_SUCCESS,
     USERS_FETCH_FAIL,
-    USERS_FETCH_REQUEST
+    USERS_FETCH_REQUEST,
+    USER_FETCH_SUCCESS,
+    USER_FETCH_FAIL,
+    USER_FETCH_REQUEST
   } from '../constants/userConstants'
 
 export const login = (username, password) => async (dispatch) => {
@@ -26,12 +29,20 @@ export const login = (username, password) => async (dispatch) => {
     })
     const text = await response.json()
     if(response.status !== 200) throw Error(text.message_code)
+
+    const response1 = await fetch(`/api/users/${text.id_}`, {
+      method: 'GET',
+      headers: { "Content-Type": "application/json" }
+    })
+    const user = await response1.json()
+    if(response1.status !== 200) throw Error(text.message_code)
+
     dispatch({
       type: USER_LOGIN_SUCCESS,
-      payload: text,
+      payload: {...text, img_value_: user.img_value_},
     })
 
-    localStorage.setItem('userInfo', JSON.stringify(text))
+    localStorage.setItem('userInfo', JSON.stringify({...text, img_value_: user.img_value_}))
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -115,7 +126,6 @@ export const getUsers = () => async (dispatch) => {
         headers: { "Content-Type": "application/json" }
     })
     const users = await response.json()
-    console.log(users)
     if(response.status !== 200) throw Error(users.message_code)
     dispatch({
       type: USERS_FETCH_SUCCESS,
@@ -125,6 +135,33 @@ export const getUsers = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USERS_FETCH_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const getUserById = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_FETCH_REQUEST,
+    })
+    const response = await fetch(`/api/users/${id}`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+    })
+    const users = await response.json()
+    if(response.status !== 200) throw Error(users.message_code)
+    dispatch({
+      type: USER_FETCH_SUCCESS,
+      payload: users,
+    })
+
+  } catch (error) {
+    dispatch({
+      type: USER_FETCH_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

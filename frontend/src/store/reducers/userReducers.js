@@ -11,7 +11,10 @@ import {
     USER_DELETE_FAIL,
     USERS_FETCH_SUCCESS,
     USERS_FETCH_FAIL,
-    USERS_FETCH_REQUEST
+    USERS_FETCH_REQUEST,
+    USER_FETCH_SUCCESS,
+    USER_FETCH_FAIL,
+    USER_FETCH_REQUEST
   } from '../constants/userConstants'
   
 export const userLoginReducer = (state = {}, action) => {
@@ -64,6 +67,19 @@ export const userLoginReducer = (state = {}, action) => {
       case USERS_FETCH_SUCCESS:
         return { loading: false, usersGet: action.payload }
       case USERS_FETCH_FAIL:
+        return { loading: false, error: action.payload }
+      default:
+        return state
+    }
+  }
+
+  export const userFetchReducer = (state = {}, action) => {
+    switch (action.type) {
+      case USER_FETCH_REQUEST:
+        return { loading: true }
+      case USER_FETCH_SUCCESS:
+        return { loading: false, userGet: action.payload }
+      case USER_FETCH_FAIL:
         return { loading: false, error: action.payload }
       default:
         return state

@@ -24,7 +24,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 }}
             >
                 <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
-                <Logo variant='blue' path='/sign-in' sx={{
+                <Logo variant='blue' path='/dashboard/overview' sx={{
                 width: { xs: 100, md: 100 },
                 maxWidth: { xs: 500, md: 500 },
             }}></Logo>
