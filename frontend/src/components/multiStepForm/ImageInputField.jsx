@@ -7,7 +7,7 @@ import AnimateButton from '../extended/AnimateButton'
 import { useTranslation } from 'react-i18next'
 
 
-const ImageInputField = ({ label, ...props}) => {
+const ImageInputField = ({ label, size, ...props}) => {
     const [field, meta] = useField(props)
 
     const [selectedImage, setSelectedImage] = useState(field.value)
@@ -53,13 +53,13 @@ const ImageInputField = ({ label, ...props}) => {
                     <Avatar
                         alt={selectedImage.name}
                         src={imageUrl}
-                        sx={{ width: 200, height: 200}}
+                        sx={{ width: size, height: size}}
                     />
                 </Box> :  <Box mt={2} display="flex" alignItems={'center'} justifyContent="center">
                     <Avatar
                         alt='blank-profile-picture.png'
                         src= {default_image} 
-                        sx={{ width: 200, height: 200}}
+                        sx={{ width: size, height: size}}
                     />
                 </Box>
             }

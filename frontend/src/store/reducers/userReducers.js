@@ -73,7 +73,7 @@ export const userLoginReducer = (state = {}, action) => {
     }
   }
 
-  export const userFetchReducer = (state = {}, action) => {
+  export const userFetchReducer = (state = {userGet: {}}, action) => {
     switch (action.type) {
       case USER_FETCH_REQUEST:
         return { loading: true }

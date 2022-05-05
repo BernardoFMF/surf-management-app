@@ -193,7 +193,7 @@ const AuthRegister = ({ ...others }) => {
                         <FormStep stepName='Photo' validationSchema={Yup.object().shape({
                             image: Yup.mixed().test('FILE_SIZE', t('sign_up_image_too_big'), value => value == null ? true : (value.size / 1024 / 1024) <= 10).test('FILE_FORMAT', t('sign_up_image_format'), value => value == null ? true : ['image/jpeg', 'image/png'].includes(value.type)).typeError(t('sign_up_valid_image'))
                         })}>
-                            <ImageInputField name='image' label={t('sign_up_image')}></ImageInputField>
+                            <ImageInputField size={200} name='image' label={t('sign_up_image')}></ImageInputField>
                         </FormStep>
                     </MultiStepForm>
                     <Grid item xs={12} sx={{ mt: { xs: 2, md: 2}, mb: { xs: 2, md: 2}}}>

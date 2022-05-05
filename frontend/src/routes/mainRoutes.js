@@ -25,7 +25,7 @@ const mainRoutes = {
         },
         {
             path: '/application/users',
-            element: <RequireAuth><AllMembersPage/></RequireAuth>
+            element: <AllMembersPage/>
         },
         {
             path: '/application/members/:id',
