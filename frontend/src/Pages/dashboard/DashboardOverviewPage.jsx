@@ -18,7 +18,7 @@ const Dashboard = () => {
     return (
         <Grid container spacing={gridSpacing}>
             <h2>Dashboard Page</h2>
-        </Grid>
+        </Grid> 
     );
 };
 
