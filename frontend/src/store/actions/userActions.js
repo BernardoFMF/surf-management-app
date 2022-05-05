@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
     USER_LOGIN_FAIL,
     USER_LOGIN_REQUEST,
@@ -53,12 +54,11 @@ export const login = (username, password) => async (dispatch) => {
     })
   }
 }
-
+ 
 export const logout = () => async (dispatch) => {
   await fetch('/api/members/logout', { method: 'POST' })
   localStorage.removeItem('userInfo')
   dispatch({ type: USER_LOGOUT })
-  document.location.href = '/'
 }
 
 export const signUp = (body) => async (dispatch) => {

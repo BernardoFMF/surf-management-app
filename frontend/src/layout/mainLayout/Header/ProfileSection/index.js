@@ -51,9 +51,11 @@ const ProfileSection = () => {
      * */
     const anchorRef = useRef(null);
     const handleLogout = async () => {
+        dispatch(logout())   
+        navigate('/')
         await logoutHook()
-        dispatch(logout())
-    };
+    }
+
     const user = userInfo
 
     const handleClose = (event) => {
