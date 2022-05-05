@@ -6,6 +6,8 @@ import { Button, Box, Avatar } from '@mui/material';
 import AnimateButton from '../extended/AnimateButton'
 import { useTranslation } from 'react-i18next'
 
+import { useSelector } from 'react-redux';
+
 
 const ImageInputField = ({ label, size, ...props}) => {
     const [field, meta] = useField(props)
@@ -22,6 +24,9 @@ const ImageInputField = ({ label, size, ...props}) => {
         }
     }, [selectedImage])
 
+    // logged user image (not used for sign up) 
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
 
     return (
         <>
@@ -47,22 +52,30 @@ const ImageInputField = ({ label, size, ...props}) => {
                         </Button>
                     </AnimateButton>
                 </label>
-            </Box>            
-            {imageUrl && selectedImage ?
+            </Box>
+            {userInfo && userInfo.img_value_ && userInfo.img_value_.data ? 
                 <Box mt={2} display="flex" alignItems={'center'} justifyContent="center">
                     <Avatar
-                        alt={selectedImage.name}
-                        src={imageUrl}
-                        sx={{ width: size, height: size}}
-                    />
-                </Box> :  <Box mt={2} display="flex" alignItems={'center'} justifyContent="center">
-                    <Avatar
-                        alt='blank-profile-picture.png'
-                        src= {default_image} 
+                        src={URL.createObjectURL(new File(userInfo.img_value_.data,{ lastModified: new Date(0), type: "image/jpeg" })) }
                         sx={{ width: size, height: size}}
                     />
                 </Box>
-            }
+             : 
+                imageUrl && selectedImage ?
+                    <Box mt={2} display="flex" alignItems={'center'} justifyContent="center">
+                        <Avatar
+                            alt={selectedImage.name}
+                            src={imageUrl}
+                            sx={{ width: size, height: size}}
+                        />
+                    </Box> :  <Box mt={2} display="flex" alignItems={'center'} justifyContent="center">
+                        <Avatar
+                            alt='blank-profile-picture.png'
+                            src= {default_image} 
+                            sx={{ width: size, height: size}}
+                        />
+                    </Box>
+            }            
         </>
     );
 };

@@ -110,7 +110,7 @@ const ProfileSection = () => {
                 }}
                 icon={
                     <Avatar
-                        src={User1}
+                        src={userInfo.img_value_ && userInfo.img_value_.data ? URL.createObjectURL(new File(userInfo.img_value_.data,{ lastModified: new Date(0), type: "image/jpeg" })) : User1}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',
