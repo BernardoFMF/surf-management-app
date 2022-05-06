@@ -74,16 +74,23 @@ const AuthRegister = ({ ...others }) => {
 
     const handleSubmit = async (values) => {
         let img = null
-        if (values.image) {
-            const buffer = await values.image.arrayBuffer()
-            img = new Int8Array(buffer)
-        }
         let bdate = values.birthDate.toLocaleString().split(',')[0]
         bdate = bdate.split('/')
         const date = `${bdate[2]}-${bdate[1]}-${bdate[0]}`
-        dispatch(signUp({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username,
-             email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address,
-              phone_number: values.phoneNumber, postal_code: values.postalCode, img}))
+        if (values.image) {
+            const buffer = await values.image.arrayBuffer()
+            img = new Int8Array(buffer)
+            var reader = new FileReader();
+            reader.onload = function () {
+                const base64String = reader.result.replace("data:", "")
+                    .replace(/^.+,/, "");
+
+                dispatch(signUp({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img: base64String}))
+            }
+            reader.readAsDataURL(values.image);
+        } else {
+            dispatch(signUp({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img}))
+        }
     }
 
     return (

@@ -9,18 +9,20 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux';
 
 
-const ImageInputField = ({ label, size, ...props}) => {
+const Base64InputField = ({ label, size, ...props}) => {
     const [field, meta] = useField(props)
 
-    const [selectedImage, setSelectedImage] = useState(field.value)
-    const [imageUrl, setImageUrl] = useState(Boolean(field.value)? URL.createObjectURL(selectedImage) : null)
+    const [selectedImage, setSelectedImage] = useState(field.value ? 'data:image/jpeg;base64,' + field.value : field.value)
+    const [imageUrl, setImageUrl] = useState(Boolean(field.value)? selectedImage : null)
     const { setFieldValue} = useFormikContext()
     const {t, i18n} = useTranslation()
+    const [modified, setModified] = useState(false)
 
     useEffect(() => {
         if (selectedImage) {
-            setImageUrl(URL.createObjectURL(selectedImage))
+            setImageUrl(modified ? URL.createObjectURL(selectedImage) : selectedImage)
             setFieldValue(field.name, selectedImage)
+            setModified(true)
         }
     }, [selectedImage])
 
@@ -69,4 +71,4 @@ const ImageInputField = ({ label, size, ...props}) => {
     );
 };
 
-export default ImageInputField;
+export default Base64InputField;

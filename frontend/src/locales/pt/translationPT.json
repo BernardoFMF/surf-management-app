@@ -68,6 +68,8 @@
     "female": "Female",
     "other": "Other",
 
+    "update_discard": "Descartar",
+
     "MESSAGE_CODE_1": "Nome de utilizador ou senha incorreta",
     "MESSAGE_CODE_2": "Erro de servidor interno",
     "MESSAGE_CODE_3": "Candidato eliminado com sucesso",

@@ -86,6 +86,12 @@ const ProfileSection = () => {
         prevOpen.current = open;
     }, [open]);
 
+    const [imgVal, setImgVal] = useState(null)
+
+    useEffect(() => {
+        setImgVal(userInfo.img_value_)
+    }, [])
+
     return (
         <>
             <Chip
@@ -110,7 +116,7 @@ const ProfileSection = () => {
                 }}
                 icon={
                     <Avatar
-                        src={userInfo.img_value_ && userInfo.img_value_.data ? URL.createObjectURL(new File(userInfo.img_value_.data,{ lastModified: new Date(0), type: "image/jpeg" })) : User1}
+                        src={imgVal ? 'data:image/jpeg;base64,' + imgVal : User1}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',

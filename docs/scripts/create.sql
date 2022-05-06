@@ -12,7 +12,7 @@ create table Candidate_ (
 	phone_number_	int,
 	pword_			text,
 	username_		varchar(30) unique,
-	img_ 			bytea,
+	img_ 			text,
 	gender_ 		varchar(40),
 	
 	primary key(id_)
@@ -100,7 +100,7 @@ create table User_ (
 
 create table User_Img_ (
 	user_id_ 	 	int,
-	img_value_ 		bytea,
+	img_value_ 		text,
 
 	primary key (user_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_)

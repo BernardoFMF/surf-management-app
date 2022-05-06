@@ -15,7 +15,10 @@ import {
     USERS_FETCH_REQUEST,
     USER_FETCH_SUCCESS,
     USER_FETCH_FAIL,
-    USER_FETCH_REQUEST
+    USER_FETCH_REQUEST,
+    USER_UPDATE_SUCCESS,
+    USER_UPDATE_FAIL,
+    USER_UPDATE_REQUEST
   } from '../constants/userConstants'
 
 export const login = (username, password) => async (dispatch) => {
@@ -43,7 +46,7 @@ export const login = (username, password) => async (dispatch) => {
       payload: {...text, img_value_: user.img_value_},
     })
 
-    localStorage.setItem('userInfo', JSON.stringify({...text, img_value_: user.img_value_}))
+    sessionStorage.setItem('userInfo', JSON.stringify({...text, img_value_: user.img_value_}))
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -57,7 +60,7 @@ export const login = (username, password) => async (dispatch) => {
  
 export const logout = () => async (dispatch) => {
   await fetch('/api/members/logout', { method: 'POST' })
-  localStorage.removeItem('userInfo')
+  sessionStorage.removeItem('userInfo')
   dispatch({ type: USER_LOGOUT })
 }
 
@@ -162,6 +165,46 @@ export const getUserById = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_FETCH_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const updateUser = (body) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_REQUEST,
+    })
+
+    const { userLogin: { userInfo } } = getState()
+
+    const response = await fetch(`/api/users/${body.member_id_}`, {
+        method: 'PUT',
+        headers: { "Content-Type": "application/json" }
+    })
+
+    const updateResp = await response.json()
+    if(response.status !== 200) throw Error(updateResp.message_code)
+
+    dispatch({
+      type: USER_UPDATE_SUCCESS,
+      payload: updateResp,
+    })
+
+    if (userInfo.id_ === body.member_id_) {
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: updateResp,
+      })
+      sessionStorage.setItem('userInfo', JSON.stringify(updateResp))
+    }
+
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

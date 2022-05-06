@@ -44,7 +44,7 @@ $$;
  * Creates the user_Img
  */
 create or replace procedure put_user(p_id_ int, p_cc_ bigint, p_nif_ bigint, p_type_ varchar(40), p_quota_value_ int, p_birth_date_ date, p_nationality_ varchar(30), p_full_name_ varchar(60), 
-										p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ bytea, p_is_admin_ bool, p_paid_enrollment_ bool, p_is_deleted_ bool, p_gender_ varchar(40))
+										p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ text, p_is_admin_ bool, p_paid_enrollment_ bool, p_is_deleted_ bool, p_gender_ varchar(40))
 LANGUAGE plpgsql  
 as
 $$
@@ -199,7 +199,7 @@ DECLARE
 	candidate_pword_ text;
  	candidate_username_ varchar(30);
  	candidate_id_ int;
- 	candidate_img_ bytea;
+ 	candidate_img_ text;
  	candidate_gender_ varchar(40);
 	
 begin
