@@ -105,5 +105,11 @@
     "MESSAGE_CODE_33": "Access forbidden",
     "MESSAGE_CODE_34": "Internal server error",
 
-    "hello_profile": "Hello,"
+    "hello_profile": "Hello,",
+    "name": "Name",
+    "is_deleted": "Is Deleted",
+    "practitioners": "Number of Practitioners",
+    "member_id": "Member ID",
+    "date": "Date",
+    "payment_date": "Payment Date"
 }

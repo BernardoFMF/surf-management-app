@@ -8,6 +8,8 @@ const DashboardDefault = Loadable(lazy(() => import('../Pages/dashboard/Dashboar
 const DashboardAnalytics = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
 const AllMembersPage = Loadable(lazy(() => import('../Pages/application/AllMembersPage')))
 const MemberProfile = Loadable(lazy(() => import('../Pages/application/MemberProfile')))
+const AllSportsPage = Loadable(lazy(() => import('../Pages/application/AllSportsPage')))
+const AllQuotasPage = Loadable(lazy(() => import('../Pages/application/AllQuotasPage')))
 
 //const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
 
@@ -29,7 +31,15 @@ const mainRoutes = {
         },
         {
             path: '/application/members/:id',
-            element: <MemberProfile/>
+            element: <RequireAuth><MemberProfile/></RequireAuth>
+        },
+        {
+            path: '/application/sports',
+            element: <RequireAuth><AllSportsPage/></RequireAuth>
+        },
+        {
+            path: '/application/quotas',
+            element: <RequireAuth><AllQuotasPage/></RequireAuth>
         }
     ]
 };

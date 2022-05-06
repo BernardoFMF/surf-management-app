@@ -56,7 +56,7 @@ const pages = {
                     title: 'All Sports',
                     type: 'item',
                     hasParams: false,
-                    url: '/sports'
+                    url: '/application/sports'
                 }
             ]
         },
@@ -78,7 +78,7 @@ const pages = {
                     title: 'All Quotas',
                     type: 'item',
                     hasParams: false,
-                    url: '/sports'
+                    url: '/application/quotas'
                 }
             ]
         },
