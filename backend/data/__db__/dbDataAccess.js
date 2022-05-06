@@ -73,11 +73,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		}
 	}
 
-	const approveCandidateData = async (id_, type_, quota_value_, paid_enrollment_) => {
+	const approveCandidateData = async (id_, type_, paid_enrollment_) => {
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
-			const result = await client.query(queries.QUERY_APPROVE_CANDIDATE, [id_, type_, quota_value_, paid_enrollment_, 0])
+			const result = await client.query(queries.QUERY_APPROVE_CANDIDATE, [id_, type_, paid_enrollment_, 0])
 			await client.query('Commit')
 			return result.rows[0].new_id
 		} catch(e) {
@@ -182,11 +182,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		}
 	}
 
-	const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_) => {
+	const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_) => {
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
-			const result = await company.query(queries.QUERY_POST_COMPANY, [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, 0])
+			const result = await company.query(queries.QUERY_POST_COMPANY, [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_, 0])
 			await company.query('Commit')
 			return result.rows[0].new_id_
 		} catch(e) {
@@ -468,11 +468,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		}
 	}
 
-	const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_) => {
+	const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const result = await client.query(queries.QUERY_POST_USER, [cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, 0])
+			const result = await client.query(queries.QUERY_POST_USER, [cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, 0])
 			await client.query('commit')
 			return result.rows[0].new_id_
 		} catch (e) {

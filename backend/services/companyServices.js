@@ -16,7 +16,7 @@ const companyServices = (db) => {
 		return await data.getCompanyById(id)
 	}
 	
-	const postCompanyServices = async(name, nif, phone_number, email, postal_code, address, location, username, password) => {
+	const postCompanyServices = async(name, nif, phone_number, email, postal_code, address, location, username, password, type) => {
 		if(!name) throw error(400,'Parameter not found: name', 'MESSAGE_CODE_14')
 		if(!nif) throw error(400,'Parameter not found: nif', 'MESSAGE_CODE_14')
 		if(!phone_number) throw error(400, 'Parameter not found: phone_number', 'MESSAGE_CODE_14')
@@ -26,8 +26,9 @@ const companyServices = (db) => {
 		if(!location) throw error(400, 'Parameter not found: location', 'MESSAGE_CODE_14')
 		if(!username) throw error(400, 'Parameter not found: username', 'MESSAGE_CODE_14')
 		if(!password) throw error(400, 'Parameter not found: password', 'MESSAGE_CODE_14')
+		
 		const pwordhashed = await crypto.hashpassword(password)
-		return await data.postCompany(name, nif, phone_number, email, postal_code, address, location, username, pwordhashed)
+		return await data.postCompany(name, nif, phone_number, email, postal_code, address, location, username, pwordhashed, type)
 	}
 	
 	const updateCompanyServices = async(id, name, nif, phone_number, email, postal_code, address, location) => {

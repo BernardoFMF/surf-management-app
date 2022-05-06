@@ -10,4 +10,5 @@ drop table if exists Quota_;
 drop table if exists Attendance_;
 drop table if exists Event_;
 drop table if exists Member_;
+drop table if exists Quotas_Prices_;
 drop table if exists Candidate_;

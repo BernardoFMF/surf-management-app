@@ -18,16 +18,23 @@ create table Candidate_ (
 	primary key(id_)
 );
 
+create table Quotas_Prices_ (
+	role_ 			varchar(40),
+	quota_value_	int,
+	
+	primary key(role_)
+);
+
 create table Member_ (
 	id_ 			int generated always as identity,
-	member_type_	varchar(40) check (member_type_ in ('founder', 'effective', 'merit', 'corporate')),
+	member_type_	varchar(40),
 	has_debt_ 		bool default false,
-	quota_value_ 	int,
 	is_deleted_ 	bool default false,
 	username_		varchar(30) unique,
 	pword_			varchar(100),
 	
-	primary key(id_)
+	primary key(id_),
+	constraint fk_role foreign key(member_type_) references Quotas_Prices_(role_)
 );
 
 create table Event_ (
@@ -145,7 +152,6 @@ create table Member_token_ (
 	primary key(member_id_),
 	constraint fk_user foreign key(member_id_) references Member_(id_)
 )
-
 
 
 

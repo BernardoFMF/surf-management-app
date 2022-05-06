@@ -24,7 +24,7 @@ const companyController = (data) => {
 	})
 	
 	const postCompany = asyncHandler(async (req, res) => {
-		const company = await services.postCompanyServices(req.body.name, req.body.nif, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.username, req.body.password)
+		const company = await services.postCompanyServices(req.body.name, req.body.nif, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.username, req.body.password, req.body.type)
 		if (company) {
 			res.status(201)
 			res.json(company)

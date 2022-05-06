@@ -42,10 +42,7 @@ const candidateServices = (db) => {
 	const approveCandidateServices = async (cid, type_, paid_enrollment_, url) => {
 		if(!cid) throw error(400, 'Parameter not found: cid', 'MESSAGE_CODE_14')
 
-		let quota_value_ = 0
-		if (type_ == 'effective') quota_value_ = 15
-
-		return await data.approveCandidate(cid, type_, paid_enrollment_, quota_value_, url)
+		return await data.approveCandidate(cid, type_, paid_enrollment_, url)
 	}
 
 	return {

@@ -59,11 +59,7 @@ const userServices = (db) => {
 		if(is_deleted == undefined) throw error(400, 'Parameter not found: is_deleted', 'MESSAGE_CODE_14')
 		if(!gender) throw error(400, 'Parameter not found: gender', 'MESSAGE_CODE_14')
 
-		let quota_value = 0
-		if (type == 'effective') quota_value = 15
-		else if (type == 'corporate') quota_value = 50
-
-		return await data.updateUser(id, cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted, gender)
+		return await data.updateUser(id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted, gender)
 	}
 	
 	const deleteUserServices = async (id) => {

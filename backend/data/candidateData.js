@@ -42,11 +42,11 @@ const candidateData = (db) => {
 		return await db.deleteCandidateData(id_)
 	}
 	
-	const approveCandidate = async (id_, type_, paid_enrollment_, quota_value_, url) => {
+	const approveCandidate = async (id_, type_, paid_enrollment_, url) => {
 		await getCandidateById(id_)
 		
 		const qrcode_ = await toDataURL(`${url}/members/validate/${id_}`)
-		const u_id_ = await db.approveCandidateData(id_, type_, quota_value_, paid_enrollment_)
+		const u_id_ = await db.approveCandidateData(id_, type_, paid_enrollment_)
 		await db.updateUserQrCodeData(u_id_, qrcode_)
 
 		return u_id_
