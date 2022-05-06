@@ -300,6 +300,8 @@ export const updateUser = (body) => async (dispatch, getState) => {
       type: USER_UPDATE_REQUEST,
     })
 
+    const { userLogin: { userInfo } } = getState()
+
     const response = await fetch(`/api/users/${body.member_id_}`, {
         method: 'PUT',
         headers: { "Content-Type": "application/json" }
@@ -330,5 +332,4 @@ export const updateUser = (body) => async (dispatch, getState) => {
           : error.message,
     })
   }
-}
 }
