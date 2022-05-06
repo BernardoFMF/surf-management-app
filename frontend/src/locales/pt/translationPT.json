@@ -102,5 +102,11 @@
     "MESSAGE_CODE_32": "Utilizador não se encontra associado a este desporto",
     "MESSAGE_CODE_33": "Acesso proibido",
 
-    "hello_profile": "Olá,"
+    "hello_profile": "Olá,",
+    "name": "Nome",
+    "is_deleted": "Está Eliminado",
+    "practitioners": "Numero de Praticantes",
+    "member_id": "ID do Membro",
+    "date": "Data",
+    "payment_date": "Data de Pagamento"
 }

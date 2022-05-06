@@ -146,6 +146,8 @@ create table Member_token_ (
 	constraint fk_user foreign key(member_id_) references Member_(id_)
 )
 
+select id_, date_, payment_date_, (select full_name_ from User_ where member_id_ = id_) from quota_ q 
+
 
 
 

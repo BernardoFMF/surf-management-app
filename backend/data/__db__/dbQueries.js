@@ -26,7 +26,7 @@ const QUERY_UPDATE_COMPANY = 'call put_company($1, $2, $3, $4, $5, $6, $7, $8);'
 
 const QUERY_DELETE_COMPANY = 'update member_ set is_deleted_ = true where id_ = $1;'
 
-const QUERY_GET_SPORTS = 'select id_, name_ from Sport_ where is_deleted_ = false;'
+const QUERY_GET_SPORTS = 'select id_, name_, is_deleted_ , (select count(*) as practitioners_ from user_sport_ us where sport_id_ = id_) from sport_ s2 ;'
 
 const QUERY_GET_SPORT_BY_ID = 'select id_, name_ from Sport_ where is_deleted_ = false and id_ = $1;'
 
