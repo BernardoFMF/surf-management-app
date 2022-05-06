@@ -36,8 +36,7 @@ const mainRoutes = {
         {
             path: '/application/sports',
             element: <RequireAuth><AllSportsPage/></RequireAuth>
-        }
-        ,
+        },
         {
             path: '/application/quotas',
             element: <RequireAuth><AllQuotasPage/></RequireAuth>

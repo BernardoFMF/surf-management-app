@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Container, Grid, Typography, Stack, Alert, Avatar, TextField, Button, useMediaQuery } from '@mui/material'
 import default_image from './../../assets/data/blank-profile-picture.png'
 import * as Yup from 'yup';
@@ -7,7 +7,7 @@ import { Formik, Form } from 'formik';
 import { parse, isDate } from "date-fns";
 import useScriptRef from '../../hooks/useScriptRef'
 import InputField from '../multiStepForm/InputField';
-import ImageInputField from '../multiStepForm/ImageInputField';
+import Base64InputField from '../multiStepForm/Base64InputField';
 import DropdownInputField from '../multiStepForm/DropdownInputField';
 import DateInputField from '../multiStepForm/DateInputField';
 
@@ -35,7 +35,7 @@ const PersonalDetailsTab = ({ user }) => {
     }
 
     const handleSubmit = async (values) => {
-        const updatedUser = { ...values, type: user.member_type_, phone_number: user.phone_number_, postal_code: user.postal_code_, address: user.address_, location: user.location_, paid_enrollment: user.paid_enrollment_, is_admin: user.is_admin_, is_deleted: user.is_deleted_}
+        const updatedUser = { ...values, type: user.member_type_, phone_number: user.phone_number_, postal_code: user.postal_code_, address: user.address_, location: user.location_, paid_enrollment: user.paid_enrollment_, is_admin: user.is_admin_, is_deleted: user.is_deleted_ }
     }
 
     return (
@@ -49,7 +49,7 @@ const PersonalDetailsTab = ({ user }) => {
                 birth_date: user.birth_date_,
                 nationality: user.nationality_ || 'Portuguese',
                 full_name: user.full_name_,
-                image: null,
+                image: user.img_value_,
                 gender: user.gender_ || 'Other'
             }}
             validationSchema={Yup.object().shape({
@@ -85,7 +85,7 @@ const PersonalDetailsTab = ({ user }) => {
                         <Grid item>
                             <Box mt={2} sx={{ pt: 2, pr: 2}}>
                                 <Stack direction="column" alignItems="center">
-                                    <ImageInputField size={100} name='image' label={t('sign_up_image')}></ImageInputField>
+                                    <Base64InputField size={100} name='image' label={t('sign_up_image')}></Base64InputField>
                                     <Typography variant="subtitle2">{user.member_type_}</Typography>
                                 </Stack>
                                 
@@ -128,11 +128,11 @@ const PersonalDetailsTab = ({ user }) => {
                                         disabled={formik.isSubmitting}
                                         fullWidth
                                         size="normal"
-                                        type="submit"
                                         variant="outlined"
                                         color="primary"
+                                        onClick={() => window.location.reload()}
                                         >
-                                            {t('sign_up_submit')}
+                                            {t('update_discard')}
                                         </Button>
                                     </AnimateButton>
                                     </Grid>

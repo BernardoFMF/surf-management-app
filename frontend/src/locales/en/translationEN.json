@@ -68,6 +68,8 @@
     "female": "Female",
     "other": "Other",
 
+    "update_discard": "Discard",
+
     "MESSAGE_CODE_1": "Wrong username or password",
     "MESSAGE_CODE_2": "Internal server error",
     "MESSAGE_CODE_3": "Candidate deleted sucessfully",
