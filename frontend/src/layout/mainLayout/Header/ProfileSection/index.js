@@ -45,18 +45,17 @@ const ProfileSection = () => {
     const dispatch = useDispatch()
     const userLogin = useSelector((state) => state.userLogin)
     const { loading, error, userInfo } = userLogin
-    const {logoutHook} = useAuth()
+    const { logoutHook } = useAuth()
+
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-     * */
+     **/
     const anchorRef = useRef(null);
     const handleLogout = async () => {
         dispatch(logout())   
         navigate('/')
         await logoutHook()
     }
-
-    const user = userInfo
 
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -86,12 +85,6 @@ const ProfileSection = () => {
         prevOpen.current = open;
     }, [open]);
 
-    const [imgVal, setImgVal] = useState(null)
-
-    useEffect(() => {
-        setImgVal(userInfo.img_value_)
-    }, [])
-
     return (
         <>
             <Chip
@@ -116,7 +109,7 @@ const ProfileSection = () => {
                 }}
                 icon={
                     <Avatar
-                        src={imgVal ? 'data:image/jpeg;base64,' + imgVal : User1}
+                        src={userInfo && userInfo.img_value_ ? userInfo.img_value_ : User1}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',
@@ -163,10 +156,10 @@ const ProfileSection = () => {
                                             <Stack direction="row" spacing={0.5} alignItems="center">
                                                 <Typography variant="h4">{t('hello_profile')}</Typography>
                                                 <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                                                {user.username_} 
+                                                {userInfo.username_} 
                                                 </Typography>
                                             </Stack>
-                                            <Typography variant="subtitle2">{user.member_type_}</Typography>
+                                            <Typography variant="subtitle2">{userInfo.member_type_}</Typography>
                                     </Box>
                                     <Box sx={{ pl: 2, pr: 2 }}>
                                         <List
@@ -188,7 +181,7 @@ const ProfileSection = () => {
                                             <ListItemButton
                                                 sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                 selected={selectedIndex === 1}
-                                                onClick={(event) => handleListItemClick(event, 1, `/application/members/${user.id_}`)}
+                                                onClick={(event) => handleListItemClick(event, 1, `/application/members/${userInfo.id_}`)}
                                             >
                                                 <ListItemIcon>
                                                     <IconUser stroke={1.5} size="1.3rem" />

@@ -31,7 +31,7 @@ const mainRoutes = {
         },
         {
             path: '/application/members/:id',
-            element: <RequireAuth><MemberProfile/></RequireAuth>
+            element: <MemberProfile/>
         },
         {
             path: '/application/sports',

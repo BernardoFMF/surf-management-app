@@ -39,6 +39,23 @@ const userServices = (db) => {
 	}
 	
 	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted, gender) => {
+		console.log(id);
+		console.log(cc);
+		console.log(nif);
+		console.log(type);
+		console.log(birth_date);
+		console.log(nationality);
+		console.log(full_name);
+		console.log(phone_number);
+		console.log(postal_code);
+		console.log(address);
+		console.log(location);
+		console.log(img);
+		console.log(paid_enrollment);
+		console.log(is_admin);
+		console.log(is_deleted);
+		console.log(gender);
+
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!cc) throw error(400, 'Parameter not found: cc', 'MESSAGE_CODE_14')
 		if(!nif) throw error(400, 'Parameter not found: nif', 'MESSAGE_CODE_14')
