@@ -7,7 +7,7 @@
  * Creates a quota (optional - check if there is already a quota for the current year, 
  * if not creates it)
  */
-create or replace procedure post_user(cc_ bigint, nif_ bigint, type_ varchar(40), birth_date_ varchar(30), nationality_ varchar(30), full_name_ varchar(60),
+create or replace procedure post_user(cc_ bigint, nif_ bigint, mtype_ varchar(40), birth_date_ varchar(30), nationality_ varchar(30), full_name_ varchar(60),
 										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, gender_ varchar(40), out new_id_ int)
 LANGUAGE plpgsql  
 as
@@ -19,7 +19,7 @@ declare
 	curr_date DATE;
 begin
 	with new_id_table_ as (
-		insert into Member_ (member_type_, username_, pword_) values (type_, username_, pword_) returning id_
+		insert into Member_ (member_type_, username_, pword_) values (mtype_, username_, pword_) returning id_
 	)
 	select id_ into new_id_ from new_id_table_;
 
@@ -34,7 +34,7 @@ begin
 	SELECT extract(YEAR FROM date1) into year1;
 	SELECT extract(YEAR FROM current_date) into curr_year;
 	if year1 = curr_year then
-		INSERT INTO Quota_(member_id_,payment_date_,amount_,date_) select new_id_, null, quota_value_, date1 from Member_Types_ where type_ = type_;
+		INSERT INTO Quota_(member_id_,payment_date_,amount_,date_) select new_id_, null, quota_value_, date1 from Member_Types_ mt where mt.type_ = mtype_;
 	end if;
 
 	insert into member_img_ values(new_id_, null);
@@ -58,7 +58,7 @@ begin
 	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, is_admin_ = p_is_admin_, gender_ = p_gender_ where member_id_ = p_id_;
 	
 	if p_img_ is not null then
-		update Member_Img_ set img_value_ = p_img_ where user_id_ = p_id_;
+		update Member_Img_ set img_value_ = p_img_ where member_id_ = p_id_;
 	end if;
 end
 $$;
@@ -227,7 +227,7 @@ $$;
  * if not creates it)
  */
 
-create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), username_ varchar(30), pword_ text, type_ varchar(40), img_ text, out new_id_ int)
+create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), username_ varchar(30), pword_ text, mtype_ varchar(40), img_ text, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
@@ -238,7 +238,7 @@ DECLARE
 	year1 int;
 begin
 	with new_id_table_ as (
-		INSERT INTO Member_(member_type_,username_,pword_) VALUES (type_, username_,pword_) returning id_
+		INSERT INTO Member_(member_type_,username_,pword_) VALUES (mtype_, username_,pword_) returning id_
 	)
 	select id_ into new_id_ from new_id_table_;
 	
@@ -248,9 +248,9 @@ begin
 	SELECT extract(YEAR FROM date1) into year1;
 	SELECT extract(YEAR FROM current_date) into curr_date;
 	if year1 = curr_date then
-		INSERT INTO Quota_(member_id_,payment_date_,amount_,date_) select new_id_, null, quota_value_, date1 from Member_Types_ where type_ = type_;	
+		INSERT INTO Quota_(member_id_,payment_date_,amount_,date_) select new_id_, null, quota_value_, date1 from Member_Types_ mt where mt.type_ = mtype_;	
 	end if;
-	insert into Member_Img_ (member_id_, img_value_) values (new_id, img_);
+	insert into Member_Img_ (member_id_, img_value_) values (new_id_, img_);
 end
 $$;
 
