@@ -103,6 +103,9 @@
     "MESSAGE_CODE_31": "Utilizador já se encontra associado a este desporto",
     "MESSAGE_CODE_32": "Utilizador não se encontra associado a este desporto",
     "MESSAGE_CODE_33": "Acesso proibido",
+    "MESSAGE_CODE_34": "Erro interno do servidor",
+    "MESSAGE_CODE_35": "Novo cargo de quota criado com sucesso",
+    "MESSAGE_CODE_36": "Este tipo não existe",
 
     "hello_profile": "Olá,",
     "name": "Nome",

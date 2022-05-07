@@ -33,13 +33,9 @@ const userServices = (db) => {
 		if(paid_enrollment == undefined) throw error(400, 'Parameter not found: paid_enrollment', 'MESSAGE_CODE_14')
 		if(!gender) throw error(400, 'Parameter not found: gender', 'MESSAGE_CODE_14')
 
-		let quota_value = 0
-		if (type == 'effective') quota_value = 15
-		else if (type == 'corporate') quota_value = 50
-
 		const pwordhashed = await crypto.hashpassword(password)
 		
-		return await data.postUser(cc, nif, type, quota_value, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment, gender, url)
+		return await data.postUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment, gender, url)
 	}
 	
 	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted, gender) => {

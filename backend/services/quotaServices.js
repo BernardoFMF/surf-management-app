@@ -34,13 +34,34 @@ const quotaServices = (db) => {
 		return await data.updateMemberQuota(qid, paymentDate)
 	}
 
+	const getManagementQuotasServices = async () => {
+		return await data.getManagementQuotas()
+	}
+
+	const updateManagementQuotaByTypeServices = async (type, quota_value) => {
+		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
+		if(!quota_value) throw error(400, 'Parameter not found: quota_value', 'MESSAGE_CODE_14')
+
+		return await data.updateManagementQuotaByType(type, quota_value)
+	}
+
+	const postManagementQuotaServices = async (type, quota_value) => {
+		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
+		if(!quota_value) throw error(400, 'Parameter not found: quota_value', 'MESSAGE_CODE_14')
+
+		return await data.postManagementQuota(type, quota_value)
+	}
+
 	return {
 		getQuotasServices, 
 		getCompaniesQuotasServices, 
 		getUsersQuotasServices, 
 		getMemberQuotasByIdServices, 
 		postQuotaServices, 
-		updateMemberQuotaServices
+		updateMemberQuotaServices,
+		getManagementQuotasServices,
+		updateManagementQuotaByTypeServices,
+		postManagementQuotaServices
 	}
 }
 

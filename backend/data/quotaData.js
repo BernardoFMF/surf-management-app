@@ -35,13 +35,30 @@ const quotaData = (db) => {
 		return await db.updateMemberQuotaData(qid_, payment_date_)
 	}
 
+	const getManagementQuotas = async () => {
+		return await db.getManagementQuotas()
+	}
+
+	const updateManagementQuotaByType = async (type_, quota_value_) => {
+		const quota_role = await db.getManagementQuotaByType(type_)
+		if (!quota_role) throw error(404, 'That type does not exist', 'MESSAGE_CODE_36')
+		return await db.updateManagementQuotaByType(type_, quota_value_)
+	}
+
+	const postManagementQuota = async (type_, quota_value_) => {
+		return await db.postManagementQuota(type_, quota_value_)
+	}
+
 	return {
 		getQuotas, 
 		getCompaniesQuotas, 
 		getUsersQuotas,
 		getMemberQuotasById, 
 		postQuota, 
-		updateMemberQuota
+		updateMemberQuota,
+		getManagementQuotas,
+		updateManagementQuotaByType,
+		postManagementQuota
 	} 
 }
 

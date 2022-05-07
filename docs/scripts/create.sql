@@ -19,10 +19,10 @@ create table Candidate_ (
 );
 
 create table Quotas_Prices_ (
-	role_ 			varchar(40),
+	type_ 			varchar(40),
 	quota_value_	int,
 	
-	primary key(role_)
+	primary key(type_)
 );
 
 create table Member_ (
@@ -34,7 +34,7 @@ create table Member_ (
 	pword_			varchar(100),
 	
 	primary key(id_),
-	constraint fk_role foreign key(member_type_) references Quotas_Prices_(role_)
+	constraint fk_role foreign key(member_type_) references Quotas_Prices_(type_)
 );
 
 create table Event_ (
@@ -153,7 +153,6 @@ create table Member_token_ (
 	constraint fk_user foreign key(member_id_) references Member_(id_)
 )
 
-select id_, date_, payment_date_, (select full_name_ from User_ where member_id_ = id_) from quota_ q 
 
 
 

@@ -104,6 +104,8 @@
     "MESSAGE_CODE_32": "User is not related to this Sport",
     "MESSAGE_CODE_33": "Access forbidden",
     "MESSAGE_CODE_34": "Internal server error",
+    "MESSAGE_CODE_35": "New quota role created sucessfully",
+    "MESSAGE_CODE_36": "That type does not exist",
 
     "hello_profile": "Hello,",
     "name": "Name",

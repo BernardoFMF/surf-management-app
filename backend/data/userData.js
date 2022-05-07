@@ -15,7 +15,7 @@ const userData = (db) => {
 	}
 	
 	const postUser = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, url) => {
-		const candidate = await db.getCandidateByUsernameData(username_)
+		let candidate = await db.getCandidateByUsernameData(username_)
 		if (candidate) throw error(409, 'Candidate with that username already exists', 'MESSAGE_CODE_12')
 		candidate = await db.getCandidateByCCData(cc_)
 		if (candidate) throw error(409, 'Candidate with that cc already exists', 'MESSAGE_CODE_12')
@@ -24,7 +24,7 @@ const userData = (db) => {
 		candidate = await db.getCandidateByEmailData(email_)
 		if (candidate) throw error(409, 'Candidate with that email already exists', 'MESSAGE_CODE_12')
 
-		const member = await db.getMemberByUsernameData(username_)
+		let member = await db.getMemberByUsernameData(username_)
 		if (member) throw error(409, 'Member with that username already exists', 'MESSAGE_CODE_20')
 		member = await db.getMemberByCCData(cc_)
 		if (member) throw error(409, 'Member with that cc already exists', 'MESSAGE_CODE_21')

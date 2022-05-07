@@ -24,6 +24,12 @@ const quotaRoutes = (data) => {
     
 	app.put('/:id', authentication.authAdmin, controller.updateMemberQuota)
 
+	app.get('/management', authentication.authAdmin, controller.getManagementQuotas)
+
+	app.put('/management/:type', authentication.authAdmin, controller.updateManagementQuotaByType)
+
+	app.post('/management', authentication.authAdmin, controller.postManagementQuota)
+
 	return app
 }
 

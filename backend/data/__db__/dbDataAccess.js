@@ -896,7 +896,68 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		}
 	}
 
-	return { getEventMemberByIdAttendanceData, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails,getUserEmailByIdData, updateUserQrCodeData, getMemberTokenByIdData, deleteMemberTokenData, updateMemberTokenData, postNewTokenData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByNifData, getCandidateByCCData, getCandidateByEmailData, pool }
+	const getManagementQuotas = async() => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const allMemberQuotas = await client.query(queries.QUERY_GET_MANAGEMENT_QUOTAS)
+			await client.query('commit')
+			return allMemberQuotas.rows
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const updateManagementQuotaByType = async(type_, quota_value_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			await client.query(queries.QUERY_UPDATE_MANAGEMENT_QUOTAS, [quota_value_, type_])
+			await client.query('commit')
+			return type_
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const postManagementQuota = async(type_, quota_value_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			await client.query(queries.QUERY_POST_MEMBER_TOKEN, [type_, quota_value_])
+			await client.query('commit')
+			return type_
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getManagementQuotaByType = async(type_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const allMemberQuotas = await client.query(queries.QUERY_GET_MANAGEMENT_QUOTA_BY_TYPE, [type_])
+			await client.query('commit')
+			return allMemberQuotas.rows[0]
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+
+	return {getManagementQuotaByType, getManagementQuotas, updateManagementQuotaByType, postManagementQuota, getEventMemberByIdAttendanceData, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails,getUserEmailByIdData, updateUserQrCodeData, getMemberTokenByIdData, deleteMemberTokenData, updateMemberTokenData, postNewTokenData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByNifData, getCandidateByCCData, getCandidateByEmailData, pool }
 
 }
 
