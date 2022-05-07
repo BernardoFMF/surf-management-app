@@ -461,7 +461,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 	const getUserByIdData = async (id_) => {
 		const client = await pool.connect()
 		try {
+
 			const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
+			console.log(id_);
+			console.log(result);
 			return result.rows[0]
 		} finally {
 			client.release()

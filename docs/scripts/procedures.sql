@@ -34,8 +34,10 @@ begin
 	SELECT extract(YEAR FROM date1) into year1;
 	SELECT extract(YEAR FROM current_date) into curr_year;
 	if year1 = curr_year then
-		INSERT INTO Quota_(member_id_,payment_date_,date_) VALUES (new_id_,NULL,date1);	
+		INSERT INTO Quota_(member_id_,payment_date_,amount_,date_) select new_id_, null, quota_value_, date1 from Member_Types_ where type_ = type_;
 	end if;
+
+	insert into member_img_ values(new_id_, null);
 end
 $$;
 
@@ -56,7 +58,7 @@ begin
 	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, is_admin_ = p_is_admin_, gender_ = p_gender_ where member_id_ = p_id_;
 	
 	if p_img_ is not null then
-		update User_Img_ set img_value_ = p_img_ where user_id_ = p_id_;
+		update Member_Img_ set img_value_ = p_img_ where user_id_ = p_id_;
 	end if;
 end
 $$;
@@ -208,9 +210,9 @@ begin
 	call post_user(candidate_cc_, candidate_nif_, type_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_gender_, candidate_id_);
 	
 	select candidate_id_ into new_id;
-
-	insert into User_Img_ (user_id_, img_value_) values (new_id, candidate_img_);
 	
+	update member_img_ set img_value_ = candidate_img_ where member_id_ = new_id;
+
 	DELETE FROM Candidate_ WHERE id_ = cid;
 end
 $$;
@@ -225,7 +227,7 @@ $$;
  * if not creates it)
  */
 
-create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), username_ varchar(30), pword_ text, type_ varchar(40), out new_id_ int)
+create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), username_ varchar(30), pword_ text, type_ varchar(40), img_ text, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
@@ -240,28 +242,33 @@ begin
 	)
 	select id_ into new_id_ from new_id_table_;
 	
-	SELECT id_ into cid FROM Member_ ORDER BY id_ DESC LIMIT 1;
-	INSERT INTO Contact_(member_id_,location_,address_,postal_code_,email_,phone_number_) VALUES (cid,location_,address_,postal_code_,email_,phone_number_);
-	INSERT INTO Company_(member_id_,nif_,name_) VALUES (cid, nif_, name_);
+	INSERT INTO Contact_(member_id_,location_,address_,postal_code_,email_,phone_number_) VALUES (new_id_,location_,address_,postal_code_,email_,phone_number_);
+	INSERT INTO Company_(member_id_,nif_,name_) VALUES (new_id_, nif_, name_);
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;
 	SELECT extract(YEAR FROM current_date) into curr_date;
 	if year1 = curr_date then
-		INSERT INTO Quota_(member_id_,payment_date_,date_) VALUES (cid,NULL,date1);	
+		INSERT INTO Quota_(member_id_,payment_date_,amount_,date_) select new_id_, null, quota_value_, date1 from Member_Types_ where type_ = type_;	
 	end if;
+	insert into Member_Img_ (member_id_, img_value_) values (new_id, img_);
 end
 $$;
 
 /**
  * Updates contact & company
  */
-create or replace procedure put_company(cid_ int, p_name_ varchar(40), p_nif_ bigint, p_phone_number_ int, p_email_ varchar(30), p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30))
+create or replace procedure put_company(cid_ int, p_name_ varchar(40), p_nif_ bigint, p_phone_number_ int, p_email_ varchar(30), p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ text)
 LANGUAGE plpgsql  
 as
 $$
 begin
 	UPDATE Contact_ SET phone_number_ = p_phone_number_, postal_code_ = p_postal_code_,address_ = p_address_, location_ = p_location_ WHERE member_id_ = cid_;
 	UPDATE Company_ SET name_ = p_name_, nif_ = p_nif_ WHERE member_id_ = cid_;
+
+	if p_img_ is not null then
+		UPDATE Member_Img_ SET img_value_ = p_img_ WHERE member_id_ = cid_;
+	end if;
+
 end
 $$;
 
@@ -281,7 +288,7 @@ as
 $$
 begin
 	if not exists(select * from quota_ where date_ = p_date_) then
-		INSERT INTO Quota_(member_id_, payment_date_, date_) SELECT id_, NULL, p_date_ FROM Member_ where quota_value_ <> 0 and is_deleted_ = false;
+		INSERT INTO Quota_(member_id_, payment_date_, amount_, date_) SELECT id_, NULL, quota_value_, p_date_ FROM Member_ m join Member_Types_ mt on m.member_type_ = mt.type_ where quota_value_ <> 0 and is_deleted_ = false;
 		select count(*) into count_date from quota_ where date_ = p_date_;
 	end if;
 end

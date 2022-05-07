@@ -37,7 +37,7 @@ language plpgsql
 as
 $$
 begin 
-	update member_ set has_debt_ = true where quota_value_ <> 0 and is_deleted_ = false;
+	update member_ set has_debt_ = true where is_deleted_ = false and member_type_ in (select type_ from Member_Types_ where quota_value_ <> 0);
 	return new;
 end
 $$;

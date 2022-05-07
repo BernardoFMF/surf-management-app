@@ -1,5 +1,5 @@
 'use strict'
-
+/*
 import db from '../data/__mock__/mockDataAccess.js'
 
 import sport from '../data/sportData.js'
@@ -30,18 +30,18 @@ async function insertEventDummies() {
 }
 
 async function insertCandidateDummies() {
-	await dbCandidate.postCandidate('jobileu', 74389323248, 342893489348, '12-06-1990', 'Angolana', 'Jobileu Santos', 932727288, 'jobi@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbie2', '\\xEAABDFFA', 'Male')
-	await dbCandidate.postCandidate('carlao', 34898942908, 109381908487, '15-03-1990', 'Portuguesa', 'Carlitos Roger', 927182837, 'carliti@hotmail.com', '2423-829', 'Rua da banheira', 'Baixa da Banheira', 'duche2', '\\xEAABDFFA', 'Male' )
+	await dbCandidate.postCandidate('jobileu', 474389323, 342893489, '12-06-1990', 'Angolana', 'Jobileu Santos', 932727288, 'jobi@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbie2', '\\xEAABDFFA', 'Male')
+	await dbCandidate.postCandidate('carlao', 898942908, 109381908, '15-03-1990', 'Portuguesa', 'Carlitos Roger', 927182837, 'carliti@hotmail.com', '2423-829', 'Rua da banheira', 'Baixa da Banheira', 'duche2', '\\xEAABDFFA', 'Male' )
 }
 
 async function insertCompanyDummies() {
-	await dbCompany.postCompany('Ericeira surf shop', 231312312312, 938172388, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira', 'eric', 'ericeric')
-	await dbCompany.postCompany('Billabong', 42321331231, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity', 'billa', 'billabilla')
+	await dbCompany.postCompany('Ericeira surf shop', 231312312, 938172388, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira', 'eric', 'ericeric', 'corporate')
+	await dbCompany.postCompany('Billabong', 423213312, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity', 'billa', 'billabilla', 'corporate')
 }
 
 async function insertUserDummies() {
-	await dbUser.postUser(383128318, 764271741145, 'founder', 0, '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe')
-	await dbUser.postUser(383123818, 763371741145, 'effective', 15,  '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe')
+	await dbUser.postUser(383128318, 764291145, 'founder', '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe')
+	await dbUser.postUser(383123818, 763371741, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe')
 }
 
 async function insertSportsforUsersDummies() {
@@ -55,17 +55,26 @@ async function insertAttendanceDummies() {
 	await dbEvent.postMemberAttendance(1,2,'going')
 }
 
-beforeAll( async () => {
+async function insertQuotaPricesDummies() {
+	await dbQuota.postManagementQuota('effective', 15)
+	await dbQuota.postManagementQuota('founder', 0)
+	await dbQuota.postManagementQuota('merit', 0)
+	await dbQuota.postManagementQuota('corporate', 50)
+}
+
+
+beforeAll( async () => { 
+	//await insertQuotaPricesDummies()
+	await insertUserDummies()
 	await insertSportDummies()
 	await insertCandidateDummies()
-	await insertUserDummies()
 	await insertCompanyDummies()
 	await insertEventDummies()
 	await insertSportsforUsersDummies()
 	return await insertAttendanceDummies()
 })
 
-//Sports
+//Sports - verified 26/04/2022
 
 test('Get all sports', async () => {
 	expect.assertions(2)
@@ -83,8 +92,8 @@ test('Get specific sport', async () => {
 
 test('Update specific sport', async () => {
 	expect.assertions(1)
-	await dbSport.updateSport(4, false, 'Windsurf')
-	const sport = await dbSport.getSportById(4)
+	const id = await dbSport.updateSport(4, false, 'Windsurf')
+	const sport = await dbSport.getSportById(id)
 	expect(sport.name_).toBe('Windsurf')
 })
 
@@ -104,7 +113,7 @@ test('Create a sport', async () => {
 	expect(sport_id).toBe(5)
 })
 
-//Events
+//Events - verified 26/04/2022
 
 test('Get all events', async () => {
 	expect.assertions(2)
@@ -135,19 +144,19 @@ test('Create a event', async () => {
 	expect(event).toBe(3)
 })
 
+
 test('Update a event', async () => {
 	expect.assertions(1)
-	const event = await dbEvent.updateEvent(1, 'Assembleia geral.', '12-11-2022', '12-07-2022')
+	const event = await dbEvent.updateEvent(1, 'Assembleia geral.', '12-08-2022', '12-11-2022')
 	expect(event).toBe(1)
 })
 
-//Attendance
+//Attendance - verified 26/04/2022 (missing get attendance by user)
 
 test('Create a attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.postMemberAttendance(1,1,'going')
 	expect(attendance.id_).toBe(1)
-	
 })
 
 test('Get specific attendance', async () => {
@@ -167,7 +176,9 @@ test('Get specific member attendance', async () => {
 	const attendance = await dbEvent.getEventMemberByIdAttendance(1)
 	expect(attendance[0].member_id_).toBe(1)
 })
-//Candidate
+
+
+//Candidate - verified 26/04/2022
 
 test('Get all candidates', async () => {
 	expect.assertions(2)
@@ -184,7 +195,7 @@ test('Get specific candidate', async () => {
 
 test('Create a candidate', async () => {
 	expect.assertions(1)
-	const candidate = await dbCandidate.postCandidate('ze', 6723355243, 123213213123, '21-06-1990', 'Portuguesa', 'João Santos', 932333288, 'joao@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbi', null, 'Other')
+	const candidate = await dbCandidate.postCandidate('ze', 672335523, 123213123, '21-06-1990', 'Portuguesa', 'João Santos', 932333288, 'joao@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbi', null, 'Other')
 	expect(candidate).toBe(3)
 })
 
@@ -200,11 +211,11 @@ test('Delete specific candidate', async () => {
 
 test('Approve a candidate', async () => {
 	expect.assertions(1)
-	const userId = await dbCandidate.approveCandidate(1, 'effective', true, 15,'candidatebemaneiro')
+	const userId = await dbCandidate.approveCandidate(1, 'effective', true, 'candidatebemaneiro')
 	expect(userId).toBe(5)
 })
 
-//Company
+//Company - verified 26/04/2022
 
 test('Get all companies', async () => {
 	expect.assertions(2)
@@ -221,16 +232,15 @@ test('Get specific company', async () => {
 
 test('Create a company', async () => {
 	expect.assertions(1)
-	const company_id = await dbCompany.postCompany('Ripcurl', 2313123216812, 967872388, 'rippy@gmail.com', '2112-829', 'Rua do rip', 'Rip on the curls', 'rippy', 'roppypipy')
+	const company_id = await dbCompany.postCompany('Ripcurl', 999321681, 967872388, 'rippy@gmail.com', '2112-829', 'Rua do rip', 'Rip on the curls', 'rippy', 'roppypipy', 'corporate')
 	expect(company_id).toBe(6)
 })
 
 test('Update a company', async () => {
 	expect.assertions(1)
-	const company_id = await dbCompany.updateCompany(3, 'Ericeira surf shop', 231312312312, 918923180, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira')
+	const company_id = await dbCompany.updateCompany(3, 'Ericeira Surf shop', 354876321, 918923180, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira')
 	expect(company_id).toBe(3)
 })
-
 
 test('Delete specific company', async () => {
 	expect.assertions(1)
@@ -242,18 +252,18 @@ test('Delete specific company', async () => {
 	}
 })
 
-//Quotas
+//Quotas - verified 26/04/2022
 
 test('Create a quota', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.postQuota('01-01-2022')
-	expect(quotas).toBe('01-01-2022')
+	expect(quotas).toBe("01-01-2022")
 })
 
 test('Get all users quotas', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getUsersQuotas()
-	expect(quotas.length).toBe(2)
+	expect(quotas.length).toBe(3)
 })	
 
 test('Get all companies quotas', async () => {
@@ -265,21 +275,21 @@ test('Get all companies quotas', async () => {
 test('Get specific company quota', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getMemberQuotasById(6)
-	expect(parseInt(quotas[0].date_.split('-')[2])).toBe(2022)
+	expect(quotas[0].date_.getFullYear()).toBe(2022)
 })
 
 test('Update a company quota', async () => {
 	expect.assertions(1)
-	const quota = await dbQuota.updateMemberQuota(5, '02-03-2022')
-	expect(quota).toBe(5)
+	const quota = await dbQuota.updateMemberQuota(2, '02-03-2022')
+	expect(quota).toBe(2)
 })
 
-//User
+//User - verified 26/04/2022
 
 test('Get all users', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsers()
-	expect(users.length).toBe(4)
+	expect(users.length).toBe(3)
 })
 
 test('Get a specific user', async () => {
@@ -290,17 +300,14 @@ test('Get a specific user', async () => {
 
 test('Post User', async () => {
 	expect.assertions(1)
-	const user = await dbUser.postUser(383123909, 763399841145, 'effective', 15, '03-10-1983', 'Senegales', 'Moussa Marega', 934077623, 'maregagrandefixe@outlook.com', '2835-081', 'Rua D.Batista', 'Lisboa','gandagolo', 'marega', true, 'Male')
+	const user = await dbUser.postUser(383123909, 763841145, 'effective', '03-10-1983', 'Senegales', 'Moussa Marega', 934077623, 'maregagrandefixe@outlook.com', '2835-081', 'Rua D.Batista', 'Lisboa','gandagolo', 'marega', true, 'Male')
 	expect(user).toBe(7)
 })
 
 test('Update a user', async () => {
-	expect.assertions(2)
-	const user_id = await dbUser.updateUser(2,383123818, 763371741145, 'effective',15, '27-10-1993', 'Espanhola', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',true, false, false, 'Other')
+	expect.assertions(1)
+	const user_id = await dbUser.updateUser(2, 383123818, 763841444, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',false, false, false, 'Other')
 	expect(user_id).toBe(2)
-
-	const user = await dbUser.getUserById(2)
-	expect(user.nationality_).toBe('Espanhola')
 })
 
 test('Delete user', async () => {
@@ -313,7 +320,7 @@ test('Delete user', async () => {
 	}
 })
 
-//User Sports
+//User Sports - verified 26/04/2022
 
 test('Get all sports for users', async () => {
 	expect.assertions(1)
@@ -350,3 +357,4 @@ test('Delete a sport for a user', async () => {
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
 })
+*/

@@ -11,6 +11,7 @@ const userData = (db) => {
 	const getUserById = async (id_) => {
 		const user = await db.getUserByIdData(id_)
 		if (!user) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
+
 		return user
 	}
 	

@@ -18,7 +18,7 @@ create table Candidate_ (
 	primary key(id_)
 );
 
-create table Quotas_Prices_ (
+create table Member_Types_ (
 	type_ 			varchar(40),
 	quota_value_	int,
 	
@@ -34,7 +34,7 @@ create table Member_ (
 	pword_			varchar(100),
 	
 	primary key(id_),
-	constraint fk_role foreign key(member_type_) references Quotas_Prices_(type_)
+	constraint fk_role foreign key(member_type_) references Member_Types_ (type_)
 );
 
 create table Event_ (
@@ -42,7 +42,6 @@ create table Event_ (
 	name_ 			varchar(50),
 	initial_date_	date,
 	end_date_ 		date check (end_date_ >= initial_date_),
-	
 	
 	primary key(id_)
 		
@@ -62,6 +61,7 @@ create table Quota_ (
 	id_ 	 		int generated always as identity,
 	member_id_ 	 	int,
 	payment_date_	date,
+	amount_ 		int,
 	date_			date,
 	
 	primary key (id_),
@@ -105,12 +105,12 @@ create table User_ (
 	constraint fk_member foreign key(member_id_) references Member_(id_)
 );
 
-create table User_Img_ (
-	user_id_ 	 	int,
+create table Member_Img_ (
+	member_id_ 	 	int,
 	img_value_ 		text,
 
-	primary key (user_id_),
-	constraint fk_user foreign key(user_id_) references User_(member_id_)
+	primary key (member_id_),
+	constraint fk_user foreign key(member_id_) references Member_ (id_)
 );
 
 create table Sport_ (
