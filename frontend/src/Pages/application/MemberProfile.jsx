@@ -41,18 +41,6 @@ const MemberProfile = () => {
         dispatch(getUserById(id))
     },[dispatch, id])
 
-    /*const parseDate = (originalValue) => {
-        let parsedDate = isDate(originalValue)
-            ? originalValue
-            : parse(originalValue, "yyyy-MM-dd", new Date())
-
-        return parsedDate
-    }
-
-    const handleSubmit = (values) => {
-
-    }*/
-
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -66,9 +54,9 @@ const MemberProfile = () => {
             <MainCard title="Profile" >
             { loading ? 
                 <Stack alignItems="center">
-                <CircularProgress size='4rem'/>
-              </Stack>
-                :
+                    <CircularProgress size='4rem'/>
+                </Stack>
+                : ( <>
                     <Grid container spacing={4} sx={{ pt: 4, pl: 4 }}>
                         <Tabs
                             orientation={mediumViewport ? "vertical" : "horizontal"}
@@ -84,7 +72,7 @@ const MemberProfile = () => {
 
                             <Tab icon={<CreditCardIcon/>} label="Membership card" {...{id: `vertical-tab-${2}`, 'aria-controls': `vertical-tabpanel-${2}`}} />
 
-                            <Tab icon={<AdminPanelSettingsIcon/>} disabled={!userGet.is_admin_} label="Admin privileges" {...{id: `vertical-tab-${3}`, 'aria-controls': `vertical-tabpanel-${3}`}} />
+                            <Tab icon={<AdminPanelSettingsIcon/>} disabled={userGet.is_admin_ === false} label="Admin privileges" {...{id: `vertical-tab-${3}`, 'aria-controls': `vertical-tabpanel-${3}`}} />
                         </Tabs>
 
                         <TabPanel value={value} index={0}><PersonalDetailsTab user={userGet} /></TabPanel>
@@ -95,6 +83,10 @@ const MemberProfile = () => {
 
                         <TabPanel value={value} index={3}><AdminPrivilegesTab user={userGet} /></TabPanel>
                     </Grid>
+                    </>
+                )
+                
+                    
             }
             </MainCard>
         </>

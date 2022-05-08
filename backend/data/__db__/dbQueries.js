@@ -1,6 +1,6 @@
 const QUERY_GET_CANDIDATES = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_, gender_ from candidate_;'
 
-const QUERY_GET_CANDIDATE_BY_ID = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_, gender_ from candidate_ where id_ = $1;'
+const QUERY_GET_CANDIDATE_BY_ID = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_, gender_, img_ from candidate_ where id_ = $1;'
 
 const QUERY_POST_CANDIDATE = 'insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_, img_, gender_) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) returning id_;'
 
@@ -46,9 +46,9 @@ const QUERY_UPDATE_EVENT = 'update Event_ set name_ = $1, initial_date_ = $2, en
 
 const QUERY_DELETE_EVENT = 'call delete_event($1);'
 
-const QUERY_GET_USERS = 'select u.member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, is_admin_, member_type_, has_debt_, username_, location_, address_, postal_code_, email_, phone_number_, gender_, img_value_ from User_ u join Member_ m on u.member_id_ = m.id_ join Contact_ c on m.id_ = c.member_id_ join Member_Img_ ui on m.id_ = ui.user_id_ '
+const QUERY_GET_USERS = 'select u.member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, is_admin_, member_type_, has_debt_, username_, location_, address_, postal_code_, email_, phone_number_, gender_, img_value_ from User_ u join Member_ m on u.member_id_ = m.id_ join Contact_ c on m.id_ = c.member_id_ join Member_Img_ ui on m.id_ = ui.member_id_ '
 
-const QUERY_GET_USER_BY_ID = 'select u.member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, is_admin_, member_type_, has_debt_, username_, location_, address_, postal_code_, email_, phone_number_, gender_, img_value_ from User_ u join Member_ m on u.member_id_ = m.id_ join Contact_ c on m.id_ = c.member_id_ join Member_Img_ ui on m.id_ = ui.user_id_ where m.id_ = $1'
+const QUERY_GET_USER_BY_ID = 'select u.member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, is_admin_, member_type_, has_debt_, username_, location_, address_, postal_code_, email_, phone_number_, gender_, img_value_, is_deleted_ from User_ u join Member_ m on u.member_id_ = m.id_ join Contact_ c on m.id_ = c.member_id_ join Member_Img_ ui on m.id_ = ui.member_id_ where m.id_ = $1'
 
 const QUERY_POST_USER = 'call post_user($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)'
 

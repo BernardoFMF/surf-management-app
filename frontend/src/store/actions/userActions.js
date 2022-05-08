@@ -43,22 +43,35 @@ export const login = (username, password) => async (dispatch) => {
         body: JSON.stringify({ username, password }),
         headers: { "Content-Type": "application/json" }
     })
-    const text = await response.json()
-    if(response.status !== 200) throw Error(text.message_code)
+    const member = await response.json()
+    if(response.status !== 200) throw Error(member.message_code)
 
-    const response1 = await fetch(`/api/users/${text.id_}`, {
-      method: 'GET',
-      headers: { "Content-Type": "application/json" }
-    })
-    const user = await response1.json()
-    if(response1.status !== 200) throw Error(text.message_code)
+    const userInfo = {
+      id_: member.id_,
+      member_type_: member.member_type_,
+      username_: member.username_,
+      is_admin_: false,
+      img_value_: null
+    }
+
+    if (member.member_type_ !== 'corporate') {
+      const response1 = await fetch(`/api/users/${member.id_}`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+      })
+      const user = await response1.json()
+      if(response1.status !== 200) throw Error(user.message_code)
+
+      userInfo.is_admin_ = user.is_admin_
+      userInfo.img_value_ = user.img_value_
+    }
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
-      payload: {...text, img_value_: user.img_value_},
+      payload: userInfo,
     })
 
-    sessionStorage.setItem('userInfo', JSON.stringify({...text, img_value_: user.img_value_}))
+    sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -296,14 +309,16 @@ export const updateQuota = (payment_date,id) => async (dispatch) => {
 
 export const updateUser = (body) => async (dispatch, getState) => {
   try {
+    console.log(body)
     dispatch({
       type: USER_UPDATE_REQUEST,
     })
 
     const { userLogin: { userInfo } } = getState()
 
-    const response = await fetch(`/api/users/${body.member_id_}`, {
+    const response = await fetch(`/api/users/${body.member_id}`, {
         method: 'PUT',
+        body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
     })
 
@@ -315,12 +330,22 @@ export const updateUser = (body) => async (dispatch, getState) => {
       payload: updateResp,
     })
 
-    if (userInfo.id_ === body.member_id_) {
+    if (userInfo.id_ === body.member_id) {
+      console.log("updated");
+      const userInfo = {
+        id_: updateResp.member_id_,
+        member_type_: updateResp.member_type_,
+        username_: updateResp.username_,
+        is_admin_: updateResp.is_admin_,
+        img_value_: updateResp.img_value_
+      }
+      console.log(userInfo);
+
       dispatch({
         type: USER_LOGIN_SUCCESS,
-        payload: updateResp,
+        payload: userInfo,
       })
-      sessionStorage.setItem('userInfo', JSON.stringify(updateResp))
+      sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
     }
 
   } catch (error) {

@@ -12,16 +12,31 @@ import { useSelector } from 'react-redux';
 const Base64InputField = ({ label, size, ...props}) => {
     const [field, meta] = useField(props)
 
-    const [selectedImage, setSelectedImage] = useState(field.value ? 'data:image/jpeg;base64,' + field.value : field.value)
-    const [imageUrl, setImageUrl] = useState(Boolean(field.value)? selectedImage : null)
+    const [selectedImage, setSelectedImage] = useState(field.value)
+    const [imageUrl, setImageUrl] = useState(Boolean(field.value) ? selectedImage : null)
     const { setFieldValue} = useFormikContext()
     const {t, i18n} = useTranslation()
     const [modified, setModified] = useState(false)
 
     useEffect(() => {
-        if (selectedImage) {
-            setImageUrl(modified ? URL.createObjectURL(selectedImage) : selectedImage)
-            setFieldValue(field.name, selectedImage)
+        const buildString = async() => {
+            console.log('alterou');
+            console.log(modified);
+            var reader = new FileReader();
+            reader.onload = function () {
+                const base64String = reader.result.replace("data:", "")
+                    .replace(/^.+,/, "");
+                setFieldValue(field.name, 'data:image/jpeg;base64,' + base64String)
+                console.log(base64String);
+            }
+            reader.readAsDataURL(selectedImage)  
+        }
+        if (selectedImage && modified) {
+            setImageUrl(URL.createObjectURL(selectedImage))
+            buildString()
+            
+        } if (!modified) {
+            setImageUrl(selectedImage)
             setModified(true)
         }
     }, [selectedImage])
@@ -30,7 +45,7 @@ const Base64InputField = ({ label, size, ...props}) => {
         <>
             <input
                 label={label}
-                accept="image/*"
+                accept="image/jpeg"
                 type="file"
                 id="select-image"
                 style={{ display: 'none' }}
@@ -59,7 +74,8 @@ const Base64InputField = ({ label, size, ...props}) => {
                             src={imageUrl}
                             sx={{ width: size, height: size}}
                         />
-                    </Box> :  <Box mt={2} display="flex" alignItems={'center'} justifyContent="center">
+                    </Box> :  
+                    <Box mt={2} display="flex" alignItems={'center'} justifyContent="center">
                         <Avatar
                             alt='blank-profile-picture.png'
                             src= {default_image} 

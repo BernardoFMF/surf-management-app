@@ -182,11 +182,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		}
 	}
 
-	const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_) => {
+	const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_, img_) => {
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
-			const result = await company.query(queries.QUERY_POST_COMPANY, [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_, 0])
+			const result = await company.query(queries.QUERY_POST_COMPANY, [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_, img_, 0])
 			await company.query('Commit')
 			return result.rows[0].new_id_
 		} catch(e) {
@@ -197,11 +197,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		}
 	}
 
-	const updateCompanyData = async (cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
+	const updateCompanyData = async (cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, img_) => {
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
-			await company.query(queries.QUERY_UPDATE_COMPANY, [cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_])
+			await company.query(queries.QUERY_UPDATE_COMPANY, [cid_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, img_])
 			await company.query('Commit')
 			return cid_
 		} catch(e) {
@@ -463,8 +463,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		try {
 
 			const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
-			console.log(id_);
-			console.log(result);
 			return result.rows[0]
 		} finally {
 			client.release()
@@ -486,11 +484,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		}
 	}
 
-	const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_) => {
+	const updateUserData = async (id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			await client.query(queries.QUERY_UPDATE_USER, [id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, is_admin_, paid_enrollment_, is_deleted_, gender_])
+			await client.query(queries.QUERY_UPDATE_USER, [id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, is_admin_, paid_enrollment_, is_deleted_, gender_])
 			await client.query('commit')
 			return id_
 		} catch (e) {

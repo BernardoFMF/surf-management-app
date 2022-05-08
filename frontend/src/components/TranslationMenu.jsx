@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Avatar, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, Avatar, Menu, MenuItem, Typography, Button } from '@mui/material';
 import GTranslateIcon from '@mui/icons-material/GTranslate';
 
 import i18n from '../i18n'
@@ -9,24 +9,27 @@ const languages = [{abbreviation: 'en', name: 'English'}, {abbreviation: 'pt', n
 const TranslationMenu = ({sx}) => {
     const [anchorTranslationNav, setAnchorTranslationNav] = useState(null);
     
-    const handleOpenTranslationMenu = (event) => {
+    const handleTranslationMenu = (event) => {
         setAnchorTranslationNav(event.currentTarget)
-      }
+    }
   
-      const handleChangeTranslationMenu = (lang) => {
-          return () => {
-            setAnchorTranslationNav(null)
-            localStorage.setItem('i18n-lang', lang)
-            i18n.changeLanguage(lang)
-          }
-      }
+    const handleChangeTranslationMenu = (lang) => {
+        return () => {
+          setAnchorTranslationNav(null)
+          localStorage.setItem('i18n-lang', lang)
+          i18n.changeLanguage(lang)
+        }
+    }
 
-  return (
+    return (
     <>
-        <Box display="flex" alignItems={'center'} justifyContent="center" sx={sx}>
-              <Avatar variant="rounded" sx={{ bgcolor: 'white' }} onClick={handleOpenTranslationMenu} aria-controls="translation-appbar">
-                <GTranslateIcon />
-              </Avatar>
+        
+            <Box display="flex" alignItems={'center'} justifyContent="center" sx={sx}>
+                <Button onClick={handleTranslationMenu}>
+                    <Avatar variant="rounded" sx={{ bgcolor: 'white' }} aria-controls="translation-appbar">
+                        <GTranslateIcon />
+                    </Avatar>
+                </Button>
             </Box>
             <Menu
                 id="translation-appbar"
@@ -45,13 +48,14 @@ const TranslationMenu = ({sx}) => {
                 sx={{
                   display: 'block',
                 }}
-              >
+            >
                 {languages.map((language) => (
                   <MenuItem key={language.abbreviation} onClick={handleChangeTranslationMenu(language.abbreviation)}>
                     <Typography key={language.abbreviation} textAlign="center">{language.name}</Typography>
                   </MenuItem>
                 ))}
-              </Menu>
+            </Menu>
+        
     </>
   )
 }
