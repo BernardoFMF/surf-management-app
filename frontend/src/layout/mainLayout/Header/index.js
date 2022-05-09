@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { useTheme } from '@mui/material/styles'
 import { Avatar, Box, ButtonBase } from '@mui/material'
-
+import TranslationMenu from '../../../components/TranslationMenu'
 import Logo from '../../../components/Logo'
 import ProfileSection from './ProfileSection'
 
@@ -29,6 +29,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 maxWidth: { xs: 500, md: 500 },
             }}></Logo>
                 </Box>
+               
                 <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
                         variant="rounded"
@@ -54,7 +55,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
             {/* header search */}
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 1 }} />
-
+            <TranslationMenu ></TranslationMenu>
             {/* notification & profile */}
             <ProfileSection />
         </>

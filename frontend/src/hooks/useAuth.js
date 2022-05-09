@@ -4,20 +4,21 @@ const authContext = React.createContext();
 
 function useAuth() {
   const [authed, setAuthed] = React.useState(false);
-
+  React.useEffect(() => {
+      const auth = sessionStorage.getItem('authed')
+      if(auth) {
+        setAuthed(auth)
+      }
+  }, [])
   return {
     authed,
     loginHook() {
-      return new Promise((res) => {
-        setAuthed(true);
-        res();
-      });
+      setAuthed(true);
+      sessionStorage.setItem('authed', true)
     },
     logoutHook() {
-      return new Promise((res) => {
-        setAuthed(false);
-        res();
-      });
+      setAuthed(false);
+      sessionStorage.removeItem('authed')
     },
   };
 }

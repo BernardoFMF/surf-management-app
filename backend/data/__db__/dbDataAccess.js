@@ -492,6 +492,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			await client.query('commit')
 			return id_
 		} catch (e) {
+			console.log(e);
 			await client.query('rollback')
 			throw e
 		} finally {

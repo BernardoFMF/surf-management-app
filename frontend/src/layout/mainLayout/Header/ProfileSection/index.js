@@ -54,7 +54,7 @@ const ProfileSection = () => {
     const handleLogout = async () => {
         dispatch(logout())   
         navigate('/')
-        await logoutHook()
+        logoutHook()
     }
 
     const handleClose = (event) => {

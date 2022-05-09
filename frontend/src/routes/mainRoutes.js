@@ -15,15 +15,15 @@ const AllQuotasPage = Loadable(lazy(() => import('../Pages/application/AllQuotas
 
 const mainRoutes = {
     path: '/',
-    element: <MainLayout />,
+    element: <RequireAuth><MainLayout /></RequireAuth>,
     children: [
         {
-            path: '/dashboard/overview',
-            element: <RequireAuth><DashboardDefault/></RequireAuth>
+            path: '/dashboard/analytics',
+            element: <DashboardAnalytics/>
         },
         {
-            path: '/dashboard/analytics',
-            element: <RequireAuth><DashboardAnalytics/></RequireAuth>
+            path: '/dashboard/overview',
+            element: <DashboardDefault/>
         },
         {
             path: '/application/users',
@@ -35,11 +35,11 @@ const mainRoutes = {
         },
         {
             path: '/application/sports',
-            element: <RequireAuth><AllSportsPage/></RequireAuth>
+            element: <AllSportsPage/>
         },
         {
             path: '/application/quotas',
-            element: <RequireAuth><AllQuotasPage/></RequireAuth>
+            element: <AllQuotasPage/>
         }
     ]
 };

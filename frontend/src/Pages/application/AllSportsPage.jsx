@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getSports, deleteSport } from '../../store/actions/userActions'
+import { getSports, deleteSport } from '../../store/actions/sportActions'
 
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
@@ -57,7 +57,7 @@ const AllSportsPage = () => {
 
 const columns = [
     { field: 'name_', headerName: t('name'), width: 100 },
-    { field: 'is_deleted_', headerName: t('is_deleted'), width: 130 },
+    { field: 'is_deleted_', type: 'boolean', headerName: t('is_deleted'), width: 130 },
     { field: 'practitioners_', headerName: t('practitioners'), width: 170 },
     {
         field: 'actions',
@@ -73,6 +73,7 @@ const columns = [
             icon={<DeleteIcon />}
             label="Delete Sport"
             onClick={deleteSportHandle(params.id)}
+            disabled={params.row.is_deleted_}
             />
         ],
     },

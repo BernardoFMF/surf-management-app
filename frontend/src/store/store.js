@@ -2,8 +2,10 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import { quotasFetchReducer, sportsDeletionReducer, sportsFetchReducer, userDeletionReducer, userFetchReducer, userLoginReducer, userRegisterReducer, usersFetchReducer, quotaUpdateReducer, userUpdateReducer} from './reducers/userReducers'
+import { userDeletionReducer, userFetchReducer, userLoginReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer} from './reducers/userReducers'
 import customizationReducer from './reducers/customizationReducers'
+import { sportsDeletionReducer, sportsFetchReducer} from './reducers/sportReducers'
+import { quotasFetchReducer, quotaUpdateReducer} from './reducers/quotaReducers'
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -19,8 +21,8 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer
 })
 
-const userInfoFromStorage = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo'))
+const userInfoFromStorage = sessionStorage.getItem('userInfo')
+  ? JSON.parse(sessionStorage.getItem('userInfo'))
   : null
 
 const initialState = {
