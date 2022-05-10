@@ -116,7 +116,7 @@ const pages = {
                     title: 'All Candidates',
                     type: 'item',
                     hasParams: false,
-                    url: '/candidates'
+                    url: '/application/candidates'
                 }
             ]
         }

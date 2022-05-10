@@ -113,5 +113,24 @@
     "practitioners": "Numero de Praticantes",
     "member_id": "ID do Membro",
     "date": "Data",
-    "payment_date": "Data de Pagamento"
+    "payment_date": "Data de Pagamento",
+
+    "candidates_username": "Nome de utilizador",
+    "candidates_full_name": "Nome completo",
+    "candidates_phone_number": "Número telefónico",
+    "candidates_gender": "Género",
+    "candidates_birth_date": "Data de nascimento",
+    "candidates_location": "Localidade",
+    "candidates_address": "Morada",
+    "candidates_postal_code": "Código postal",
+    "candidates_modal_title": "Aprovação",
+    "candidates_modal_member_type": "Tipo de membro",
+    "candidates_modal_paid_enrollment": "Jóia",
+    "candidates_modal_member_type_mandatory": "Tipo de membro é obrigatório",
+
+    "companies_username": "Nome de utilizador",
+    "companies_name": "Nome",
+    "companies_has_debt": "Tem dívida",
+    "companies_is_deleted": "Está eliminado"
+
 }
