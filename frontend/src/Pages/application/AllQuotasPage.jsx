@@ -18,6 +18,8 @@ import DateInputField from '../../components/multiStepForm/DateInputField';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import TextField from '@mui/material/TextField';
+import AnimateButton from '../../components/extended/AnimateButton'
+import LoadingButton from '@mui/lab/LoadingButton'
 import { Form, Formik } from 'formik';
 
 const AllQuotasPage = () => {
@@ -28,14 +30,21 @@ const AllQuotasPage = () => {
     const { loading, error, quotasGet } = quotasFetch
     const [rows, setRows] = useState([]);
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const [id, setId] = React.useState();
     const handleClose = () => setOpen(false);
     const [value, setValue] = React.useState(new Date('2021-05-06'));
     const scriptedRef = useScriptRef()
 
     const handleChange = (newValue) => {
         setValue(newValue);
-      }
+    }
+
+    const handleOpen = (id) => {
+        setId(id)
+        setOpen(true);
+        console.log("abre")
+        console.log(id)
+    }
 
     const style = {
         position: 'absolute',
@@ -55,6 +64,7 @@ const AllQuotasPage = () => {
 
     useEffect(() => {
         if(quotasGet){
+            console.log(quotasGet)
             setRows(quotasGet.map(quota => {
                 let x = {
                     ...quota, id: quota.id_
@@ -66,17 +76,16 @@ const AllQuotasPage = () => {
         }
     },[quotasGet])
 
-    const updateQuotaHandle = React.useCallback(
-      (id) => () => {
-        setRows((prevRows) =>
-          prevRows.map((row) =>
-            row.id === id ? { ...row, isAdmin: !row.isAdmin } : row,
-          ),
-        );
-        console.log(id)
-      },
-      [],
-    );
+    const updateQuotaHandle = async(values) => {
+        let date = values.payment_date.toLocaleString().split(',')[0]
+        date = date.split('/')
+        console.log(date)
+        const p_date = `${date[2]}-${date[0]}-${date[1]}`
+        console.log(p_date)
+        dispatch(updateQuota(p_date, id))
+        dispatch(getQuotas()) //TODO toBe changed
+        handleClose()
+    }
 
     const parseDate = (originalValue) => {
         let parsedDate = isDate(originalValue)
@@ -99,7 +108,8 @@ const columns = [
             <GridActionsCellItem
             icon={<CreditScoreIcon />}
             label="Show Quota"
-            onClick={handleOpen}
+            onClick={() => handleOpen(params.id)}
+            disabled={params.row.payment_date_ !== null}
             />
         ],
     },
@@ -116,33 +126,33 @@ const columns = [
     >
         <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-        Text in a modal
+        Data de pagamento
         </Typography>
         <Formik
             initialValues={{
-                date: '2021-01-01'
+                payment_date: ''
             }}
             validationSchema={Yup.object().shape({
-                date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).max(new Date(), t('sign_up_max_date')).required(t('sign_up_birth_date_mandatory')),
+                payment_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).required(t('sign_up_birth_date_mandatory')),
             })}
-            onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-                try {
-                    if (scriptedRef.current) {
-                        setStatus({ success: true })
-                        setSubmitting(false)
-                    }
-                } catch (err) {
-                    if (scriptedRef.current) {
-                        setStatus({ success: false })
-                        setErrors({ submit: err.message })
-                        setSubmitting(false)
-                    }
-                }
-            }}
+            onSubmit={updateQuotaHandle}
         >
-        {formik => (
+        {Formik => (
             <Form>
-                <DateInputField name='birth_date' label={t('sign_up_birth_date')}></DateInputField>
+                <DateInputField name='payment_date' label={t('payment_date')}></DateInputField>
+                <AnimateButton>
+                    <LoadingButton
+                        disableElevation
+                        fullWidth
+                        size="large"
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        loading = {loading}
+                    >
+                        {t('confirm')}
+                    </LoadingButton>
+                </AnimateButton>
             </Form>
         )}
         </Formik>
