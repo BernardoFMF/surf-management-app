@@ -8,6 +8,7 @@ const languages = [{abbreviation: 'en', name: 'English'}, {abbreviation: 'pt', n
 
 const TranslationMenu = ({sx}) => {
     const [anchorTranslationNav, setAnchorTranslationNav] = useState(null);
+    const open = Boolean(anchorTranslationNav)
     
     const handleTranslationMenu = (event) => {
         setAnchorTranslationNav(event.currentTarget)
@@ -21,12 +22,16 @@ const TranslationMenu = ({sx}) => {
         }
     }
 
+    const handleClose = () => {
+      setAnchorTranslationNav(null)
+    }
+
     return (
     <>
         
             <Box display="flex" alignItems={'center'} justifyContent="center" sx={sx}>
-                <Button onClick={handleTranslationMenu}>
-                    <Avatar variant="rounded" sx={{ bgcolor: 'white' }} aria-controls="translation-appbar">
+                <Button onClick={handleTranslationMenu} aria-controls={open ? "translation-appbar" : undefined} aria-expanded={open ? "true" : undefined}>
+                    <Avatar variant="rounded" sx={{ bgcolor: 'white' }} >
                         <GTranslateIcon />
                     </Avatar>
                 </Button>
@@ -43,8 +48,8 @@ const TranslationMenu = ({sx}) => {
                   vertical: 'top',
                   horizontal: 'center',
                 }}
-                open={Boolean(anchorTranslationNav)}
-                onClose={handleChangeTranslationMenu}
+                open={open}
+                onClose={handleClose}
                 sx={{
                   display: 'block',
                 }}
