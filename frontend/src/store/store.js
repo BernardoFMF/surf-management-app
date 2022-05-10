@@ -6,7 +6,7 @@ import { userDeletionReducer, userFetchReducer, userLoginReducer, userRegisterRe
 import customizationReducer from './reducers/customizationReducers'
 import { sportsDeletionReducer, sportsFetchReducer} from './reducers/sportReducers'
 import { quotasFetchReducer, quotaUpdateReducer} from './reducers/quotaReducers'
-import { candidateDeletionReducer, candidateFetchReducer, candidatesFetchReducer} from './reducers/candidateReducers'
+import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyDeletionReducer, companiesFetchReducer, companyFetchReducer} from './reducers/companyReducers'
 
 const reducer = combineReducers({
@@ -22,7 +22,7 @@ const reducer = combineReducers({
   quotaUpdate: quotaUpdateReducer,
   userUpdate: userUpdateReducer,
   candidateDeletion: candidateDeletionReducer,
-  candidateFetch: candidateFetchReducer,
+  approveCandidate: approveCandidateReducer,
   candidatesFetch: candidatesFetchReducer,
   companyDeletion: companyDeletionReducer,
   companiesFetch: companiesFetchReducer,

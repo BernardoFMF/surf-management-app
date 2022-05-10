@@ -71,7 +71,7 @@ export const deleteCompany = (id) => async (dispatch) => {
       })
       const response = await fetch(`/api/companies/${id}`, {
           method: 'GET',
-          headers: { "Content-Type": "application/json" }
+          headers: { "Content-Type": "application/json" },
       })
       const company = await response.json()
       if(response.status !== 200) throw Error(company.message_code)

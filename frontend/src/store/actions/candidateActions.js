@@ -5,9 +5,9 @@ import {
     CANDIDATES_FETCH_SUCCESS,
     CANDIDATES_FETCH_FAIL,
     CANDIDATES_FETCH_REQUEST,
-    CANDIDATE_FETCH_SUCCESS,
-    CANDIDATE_FETCH_FAIL,
-    CANDIDATE_FETCH_REQUEST,
+    APPROVE_COMPANY_REQUEST,
+    APPROVE_COMPANY_SUCCESS,
+    APPROVE_COMPANY_FAIL
   } from '../constants/candidateConstants'
 
 export const deleteCandidate = (id) => async (dispatch) => {
@@ -64,25 +64,26 @@ export const deleteCandidate = (id) => async (dispatch) => {
     }
   }
   
-  export const getCandidateById = (id) => async (dispatch) => {
+  export const approveCandidate = (id, member_type, paid_enrollment) => async (dispatch) => {
     try {
       dispatch({
-        type: CANDIDATE_FETCH_REQUEST,
+        type: APPROVE_COMPANY_REQUEST,
       })
       const response = await fetch(`/api/candidates/${id}`, {
-          method: 'GET',
-          headers: { "Content-Type": "application/json" }
+          method: 'PUT',
+          headers: { "Content-Type": "application/json" },
+          body: {"type_": member_type, "paid_enrollment_": paid_enrollment}
       })
       const candidate = await response.json()
       if(response.status !== 200) throw Error(candidate.message_code)
       dispatch({
-        type: CANDIDATE_FETCH_SUCCESS,
+        type: APPROVE_COMPANY_SUCCESS,
         payload: candidate,
       })
   
     } catch (error) {
       dispatch({
-        type: CANDIDATE_FETCH_FAIL,
+        type: APPROVE_COMPANY_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

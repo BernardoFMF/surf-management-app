@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteCompany, getCompanies, getCompanyById } from '../../store/actions/companyActions'
-
+import BusinessIcon from '@mui/icons-material/Business';
 import {  useMediaQuery, Stack, CircularProgress} from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
@@ -73,7 +73,7 @@ const columns = [
         width: 110,
         getActions: (params) => [
             <GridActionsCellItem
-            icon={<HowToRegIcon />}
+            icon={<BusinessIcon />}
             label="Show Profile"
             onClick={showProfileHandle(params.id)}
             />,
