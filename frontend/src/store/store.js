@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { userDeletionReducer, userFetchReducer, userLoginReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer} from './reducers/userReducers'
 import customizationReducer from './reducers/customizationReducers'
 import { sportsDeletionReducer, sportsFetchReducer} from './reducers/sportReducers'
-import { quotasFetchReducer, quotaUpdateReducer} from './reducers/quotaReducers'
+import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer} from './reducers/quotaReducers'
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyDeletionReducer, companiesFetchReducer, companyFetchReducer} from './reducers/companyReducers'
 
@@ -26,7 +26,8 @@ const reducer = combineReducers({
   candidatesFetch: candidatesFetchReducer,
   companyDeletion: companyDeletionReducer,
   companiesFetch: companiesFetchReducer,
-  companyFetch: companyFetchReducer
+  companyFetch: companyFetchReducer,
+  memberQuotaFetch: memberQuotasFetchReducer
 })
 
 const userInfoFromStorage = sessionStorage.getItem('userInfo')

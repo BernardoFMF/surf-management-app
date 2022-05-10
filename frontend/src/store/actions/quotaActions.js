@@ -88,15 +88,16 @@ export const getMembersQuotas = (id) => async (dispatch) => {
         headers: { "Content-Type": "application/json" }
     })
     const quotas = await response.json()
+    console.log(quotas)
     if(response.status !== 200) throw Error(quotas.message_code)
     dispatch({
-      type: MEMBER_QUOTAS_FETCH_FAIL,
+      type: MEMBER_QUOTAS_FETCH_SUCCESS,
       payload: quotas,
     })
 
   } catch (error) {
     dispatch({
-      type: MEMBER_QUOTAS_FETCH_SUCCESS,
+      type: MEMBER_QUOTAS_FETCH_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

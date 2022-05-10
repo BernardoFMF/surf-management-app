@@ -9,7 +9,7 @@ insert into Event_(name_, initial_date_, end_date_) values ('Assembleia Geral','
 
 insert into Attendance_ values (1,1,'going'), (2,2,'going');
 
-insert into Quota_(member_id_, payment_date_, amount_, date_) values (2,'2021-06-23', 15, '2021-01-01'), (2,null, 15,'2022-1-1'), (3,'2021-06-07',  50,'2021-01-01'), (3,'2022-09-28', 50,'2022-01-01'), (4,'2022-11-26', 50,'2022-01-01');
+insert into Quota_(member_id_, payment_date_, amount_, date_) values (2,'2021-06-23', 15, '2021-01-01'), (2,null, 15,'2022-1-1'), (3,'2021-06-07',  50,'2021-01-01'), (3,'2022-09-28', 50,'2022-01-01'), (4,'2022-11-26', 50,'2022-01-01'), (1,null, 15,'2022-01-01');
 
 insert into Contact_ values (1,'Ericeira','Rua do Clérigos n2 3ºesq','2050-032','miguelgbosousa@gmail.com', 962681730), (2,'Lisboa','Rua da Bobadela n43', '2000-561', 'jlopes@gmail.com', 925827332),(3,'Ericeira','Rua da ericeira','2812-829','ess@gmail.com', 938172388), (4,'Billacity','Rua da billa', '2220-829', 'billybonga@gmail.com', 932323238) ;
 

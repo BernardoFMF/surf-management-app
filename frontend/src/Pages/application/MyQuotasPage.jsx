@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getSports, deleteSport } from '../../store/actions/sportActions'
+import { getMembersQuotas} from '../../store/actions/quotaActions'
 
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SurfingIcon from '@mui/icons-material/Surfing';
@@ -13,31 +14,33 @@ const MyQuotasPage = () => {
     const theme = useTheme();
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
-    const sportsFetch = useSelector((state) => state.sportsFetch)
-    const { loading, error, sportsGet } = sportsFetch
+    const memberQuotasFetch = useSelector((state) => state.memberQuotaFetch)
+    const { loading, error, memberQuotasGet } = memberQuotasFetch
     const [rows, setRows] = useState([]);
+    let { id } = useParams()
     
     useEffect(() => {
-            dispatch(getSports())
-    },[])
+        dispatch(getMembersQuotas(id))
+    },[dispatch,id])
 
     useEffect(() => {
-        if(sportsGet){
-            console.log(sportsGet)
-            setRows(sportsGet.map(sport => {
+        if(memberQuotasGet){
+            console.log(memberQuotasGet)
+            setRows(memberQuotasGet.map(quota => {
                 let x = {
-                    ...sport, id: sport.id_
+                    ...quota, id: quota.id_
                 }
+                x.date_ = x.date_.split('T')[0]
+                if(x.payment_date_)x.payment_date_= x.payment_date_.split('T')[0]
                 return x
             }))
         }
-    },[sportsGet])
+    },[memberQuotasGet,dispatch])
 
 const columns = [
     { field: 'date_', headerName: t('date'), width: 100 },
-    { field: 'payment_date_', type: 'boolean', headerName: t('payment_date'), width: 130 },
+    { field: 'payment_date_', headerName: t('payment_date'), width: 130 },
 ];
-
 
   return (
     <>
