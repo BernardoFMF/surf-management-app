@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteCandidate, getCandidates, approveCandidate } from '../../store/actions/candidateActions'
 import * as Yup from 'yup';
 
-import { Grid, useMediaQuery, Stack, CircularProgress} from '@mui/material'
+import { Grid, useMediaQuery, Stack, CircularProgress, FormControlLabel} from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -16,7 +16,7 @@ import MainCard from '../../components/cards/MainCard';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Form, Formik } from 'formik';
-import InputField from '../../components/multiStepForm/InputField';
+import SwitchButton from '../../components/SwitchButton';
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 
 
@@ -137,13 +137,15 @@ const columns = [
                     })}
                     onSubmit={approveCandidateHandle}
                 >
-                {Formik => (
+                {formik => (
                     <Form>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={6} paddingY={2}>
                             <DropdownInputField name='member_type' label={t('candidates_modal_member_type')} options={{ M: t('male'), F: t('female'), O: t('other') }}></DropdownInputField>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <DropdownInputField name='paid_enrollment' label={t('candidates_modal_paid_enrollment')} options={{ M: t('male'), F: t('female'), O: t('other') }}></DropdownInputField>
+                        <Grid item xs={12} sm={6} paddingY={1} >
+                            <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.paid_enrollment} />}
+                                label="Paid enrollment" name='paid_enrollment' labelPlacement='start'
+                            />
                         </Grid>
                         <AnimateButton>
                             <LoadingButton
