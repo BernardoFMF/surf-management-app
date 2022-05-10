@@ -53,7 +53,7 @@ $$
 begin
 	update Contact_ set location_ = p_location_, address_ = p_address_, postal_code_ = p_postal_code_, phone_number_= p_phone_number_ where member_id_ = p_id_;
 
-	update Member_ set is_deleted_ = p_is_deleted_  where id_ = p_id_;
+	update Member_ set is_deleted_ = p_is_deleted_, member_type_ = p_type_ where id_ = p_id_;
 
 	update User_ set nif_ = p_nif_, cc_ = p_cc_, full_name_= p_full_name_, nationality_= p_nationality_, birth_date_ = p_birth_date_, paid_enrollment_= p_paid_enrollment_, is_admin_ = p_is_admin_, gender_ = p_gender_ where member_id_ = p_id_;
 	

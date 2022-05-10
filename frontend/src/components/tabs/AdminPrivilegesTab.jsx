@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import SwitchButton from '../SwitchButton'
 import AnimateButton from '../extended/AnimateButton';
-import { Alert, Box, Grid, useMediaQuery, Button, FormControlLabel } from '@mui/material';
+import { Alert, Box, Grid, useMediaQuery, Button, FormControlLabel, Stack, CircularProgress } from '@mui/material';
 import { updateUser } from '../../store/actions/userActions'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next'
@@ -9,6 +9,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import DropdownInputField from '../multiStepForm/DropdownInputField';
 import { useTheme } from '@mui/material/styles';
+import { getTypes } from '../../store/actions/typeActions';
 
 const AdminPrivilegesTab = ({ user }) => {
     const theme = useTheme()
@@ -23,20 +24,21 @@ const AdminPrivilegesTab = ({ user }) => {
     const { error, updated } = userUpdate
 
     const typesFetch = useSelector((state) => state.typesFetch)
-    const { loading: loadingTypes, error: errorTypes, typesGet } = typesFetch
+    const { error: errorTypes, typesGet } = typesFetch
 
     const handleSubmit = async (values) => {
-        const updatedUser = { ...values, member_id: user.member_id_, phone_number: user.phone_number_, postal_code: user.postal_code_, address: user.address_, location: user.location_, username: user.username_, email: user.email_, gender: user.gender_, nationality: user.nationality_, full_name: user.full_name_, cc: user.cc_, nif: user.nif_, birth_date: user.birth_date_ }
+        const updatedUser = { ...values, member_id: user.member_id_, phone_number: user.phone_number_, postal_code: user.postal_code_, address: user.address_, location: user.location_, username: user.username_, email: user.email_, gender: user.gender_, nationality: user.nationality_, full_name: user.full_name_, cc: user.cc_, nif: user.nif_, birth_date: user.birth_date_, img: user.img_value_ }
         dispatch(updateUser(updatedUser))
     }
 
     return (
         <>
             { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
             { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
             <Formik
                 initialValues={{
-                    type: user.is_deleted_, 
+                    type: user.member_type_, 
                     paid_enrollment: user.paid_enrollment_, 
                     is_admin: user.is_admin_,
                     is_deleted: user.is_deleted_
@@ -54,7 +56,7 @@ const AdminPrivilegesTab = ({ user }) => {
                     <Grid container direction="column" sx={{ ml: { md: 4, lg: 4 } }} justifyContent='center' spacing={1}>
                         <Grid item>
                             <Box sx={{ pt: 2, width: { md: 400 }}}>
-                                <DropdownInputField name='type' label={t('sign_up_gender')} options={{ M: t('male'), F: t('female'), O: t('other') }}></DropdownInputField>
+                                <DropdownInputField name='type' label={t('type')} options={typesGet.map(type => type.type_).reduce((o, key) => Object.assign(o, {[key]: key}), {})}></DropdownInputField>
                             </Box>
                             <Box justifyContent='center' sx={{ pt: 2, width: { md: 400 }}}>
                                 <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.paid_enrollment} />}
@@ -66,11 +68,14 @@ const AdminPrivilegesTab = ({ user }) => {
                                   label="is admin" name='is_admin' labelPlacement='start'
                                 />
                             </Box>
-                            <Box justifyContent='center' sx={{ pt: 2, width: { md: 400 }}}>
-                                <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.is_deleted} />}
-                                  label="is deleted" name='is_deleted' labelPlacement='start'
-                                />
-                            </Box>
+                            {
+                                user.is_deleted_ && 
+                                    <Box justifyContent='center' sx={{ pt: 2, width: { md: 400 }}}>
+                                        <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.is_deleted} />}
+                                          label="is deleted" name='is_deleted' labelPlacement='start'
+                                        />
+                                    </Box>
+                            }
                             <Box sx={{ pt: 2, width: { md: 400 }}}>
                                 <Grid container spacing={matchDownSM ? 0 : 2}>
                                     <Grid item xs={12} sm={6} sx={{ mt: 2}}>
@@ -111,7 +116,7 @@ const AdminPrivilegesTab = ({ user }) => {
                 </Form>
             )}
             </Formik>
-        </>
+      </>
     )
 }
 

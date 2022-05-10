@@ -116,6 +116,7 @@
     "payment_date": "Data de Pagamento",
 
     "updated_sucessfully": "Atualização realizada com sucesso",
+    "type": "Tipo",
     
     "candidates_username": "Nome de utilizador",
     "candidates_full_name": "Nome completo",

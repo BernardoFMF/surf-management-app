@@ -70,8 +70,8 @@ const pages = {
                     id: 'myquotas',
                     title: 'My Quotas',
                     type: 'item',
-                    hasParams: false,
-                    url: '/profile'
+                    hasParams: true,
+                    url: '/application/myquotas/{id}'
                 },
                 {
                     id: 'allQuotas',

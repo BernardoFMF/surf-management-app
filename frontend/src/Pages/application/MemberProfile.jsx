@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserById } from '../../store/actions/userActions';
+import { getTypes } from '../../store/actions/typeActions'
 import CircularProgress from '@mui/material/CircularProgress';
 import default_image from './../../assets/data/blank-profile-picture.png'
 
@@ -37,8 +38,12 @@ const MemberProfile = () => {
     const userFetch = useSelector((state) => state.userFetch)
     const { loading, error, userGet } = userFetch
 
+    const typesFetch = useSelector((state) => state.typesFetch)
+    const { loading: loadingTypes } = typesFetch
+
     useEffect(() => {
         dispatch(getUserById(id))
+        dispatch(getTypes())
     },[dispatch, id])
 
     const [value, setValue] = React.useState(0);
@@ -52,7 +57,7 @@ const MemberProfile = () => {
     return (
         <>
             <MainCard title="Profile" >
-            { loading ? 
+            { loading || loadingTypes ? 
                 <Stack alignItems="center">
                     <CircularProgress size='4rem'/>
                 </Stack>
