@@ -192,6 +192,8 @@ export const updateUser = (body) => async (dispatch, getState) => {
       type: USER_UPDATE_REQUEST,
     })
 
+    console.log(body);
+
     const { userLogin: { userInfo } } = getState()
 
     const response = await fetch(`/api/users/${body.member_id}`, {
@@ -223,6 +225,7 @@ export const updateUser = (body) => async (dispatch, getState) => {
         type: USER_LOGIN_SUCCESS,
         payload: userInfo,
       })
+
       sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
     }
 

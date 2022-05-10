@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteCandidate, getCandidates, approveCandidate } from '../../store/actions/candidateActions'
 import * as Yup from 'yup';
 
-import {  useMediaQuery, Stack, CircularProgress} from '@mui/material'
+import { Grid, useMediaQuery, Stack, CircularProgress} from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -17,6 +17,8 @@ import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Form, Formik } from 'formik';
 import InputField from '../../components/multiStepForm/InputField';
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
+
 
 
 const AllCandidatesPage = () => {
@@ -73,17 +75,6 @@ const AllCandidatesPage = () => {
       },
       [],
     );
-  
-    const showProfileHandle = React.useCallback(
-      (id) => () => {
-        setRows((prevRows) =>
-          prevRows.map((row) =>
-            row.id === id ? { ...row, isAdmin: !row.isAdmin } : row,
-          ),
-        );
-      },
-      [],
-    );
 
     const approveCandidateHandle = async(values) => {
         dispatch(approveCandidate(id, values.member_type, values.paid_enrollment))
@@ -112,7 +103,7 @@ const columns = [
             <GridActionsCellItem
             icon={<HowToRegIcon />}
             label="Show Profile"
-            onClick={showProfileHandle(params.id)}
+            onClick={() => handleOpen(params.id)}
             />,
             <GridActionsCellItem
             icon={<DeleteIcon />}
@@ -133,7 +124,7 @@ const columns = [
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Typography id="modal-modal-title" variant="h2" component="h2">
                     {t('candidates_modal_title')}
                 </Typography>
                 <Formik
@@ -148,8 +139,12 @@ const columns = [
                 >
                 {Formik => (
                     <Form>
-                        <InputField name='member_type' label={t('candidates_modal_member_type')} type='text'></InputField>
-                        <InputField name='paid_enrollment' label={t('candidates_modal_paid_enrollment')} type='boolean'></InputField>
+                        <Grid item xs={12} sm={6}>
+                            <DropdownInputField name='member_type' label={t('candidates_modal_member_type')} options={{ M: t('male'), F: t('female'), O: t('other') }}></DropdownInputField>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <DropdownInputField name='paid_enrollment' label={t('candidates_modal_paid_enrollment')} options={{ M: t('male'), F: t('female'), O: t('other') }}></DropdownInputField>
+                        </Grid>
                         <AnimateButton>
                             <LoadingButton
                                 disableElevation

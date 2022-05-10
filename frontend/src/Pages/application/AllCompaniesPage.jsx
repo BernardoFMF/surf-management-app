@@ -81,6 +81,7 @@ const columns = [
             icon={<DeleteIcon />}
             label="Delete"
             onClick={deleteCompanyHandle(params.id)}
+            disabled={params.row.is_deleted_}
             />
         ],
     },
