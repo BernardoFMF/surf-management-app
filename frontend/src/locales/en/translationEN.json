@@ -113,5 +113,7 @@
     "practitioners": "Number of Practitioners",
     "member_id": "Member ID",
     "date": "Date",
-    "payment_date": "Payment Date"
+    "payment_date": "Payment Date",
+
+    "updated_sucessfully": "Update done successfully"
 }
