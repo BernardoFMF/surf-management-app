@@ -115,6 +115,8 @@
     "date": "Data",
     "payment_date": "Data de Pagamento",
 
+    "updated_sucessfully": "Atualização realizada com sucesso",
+    
     "candidates_username": "Nome de utilizador",
     "candidates_full_name": "Nome completo",
     "candidates_phone_number": "Número telefónico",
