@@ -113,5 +113,19 @@
     "practitioners": "Number of Practitioners",
     "member_id": "Member ID",
     "date": "Date",
-    "payment_date": "Payment Date"
+    "payment_date": "Payment Date",
+
+    "candidates_username": "Username",
+    "candidates_full_name": "Full name",
+    "candidates_phone_number": "Phone number",
+    "candidates_gender": "Gender",
+    "candidates_birth_date": "Birth date",
+    "candidates_location": "Location",
+    "candidates_address": "Address",
+    "candidates_postal_code": "Postal code",
+
+    "companies_username": "Username",
+    "companies_name": "Name",
+    "companies_has_debt": "Has Debt",
+    "companies_is_deleted": "Is Deleted"
 }
