@@ -35,21 +35,33 @@ export const getQuotas = () => async (dispatch) => {
   }
 }
 
-export const updateQuota = (payment_date,id) => async (dispatch) => {
+export const updateQuota = (payment_date,id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: QUOTA_UPDATE_REQUEST,
     })
+
+    const { quotasFetch: { quotasGet } } = getState()
+
     const response = await fetch(`/api/quotas/${id}`, {
         method: 'PUT',
-        body: JSON.stringify(payment_date),
+        body: JSON.stringify({payment_date}),
         headers: { "Content-Type": "application/json" }
     })
     const quotaID = await response.json()
     if(response.status !== 200) throw Error(quotaID.message_code)
     dispatch({
       type: QUOTA_UPDATE_SUCCESS,
-      payload: quotaID,
+      payload: quotaID
+    })
+    dispatch({
+      type: QUOTAS_FETCH_SUCCESS,
+      payload: quotasGet.map(quota => {
+        if(quota.id===id){
+          quota.payment_date_ = payment_date
+        }
+        return quota
+      })
     })
 
   } catch (error) {
