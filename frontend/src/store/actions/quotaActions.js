@@ -4,7 +4,10 @@ import {
     QUOTAS_FETCH_REQUEST,
     QUOTA_UPDATE_SUCCESS,
     QUOTA_UPDATE_FAIL,
-    QUOTA_UPDATE_REQUEST
+    QUOTA_UPDATE_REQUEST,
+    MEMBER_QUOTAS_FETCH_SUCCESS,
+    MEMBER_QUOTAS_FETCH_FAIL,
+    MEMBER_QUOTAS_FETCH_REQUEST
   } from '../constants/quotaConstants'
 
   
@@ -67,6 +70,33 @@ export const updateQuota = (payment_date,id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: QUOTA_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const getMembersQuotas = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: MEMBER_QUOTAS_FETCH_REQUEST,
+    })
+    const response = await fetch(`/api/quotas/members/${id}`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+    })
+    const quotas = await response.json()
+    if(response.status !== 200) throw Error(quotas.message_code)
+    dispatch({
+      type: MEMBER_QUOTAS_FETCH_FAIL,
+      payload: quotas,
+    })
+
+  } catch (error) {
+    dispatch({
+      type: MEMBER_QUOTAS_FETCH_SUCCESS,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

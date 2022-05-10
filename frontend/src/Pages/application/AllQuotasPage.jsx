@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getQuotas, updateQuota} from '../../store/actions/quotaActions'
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import * as Yup from 'yup';
 import { parse, isDate } from "date-fns";
-import useScriptRef from '../../hooks/useScriptRef'
 
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
@@ -15,9 +13,6 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import MainCard from '../../components/cards/MainCard';
 import DateInputField from '../../components/multiStepForm/DateInputField';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import TextField from '@mui/material/TextField';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Form, Formik } from 'formik';
@@ -32,12 +27,6 @@ const AllQuotasPage = () => {
     const [open, setOpen] = React.useState(false);
     const [id, setId] = React.useState();
     const handleClose = () => setOpen(false);
-    const [value, setValue] = React.useState(new Date('2021-05-06'));
-    const scriptedRef = useScriptRef()
-
-    const handleChange = (newValue) => {
-        setValue(newValue);
-    }
 
     const handleOpen = (id) => {
         setId(id)
