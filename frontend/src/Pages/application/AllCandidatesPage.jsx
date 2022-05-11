@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteCandidate, getCandidates, approveCandidate } from '../../store/actions/candidateActions'
+import { getTypes } from '../../store/actions/typeActions'
+
 import * as Yup from 'yup';
 
-import { Grid, useMediaQuery, Stack, CircularProgress, FormControlLabel} from '@mui/material'
+import { Grid, useMediaQuery, Stack, CircularProgress, FormControlLabel, Alert} from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -27,12 +29,17 @@ const AllCandidatesPage = () => {
 
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
-    const candidatesFetch = useSelector((state) => state.candidatesFetch)
-    const { loading, error, candidatesGet } = candidatesFetch
+
     const [rows, setRows] = useState([]);
     const [open, setOpen] = React.useState(false);
     const [id, setId] = React.useState();
     const handleClose = () => setOpen(false);
+
+    const candidatesFetch = useSelector((state) => state.candidatesFetch)
+    const { loading, error, candidatesGet } = candidatesFetch
+
+    const typesFetch = useSelector((state) => state.typesFetch)
+    const { error: errorTypes, typesGet } = typesFetch
 
     const handleOpen = (id) => {
         setId(id)
@@ -49,9 +56,11 @@ const AllCandidatesPage = () => {
         border: '2px solid #000',
         boxShadow: 24,
         p: 4,
-      };
+    };
+
     useEffect(() => {
         dispatch(getCandidates())
+        dispatch(getTypes())
     },[])
 
     useEffect(() => {
@@ -102,8 +111,10 @@ const columns = [
         getActions: (params) => [
             <GridActionsCellItem
             icon={<HowToRegIcon />}
-            label="Show Profile"
-            onClick={() => handleOpen(params.id)}
+            label="Approve Candidate"
+            onClick={() => {
+                handleOpen(params.id)
+            }}
             />,
             <GridActionsCellItem
             icon={<DeleteIcon />}
@@ -117,6 +128,8 @@ const columns = [
 
   return (
     <>
+        { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+        { errorTypes && !error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
         <Modal
             open={open}
             onClose={handleClose}
@@ -130,7 +143,7 @@ const columns = [
                 <Formik
                     initialValues={{
                         member_type: '',
-                        paid_enrollment: ''
+                        paid_enrollment: false
                     }}
                     validationSchema={Yup.object().shape({
                         member_type: Yup.string().required(t('candidates_modal_member_type_mandatory')),
@@ -140,11 +153,11 @@ const columns = [
                 {formik => (
                     <Form>
                         <Grid item xs={12} sm={6} paddingY={2}>
-                            <DropdownInputField name='member_type' label={t('candidates_modal_member_type')} options={{ M: t('male'), F: t('female'), O: t('other') }}></DropdownInputField>
+                            <DropdownInputField name='member_type' label={t('candidates_modal_member_type')} options={typesGet.map(type => type.type_).reduce((o, key) => Object.assign(o, {[key]: key}), {})}></DropdownInputField>
                         </Grid>
                         <Grid item xs={12} sm={6} paddingY={1} >
                             <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.paid_enrollment} />}
-                                label="Paid enrollment" name='paid_enrollment' labelPlacement='start'
+                                label={t('candidates_modal_paid_enrollment')} name='paid_enrollment' labelPlacement='start'
                             />
                         </Grid>
                         <AnimateButton>
