@@ -85,9 +85,7 @@ const PersonalDetailsTab = ({ user }) => {
                                     <Base64InputField size={100} name='img' label={t('sign_up_image')}></Base64InputField>
                                     <Typography variant="subtitle2">{user.member_type_}</Typography>
                                 </Stack>
-                                
                             </Box>
-                            
                         </Grid>
                         <Grid item>
                             <Box sx={{ pt: 2, pl: 2, pr: 2, width: { md: 400 }}}>
