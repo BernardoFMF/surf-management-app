@@ -100,7 +100,7 @@ const pages = {
                     title: 'All Events',
                     type: 'item',
                     hasParams: false,
-                    url: '/events'
+                    url: '/application/events'
                 }
             ]
         },

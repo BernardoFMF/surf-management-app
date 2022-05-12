@@ -9,6 +9,7 @@ import { sportsDeletionReducer, sportsFetchReducer} from './reducers/sportReduce
 import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer} from './reducers/quotaReducers'
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyDeletionReducer, companiesFetchReducer, companyFetchReducer} from './reducers/companyReducers'
+import { EventDeletionReducer, eventsFetchReducer } from './reducers/eventReducers'
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -29,7 +30,9 @@ const reducer = combineReducers({
   companiesFetch: companiesFetchReducer,
   companyFetch: companyFetchReducer,
   typesFetch: typesFetchReducer,
-  memberQuotaFetch: memberQuotasFetchReducer
+  memberQuotaFetch: memberQuotasFetchReducer,
+  eventsFetch: eventsFetchReducer,
+  eventDeletion: EventDeletionReducer
 })
 
 const userInfoFromStorage = sessionStorage.getItem('userInfo')

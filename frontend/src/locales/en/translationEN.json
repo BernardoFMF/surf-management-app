@@ -131,9 +131,17 @@
     "candidates_modal_paid_enrollment": "Paid enrollment",
     "candidates_modal_member_type_mandatory": "Member type is mandatory",
 
-
     "companies_username": "Username",
     "companies_name": "Name",
     "companies_has_debt": "Has Debt",
-    "companies_is_deleted": "Is Deleted"
+    "companies_is_deleted": "Is Deleted",
+
+    "event_name": "Name",
+    "event_initial_date": "Initial Date",
+    "event_end_date": "End Date",
+
+    "status_not_started": "not started yet",
+    "status_event_ended": "ended already",
+    "status_event_occurring": "occurring"
+    
 }

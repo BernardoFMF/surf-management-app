@@ -13,6 +13,7 @@ const AllQuotasPage = Loadable(lazy(() => import('../Pages/application/AllQuotas
 const AllCandidatesPage = Loadable(lazy(() => import('../Pages/application/AllCandidatesPage')))
 const AllCompaniesPage = Loadable(lazy(() => import('../Pages/application/AllCompaniesPage')))
 const MyQuotasPage = Loadable(lazy(() => import('../Pages/application/MyQuotasPage')))
+const AllEventsPage = Loadable(lazy(() => import('../Pages/application/AllEventsPage')))
 
 
 
@@ -57,6 +58,10 @@ const mainRoutes = {
         {
             path: '/application/myquotas/:id',
             element: <MyQuotasPage/>
+        },
+        {
+            path: '/application/events',
+            element: <AllEventsPage/>
         }
     ]
 };
