@@ -39,10 +39,20 @@ const MembershipCard = ({ user }) => {
                             
                         </Grid>
                         <Grid item>
-                            <Box sx={{ mr: 1}} position={'absolute'} right={0} justifyContent={'flex-end'}>  
-                                <img src={Logo} height='100px' alt='logo'/>
-                            </Box>
-                         
+                            <Grid container direction="row" spacing={1}>
+                                <Grid item position={'absolute'} right={0} justifyContent={'flex-end'} sx={{ mr: 1 }} >
+                                    <Box>  
+                                        <img src={Logo} height='100px' alt='logo'/>
+                                    </Box>
+                                </Grid>
+                                <Grid item position={'absolute'} right={0} bottom={0} justifyContent={'flex-end'} sx={{ mr: 2, mb: -4}}>
+                                    <Box> 
+                                        <Avatar variant="rounded" src={user.qrcode_} sx={{ width: 150, height: 150 }}/> 
+                                    </Box>
+                                </Grid>
+                                
+                            </Grid>
+                            
                         </Grid>
                     </Grid>
                 </Box>
