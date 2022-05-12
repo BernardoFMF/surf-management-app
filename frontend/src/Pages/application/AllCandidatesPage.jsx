@@ -13,7 +13,6 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 import MainCard from '../../components/cards/MainCard';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -90,7 +89,6 @@ const AllCandidatesPage = () => {
     );
 
     const approveCandidateHandle = async(values) => {
-        console.log('chegou');
         dispatch(approveCandidate(id, values.member_type, values.paid_enrollment))
         dispatch(getCandidates()) //TODO toBe changed
         handleClose()

@@ -8,6 +8,7 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SurfingIcon from '@mui/icons-material/Surfing';
 import MainCard from '../../components/cards/MainCard';
+import { Stack, CircularProgress} from '@mui/material'
 
 const AllSportsPage = () => {
     const theme = useTheme();
@@ -81,7 +82,12 @@ const columns = [
 
   return (
     <>
+      
       <MainCard title='Sports'sx={{height: '100%'}}>
+      { loading ? 
+        <Stack alignItems="center">
+            <CircularProgress size='4rem'/>
+        </Stack> : (
         <DataGrid
           autoHeight
           rows={rows}
@@ -91,6 +97,7 @@ const columns = [
           checkboxSelection
           experimentalFeatures={{ newEditingApi: true }}
         /> 
+        )}
       </MainCard> 
     </>
   )

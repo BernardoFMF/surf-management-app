@@ -4,7 +4,7 @@ create table Candidate_ (
 	cc_ 			int unique check (cc_ <= 999999999),
 	full_name_ 		varchar(60),
 	nationality_ 	varchar(30),
-	birth_date_		timestamp without time zone,
+	birth_date_		date,
 	location_		varchar(30),
 	address_ 		varchar(40),
 	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),

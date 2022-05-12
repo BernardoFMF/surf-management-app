@@ -7,7 +7,7 @@
  * Creates a quota (optional - check if there is already a quota for the current year, 
  * if not creates it)
  */
-create or replace procedure post_user(cc_ bigint, nif_ bigint, mtype_ varchar(40), birth_date_ varchar(30), nationality_ varchar(30), full_name_ varchar(60),
+create or replace procedure post_user(cc_ bigint, nif_ bigint, mtype_ varchar(40), birth_date_ date, nationality_ varchar(30), full_name_ varchar(60),
 										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, gender_ varchar(40), out new_id_ int)
 LANGUAGE plpgsql  
 as
@@ -192,7 +192,7 @@ DECLARE
 	candidate_cc_  bigint;
 	candidate_full_name_ varchar(60);
 	candidate_nationality_ varchar(30);
-	candidate_birth_date_ varchar(30);
+	candidate_birth_date_ date;
 	candidate_location_ varchar(30);
 	candidate_address_ varchar(40);
 	candidate_postal_code_ varchar(8);

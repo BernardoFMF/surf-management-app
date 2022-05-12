@@ -6,7 +6,7 @@ import {
     EVENT_DELETE_FAIL,
     EVENT_DELETE_REQUEST
   } from '../constants/eventConstants'
-  import { parse, isDate } from "date-fns";
+  
 export const getEvents = () => async (dispatch) => {
     function formatDate(date) {
         var d = new Date(date),

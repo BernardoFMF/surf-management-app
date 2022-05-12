@@ -5,9 +5,9 @@ import {
     CANDIDATES_FETCH_SUCCESS,
     CANDIDATES_FETCH_FAIL,
     CANDIDATES_FETCH_REQUEST,
-    APPROVE_COMPANY_REQUEST,
-    APPROVE_COMPANY_SUCCESS,
-    APPROVE_COMPANY_FAIL
+    APPROVE_CANDIDATE_REQUEST,
+    APPROVE_CANDIDATE_SUCCESS,
+    APPROVE_CANDIDATE_FAIL
   } from '../constants/candidateConstants'
 
 export const candidateDeletionReducer = (state = {}, action) => {
@@ -38,11 +38,11 @@ export const candidateDeletionReducer = (state = {}, action) => {
 
   export const approveCandidateReducer = (state = {}, action) => {
     switch (action.type) {
-      case APPROVE_COMPANY_REQUEST:
+      case APPROVE_CANDIDATE_REQUEST:
         return { loading: true }
-      case APPROVE_COMPANY_SUCCESS:
+      case APPROVE_CANDIDATE_SUCCESS:
         return { loading: false, approveCandidate: action.payload }
-      case APPROVE_COMPANY_FAIL:
+      case APPROVE_CANDIDATE_FAIL:
         return { loading: false, error: action.payload }
       default:
         return state
