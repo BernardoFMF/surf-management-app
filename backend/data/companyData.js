@@ -25,7 +25,8 @@ const companyData = (db) => {
 	
 	const updateCompany = async (id_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, img_) => {
 		await getCompanyById(id_)
-		return await db.updateCompanyData(id_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, img_)
+		await db.updateCompanyData(id_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, img_)
+		return await getCompanyById(id_)
 	}
 	
 	const deleteCompany = async (id_) => {

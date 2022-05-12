@@ -18,7 +18,7 @@ const QUERY_GET_CANDIDATE_BY_EMAIL = 'select id_, nif_, cc_, full_name_, nationa
 
 const QUERY_GET_COMPANIES = 'select c.member_id_, nif_, name_, username_, has_debt_, member_type_, is_deleted_, email_ from company_ c join member_ m on c.member_id_ = m.id_ join contact_ co on c.member_id_ = co.member_id_ ;'
 
-const QUERY_GET_COMPANY_BY_ID = 'select c.member_id_, c.nif_, c.name_, co.location_, co.address_, co.postal_code_, co.email_, co.phone_number_, m.has_debt_, m.member_type_, m.username_ from company_ c join contact_ co on c.member_id_ = co.member_id_ join member_ m on c.member_id_ = m.id_ where c.member_id_ = $1 and m.is_deleted_ = false;'
+const QUERY_GET_COMPANY_BY_ID = 'select c.member_id_, c.nif_, c.name_, co.location_, co.address_, co.postal_code_, co.email_, co.phone_number_, m.has_debt_, m.member_type_, m.username_, is_deleted_ from company_ c join contact_ co on c.member_id_ = co.member_id_ join member_ m on c.member_id_ = m.id_ where c.member_id_ = $1;'
 
 const QUERY_POST_COMPANY = 'call post_company($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);'
 

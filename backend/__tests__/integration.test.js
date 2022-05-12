@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import express, { request } from 'express'
 import jestOpenAPI from 'jest-openapi'
 import data from '../data/__mock__/mockDataAccess.js'
-/*
+
 jestOpenAPI(process.cwd() +  "/backend/openApi.yaml")
 
 const app = express()
@@ -24,7 +24,7 @@ beforeEach(async () => {
     session = res
         .headers['set-cookie'][0]
 });
-
+/*
 test('Post, Gets, Put & Delete user', async () => {
     const userRes = await supertest(app)
         .post('/api/users')
