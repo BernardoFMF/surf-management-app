@@ -45,6 +45,8 @@ const candidateData = (db) => {
 	const approveCandidate = async (id_, type_, paid_enrollment_, url) => {
 		await getCandidateById(id_)
 		
+		const qrcode_1 = await toDataURL(`${url}/members/validate/${id_}`)
+		console.log(qrcode_1)
 		const qrcode_ = await toDataURL(`${url}/members/validate/${id_}`)
 		const u_id_ = await db.approveCandidateData(id_, type_, paid_enrollment_)
 		await db.updateUserQrCodeData(u_id_, qrcode_)

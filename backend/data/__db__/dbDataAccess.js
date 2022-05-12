@@ -461,7 +461,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 	const getUserByIdData = async (id_) => {
 		const client = await pool.connect()
 		try {
-
 			const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
 			return result.rows[0]
 		} finally {
@@ -508,7 +507,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			await client.query('commit')
 			return id_
 		} catch (e) {
-			console.log(e)
 			await client.query('rollback')
 			throw e
 		} finally {

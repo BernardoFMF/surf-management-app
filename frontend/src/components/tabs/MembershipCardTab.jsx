@@ -1,8 +1,9 @@
 import React from 'react'
+import MembershipCard from '../MembershipCard'
 
-const MembershipCardTab = () => {
+const MembershipCardTab = ({ user }) => {
   return (
-    <div>MembershipCardTab</div>
+    <MembershipCard user={ user }/>
   )
 }
 
