@@ -38,6 +38,20 @@ export const deleteCandidate = (id) => async (dispatch) => {
   }
   
   export const getCandidates = () => async (dispatch) => {
+    function formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+  
+      if (month.length < 2) 
+          month = '0' + month;
+      if (day.length < 2) 
+          day = '0' + day;
+  
+      return [year, month, day].join('-');
+  }
+  
     try {
       dispatch({
         type: CANDIDATES_FETCH_REQUEST,
@@ -46,8 +60,12 @@ export const deleteCandidate = (id) => async (dispatch) => {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
       })
-      const candidates = await response.json()
+      let candidates = await response.json()
       if(response.status !== 200) throw Error(candidates.message_code)
+      candidates = candidates.map(candidate => {
+        candidate.birth_date_ = formatDate(candidate.birth_date_)
+        return candidate
+    })
       dispatch({
         type: CANDIDATES_FETCH_SUCCESS,
         payload: candidates,

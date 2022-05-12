@@ -12,6 +12,20 @@ import {
 
   
 export const getQuotas = () => async (dispatch) => {
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
   try {
     dispatch({
       type: QUOTAS_FETCH_REQUEST,
@@ -20,8 +34,12 @@ export const getQuotas = () => async (dispatch) => {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
     })
-    const quotas = await response.json()
+    let quotas = await response.json()
     if(response.status !== 200) throw Error(quotas.message_code)
+    quotas = quotas.map(quota => {
+      if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
+      return quota
+  })
     dispatch({
       type: QUOTAS_FETCH_SUCCESS,
       payload: quotas,

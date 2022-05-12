@@ -23,6 +23,7 @@ import DropdownInputField from '../../components/multiStepForm/DropdownInputFiel
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+
 import Button from '@mui/material/Button';
 
 
@@ -89,6 +90,7 @@ const AllCandidatesPage = () => {
     );
 
     const approveCandidateHandle = async(values) => {
+        console.log('chegou');
         dispatch(approveCandidate(id, values.member_type, values.paid_enrollment))
         dispatch(getCandidates()) //TODO toBe changed
         handleClose()
@@ -161,7 +163,7 @@ const columns = [
                     >
                     {formik => (
                         <Form>
-                            <Grid item xs={12} sm={6} paddingY={2} sx={{pd: 5}}>
+                            <Grid item xs={12} sm={6} paddingY={2} sx={{ width: {md: 300, xs: 200}, pb: 2}}>
                                 <DropdownInputField name='member_type' label={t('candidates_modal_member_type')} options={typesGet.map(type => type.type_).reduce((o, key) => Object.assign(o, {[key]: key}), {})}></DropdownInputField>
                                 <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.paid_enrollment} />}
                                     label={t('candidates_modal_paid_enrollment')} name='paid_enrollment' labelPlacement='start'

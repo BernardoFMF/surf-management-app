@@ -4,7 +4,7 @@ create table Candidate_ (
 	cc_ 			int unique check (cc_ <= 999999999),
 	full_name_ 		varchar(60),
 	nationality_ 	varchar(30),
-	birth_date_		varchar(30),
+	birth_date_		timestamp without time zone,
 	location_		varchar(30),
 	address_ 		varchar(40),
 	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
@@ -95,7 +95,7 @@ create table User_ (
 	cc_ 			int unique check (cc_ <= 999999999),
 	full_name_ 		varchar(60),
 	nationality_ 	varchar(30),
-	birth_date_		varchar(30),
+	birth_date_		date,
 	enrollment_date_	date,
 	paid_enrollment_	bool,
 	is_admin_		bool default false,
@@ -152,8 +152,5 @@ create table Member_token_ (
 	primary key(member_id_),
 	constraint fk_user foreign key(member_id_) references Member_(id_)
 )
-
-
-
 
 
