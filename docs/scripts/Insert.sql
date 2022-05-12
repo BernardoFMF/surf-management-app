@@ -1,5 +1,5 @@
 insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_, gender_) 
-values (154781132, 156784242,'Miguel Gafanhoto da Silva Lopes','Portuguese','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com', 967021559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','miguelf', 'Male'),
+values (154781132, 156784242,'Miguel da Silva Lopes','Portuguese','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com', 967021559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','miguelf', 'Male'),
 (151444331, 156722241,'João Silva','Portuguese','2001-10-19','Lisboa','Rua do Cobre n22','2001-226','Silva@gmail.com', 933321559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Silva', 'Male'),
 (151111332, 151111242,'Roberto Bolha','Portuguese','1999-05-19','Porto','Rua da madeira n15','2075-543','Bolha@gmail.com', 922221559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Bolha', 'Other'),
 (152222333, 156333243,'Amilcar Dias','Portuguese','2000-09-19','Braga','Rua do Ouro n45','2330-216','Dias@gmail.com', 911121559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Dias', 'Other'),
@@ -75,13 +75,7 @@ values (2,'2021-06-23', 15, '2021-01-01'),
 (1,null, 15,'2022-01-01'),
 (3,'2021-06-07',  50,'2021-01-01'),
 (3,'2022-09-28', 50,'2022-01-01'),
-(4,'2022-11-26', 50,'2022-01-01'),
-(1,'2021-01-02', 15,'2021-01-01'),
-(1,'2019-01-02', 15,'2019-01-01'),
-(1,'2018-01-02', 15,'2018-01-01'),
-(1,'2017-01-02', 15,'2017-01-01'),
-(1,'2016-01-02', 15,'2016-01-01'),
-(1,'2015-01-02', 15,'2015-01-01');
+(4,'2022-11-26', 50,'2022-01-01');
 
 
 insert into Contact_ 
@@ -95,8 +89,8 @@ values (3,23451789,'Ripcurl shop'),
 (4,423213348,'Billabong');
 
 insert into User_ 
-values (1,25054936,45925485,'Afonso Melo Ribeiro','Portuguese','1997-05-25','2020-03-14',true, true, 'Male'),
-(2,25054938,45925475,'José Elias Lopes','Portuguese','1989-04-27','2021-03-14', true,false, 'Male');
+values (1,250549361,459254851,'Afonso Melo Ribeiro','Portuguese','1997-05-25','2020-03-14',true, true, 'Male'),
+(2,250549381,459254751,'José Elias Lopes','Portuguese','1989-04-27','2021-03-14', true,false, 'Male');
 
 insert into Member_img_ 
 values (1, null), (2, null), (3, null), (4, null);

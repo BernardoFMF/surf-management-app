@@ -15,6 +15,10 @@ import MainCard from '../../components/cards/MainCard';
 import DateInputField from '../../components/multiStepForm/DateInputField';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Button from '@mui/material/Button';
 import { Form, Formik } from 'formik';
 
 const AllQuotasPage = () => {
@@ -31,8 +35,6 @@ const AllQuotasPage = () => {
     const handleOpen = (id) => {
         setId(id)
         setOpen(true);
-        console.log("abre")
-        console.log(id)
     }
 
     const style = {
@@ -53,7 +55,6 @@ const AllQuotasPage = () => {
 
     useEffect(() => {
         if(quotasGet){
-            console.log(quotasGet)
             setRows(quotasGet.map(quota => {
                 let x = {
                     ...quota, id: quota.id_
@@ -68,9 +69,7 @@ const AllQuotasPage = () => {
     const updateQuotaHandle = async(values) => {
         let date = values.payment_date.toLocaleString().split(',')[0]
         date = date.split('/')
-        console.log(date)
         const p_date = `${date[2]}-${date[0]}-${date[1]}`
-        console.log(p_date)
         dispatch(updateQuota(p_date, id))
         dispatch(getQuotas()) //TODO toBe changed
         handleClose()
@@ -107,46 +106,57 @@ const columns = [
 
   return (
     <>
-    <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-    >
-        <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-        Data de pagamento
-        </Typography>
-        <Formik
-            initialValues={{
-                payment_date: ''
-            }}
-            validationSchema={Yup.object().shape({
-                payment_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).required(t('sign_up_birth_date_mandatory')),
-            })}
-            onSubmit={updateQuotaHandle}
+    <Dialog
+            fullWidth={true}
+            open={open}
+            onClose={handleClose}
         >
-        {Formik => (
-            <Form>
-                <DateInputField name='payment_date' label={t('payment_date')}></DateInputField>
-                <AnimateButton>
-                    <LoadingButton
-                        disableElevation
-                        fullWidth
-                        size="large"
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        loading = {loading}
+            <Typography sx={{pl: 5, pt: 5}}  variant="h2" component="h2">
+                {t('payment_date')}
+            </Typography>
+            <DialogContent>
+                <Box
+                    sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    m: 'auto',
+                    width: 'fit-content',
+                    }}
+                >
+                    <Formik
+                        initialValues={{
+                            payment_date: ''
+                        }}
+                        validationSchema={Yup.object().shape({
+                            payment_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).required(t('sign_up_birth_date_mandatory')),
+                        })}
+                        onSubmit={updateQuotaHandle}
                     >
-                        {t('confirm')}
-                    </LoadingButton>
-                </AnimateButton>
-            </Form>
-        )}
-        </Formik>
-    </Box>
-</Modal>
+                    {Formik => (
+                        <Form>
+                            <DateInputField name='payment_date' label={t('payment_date')}></DateInputField>
+                            <AnimateButton>
+                                <LoadingButton
+                                    disableElevation
+                                    fullWidth
+                                    size="large"
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    loading = {loading}
+                                >
+                                    {t('confirm')}
+                                </LoadingButton>
+                            </AnimateButton>
+                        </Form>
+                    )}
+                    </Formik>
+                </Box>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Close</Button>
+            </DialogActions>
+        </Dialog>
       <MainCard title='Quotas'sx={{height: '100%'}}>
         <DataGrid
           autoHeight

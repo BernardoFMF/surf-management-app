@@ -187,12 +187,9 @@ export const getUserById = (id) => async (dispatch) => {
 
 export const updateUser = (body) => async (dispatch, getState) => {
   try {
-    console.log(body)
     dispatch({
       type: USER_UPDATE_REQUEST,
     })
-
-    console.log(body);
 
     const { userLogin: { userInfo } } = getState()
 
@@ -211,7 +208,6 @@ export const updateUser = (body) => async (dispatch, getState) => {
     })
 
     if (userInfo.id_ === body.member_id) {
-      console.log("updated");
       const userInfo = {
         id_: updateResp.member_id_,
         member_type_: updateResp.member_type_,
@@ -219,11 +215,14 @@ export const updateUser = (body) => async (dispatch, getState) => {
         is_admin_: updateResp.is_admin_,
         img_value_: updateResp.img_value_
       }
-      console.log(userInfo);
 
       dispatch({
         type: USER_LOGIN_SUCCESS,
         payload: userInfo,
+      })
+      dispatch({
+        type: USER_FETCH_SUCCESS,
+        payload: updateResp,
       })
 
       sessionStorage.setItem('userInfo', JSON.stringify(userInfo))

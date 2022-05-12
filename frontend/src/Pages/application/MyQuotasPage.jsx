@@ -25,7 +25,6 @@ const MyQuotasPage = () => {
 
     useEffect(() => {
         if(memberQuotasGet){
-            console.log(memberQuotasGet)
             setRows(memberQuotasGet.map(quota => {
                 let x = {
                     ...quota, id: quota.id_

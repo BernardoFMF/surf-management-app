@@ -247,14 +247,12 @@ test('Get all users quotas', async () => {
 test('Get all companies quotas', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getCompaniesQuotas()
-	console.log(quotas)
 	expect(quotas.length).toBe(2)
 })	
 
 test('Get specific company quota', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getMemberQuotasById(6)
-	console.log(quotas)
 	expect(parseInt(quotas[0].date_.split('-')[2])).toBe(2022)
 })
 

@@ -71,7 +71,6 @@ const router = (app, data) => {
 					}
 				}
 			} catch (err) {
-				console.log(err)
 				done(err, false)
 			}
 		}

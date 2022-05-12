@@ -25,7 +25,6 @@ const AllEventsPage = () => {
 
     useEffect(() => {
         if(eventsGet){
-            console.log(eventsGet)
             setRows(eventsGet.map(event => {
                 let x = {
                     ...event, id: event.id_

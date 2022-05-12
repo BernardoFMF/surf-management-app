@@ -20,7 +20,10 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import { Form, Formik } from 'formik';
 import SwitchButton from '../../components/SwitchButton';
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Button from '@mui/material/Button';
 
 
 const AllCandidatesPage = () => {
@@ -128,72 +131,85 @@ const columns = [
 
   return (
     <>
-        { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-        { errorTypes && !error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
-        <Modal
+
+        <Dialog
+            fullWidth={true}
             open={open}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h2" component="h2">
-                    {t('candidates_modal_title')}
-                </Typography>
-                <Formik
-                    initialValues={{
-                        member_type: '',
-                        paid_enrollment: false
+            <Typography sx={{pl: 5, pt: 5}} id="modal-modal-title" variant="h2" component="h2">
+                {t('candidates_modal_title')}
+            </Typography>
+            <DialogContent>
+                <Box
+                    sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    m: 'auto',
+                    width: 'fit-content',
                     }}
-                    validationSchema={Yup.object().shape({
-                        member_type: Yup.string().required(t('candidates_modal_member_type_mandatory')),
-                    })}
-                    onSubmit={approveCandidateHandle}
                 >
-                {formik => (
-                    <Form>
-                        <Grid item xs={12} sm={6} paddingY={2}>
-                            <DropdownInputField name='member_type' label={t('candidates_modal_member_type')} options={typesGet.map(type => type.type_).reduce((o, key) => Object.assign(o, {[key]: key}), {})}></DropdownInputField>
-                        </Grid>
-                        <Grid item xs={12} sm={6} paddingY={1} >
-                            <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.paid_enrollment} />}
-                                label={t('candidates_modal_paid_enrollment')} name='paid_enrollment' labelPlacement='start'
-                            />
-                        </Grid>
-                        <AnimateButton>
-                            <LoadingButton
-                                disableElevation
-                                fullWidth
-                                size="large"
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                loading = {loading}
-                            >
-                                {t('confirm')}
-                            </LoadingButton>
-                        </AnimateButton>
-                    </Form>
-                )}
-                </Formik>
-            </Box>
-        </Modal>
-      <MainCard title='Candidates'sx={{height: '100%'}}>
-      { loading ? 
-        <Stack alignItems="center">
-            <CircularProgress size='4rem'/>
-        </Stack> :
-        <DataGrid
-          autoHeight
-          rows={rows}
-          columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10]}
-          checkboxSelection
-          experimentalFeatures={{ newEditingApi: true }}
-        /> 
-      }
-      </MainCard> 
+                    <Formik
+                        initialValues={{
+                            member_type: '',
+                            paid_enrollment: false
+                        }}
+                        validationSchema={Yup.object().shape({
+                            member_type: Yup.string().required(t('candidates_modal_member_type_mandatory')),
+                        })}
+                        onSubmit={approveCandidateHandle}
+                    >
+                    {formik => (
+                        <Form>
+                            <Grid item xs={12} sm={6} paddingY={2} sx={{pd: 5}}>
+                                <DropdownInputField name='member_type' label={t('candidates_modal_member_type')} options={typesGet.map(type => type.type_).reduce((o, key) => Object.assign(o, {[key]: key}), {})}></DropdownInputField>
+                                <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.paid_enrollment} />}
+                                    label={t('candidates_modal_paid_enrollment')} name='paid_enrollment' labelPlacement='start'
+                                />
+                            </Grid>
+
+                            <AnimateButton>
+                                <LoadingButton
+                                    disableElevation
+                                    fullWidth
+                                    size="large"
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    loading = {loading}
+                                >
+                                    {t('confirm')}
+                                </LoadingButton>
+                            </AnimateButton>
+                        </Form>
+                    )}
+                    </Formik>
+                </Box>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Close</Button>
+            </DialogActions>
+        </Dialog>
+        <MainCard title='Candidates'sx={{height: '100%'}}>
+        { loading ? 
+            <Stack alignItems="center">
+                <CircularProgress size='4rem'/>
+            </Stack> : (
+            <>
+                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+                { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
+                <DataGrid
+                autoHeight
+                rows={rows}
+                columns={columns}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
+                checkboxSelection
+                experimentalFeatures={{ newEditingApi: true }}
+                /> 
+            </>
+            )}
+        </MainCard> 
     </>
   )
 }

@@ -59,7 +59,6 @@ const AuthRegister = ({ ...others }) => {
 
     useEffect(() => {
         if (userRegistration) {
-            console.log(userRegistration)
             setSubmitted(true)
         }
     }, [userRegistration])

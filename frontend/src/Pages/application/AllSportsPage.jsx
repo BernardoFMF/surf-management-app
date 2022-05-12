@@ -23,7 +23,6 @@ const AllSportsPage = () => {
 
     useEffect(() => {
         if(sportsGet){
-            console.log(sportsGet)
             setRows(sportsGet.map(sport => {
                 let x = {
                     ...sport, id: sport.id_
@@ -56,7 +55,7 @@ const AllSportsPage = () => {
     );
 
 const columns = [
-    { field: 'name_', headerName: t('name'), width: 100 },
+    { field: 'name_', headerName: t('name'), width: 150 },
     { field: 'is_deleted_', type: 'boolean', headerName: t('is_deleted'), width: 130 },
     { field: 'practitioners_', headerName: t('practitioners'), width: 170 },
     {

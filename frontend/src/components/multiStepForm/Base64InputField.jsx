@@ -20,14 +20,11 @@ const Base64InputField = ({ label, size, ...props}) => {
 
     useEffect(() => {
         const buildString = async() => {
-            console.log('alterou');
-            console.log(modified);
             var reader = new FileReader();
             reader.onload = function () {
                 const base64String = reader.result.replace("data:", "")
                     .replace(/^.+,/, "");
                 setFieldValue(field.name, 'data:image/jpeg;base64,' + base64String)
-                console.log(base64String);
             }
             reader.readAsDataURL(selectedImage)  
         }

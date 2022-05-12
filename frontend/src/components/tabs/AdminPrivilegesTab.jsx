@@ -9,7 +9,6 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import DropdownInputField from '../multiStepForm/DropdownInputField';
 import { useTheme } from '@mui/material/styles';
-import { getTypes } from '../../store/actions/typeActions';
 
 const AdminPrivilegesTab = ({ user }) => {
     const theme = useTheme()
@@ -21,7 +20,7 @@ const AdminPrivilegesTab = ({ user }) => {
     const dispatch = useDispatch()
 
     const userUpdate = useSelector((state) => state.userUpdate)
-    const { error, updated } = userUpdate
+    let { error, updated } = userUpdate
 
     const typesFetch = useSelector((state) => state.typesFetch)
     const { error: errorTypes, typesGet } = typesFetch
@@ -35,7 +34,7 @@ const AdminPrivilegesTab = ({ user }) => {
         <>
             { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
             { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
-            { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
+            { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {updated = false }}>{t('updated_sucessfully')}</Alert></Box> }
             <Formik
                 initialValues={{
                     type: user.member_type_, 
@@ -110,7 +109,6 @@ const AdminPrivilegesTab = ({ user }) => {
                                     </Grid>
                                 </Grid>
                             </Box>
-                            
                         </Grid>
                     </Grid>
                 </Form>

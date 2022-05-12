@@ -9,9 +9,11 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MainCard from '../../components/cards/MainCard';
+import { useNavigate } from 'react-router';
 
 const AllMembersPage = () => {
-    const theme = useTheme();
+    const theme = useTheme()
+    const navigate = useNavigate()
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
     const {t, i18n} = useTranslation()
@@ -44,18 +46,7 @@ const AllMembersPage = () => {
         });
       },
       [],
-    );
-  
-    const showProfileHandle = React.useCallback(
-      (id) => () => {
-        setRows((prevRows) =>
-          prevRows.map((row) =>
-            row.id === id ? { ...row, isAdmin: !row.isAdmin } : row,
-          ),
-        );
-      },
-      [],
-    );
+    )
 
 const columns = [
     { field: 'member_id_', headerName: 'ID', width: 70 },
@@ -76,14 +67,13 @@ const columns = [
             <GridActionsCellItem
             icon={<AccountCircleIcon />}
             label="Show Profile"
-            onClick={showProfileHandle(params.id)}
+            onClick={() => navigate(`/application/members/${params.id}`)}
             />,
             <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
             onClick={deleteUserHandle(params.id)}
             disabled={params.row.is_deleted_}
-
             />
         ],
     },

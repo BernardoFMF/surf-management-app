@@ -88,7 +88,6 @@ export const getMembersQuotas = (id) => async (dispatch) => {
         headers: { "Content-Type": "application/json" }
     })
     const quotas = await response.json()
-    console.log(quotas)
     if(response.status !== 200) throw Error(quotas.message_code)
     dispatch({
       type: MEMBER_QUOTAS_FETCH_SUCCESS,
