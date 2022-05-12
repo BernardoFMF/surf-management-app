@@ -23,7 +23,6 @@ const AllSportsPage = () => {
 
     useEffect(() => {
         if(sportsGet){
-            console.log(sportsGet)
             setRows(sportsGet.map(sport => {
                 let x = {
                     ...sport, id: sport.id_

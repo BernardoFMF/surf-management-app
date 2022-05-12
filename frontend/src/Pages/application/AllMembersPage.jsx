@@ -61,7 +61,7 @@ const columns = [
     { field: 'member_id_', headerName: 'ID', width: 70 },
     { field: 'full_name_', headerName: 'Full name', width: 130 },
     { field: 'gender_', headerName: 'Gender', width: 130 },
-    { field: 'birth_date_', headerName: 'Birth Date', width: 130 },
+    { field: 'birth_date_', headerName: 'Birth Date', width: 170 },
     { field: 'member_type_', headerName: 'Member Type', width: 130 },
     { field: 'has_debt_', headerName: 'Has Debt', width: 130 , type: 'boolean'},
     { field: 'nationality_', headerName: 'Nationality', width: 130 },

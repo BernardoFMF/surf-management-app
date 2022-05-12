@@ -51,6 +51,7 @@ export const login = (username, password) => async (dispatch) => {
 
       userInfo.is_admin_ = user.is_admin_
       userInfo.img_value_ = user.img_value_
+  
     }
 
     dispatch({
@@ -132,6 +133,19 @@ export const deleteUser = (id) => async (dispatch) => {
 }
 
 export const getUsers = () => async (dispatch) => {
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
   try {
     dispatch({
       type: USERS_FETCH_REQUEST,
@@ -140,8 +154,12 @@ export const getUsers = () => async (dispatch) => {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
     })
-    const users = await response.json()
+    let users = await response.json()
     if(response.status !== 200) throw Error(users.message_code)
+    users = users.map(user => {
+      user.birth_date_ = formatDate(user.birth_date_)
+      return user
+  })
     dispatch({
       type: USERS_FETCH_SUCCESS,
       payload: users,

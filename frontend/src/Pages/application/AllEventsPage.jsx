@@ -18,20 +18,17 @@ const AllEventsPage = () => {
     const eventsFetch = useSelector((state) => state.eventsFetch)
     const { loading, error, eventsGet } = eventsFetch
     const [rows, setRows] = useState([]);
-    
+   
     useEffect(() => {
             dispatch(getEvents())
     },[])
 
     useEffect(() => {
         if(eventsGet){
-            console.log(eventsGet)
             setRows(eventsGet.map(event => {
                 let x = {
                     ...event, id: event.id_
                 }
-                x.initial_date_ = x.initial_date_.split('T')[0]
-                if(x.end_date_)x.end_date_= x.end_date_.split('T')[0]
                 return x
             }))
         }

@@ -31,8 +31,6 @@ const AllQuotasPage = () => {
     const handleOpen = (id) => {
         setId(id)
         setOpen(true);
-        console.log("abre")
-        console.log(id)
     }
 
     const style = {
@@ -53,7 +51,6 @@ const AllQuotasPage = () => {
 
     useEffect(() => {
         if(quotasGet){
-            console.log(quotasGet)
             setRows(quotasGet.map(quota => {
                 let x = {
                     ...quota, id: quota.id_
@@ -68,9 +65,7 @@ const AllQuotasPage = () => {
     const updateQuotaHandle = async(values) => {
         let date = values.payment_date.toLocaleString().split(',')[0]
         date = date.split('/')
-        console.log(date)
         const p_date = `${date[2]}-${date[0]}-${date[1]}`
-        console.log(p_date)
         dispatch(updateQuota(p_date, id))
         dispatch(getQuotas()) //TODO toBe changed
         handleClose()

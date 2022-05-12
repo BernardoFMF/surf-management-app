@@ -8,9 +8,8 @@ import {
   } from '../constants/eventConstants'
   import { parse, isDate } from "date-fns";
 export const getEvents = () => async (dispatch) => {
-
-    function formatDate() {
-        var d = new Date(),
+    function formatDate(date) {
+        var d = new Date(date),
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),
             year = d.getFullYear();
@@ -33,11 +32,10 @@ export const getEvents = () => async (dispatch) => {
         })
         let events = await response.json()
         if(response.status !== 200) throw Error(events.message_code)
-        let date_today = formatDate()
-        console.log(date_today)
+        let date_today = formatDate(new Date())
         events = events.map(event => {
-            console.log("start date: " + event.initial_date_)
-            console.log("end date: " + event.end_date_)
+            event.initial_date_ = formatDate(event.initial_date_)
+            event.end_date_ = formatDate(event.end_date_)
             if(date_today < event.initial_date_ && date_today < event.end_date_){
                 let x = {
                     ...event, status: "status_not_started"
