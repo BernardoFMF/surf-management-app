@@ -72,7 +72,7 @@ let drop = fs.readFileSync('./docs/scripts/drop.sql', 'utf8');
 let create = fs.readFileSync('./docs/scripts/create.sql', 'utf8');
 let trigger = fs.readFileSync('./docs/scripts/Triggers.sql', 'utf8');
 let procedures = fs.readFileSync('./docs/scripts/procedures.sql', 'utf8');
-/*
+
 
 beforeAll( async () => {
 	const con = await data.pool.connect()
@@ -85,9 +85,9 @@ beforeAll( async () => {
 	await insertSportDummies()
 	await insertCandidateDummies()
 	await insertCompanyDummies()
-	return await insertEventDummies()
-	//return await insertSportsforUsersDummies()
-	//return await insertAttendanceDummies()
+	await insertEventDummies()
+	await insertSportsforUsersDummies()
+	return await insertAttendanceDummies()
 })
 
 //Sports - verified 26/04/2022
@@ -254,18 +254,16 @@ test('Create a company', async () => {
 
 test('Update a company', async () => {
 	expect.assertions(1)
-	const company_id = await dbCompany.updateCompany(3, 'Ericeira Surf shop', 354876321, 918923180, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira')
-	expect(company_id).toBe(3)
+	const company = await dbCompany.updateCompany(3, 'Ericeira Surf shop', 354876321, 918923180, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira')
+	expect(company.name_).toBe('Ericeira Surf shop')
 })
 
 test('Delete specific company', async () => {
 	expect.assertions(1)
-	try {
-		await dbCompany.deleteCompany(3)
-		await dbCompany.getCompanyById(3)
-	} catch (e) {
-		expect(e.message).toBe('Company does not exist')
-	}
+	const id = await dbCompany.deleteCompany(3)
+	const company = await dbCompany.getCompanyById(3)
+	expect(company.is_deleted_).toBe(true)
+
 })
 
 //Quotas - verified 26/04/2022
@@ -322,19 +320,17 @@ test('Post User', async () => {
 
 test('Update a user', async () => {
 	expect.assertions(1)
-	const user_id = await dbUser.updateUser(2, 383123818, 763841444, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',false, false, false, 'Other')
-	expect(user_id).toBe(2)
+	const user = await dbUser.updateUser(2, 383123818, 763841444, 'effective', '27-10-1993', 'Portuguese', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',false, false, false, 'Other')
+	expect(user.full_name_).toBe('Luis Marques')
 })
 
 test('Delete user', async () => {
 	expect.assertions(1)
-	try {
-		await dbUser.deleteUser(1)
-		await dbUser.getUserById(1)
-	} catch (e) {
-		expect(e.message).toBe('User does not exist')
-	}
+	const id = await dbUser.deleteUser(1)
+	const user = await dbUser.getUserById(id)
+	expect(user.is_deleted_).toBe(true)
 })
+
 
 //User Sports - verified 26/04/2022
 
@@ -373,5 +369,3 @@ test('Delete a sport for a user', async () => {
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
 })
-
-*/

@@ -35,7 +35,7 @@ const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAl
         marginTop: `-${theme.spacing(0.25)}`,
         width: '1rem',
         height: '1rem',
-        color: theme.palette.secondary.main
+        color: theme.palette.primary.main
     };
 
     const [main, setMain] = useState();
