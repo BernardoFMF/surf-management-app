@@ -7,14 +7,13 @@ import RequireAuth from '../components/RequireAuth'
 const DashboardDefault = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
 const DashboardAnalytics = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
 const AllMembersPage = Loadable(lazy(() => import('../Pages/application/AllMembersPage')))
-const MemberProfile = Loadable(lazy(() => import('../Pages/application/MemberProfile')))
 const AllSportsPage = Loadable(lazy(() => import('../Pages/application/AllSportsPage')))
 const AllQuotasPage = Loadable(lazy(() => import('../Pages/application/AllQuotasPage')))
 const AllCandidatesPage = Loadable(lazy(() => import('../Pages/application/AllCandidatesPage')))
 const AllCompaniesPage = Loadable(lazy(() => import('../Pages/application/AllCompaniesPage')))
 const MyQuotasPage = Loadable(lazy(() => import('../Pages/application/MyQuotasPage')))
 const AllEventsPage = Loadable(lazy(() => import('../Pages/application/AllEventsPage')))
-
+const ProfileForker = Loadable(lazy(() => import('../Pages/application/ProfileForker')))
 
 
 //const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
@@ -37,7 +36,7 @@ const mainRoutes = {
         },
         {
             path: '/application/members/:id',
-            element: <MemberProfile/>
+            element: <ProfileForker/>
         },
         {
             path: '/application/sports',

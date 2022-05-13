@@ -80,7 +80,7 @@ const QUERY_POST_QUOTA = 'call post_quotas($1, $2)'
 
 const QUERY_UPDATE_MEMBER_QUOTA = 'update Quota_ set payment_date_ = $1 where id_ = $2'
 
-const QUERY_GET_MEMBER_BY_ID = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_ from Member_ m join Member_Types_ qp on m.member_type_ = qp.type_  where id_ = $1'
+const QUERY_GET_MEMBER_BY_ID = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_, img_value_ from Member_ m join Member_Types_ qp on m.member_type_ = qp.type_ join Member_img_ mi on m.id_ = mi.member_id_ where id_ = $1'
 
 const QUERY_GET_MEMBER_BY_USERNAME = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_ from Member_ m join Member_Types_ qp on m.member_type_ = qp.type_  where username_ = $1'
 

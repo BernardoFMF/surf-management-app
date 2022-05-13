@@ -1,37 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Container, Grid, Typography, Stack, Alert, Avatar, TextField, Button, useMediaQuery } from '@mui/material'
+import React from 'react'
+import { Box, Grid, Alert, Button, useMediaQuery } from '@mui/material'
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik';
-import { parse, isDate } from "date-fns";
-import useScriptRef from '../../hooks/useScriptRef'
 import InputField from '../multiStepForm/InputField';
 import { updateUser } from '../../store/actions/userActions';
-
 import { useTheme } from '@mui/material/styles';
-
 import AnimateButton from '../extended/AnimateButton';
-
 import { useDispatch, useSelector } from 'react-redux';
 
-import CircularProgress from '@mui/material/CircularProgress';
-
-const AddressInformationTab = ({ user }) => {
+const AddressInformationTab = () => {
     const theme = useTheme()
 
-    const {t, i18n} = useTranslation()
+    const { t } = useTranslation()
+
+    const memberFetch = useSelector((state) => state.memberFetch)
+    const { memberGet } = memberFetch
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
-
-    const scriptedRef = useScriptRef()
 
     const dispatch = useDispatch()
 
     const userUpdate = useSelector((state) => state.userUpdate)
-    const { loading, error, updated } = userUpdate
+    const { error, updated } = userUpdate
 
     const handleSubmit = async (values) => {
-        const updatedUser = { ...values, member_id: user.member_id_, username: user.username_, email: user.email_, gender: user.gender_, nationality: user.nationality_, full_name: user.full_name_, cc: user.cc_, nif: user.nif_, birth_date: user.birth_date_, type: user.member_type_, paid_enrollment: user.paid_enrollment_, is_admin: user.is_admin_, is_deleted: user.is_deleted_ }
+        const updatedUser = { ...values, member_id: memberGet.member_id_, username: memberGet.username_, email: memberGet.email_, gender: memberGet.gender_, nationality: memberGet.nationality_, full_name: memberGet.full_name_, cc: memberGet.cc_, nif: memberGet.nif_, birth_date: memberGet.birth_date_, type: memberGet.member_type_, paid_enrollment: memberGet.paid_enrollment_, is_admin: memberGet.is_admin_, is_deleted: memberGet.is_deleted_ }
         dispatch(updateUser(updatedUser))
     }
 
@@ -41,10 +35,10 @@ const AddressInformationTab = ({ user }) => {
             { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
             <Formik
                 initialValues={{
-                    location: user.location_, 
-                    address: user.address_, 
-                    phone_number: user.phone_number_, 
-                    postal_code: user.postal_code_
+                    location: memberGet.location_, 
+                    address: memberGet.address_, 
+                    phone_number: memberGet.phone_number_, 
+                    postal_code: memberGet.postal_code_
                 }}
                 validationSchema={Yup.object().shape({
                     location: Yup.string().required(t('sign_up_location_mandatory')),
@@ -100,7 +94,6 @@ const AddressInformationTab = ({ user }) => {
                                         </Grid>
                                     </Grid>
                                 </Box>
-                                
                             </Grid>
                         </Grid>
                     </Form>

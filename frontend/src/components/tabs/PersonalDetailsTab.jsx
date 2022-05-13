@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Container, Grid, Typography, Stack, Alert, Avatar, TextField, Button, useMediaQuery } from '@mui/material'
-import default_image from './../../assets/data/blank-profile-picture.png'
+import React from 'react'
+import { Box, Grid, Typography, Stack, Alert, Button, useMediaQuery } from '@mui/material'
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik';
 import { parse, isDate } from "date-fns";
-import useScriptRef from '../../hooks/useScriptRef'
 import InputField from '../multiStepForm/InputField';
 import Base64InputField from '../multiStepForm/Base64InputField';
 import DropdownInputField from '../multiStepForm/DropdownInputField';
@@ -20,12 +18,13 @@ import AnimateButton from '../extended/AnimateButton';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import CircularProgress from '@mui/material/CircularProgress';
-
-const PersonalDetailsTab = ({ user }) => {
+const PersonalDetailsTab = () => {
     const theme = useTheme()
 
-    const {t, i18n} = useTranslation()
+    const { t } = useTranslation()
+
+    const memberFetch = useSelector((state) => state.memberFetch)
+    const { memberGet } = memberFetch
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -42,7 +41,7 @@ const PersonalDetailsTab = ({ user }) => {
     const userUpdate = useSelector((state) => state.userUpdate)
     const { error, updated } = userUpdate
     const handleSubmit = async (values) => {
-        const updatedUser = { ...values, member_id: user.member_id_, type: user.member_type_, phone_number: user.phone_number_, postal_code: user.postal_code_, address: user.address_, location: user.location_, paid_enrollment: user.paid_enrollment_, is_admin: user.is_admin_, is_deleted: user.is_deleted_ }
+        const updatedUser = { ...values, member_id: memberGet.member_id_, type: memberGet.member_type_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, address: memberGet.address_, location: memberGet.location_, paid_enrollment: memberGet.paid_enrollment_, is_admin: memberGet.is_admin_, is_deleted: memberGet.is_deleted_ }
         dispatch(updateUser(updatedUser))
     }
 
@@ -52,16 +51,16 @@ const PersonalDetailsTab = ({ user }) => {
             { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
             <Formik
             initialValues={{
-                username: user.username_,
-                email: user.email_,
-                cc: user.cc_,
-                nif: user.nif_,
-                type: user.member_type_,
-                birth_date: user.birth_date_,
-                nationality: user.nationality_ || 'Portuguese',
-                full_name: user.full_name_,
-                img: user.img_value_,
-                gender: user.gender_ || 'Other'
+                username: memberGet.username_,
+                email: memberGet.email_,
+                cc: memberGet.cc_,
+                nif: memberGet.nif_,
+                type: memberGet.member_type_,
+                birth_date: memberGet.birth_date_,
+                nationality: memberGet.nationality_ || 'Portuguese',
+                full_name: memberGet.full_name_,
+                img: memberGet.img_value_,
+                gender: memberGet.gender_ || 'Other'
             }}
             validationSchema={Yup.object().shape({
                 username: Yup.string().required(t('sign_up_username_mandatory')),
@@ -83,7 +82,7 @@ const PersonalDetailsTab = ({ user }) => {
                             <Box mt={2} sx={{ pt: 2, pr: 2}}>
                                 <Stack direction="column" alignItems="center">
                                     <Base64InputField size={100} name='img' label={t('sign_up_image')}></Base64InputField>
-                                    <Typography variant="subtitle2">{user.member_type_}</Typography>
+                                    <Typography variant="subtitle2">{memberGet.member_type_}</Typography>
                                 </Stack>
                             </Box>
                         </Grid>

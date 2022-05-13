@@ -142,6 +142,12 @@
 
     "status_not_started": "not started yet",
     "status_event_ended": "ended already",
-    "status_event_occurring": "occurring"
+    "status_event_occurring": "occurring",
+
+    "personal_details": "Personal details",
+    "address_information": "Address information",
+    "membership_card": "Membership card",
+    "admin_privileges": "Admin privileges",
+    "profile": "Profile"
     
 }

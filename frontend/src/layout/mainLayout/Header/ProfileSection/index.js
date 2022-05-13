@@ -27,7 +27,7 @@ import User1 from '../../../../assets/data/blank-profile-picture.png'
 
 // assets
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
-import { logout } from '../../../../store/actions/userActions';
+import { logout } from '../../../../store/actions/memberActions';
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -43,8 +43,8 @@ const ProfileSection = () => {
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch()
-    const userLogin = useSelector((state) => state.userLogin)
-    const { loading, error, userInfo } = userLogin
+    const memberLogin = useSelector((state) => state.memberLogin)
+    const { loading, error, memberInfo } = memberLogin
     const { logoutHook } = useAuth()
 
     /**
@@ -109,7 +109,7 @@ const ProfileSection = () => {
                 }}
                 icon={
                     <Avatar
-                        src={userInfo && userInfo.img_value_ ? userInfo.img_value_ : User1}
+                        src={memberInfo && memberInfo.img_value_ ? memberInfo.img_value_ : User1}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',
@@ -156,10 +156,10 @@ const ProfileSection = () => {
                                             <Stack direction="row" spacing={0.5} alignItems="center">
                                                 <Typography variant="h4">{t('hello_profile')}</Typography>
                                                 <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                                                {userInfo.username_} 
+                                                {memberInfo.username_} 
                                                 </Typography>
                                             </Stack>
-                                            <Typography variant="subtitle2">{userInfo.member_type_}</Typography>
+                                            <Typography variant="subtitle2">{memberInfo.member_type_}</Typography>
                                     </Box>
                                     <Box sx={{ pl: 2, pr: 2 }}>
                                         <List
@@ -181,7 +181,7 @@ const ProfileSection = () => {
                                             <ListItemButton
                                                 sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                 selected={selectedIndex === 1}
-                                                onClick={(event) => handleListItemClick(event, 1, `/application/members/${userInfo.id_}`)}
+                                                onClick={(event) => handleListItemClick(event, 1, `/application/members/${memberInfo.id_}`)}
                                             >
                                                 <ListItemIcon>
                                                     <IconUser stroke={1.5} size="1.3rem" />

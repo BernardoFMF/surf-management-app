@@ -1,8 +1,4 @@
 import {
-    USER_LOGIN_FAIL,
-    USER_LOGIN_REQUEST,
-    USER_LOGIN_SUCCESS,
-    USER_LOGOUT,
     USER_REGISTER_FAIL,
     USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
@@ -20,62 +16,7 @@ import {
     USER_UPDATE_REQUEST
   } from '../constants/userConstants'
 
-export const login = (username, password) => async (dispatch) => {
-  try {
-    dispatch({
-      type: USER_LOGIN_REQUEST,
-    })
-    const response = await fetch('/api/members/login', {
-        method: 'POST',
-        body: JSON.stringify({ username, password }),
-        headers: { "Content-Type": "application/json" }
-    })
-    const member = await response.json()
-    if(response.status !== 200) throw Error(member.message_code)
-
-    const userInfo = {
-      id_: member.id_,
-      member_type_: member.member_type_,
-      username_: member.username_,
-      is_admin_: false,
-      img_value_: null
-    }
-
-    if (member.member_type_ !== 'corporate') {
-      const response1 = await fetch(`/api/users/${member.id_}`, {
-        method: 'GET',
-        headers: { "Content-Type": "application/json" }
-      })
-      const user = await response1.json()
-      if(response1.status !== 200) throw Error(user.message_code)
-
-      userInfo.is_admin_ = user.is_admin_
-      userInfo.img_value_ = user.img_value_
-  
-    }
-
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: userInfo,
-    })
-
-    sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
-  } catch (error) {
-    dispatch({
-      type: USER_LOGIN_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
-  }
-}
- 
-export const logout = () => async (dispatch) => {
-  await fetch('/api/members/logout', { method: 'POST' })
-  sessionStorage.removeItem('userInfo')
-  dispatch({ type: USER_LOGOUT })
-}
+import { MEMBER_LOGIN_SUCCESS } from '../constants/memberConstants'
 
 export const signUp = (body) => async (dispatch) => {
   try {
@@ -209,7 +150,7 @@ export const updateUser = (body) => async (dispatch, getState) => {
       type: USER_UPDATE_REQUEST,
     })
 
-    const { userLogin: { userInfo } } = getState()
+    const { memberLogin: { memberInfo } } = getState()
 
     const response = await fetch(`/api/users/${body.member_id}`, {
         method: 'PUT',
@@ -225,7 +166,7 @@ export const updateUser = (body) => async (dispatch, getState) => {
       payload: updateResp,
     })
 
-    if (userInfo.id_ === body.member_id) {
+    if (memberInfo.id_ === body.member_id) {
       const userInfo = {
         id_: updateResp.member_id_,
         member_type_: updateResp.member_type_,
@@ -235,7 +176,7 @@ export const updateUser = (body) => async (dispatch, getState) => {
       }
 
       dispatch({
-        type: USER_LOGIN_SUCCESS,
+        type: MEMBER_LOGIN_SUCCESS,
         payload: userInfo,
       })
       dispatch({
@@ -243,7 +184,7 @@ export const updateUser = (body) => async (dispatch, getState) => {
         payload: updateResp,
       })
 
-      sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
+      sessionStorage.setItem('memberInfo', JSON.stringify(memberInfo))
     }
 
   } catch (error) {

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import SwitchButton from '../SwitchButton'
 import AnimateButton from '../extended/AnimateButton';
-import { Alert, Box, Grid, useMediaQuery, Button, FormControlLabel, Stack, CircularProgress } from '@mui/material';
+import { Alert, Box, Grid, useMediaQuery, Button, FormControlLabel } from '@mui/material';
 import { updateUser } from '../../store/actions/userActions'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next'
@@ -10,10 +10,13 @@ import * as Yup from 'yup';
 import DropdownInputField from '../multiStepForm/DropdownInputField';
 import { useTheme } from '@mui/material/styles';
 
-const AdminPrivilegesTab = ({ user }) => {
+const AdminPrivilegesTab = () => {
     const theme = useTheme()
     
-    const {t, i18n} = useTranslation()
+    const { t } = useTranslation()
+
+    const memberFetch = useSelector((state) => state.memberFetch)
+    const { memberGet } = memberFetch
 
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -26,7 +29,7 @@ const AdminPrivilegesTab = ({ user }) => {
     const { error: errorTypes, typesGet } = typesFetch
 
     const handleSubmit = async (values) => {
-        const updatedUser = { ...values, member_id: user.member_id_, phone_number: user.phone_number_, postal_code: user.postal_code_, address: user.address_, location: user.location_, username: user.username_, email: user.email_, gender: user.gender_, nationality: user.nationality_, full_name: user.full_name_, cc: user.cc_, nif: user.nif_, birth_date: user.birth_date_, img: user.img_value_ }
+        const updatedUser = { ...values, member_id: memberGet.member_id_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, address: memberGet.address_, location: memberGet.location_, username: memberGet.username_, email: memberGet.email_, gender: memberGet.gender_, nationality: memberGet.nationality_, full_name: memberGet.full_name_, cc: memberGet.cc_, nif: memberGet.nif_, birth_date: memberGet.birth_date_, img: memberGet.img_value_ }
         dispatch(updateUser(updatedUser))
     }
 
@@ -37,10 +40,10 @@ const AdminPrivilegesTab = ({ user }) => {
             { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {updated = false }}>{t('updated_sucessfully')}</Alert></Box> }
             <Formik
                 initialValues={{
-                    type: user.member_type_, 
-                    paid_enrollment: user.paid_enrollment_, 
-                    is_admin: user.is_admin_,
-                    is_deleted: user.is_deleted_
+                    type: memberGet.member_type_, 
+                    paid_enrollment: memberGet.paid_enrollment_, 
+                    is_admin: memberGet.is_admin_,
+                    is_deleted: memberGet.is_deleted_
                 }}
                 validationSchema={Yup.object().shape({
                     type: Yup.string().required(t('update_type_mandatory')),
@@ -68,7 +71,7 @@ const AdminPrivilegesTab = ({ user }) => {
                                 />
                             </Box>
                             {
-                                user.is_deleted_ && 
+                                memberGet.is_deleted_ && 
                                     <Box justifyContent='center' sx={{ pt: 2, width: { md: 400 }}}>
                                         <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.is_deleted} />}
                                           label="is deleted" name='is_deleted' labelPlacement='start'

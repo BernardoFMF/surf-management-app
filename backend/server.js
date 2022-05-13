@@ -18,6 +18,7 @@ import companyRoutes from './routes/companyRoutes.js'
 import eventRoutes from './routes/eventRoutes.js'
 import quotaRoutes from './routes/quotaRoutes.js'
 import authRoutes from './routes/authRoutes.js'
+import memberRoutes from './routes/memberRoutes.js'
 import error from './utils/error.js'
 
 
@@ -82,7 +83,8 @@ const router = (app, data) => {
 	app.use('/api/companies', companyRoutes(data))
 	app.use('/api/events', eventRoutes(data))
 	app.use('/api/quotas', quotaRoutes(data))
-	app.use('/api/members', authRoutes(data))
+	app.use('/api/auth', authRoutes(data))
+	app.use('/api/members', memberRoutes(data))
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openapi))
 
 	app.use(errorHandler)

@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import { userDeletionReducer, userFetchReducer, userLoginReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer} from './reducers/userReducers'
+import { userDeletionReducer, userFetchReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer} from './reducers/userReducers'
 import customizationReducer from './reducers/customizationReducers'
 import { typesFetchReducer } from './reducers/typeReducer'
 import { sportsDeletionReducer, sportsFetchReducer} from './reducers/sportReducers'
@@ -10,9 +10,10 @@ import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer} from 
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyDeletionReducer, companiesFetchReducer, companyFetchReducer} from './reducers/companyReducers'
 import { EventDeletionReducer, eventsFetchReducer } from './reducers/eventReducers'
+import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
 
 const reducer = combineReducers({
-  userLogin: userLoginReducer,
+  memberLogin: memberLoginReducer,
   customization: customizationReducer,
   userRegister: userRegisterReducer,
   userDeletion: userDeletionReducer,
@@ -32,15 +33,16 @@ const reducer = combineReducers({
   typesFetch: typesFetchReducer,
   memberQuotaFetch: memberQuotasFetchReducer,
   eventsFetch: eventsFetchReducer,
-  eventDeletion: EventDeletionReducer
+  eventDeletion: EventDeletionReducer,
+  memberFetch: memberFetchReducer
 })
 
-const userInfoFromStorage = sessionStorage.getItem('userInfo')
-  ? JSON.parse(sessionStorage.getItem('userInfo'))
+const memberInfoFromStorage = sessionStorage.getItem('memberInfo')
+  ? JSON.parse(sessionStorage.getItem('memberInfo'))
   : null
 
 const initialState = {
-  userLogin: { userInfo: userInfoFromStorage },
+  memberLogin: { memberInfo: memberInfoFromStorage },
 }
 
 const middleware = [thunk]

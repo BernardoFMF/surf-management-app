@@ -142,6 +142,12 @@
 
     "status_not_started": "ainda não começou",
     "status_event_ended": "já acabou",
-    "status_event_occurring": "a decorrer"
+    "status_event_occurring": "a decorrer",
+
+    "personal_details": "Detalhes pessoais",
+    "address_information": "Informação de contacto",
+    "membership_card": "Cartão de membro",
+    "admin_privileges": "Privilégios de administrador",
+    "profile": "Perfil"
     
 }

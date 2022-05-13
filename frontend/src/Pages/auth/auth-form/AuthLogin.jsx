@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { login } from '../../../store/actions/userActions'
+import { login } from '../../../store/actions/memberActions'
 import useAuth from '../../../hooks/useAuth'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -48,19 +48,19 @@ const AuthLogin = ({ ...others }) => {
     const navigate = useNavigate()
     const { state } = useLocation()
     const dispatch = useDispatch()
-    const userLogin = useSelector((state) => state.userLogin)
-    const { loading, error, userInfo } = userLogin
+    const memberLogin = useSelector((state) => state.memberLogin)
+    const { loading, error, memberInfo } = memberLogin
     const {authed, loginHook} = useAuth()
 
     useEffect(() => {
         async function logIn() {
-            if (userInfo) {
+            if (memberInfo) {
                 loginHook()
                 navigate('/dashboard/overview')
             }
         }
         logIn()
-    }, [userInfo, error])
+    }, [memberInfo, error])
 
     const handleSubmit = async ({username, password}) => {
         dispatch(login(username, password))

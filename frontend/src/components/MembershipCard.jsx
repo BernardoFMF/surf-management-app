@@ -1,6 +1,6 @@
 import Background from '../assets/data/membership_card_bg.jpeg'
 import Logo from '../assets/data/logo.svg'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { Avatar, Box, Typography, Grid, Stack, CircularProgress, useMediaQuery } from '@mui/material';

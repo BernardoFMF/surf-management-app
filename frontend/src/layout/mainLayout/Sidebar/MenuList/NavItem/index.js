@@ -19,8 +19,8 @@ const NavItem = ({ item, level }) => {
     const dispatch = useDispatch();
     const customization = useSelector((state) => state.customization);
     const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
-    const userLogin = useSelector((state) => state.userLogin)
-    const { userInfo } = userLogin
+    const memberLogin = useSelector((state) => state.memberLogin)
+    const { memberInfo } = memberLogin
 
     const Icon = item.icon;
     const itemIcon = item?.icon ? (
@@ -41,7 +41,7 @@ const NavItem = ({ item, level }) => {
     }
 
     let listItemProps = {
-        component: forwardRef((props, ref) => <Link ref={ref} {...props} to={item.hasParams ? parameterize(item.url, userInfo.id_) : item.url} target={itemTarget} />)
+        component: forwardRef((props, ref) => <Link ref={ref} {...props} to={item.hasParams ? parameterize(item.url, memberInfo.id_) : item.url} target={itemTarget} />)
     };
     if (item?.external) {
         listItemProps = { component: 'a', href: item.url, target: itemTarget };

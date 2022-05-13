@@ -3,10 +3,11 @@ import MembershipCard from '../MembershipCard'
 import { useSelector } from 'react-redux'
 
 const MembershipCardTab = ({ user }) => {
-  const userFetch = useSelector((state) => state.userFetch)
-  const { userGet } = userFetch
+  const memberFetch = useSelector((state) => state.memberFetch)
+  const { memberGet } = memberFetch
+
   return (
-    <MembershipCard user={ userGet }/>
+    <MembershipCard user={ memberGet }/>
   )
 }
 
