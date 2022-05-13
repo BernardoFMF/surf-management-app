@@ -52,7 +52,7 @@ const MemberProfile = () => {
       setValue(newValue);
     };
 
-    const mediumViewport = useMediaQuery('(min-width:768px)');
+    const mediumViewport = useMediaQuery('(min-width:600px)');
 
     return (
         <>
@@ -62,7 +62,7 @@ const MemberProfile = () => {
                     <CircularProgress size='4rem'/>
                 </Stack>
                 : ( <>
-                    <Grid container spacing={4} sx={{ pt: 4, pl: 4 }}>
+                    <Grid container spacing={4} sx={{ pt: 4, pl: 4 }} display={{ sm: "flex" }} justifyContent={{ sm: 'center', md: 'flex-start'}}>
                         <Tabs
                             orientation={mediumViewport ? "vertical" : "horizontal"}
                             variant="scrollable"
