@@ -48,8 +48,8 @@ const pages = {
                     id: 'mysports',
                     title: 'My Sports',
                     type: 'item',
-                    hasParams: false,
-                    url: '/profile'
+                    hasParams: true,
+                    url: '/application/members/{id}/sports'
                 },
                 {
                     id: 'allSports',
