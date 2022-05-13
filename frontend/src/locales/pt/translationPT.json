@@ -148,6 +148,15 @@
     "fed_number_": "Número de Federado",
     "fed_name_": "Nome da federação",
     "years_federated_": "Anos federado",
-    "is_absent": "Está aposentado"
+    "is_absent": "Está aposentado",
+    
+    "management_quota_value": "Valor da quota",
+    "management_quota_value_mandatory": "Valor da quota é obrigatório",
+    "management_quota_type": "Tipo de membro",
+    "management_type_mandatory": "Tipo de membro é obrigatório",
+    "management_submit": "Submeter",
+    "management_create": "Criar nova quota",
+    "managemnet_title": "Gestão de quotas"
+
     
 }

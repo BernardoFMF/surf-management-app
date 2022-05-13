@@ -79,6 +79,13 @@ const pages = {
                     type: 'item',
                     hasParams: false,
                     url: '/application/quotas'
+                },
+                {
+                    id: 'managementQuotas',
+                    title: 'Manage Quotas',
+                    type: 'item',
+                    hasParams: false,
+                    url: '/application/quotas/management'
                 }
             ]
         },
