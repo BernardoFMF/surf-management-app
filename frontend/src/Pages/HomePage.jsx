@@ -78,7 +78,7 @@ const HomePage = () => {
                     </Link>       
                 </Grid>
                 <Grid item >
-                  <Divider sx={{ width: { xs: 200, md: 400}, marginBottom: 1.5 }}></Divider>
+                  <Divider sx={{ width: { xs: 200, md: 400}, mb: 1.5, mt: 1.5 }}></Divider>
                  
                   <Link href="https://www.facebook.com/ericeirasurfclube/" target="_blank" sx={{ marginRight: 1 }} >
                     <FacebookIcon style={{ fontSize: 40 }} />
