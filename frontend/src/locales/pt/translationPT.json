@@ -142,6 +142,15 @@
 
     "status_not_started": "ainda não começou",
     "status_event_ended": "já acabou",
-    "status_event_occurring": "a decorrer"
+    "status_event_occurring": "a decorrer",
+
+    "management_quota_value": "Valor da quota",
+    "management_quota_value_mandatory": "Valor da quota é obrigatório",
+    "management_quota_type": "Tipo de membro",
+    "management_type_mandatory": "Tipo de membro é obrigatório",
+    "management_submit": "Submeter",
+    "management_create": "Criar nova quota",
+    "managemnet_title": "Gestão de quotas"
+
     
 }
