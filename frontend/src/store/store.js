@@ -2,15 +2,15 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import { userDeletionReducer, userFetchReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer} from './reducers/userReducers'
+import { userDeletionReducer, userFetchReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer, userSportsFetchReducer} from './reducers/userReducers'
 import customizationReducer from './reducers/customizationReducers'
-import { typesFetchReducer } from './reducers/typeReducer'
+import { typesFetchReducer, typesUpdateReducer, createTypeReducer } from './reducers/typeReducer'
 import { sportsDeletionReducer, sportsFetchReducer} from './reducers/sportReducers'
 import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer} from './reducers/quotaReducers'
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyDeletionReducer, companiesFetchReducer, companyFetchReducer} from './reducers/companyReducers'
-import { EventDeletionReducer, eventsFetchReducer } from './reducers/eventReducers'
 import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
+import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer} from './reducers/eventReducers'
 
 const reducer = combineReducers({
   memberLogin: memberLoginReducer,
@@ -31,10 +31,15 @@ const reducer = combineReducers({
   companiesFetch: companiesFetchReducer,
   companyFetch: companyFetchReducer,
   typesFetch: typesFetchReducer,
+  typesUpdate: typesUpdateReducer,
+  createType: createTypeReducer,
   memberQuotaFetch: memberQuotasFetchReducer,
   eventsFetch: eventsFetchReducer,
   eventDeletion: EventDeletionReducer,
-  memberFetch: memberFetchReducer
+  memberFetch: memberFetchReducer,
+  userSportsFetch : userSportsFetchReducer,
+  eventFetch : eventFetchReducer,
+  eventAttendanceFetch : eventAttendanceFetchReducer
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')

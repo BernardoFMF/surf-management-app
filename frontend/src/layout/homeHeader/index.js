@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Logo from '../../components/Logo'
 import TranslationMenu from '../../components/TranslationMenu'
 import { useTranslation } from 'react-i18next'
+import FacebookIcon from '@mui/icons-material/Facebook';
 
 
 
@@ -84,10 +85,9 @@ const HomeHeader = () => {
                 </Link>
               ))}
             </Box>
-            <Box sx={{ marginRight: { xs: 0, md: 15}}}>
+            <Box sx={{ marginRight: { xs: 0, md: 2}}}>
               <TranslationMenu></TranslationMenu>
-            </Box>
-            
+            </Box>            
           </Toolbar>
         </Container>
       </AppBar>

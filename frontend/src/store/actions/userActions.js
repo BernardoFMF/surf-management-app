@@ -13,7 +13,10 @@ import {
     USER_FETCH_REQUEST,
     USER_UPDATE_SUCCESS,
     USER_UPDATE_FAIL,
-    USER_UPDATE_REQUEST
+    USER_UPDATE_REQUEST,
+    USER_SPORTS_FETCH_SUCCESS,
+    USER_SPORTS_FETCH_FAIL,
+    USER_SPORTS_FETCH_REQUEST
   } from '../constants/userConstants'
 
 import { MEMBER_LOGIN_SUCCESS } from '../constants/memberConstants'
@@ -74,19 +77,6 @@ export const deleteUser = (id) => async (dispatch) => {
 }
 
 export const getUsers = () => async (dispatch) => {
-  function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    return [year, month, day].join('-');
-}
   try {
     dispatch({
       type: USERS_FETCH_REQUEST,
@@ -97,10 +87,6 @@ export const getUsers = () => async (dispatch) => {
     })
     let users = await response.json()
     if(response.status !== 200) throw Error(users.message_code)
-    users = users.map(user => {
-      user.birth_date_ = formatDate(user.birth_date_)
-      return user
-  })
     dispatch({
       type: USERS_FETCH_SUCCESS,
       payload: users,
@@ -190,6 +176,33 @@ export const updateUser = (body) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const getUserSports = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_SPORTS_FETCH_REQUEST,
+    })
+    const response = await fetch(`/api/users/${id}/sports`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+    })
+    const sports = await response.json()
+    if(response.status !== 200) throw Error(sports.message_code)
+    dispatch({
+      type: USER_SPORTS_FETCH_SUCCESS,
+      payload: sports,
+    })
+
+  } catch (error) {
+    dispatch({
+      type: USER_SPORTS_FETCH_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

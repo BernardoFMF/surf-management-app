@@ -48,8 +48,8 @@ const pages = {
                     id: 'mysports',
                     title: 'My Sports',
                     type: 'item',
-                    hasParams: false,
-                    url: '/profile'
+                    hasParams: true,
+                    url: '/application/members/{id}/sports'
                 },
                 {
                     id: 'allSports',
@@ -79,6 +79,13 @@ const pages = {
                     type: 'item',
                     hasParams: false,
                     url: '/application/quotas'
+                },
+                {
+                    id: 'managementQuotas',
+                    title: 'Manage Quotas',
+                    type: 'item',
+                    hasParams: false,
+                    url: '/application/quotas/management'
                 }
             ]
         },

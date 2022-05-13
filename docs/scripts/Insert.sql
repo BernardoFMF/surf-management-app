@@ -11,8 +11,13 @@ values (154781132, 156784242,'Miguel da Silva Lopes','Portuguese','2000-05-19','
 
 insert into Member_Types_ 
 values ('effective', 15),
-('corporate', 50), 
-('merit', 0), 
+('student effective', 5),
+('premium effective', 100),
+('corporate', 50),
+('premium corporate', 200),
+('merit', 0),
+('low-cost effective', 1),
+('low-cost corporate', 10),
 ('founder', 0);
 								
 insert into Member_(member_type_, has_debt_, is_deleted_, username_, pword_) 

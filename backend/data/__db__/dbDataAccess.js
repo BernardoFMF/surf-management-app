@@ -9,6 +9,19 @@ import queries from './dbQueries.js'
 const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 
 	const pool = pl(PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB)
+	function formatDate(date) {
+		var d = new Date(date),
+			month = '' + (d.getMonth() + 1),
+			day = '' + d.getDate(),
+			year = d.getFullYear();
+	
+		if (month.length < 2) 
+			month = '0' + month;
+		if (day.length < 2) 
+			day = '0' + day;
+	
+		return [year, month, day].join('-');
+	}
 	/**
 	 * Candidates
 	 */
@@ -19,6 +32,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			await client.query('Begin')
 			const candidates = await client.query(queries.QUERY_GET_CANDIDATES)
 			await client.query('Commit')
+			candidates.rows = candidates.rows.map(candidate => {
+				candidate.birth_date_ = formatDate(candidate.birth_date_)
+				return candidate
+			})
 			return candidates.rows
 		} catch(e) {
 			await client.query('Rollback')
@@ -316,6 +333,30 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			await events.query('Begin')
 			const eventsResult = await events.query(queries.QUERY_GET_EVENTS)
 			await events.query('Commit')
+			let date_today = formatDate(new Date())
+			eventsResult.rows = eventsResult.rows.map(event => {
+				event.initial_date_ = formatDate(event.initial_date_)
+				event.end_date_ = formatDate(event.end_date_)
+				if(date_today < event.initial_date_ && date_today < event.end_date_){
+					let x = {
+						...event, status: "status_not_started"
+					}
+					return x
+				}else{
+					if(date_today > event.initial_date_ && date_today > event.end_date_){
+						let x = {
+							...event, status: "status_event_ended"
+						}
+						return x
+					}
+					else{
+						let x = {
+							...event, status: "status_event_occurring"
+						}
+						return x
+					}
+				}
+			})
 			return eventsResult.rows
 		} catch(e) {
 			await events.query('Rollback')
@@ -331,6 +372,30 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			await events.query('Begin')
 			const eventResult = await events.query(queries.QUERY_GET_EVENT_BY_ID, [id_])
 			await events.query('Commit')
+			let date_today = formatDate(new Date())
+			eventResult.rows = eventResult.rows.map(event => {
+				event.initial_date_ = formatDate(event.initial_date_)
+				event.end_date_ = formatDate(event.end_date_)
+				if(date_today < event.initial_date_ && date_today < event.end_date_){
+					let x = {
+						...event, status: "status_not_started"
+					}
+					return x
+				}else{
+					if(date_today > event.initial_date_ && date_today > event.end_date_){
+						let x = {
+							...event, status: "status_event_ended"
+						}
+						return x
+					}
+					else{
+						let x = {
+							...event, status: "status_event_occurring"
+						}
+						return x
+					}
+				}
+			})
 			return eventResult.rows[0]
 		} catch(e) {
 			await events.query('Rollback')
@@ -451,9 +516,18 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 	const getUsersData = async () => {
 		const client = await pool.connect()
 		try {
+			await client.query('Begin')
 			const result = await client.query(queries.QUERY_GET_USERS)
+			await client.query('Commit')
+			result.rows = result.rows.map(user => {
+				user.birth_date_ = formatDate(user.birth_date_)
+				return user
+			})
 			return result.rows
-		} finally {
+		} catch(e) {
+			await client.query('Rollback')
+			throw e
+		}finally {
 			client.release()
 		}
 	}
@@ -462,7 +536,14 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		const client = await pool.connect()
 		try {
 			const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
+			result.rows = result.rows.map(user => {
+				user.birth_date_ = formatDate(user.birth_date_)
+				return user
+			})
 			return result.rows[0]
+		} catch(e) {
+			await client.query('Rollback')
+			throw e
 		} finally {
 			client.release()
 		}

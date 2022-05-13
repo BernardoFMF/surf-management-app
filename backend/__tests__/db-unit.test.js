@@ -309,7 +309,7 @@ test('Get all users', async () => {
 test('Get a specific user', async () => {
 	expect.assertions(1)
 	const user = await dbUser.getUserById(1)
-	expect(user.birth_date_).toBe('09-03-1987')
+	expect(user.birth_date_).toBe('1987-03-09')
 })
 
 test('Post User', async () => {

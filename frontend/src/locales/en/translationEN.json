@@ -148,6 +148,20 @@
     "address_information": "Address information",
     "membership_card": "Membership card",
     "admin_privileges": "Admin privileges",
-    "profile": "Profile"
+    "profile": "Profile",
+
+    "fed_id_": "Federation ID",
+    "fed_number_": "Federation Number",
+    "fed_name_": "Federation Name",
+    "years_federated_": "Years Federated",
+    "is_absent": "Absent",
     
+    "management_quota_value": "Quota Value",
+    "management_quota_value_mandatory": "Quota Value is mandatory",
+    "management_quota_type": "Member type",
+    "management_type_mandatory": "Member type is mandatory",
+    "management_submit": "Submit",
+    "management_create": "Create new quota",
+    "management_title": "Management quotas",
+    "management_create_alert": "New member type created successfuly"
 }
