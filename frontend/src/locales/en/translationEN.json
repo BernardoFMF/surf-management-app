@@ -142,6 +142,12 @@
 
     "status_not_started": "not started yet",
     "status_event_ended": "ended already",
-    "status_event_occurring": "occurring"
+    "status_event_occurring": "occurring",
+
+    "fed_id_": "Federation ID",
+    "fed_number_": "Federation Number",
+    "fed_name_": "Federation Name",
+    "years_federated_": "Years Federated",
+    "is_absent": "Absent"
     
 }

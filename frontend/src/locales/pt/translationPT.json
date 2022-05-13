@@ -142,6 +142,12 @@
 
     "status_not_started": "ainda não começou",
     "status_event_ended": "já acabou",
-    "status_event_occurring": "a decorrer"
+    "status_event_occurring": "a decorrer",
+
+    "fed_id_": "ID da federação",
+    "fed_number_": "Número de Federado",
+    "fed_name_": "Nome da federação",
+    "years_federated_": "Anos federado",
+    "is_absent": "Está aposentado"
     
 }
