@@ -18,6 +18,11 @@ const MySportsPage = Loadable(lazy(() => import('../Pages/application/MySportsPa
 const QuotasManagementPage = Loadable(lazy(() => import('../Pages/application/QuotasManagementPage')))
 const EventPage = Loadable(lazy(() => import('../Pages/application/EventPage')))
 
+
+
+
+//const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
+
 const mainRoutes = {
     path: '/',
     element: <RequireAuth><MainLayout /></RequireAuth>,

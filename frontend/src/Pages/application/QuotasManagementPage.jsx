@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTypes, updateTypes } from '../../store/actions/typeActions'
+import { getTypes, updateTypes, createType } from '../../store/actions/typeActions'
 import * as Yup from 'yup';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useTheme } from '@mui/material/styles';
-import { Stack, CircularProgress, Grid, Alert} from '@mui/material'
+import { Stack, CircularProgress, Grid, Alert, Divider} from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -21,13 +20,14 @@ import SubCard from '../../components/cards/SubCard'
 
 
 const QuotasManagementPage = () => {
-    const theme = useTheme();
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
     const typesFetch = useSelector((state) => state.typesFetch)
     const { loading, error: errorTypes, typesGet } = typesFetch
-    const typesUpdate = useSelector((state) => state.typesUpdate)
-    const { updated } = typesUpdate
+    const update = useSelector((state) => state.typesUpdate)
+    const { typesUpdate } = update
+    const create = useSelector((state) => state.createType)
+    const { createType } = create
 
     const [type, setType] = React.useState();
     
@@ -40,12 +40,14 @@ const QuotasManagementPage = () => {
     }
 
     const handleSubmitCreate = async (values) => {
-        dispatch(updateTypes(type, values.quota_value))
+        dispatch(createType(values.type, values.quota_value))
+        dispatch(getTypes())
     }
     return (
     <>
-        <MainCard title={t('managemnet_title')} sx={{height: '100%'}}>
-            { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
+        <MainCard title={t('management_title')} sx={{height: '100%'}}>
+            { typesUpdate && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success">{t('updated_sucessfully')}</Alert></Box> }
+            { createType && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success">{t('management_create_alert')}</Alert></Box> }
             { loading ? 
                 <Stack alignItems="center">
                     <CircularProgress size='4rem'/>
@@ -94,6 +96,9 @@ const QuotasManagementPage = () => {
                                 ) 
                             }
                         </Grid>
+                        <br />
+                        <br />
+                        <Divider></Divider>
                         <br />
                         <br />
                         <Grid style={{ display: 'flex',alignItems: 'center',justifyContent: 'center'}} sx={{ maxWidth: '100%' }}>

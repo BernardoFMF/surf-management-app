@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { userDeletionReducer, userFetchReducer, userLoginReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer, userSportsFetchReducer} from './reducers/userReducers'
 import customizationReducer from './reducers/customizationReducers'
-import { typesFetchReducer, typesUpdateReducer } from './reducers/typeReducer'
+import { typesFetchReducer, typesUpdateReducer, createTypeReducer } from './reducers/typeReducer'
 import { sportsDeletionReducer, sportsFetchReducer} from './reducers/sportReducers'
 import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer} from './reducers/quotaReducers'
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
@@ -31,6 +31,7 @@ const reducer = combineReducers({
   companyFetch: companyFetchReducer,
   typesFetch: typesFetchReducer,
   typesUpdate: typesUpdateReducer,
+  createType: createTypeReducer,
   memberQuotaFetch: memberQuotasFetchReducer,
   eventsFetch: eventsFetchReducer,
   eventDeletion: EventDeletionReducer,
