@@ -10,11 +10,13 @@ import EventIcon from '@mui/icons-material/Event'
 import MainCard from '../../components/cards/MainCard';
 import { red, blue , green } from "@mui/material/colors";
 import Chip from '@mui/material/Chip';
+import { useNavigate } from 'react-router';
 
 const AllEventsPage = () => {
     const theme = useTheme();
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const eventsFetch = useSelector((state) => state.eventsFetch)
     const { loading, error, eventsGet } = eventsFetch
     const [rows, setRows] = useState([]);
@@ -45,17 +47,6 @@ const AllEventsPage = () => {
       [],
     );
   
-    const showEventHandle = React.useCallback(
-      (id) => () => {
-        setRows((prevRows) =>
-          prevRows.map((row) =>
-            row.id === id ? { ...row, isAdmin: !row.isAdmin } : row,
-          ),
-        );
-      },
-      [],
-    );
-
     function getChipProps(params) {
         return {
             label: t(params.row.status),
@@ -88,7 +79,7 @@ const columns = [
             <GridActionsCellItem
             icon={<EventIcon />}
             label="Show Event"
-            onClick={showEventHandle(params.id)}
+            onClick={() => navigate(`/application/events/${params.id}`)}
             />,
             <GridActionsCellItem
             icon={<DeleteIcon />}
