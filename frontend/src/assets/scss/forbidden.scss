@@ -1,0 +1,30 @@
+* {
+    margin:0;
+    padding: 0;
+  }
+  body{
+
+    
+  }
+  .whistle{
+    width: 20%;
+    fill: #1565c0;
+    margin: 100px 40%;
+    text-align: left;
+    transform: translate(-50%, -50%);
+    transform: rotate(0);
+    transform-origin: 80% 30%;
+    animation: wiggle .2s infinite;
+  }
+  
+  @keyframes wiggle {
+    0%{
+      transform: rotate(3deg);
+    }
+    50%{
+      transform: rotate(0deg);
+    }
+    100%{
+      transform: rotate(3deg);
+    }
+  }

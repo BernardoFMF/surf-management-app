@@ -512,6 +512,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		const client = await pool.connect()
 		try {
 			const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
+			result.rows = result.rows.map(user => {
+				user.birth_date_ = formatDate(user.birth_date_)
+				return user
+			})
 			return result.rows[0]
 		} catch(e) {
 			await client.query('Rollback')

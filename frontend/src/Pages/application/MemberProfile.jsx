@@ -43,7 +43,8 @@ const MemberProfile = () => {
 
     useEffect(() => {
         dispatch(getUserById(id))
-        dispatch(getTypes())
+        if(userGet.is_admin)
+            dispatch(getTypes())
     },[dispatch, id])
 
     const [value, setValue] = React.useState(0);

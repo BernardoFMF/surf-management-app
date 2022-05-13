@@ -75,10 +75,8 @@ const HomePage = () => {
                             {t('front_page_login')}
                           </Button>
                       </AnimateButton>
-                    </Link>
-                   
+                    </Link>       
                 </Grid>
-                
                 <Grid item >
                   <Divider sx={{ width: { xs: 200, md: 400}, marginBottom: 1.5 }}></Divider>
                  
