@@ -372,6 +372,30 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			await events.query('Begin')
 			const eventResult = await events.query(queries.QUERY_GET_EVENT_BY_ID, [id_])
 			await events.query('Commit')
+			let date_today = formatDate(new Date())
+			eventResult.rows = eventResult.rows.map(event => {
+				event.initial_date_ = formatDate(event.initial_date_)
+				event.end_date_ = formatDate(event.end_date_)
+				if(date_today < event.initial_date_ && date_today < event.end_date_){
+					let x = {
+						...event, status: "status_not_started"
+					}
+					return x
+				}else{
+					if(date_today > event.initial_date_ && date_today > event.end_date_){
+						let x = {
+							...event, status: "status_event_ended"
+						}
+						return x
+					}
+					else{
+						let x = {
+							...event, status: "status_event_occurring"
+						}
+						return x
+					}
+				}
+			})
 			return eventResult.rows[0]
 		} catch(e) {
 			await events.query('Rollback')

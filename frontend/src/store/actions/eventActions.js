@@ -4,7 +4,13 @@ import {
     EVENTS_FETCH_REQUEST,
     EVENT_DELETE_SUCCESS,
     EVENT_DELETE_FAIL,
-    EVENT_DELETE_REQUEST
+    EVENT_DELETE_REQUEST,
+    EVENT_FETCH_SUCCESS,
+    EVENT_FETCH_FAIL,
+    EVENT_FETCH_REQUEST,
+    EVENT_ATTENDANCE_FETCH_SUCCESS,
+    EVENT_ATTENDANCE_FETCH_FAIL,
+    EVENT_ATTENDANCE_FETCH_REQUEST
   } from '../constants/eventConstants'
   
 export const getEvents = () => async (dispatch) => {
@@ -53,6 +59,60 @@ export const deleteEvent = (id) => async (dispatch) => {
     } catch (error) {
       dispatch({
         type: EVENT_DELETE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+  export const getEvent = (id) => async (dispatch) => {
+    try {
+      dispatch({
+        type: EVENT_FETCH_REQUEST,
+      })
+      const response = await fetch(`/api/events/${id}`, {
+          method: 'GET',
+          headers: { "Content-Type": "application/json" }
+      })
+      const text = await response.json()
+      if(response.status !== 200) throw Error(text.message_code)
+      dispatch({
+        type: EVENT_FETCH_SUCCESS,
+        payload: text,
+      })
+  
+    } catch (error) {
+      dispatch({
+        type: EVENT_FETCH_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+  export const getEventAttendance = (id) => async (dispatch) => {
+    try {
+      dispatch({
+        type: EVENT_ATTENDANCE_FETCH_REQUEST,
+      })
+      const response = await fetch(`/api/events/${id}/attendance`, {
+          method: 'GET',
+          headers: { "Content-Type": "application/json" }
+      })
+      const text = await response.json()
+      if(response.status !== 200) throw Error(text.message_code)
+      dispatch({
+        type: EVENT_ATTENDANCE_FETCH_SUCCESS,
+        payload: text,
+      })
+  
+    } catch (error) {
+      dispatch({
+        type: EVENT_ATTENDANCE_FETCH_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
