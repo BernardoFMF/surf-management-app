@@ -150,7 +150,9 @@
     "management_type_mandatory": "Tipo de membro é obrigatório",
     "management_submit": "Submeter",
     "management_create": "Criar nova quota",
-    "managemnet_title": "Gestão de quotas"
+    "managemnet_title": "Gestão de quotas",
+    "management_create_alert": "Novo membro criado com sucesso"
+
 
     
 }

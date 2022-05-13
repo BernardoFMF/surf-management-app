@@ -150,5 +150,7 @@
     "management_type_mandatory": "Member type is mandatory",
     "management_submit": "Submit",
     "management_create": "Create new quota",
-    "managemnet_title": "Management quotas"
+    "management_title": "Management quotas",
+    "management_create_alert": "New member type created successfuly"
+
 }
