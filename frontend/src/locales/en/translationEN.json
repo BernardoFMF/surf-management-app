@@ -175,5 +175,9 @@
     "all_sports_update": "Update",
 
     "all_quotas_create_quota": "Create new quota",
-    "all_quotas_date": "Date"
+    "all_quotas_date": "Date",
+
+    "event_people_going": "People going",
+    "event_people_not_going": "People not going",
+    "event_people_interested": "People interested"
 }
