@@ -50,7 +50,7 @@ export const deleteEvent = (id) => async (dispatch) => {
           headers: { "Content-Type": "application/json" }
       })
       const text = await response.json()
-      if(response.status !== 201) throw Error(text.message_code)
+      if(response.status !== 200) throw Error(text.message_code)
       dispatch({
         type: EVENT_DELETE_SUCCESS,
         payload: text,
@@ -103,11 +103,20 @@ export const deleteEvent = (id) => async (dispatch) => {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
       })
-      const text = await response.json()
+      let interested = 0
+      let not_going = 0
+      let going = 0
+      let text = await response.json()
+      text = text.map(attendance => {
+        attendance.state_ === "interested" ? interested++ : attendance.state_ === "not going" ? not_going++ : going++
+        return attendance
+      })
+      let attendance = {text,interested,not_going,going}
+      console.log(attendance)
       if(response.status !== 200) throw Error(text.message_code)
       dispatch({
         type: EVENT_ATTENDANCE_FETCH_SUCCESS,
-        payload: text,
+        payload: attendance,
       })
   
     } catch (error) {

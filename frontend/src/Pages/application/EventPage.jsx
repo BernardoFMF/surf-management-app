@@ -42,10 +42,11 @@ const EventPage = () => {
     },[])
 
     useEffect(() => {
+        console.log(eventAttendanceGet)
         if(eventAttendanceGet){
-            setRows(eventAttendanceGet.map(event => {
+            setRows(eventAttendanceGet.text.map(event => {
                 let x = {
-                    ...event, id: event.event_id_
+                    ...event, id: event.member_id_
                 }
                 return x
             }))
@@ -71,7 +72,7 @@ const EventPage = () => {
                     </Grid>
                 </Grid>
             </MainCard>
-            <MainCard title='Events'sx={{height: '100%'}}>
+            <MainCard title='Attendance'sx={{height: '100%'}}>
                 <DataGrid
                 autoHeight
                 rows={rows}
@@ -81,6 +82,24 @@ const EventPage = () => {
                 checkboxSelection
                 experimentalFeatures={{ newEditingApi: true }}
                 /> 
+                <br></br>
+                <br></br>
+                <br></br>
+                <Grid container>
+                    <Grid item xs>
+                        {eventAttendanceGet !==undefined ? t("event_people_going") + ": " + eventAttendanceGet.going : "" }
+                    </Grid>
+                    <Divider orientation="vertical" flexItem>
+                    </Divider>
+                    <Grid item xs>
+                        {eventAttendanceGet !==undefined ? t("event_people_not_going") + ": " + eventAttendanceGet.not_going : "" }
+                    </Grid>
+                    <Divider orientation="vertical" flexItem>
+                    </Divider>
+                    <Grid item xs>
+                        {eventAttendanceGet !==undefined ? t("event_people_interested") + ": " + eventAttendanceGet.interested : "" }
+                    </Grid>
+                </Grid>
             </MainCard> 
         </>
     )

@@ -5,7 +5,7 @@ import { getTypes } from '../../store/actions/typeActions'
 
 import * as Yup from 'yup';
 
-import { Grid, useMediaQuery, Stack, CircularProgress, FormControlLabel, Alert} from '@mui/material'
+import { Grid,Stack, CircularProgress, FormControlLabel, Alert} from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -28,9 +28,8 @@ import Button from '@mui/material/Button';
 
 const AllCandidatesPage = () => {
     const theme = useTheme();
-    const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
-    const {t, i18n} = useTranslation()
+    const {t} = useTranslation()
     const dispatch = useDispatch()
 
     const [rows, setRows] = useState([]);
@@ -48,18 +47,6 @@ const AllCandidatesPage = () => {
         setId(id)
         setOpen(true);
     }
-
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-    };
 
     useEffect(() => {
         dispatch(getCandidates())

@@ -5,6 +5,9 @@ import {
     QUOTA_UPDATE_SUCCESS,
     QUOTA_UPDATE_FAIL,
     QUOTA_UPDATE_REQUEST,
+    QUOTA_CREATE_SUCCESS,
+    QUOTA_CREATE_FAIL,
+    QUOTA_CREATE_REQUEST,
     MEMBER_QUOTAS_FETCH_SUCCESS,
     MEMBER_QUOTAS_FETCH_FAIL,
     MEMBER_QUOTAS_FETCH_REQUEST
@@ -97,6 +100,35 @@ export const getMembersQuotas = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: MEMBER_QUOTAS_FETCH_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+
+export const createQuota = (date) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: QUOTA_CREATE_REQUEST,
+    })
+    const response = await fetch(`/api/quotas`, {
+        method: 'POST',
+        body: JSON.stringify({date}),
+        headers: { "Content-Type": "application/json" }
+    })
+    const quotaID = await response.json()
+    if(response.status !== 201) throw Error(quotaID.message_code)
+    dispatch({
+      type: QUOTA_CREATE_SUCCESS,
+      payload: quotaID
+    })
+
+  } catch (error) {
+    dispatch({
+      type: QUOTA_CREATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

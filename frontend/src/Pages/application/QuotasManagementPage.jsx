@@ -4,7 +4,6 @@ import { getTypes, updateTypes, createType } from '../../store/actions/typeActio
 import * as Yup from 'yup';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
-import { useTheme } from '@mui/material/styles';
 import { Stack, CircularProgress, Grid, Alert, Divider} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box';
@@ -53,7 +52,7 @@ const QuotasManagementPage = () => {
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                     <>
-                        <Grid container spacing={5} >
+                        <Grid container justifyContent={'center'} spacing={5} >
                             {
                                 typesGet.map(type => 
                                     (
@@ -68,28 +67,25 @@ const QuotasManagementPage = () => {
                                             onSubmit={handleSubmitUpdate}
                                         >
                                         {formik => (
-                                            
-                                                <Grid item sx={{ ml: { md: 4, lg: 4 }}} maxWidth={300}>
-                                                    <Form style={{maxWidth:300}}>
-                                            
-                                                        <Card key={12} elevation={12} sx={{ minWidth: 275 }}>
-                                                            <CardContent>
-                                                                <Typography sx={{ fontSize: 22 }} color="primary" gutterBottom>
-                                                                    {type.type_}
-                                                                </Typography>
-                                                                <br />
-                                                                <InputField name='quota_value' label={t('management_quota_value')} type='text'>
-                                                                    {type.quota_value_}
-                                                                </InputField>
-                                                            </CardContent>
-                                                            <CardActions>
-                                                                <Button size="small" type="submit" onClick={() => setType(type.type_)}>{t('management_submit')}</Button>
-                                                            </CardActions>
-                                                        </Card>
-                                                    </Form>
-                                                </Grid>
-                                                
+                                            <Grid item maxWidth={300}>
+                                                <Form style={{maxWidth:300}}>
                                         
+                                                    <Card key={12} elevation={6} sx={{ minWidth: 275 }}>
+                                                        <CardContent>
+                                                            <Typography sx={{ fontSize: 22 }} color="primary" gutterBottom>
+                                                                {type.type_}
+                                                            </Typography>
+                                                            <br />
+                                                            <InputField name='quota_value' label={t('management_quota_value')} type='text'>
+                                                                {type.quota_value_}
+                                                            </InputField>
+                                                        </CardContent>
+                                                        <CardActions>
+                                                            <Button size="small" type="submit" onClick={() => setType(type.type_)}>{t('management_submit')}</Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </Form>
+                                            </Grid>
                                         )}
                                         </Formik>
                                     )
@@ -114,32 +110,32 @@ const QuotasManagementPage = () => {
                                     })}
                                     onSubmit={handleSubmitCreate}
                                 >
-                                    {formik => (
-                                        <Grid item sx={{ ml: { md: 4, lg: 4 }}} maxWidth={300} >
-                                            <Form  >
-                                                <InputField name='type' label={t('management_quota_type')} type='text'>
-                                                </InputField>
-                                                <InputField name='quota_value' label={t('management_quota_value')} type='text'>
-                                                </InputField>
-                                                <AnimateButton>
-                                                    <LoadingButton
-                                                        disableElevation
-                                                        fullWidth
-                                                        size="large"
-                                                        type="submit"
-                                                        variant="contained"
-                                                        color="primary"
-                                                        loading = {loading}
-                                                    >
-                                                        {t('management_submit')}
-                                                    </LoadingButton>
-                                                </AnimateButton>
-                                            </Form>
-                                        </Grid>
-                                    )}
-                                    </Formik>
-                                </SubCard>
-                            </Grid>
+                                {formik => (
+                                    <Grid item sx={{ ml: { md: 4, lg: 4 }}} maxWidth={300} >
+                                        <Form  >
+                                            <InputField name='type' label={t('management_quota_type')} type='text'>
+                                            </InputField>
+                                            <InputField name='quota_value' label={t('management_quota_value')} type='text'>
+                                            </InputField>
+                                            <AnimateButton>
+                                                <LoadingButton
+                                                    disableElevation
+                                                    fullWidth
+                                                    size="large"
+                                                    type="submit"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    loading = {loading}
+                                                >
+                                                    {t('management_submit')}
+                                                </LoadingButton>
+                                            </AnimateButton>
+                                        </Form>
+                                    </Grid>
+                                )}
+                                </Formik>
+                            </SubCard>
+                        </Grid>
                         </>                   
                 )
             }

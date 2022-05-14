@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getEvents, deleteEvent } from '../../store/actions/eventActions'
 
-import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -11,10 +10,11 @@ import MainCard from '../../components/cards/MainCard';
 import { red, blue , green } from "@mui/material/colors";
 import Chip from '@mui/material/Chip';
 import { useNavigate } from 'react-router';
+import {  Stack, CircularProgress} from '@mui/material'
+
 
 const AllEventsPage = () => {
-    const theme = useTheme();
-    const {t, i18n} = useTranslation()
+    const {t} = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const eventsFetch = useSelector((state) => state.eventsFetch)
@@ -95,15 +95,20 @@ const columns = [
   return (
     <>
       <MainCard title='Events'sx={{height: '100%'}}>
-        <DataGrid
-          autoHeight
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-          experimentalFeatures={{ newEditingApi: true }}
-        /> 
+      { loading ? 
+            <Stack alignItems="center">
+                <CircularProgress size='4rem'/>
+            </Stack> : (
+                <DataGrid
+                  autoHeight
+                  rows={rows}
+                  columns={columns}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  checkboxSelection
+                  experimentalFeatures={{ newEditingApi: true }}
+                /> 
+            )}
       </MainCard> 
     </>
   )

@@ -4,7 +4,13 @@ import {
     SPORTS_FETCH_REQUEST,
     SPORT_DELETE_SUCCESS,
     SPORT_DELETE_FAIL,
-    SPORT_DELETE_REQUEST
+    SPORT_DELETE_REQUEST,
+    SPORT_CREATE_SUCCESS,
+    SPORT_CREATE_FAIL,
+    SPORT_CREATE_REQUEST,
+    SPORT_UPDATE_SUCCESS,
+    SPORT_UPDATE_FAIL,
+    SPORT_UPDATE_REQUEST
   } from '../constants/sportConstants'
 
 export const getSports = () => async (dispatch) => {
@@ -44,7 +50,7 @@ export const deleteSport = (id) => async (dispatch) => {
         headers: { "Content-Type": "application/json" }
     })
     const text = await response.json()
-    if(response.status !== 201) throw Error(text.message_code)
+    if(response.status !== 200) throw Error(text.message_code)
     dispatch({
       type: SPORT_DELETE_SUCCESS,
       payload: text,
@@ -53,6 +59,63 @@ export const deleteSport = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SPORT_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const updateSport = (id, name, is_deleted) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SPORT_UPDATE_REQUEST,
+    })
+    const response = await fetch(`/api/sports/${id}`, {
+        method: 'PUT',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({name, is_deleted}),
+
+    })
+    const text = await response.json()
+    if(response.status !== 200) throw Error(text.message_code)
+    dispatch({
+      type: SPORT_UPDATE_SUCCESS,
+      payload: text,
+    })
+
+  } catch (error) {
+    dispatch({
+      type: SPORT_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const createSport = (name) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SPORT_CREATE_REQUEST,
+    })
+    const response = await fetch(`/api/sports`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({name}),
+    })
+    const sports = await response.json()
+    if(response.status !== 200) throw Error(sports.message_code)
+    dispatch({
+      type: SPORT_CREATE_SUCCESS,
+      payload: sports,
+    })
+
+  } catch (error) {
+    dispatch({
+      type: SPORT_CREATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -298,6 +298,26 @@ test('Update a company quota', async () => {
 	expect(quota).toBe(2)
 })
 
+
+test('Get all management quotas', async () => {
+	expect.assertions(1)
+	const quotas = await dbQuota.getManagementQuotas()
+	expect(quotas.length).toBe(4)
+})	
+
+test('Update specific management quota', async () => {
+	expect.assertions(1)
+	await dbQuota.updateManagementQuotaByType('effective', 20)
+	const mq = await dbQuota.getManagementQuotaByType('effective')
+	expect(mq.quota_value_).toBe(20)
+})
+
+test('Create management quota', async () => {
+	expect.assertions(1)
+	const quota = await dbQuota.postManagementQuota('super effective', 100)
+	expect(quota).toBe('super effective')
+})
+
 //User - verified 26/04/2022
 
 test('Get all users', async () => {

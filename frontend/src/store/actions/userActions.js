@@ -16,7 +16,10 @@ import {
     USER_UPDATE_REQUEST,
     USER_SPORTS_FETCH_SUCCESS,
     USER_SPORTS_FETCH_FAIL,
-    USER_SPORTS_FETCH_REQUEST
+    USER_SPORTS_FETCH_REQUEST,
+    USERS_SPORT_FETCH_SUCCESS,
+    USERS_SPORT_FETCH_FAIL,
+    USERS_SPORT_FETCH_REQUEST
   } from '../constants/userConstants'
 
 import { MEMBER_LOGIN_SUCCESS, MEMBER_FETCH_SUCCESS } from '../constants/memberConstants'
@@ -59,7 +62,7 @@ export const deleteUser = (id) => async (dispatch) => {
         headers: { "Content-Type": "application/json" }
     })
     const text = await response.json()
-    if(response.status !== 201) throw Error(text.message_code)
+    if(response.status !== 200) throw Error(text.message_code)
     dispatch({
       type: USER_DELETE_SUCCESS,
       payload: text,
@@ -209,4 +212,31 @@ export const getUserSports = (id) => async (dispatch) => {
           : error.message,
     })
   }
+}
+
+export const getUsersSport = (id) => async (dispatch) => {
+try {
+  dispatch({
+    type: USERS_SPORT_FETCH_REQUEST,
+  })
+  const response = await fetch(`/api/users/sports/${id}`, {
+      method: 'GET',
+      headers: { "Content-Type": "application/json" }
+  })
+  const sports = await response.json()
+  if(response.status !== 200) throw Error(sports.message_code)
+  dispatch({
+    type: USERS_SPORT_FETCH_SUCCESS,
+    payload: sports,
+  })
+
+} catch (error) {
+  dispatch({
+    type: USERS_SPORT_FETCH_FAIL,
+    payload:
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message,
+  })
+}
 }

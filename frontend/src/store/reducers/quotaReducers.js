@@ -5,6 +5,9 @@ import {
     QUOTA_UPDATE_SUCCESS,
     QUOTA_UPDATE_FAIL,
     QUOTA_UPDATE_REQUEST,
+    QUOTA_CREATE_SUCCESS,
+    QUOTA_CREATE_FAIL,
+    QUOTA_CREATE_REQUEST,
     MEMBER_QUOTAS_FETCH_SUCCESS,
     MEMBER_QUOTAS_FETCH_FAIL,
     MEMBER_QUOTAS_FETCH_REQUEST
@@ -43,6 +46,19 @@ export const memberQuotasFetchReducer = (state = {memberQuotasGet: []}, action) 
         case MEMBER_QUOTAS_FETCH_SUCCESS:
         return { loading: false, memberQuotasGet: action.payload }
         case MEMBER_QUOTAS_FETCH_FAIL:
+        return { loading: false, error: action.payload }
+        default:
+        return state
+    }
+}
+
+export const createQuotaReducer = (state = {}, action) => {
+    switch (action.type) {
+        case QUOTA_CREATE_REQUEST:
+        return { loading: true }
+        case QUOTA_CREATE_SUCCESS:
+        return { loading: false, quotaCreate: action.payload }
+        case QUOTA_CREATE_FAIL:
         return { loading: false, error: action.payload }
         default:
         return state
