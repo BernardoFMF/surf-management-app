@@ -52,7 +52,7 @@ export const eventFetchReducer = (state = {eventGet: {}}, action) => {
     }
 }
 
-export const eventAttendanceFetchReducer = (state = {eventAttendanceGet: []}, action) => {
+export const eventAttendanceFetchReducer = (state = {eventAttendanceGet: {text:[],interested:0,not_going:0,going:0}}, action) => {
     switch (action.type) {
         case EVENT_ATTENDANCE_FETCH_REQUEST:
         return { loading: true }

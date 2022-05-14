@@ -51,6 +51,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			await client.query('Begin')
 			const candidates = await client.query(queries.QUERY_GET_CANDIDATE_BY_ID, [id_])
 			await client.query('Commit')
+			candidates.rows = candidates.rows.map(candidate => {
+				candidate.birth_date_ = formatDate(candidate.birth_date_)
+				return candidate
+			})
 			return candidates.rows[0]
 		} catch(e) {
 			await client.query('Rollback')
@@ -693,6 +697,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			await client.query('begin')
 			const result = await client.query(queries.QUERY_GET_QUOTAS)
 			await client.query('commit')
+			result.rows = result.rows.map(quota => {
+				if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
+				return quota
+			})
 			return result.rows
 		} catch (e) {
 			await client.query('rollback')
@@ -766,8 +774,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			await client.query(queries.QUERY_UPDATE_MEMBER_QUOTA, [payment_date_, qid_])
+			let quotas = await client.query(queries.QUERY_UPDATE_MEMBER_QUOTA, [payment_date_, qid_])
 			await client.query('commit')
+			quotas.rows = quotas.rows.map(quota => {
+				quota.payment_date_ = formatDate(quota.payment_date_)
+				return quota
+			})
 			return qid_
 		} catch (e) {
 			await client.query('rollback')
