@@ -20,7 +20,7 @@ export const deleteCompany = (id) => async (dispatch) => {
           headers: { "Content-Type": "application/json" }
       })
       const text = await response.json()
-      if(response.status !== 201) throw Error(text.message_code)
+      if(response.status !== 200) throw Error(text.message_code)
       dispatch({
         type: COMPANY_DELETE_SUCCESS,
         payload: text,

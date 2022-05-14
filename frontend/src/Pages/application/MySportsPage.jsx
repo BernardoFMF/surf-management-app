@@ -9,6 +9,7 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SurfingIcon from '@mui/icons-material/Surfing';
 import MainCard from '../../components/cards/MainCard';
+import { boolean } from 'yup/lib/locale';
 
 const MySportsPage = () => {
     const theme = useTheme();
@@ -35,13 +36,13 @@ const MySportsPage = () => {
     },[userSportsGet,dispatch])
 
 const columns = [
-    { field: 'name_', headerName: t('name'), width: 100 },
-    { field: 'type_', headerName: t('type'), width: 130 },
+    { field: 'name_', headerName: t('name'), width: 150 },
+    { field: 'type_', headerName: t('type'), width: 150 },
     { field: 'fed_number_', headerName: t('fed_number_'), width: 130 },
     { field: 'fed_id_', headerName: t('fed_id_'), width: 130 },
     { field: 'fed_name_', headerName: t('fed_name_'), width: 130 },
-    { field: 'years_federated_', headerName: t('years_federated_'), width: 130 },
-    { field: 'is_absent_', headerName: t('is_absent_'), width: 130 },
+    { field: 'years_federated_', headerName: t('years_federated_'), width: 150 },
+    { field: 'is_absent_', headerName: t('is_absent_'), type: 'boolean', width: 130 },
 ];
 
   return (

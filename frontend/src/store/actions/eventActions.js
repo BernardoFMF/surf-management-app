@@ -50,7 +50,7 @@ export const deleteEvent = (id) => async (dispatch) => {
           headers: { "Content-Type": "application/json" }
       })
       const text = await response.json()
-      if(response.status !== 201) throw Error(text.message_code)
+      if(response.status !== 200) throw Error(text.message_code)
       dispatch({
         type: EVENT_DELETE_SUCCESS,
         payload: text,

@@ -2,11 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import { userDeletionReducer, userFetchReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer, userSportsFetchReducer} from './reducers/userReducers'
+import { userDeletionReducer, userFetchReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer, userSportsFetchReducer, usersSportFetchReducer} from './reducers/userReducers'
 import customizationReducer from './reducers/customizationReducers'
 import { typesFetchReducer, typesUpdateReducer, createTypeReducer } from './reducers/typeReducer'
-import { sportsDeletionReducer, sportsFetchReducer} from './reducers/sportReducers'
-import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer} from './reducers/quotaReducers'
+import { sportsDeletionReducer, sportsFetchReducer, createSportReducer} from './reducers/sportReducers'
+import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer, createQuotaReducer} from './reducers/quotaReducers'
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyDeletionReducer, companiesFetchReducer, companyFetchReducer} from './reducers/companyReducers'
 import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
@@ -21,8 +21,10 @@ const reducer = combineReducers({
   userFetch: userFetchReducer,
   sportsFetch: sportsFetchReducer,
   sportDeletion: sportsDeletionReducer,
+  createSport: createSportReducer,
   quotasFetch: quotasFetchReducer,
   quotaUpdate: quotaUpdateReducer,
+  createQuota: createQuotaReducer,
   userUpdate: userUpdateReducer,
   candidateDeletion: candidateDeletionReducer,
   approveCandidate: approveCandidateReducer,
@@ -39,7 +41,8 @@ const reducer = combineReducers({
   memberFetch: memberFetchReducer,
   userSportsFetch : userSportsFetchReducer,
   eventFetch : eventFetchReducer,
-  eventAttendanceFetch : eventAttendanceFetchReducer
+  eventAttendanceFetch : eventAttendanceFetchReducer,
+  usersSportFetch: usersSportFetchReducer
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')

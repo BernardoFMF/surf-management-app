@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getQuotas, updateQuota} from '../../store/actions/quotaActions'
+import { getQuotas, updateQuota, createQuota} from '../../store/actions/quotaActions'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 import * as Yup from 'yup';
 import { parse, isDate } from "date-fns";
 
@@ -19,7 +18,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
-import { Form, Formik } from 'formik';
+import { Stack, CircularProgress, Grid} from '@mui/material'
+import InputField from '../../components/multiStepForm/InputField';
+import { Formik, Form } from 'formik';
+import SubCard from '../../components/cards/SubCard'
 
 const AllQuotasPage = () => {
     const theme = useTheme();
@@ -37,17 +39,6 @@ const AllQuotasPage = () => {
         setOpen(true);
     }
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-      };
     
     useEffect(() => {
             dispatch(getQuotas())
@@ -74,6 +65,12 @@ const AllQuotasPage = () => {
         dispatch(getQuotas()) //TODO toBe changed
         handleClose()
     }
+
+    const handleSubmitCreate = async (values) => {
+        console.log(values.name);
+        dispatch(createQuota(values.name))
+        dispatch(getQuotas())
+      }
 
     const parseDate = (originalValue) => {
         let parsedDate = isDate(originalValue)
@@ -124,6 +121,7 @@ const columns = [
                     }}
                 >
                     <Formik
+                        key={1}
                         initialValues={{
                             payment_date: ''
                         }}
@@ -158,15 +156,59 @@ const columns = [
             </DialogActions>
         </Dialog>
       <MainCard title='Quotas'sx={{height: '100%'}}>
-        <DataGrid
-          autoHeight
-          rows={rows}
-          columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10]}
-          checkboxSelection
-          experimentalFeatures={{ newEditingApi: true }}
-        /> 
+      { loading ? 
+        <Stack alignItems="center">
+            <CircularProgress size='4rem'/>
+        </Stack> : (
+          <Grid container>
+              <Grid item sx={{ width: {md: 1/2, sm: '100%', xs: '100%'} }}>
+                <DataGrid
+                  autoHeight
+                  rows={rows}
+                  columns={columns}
+                  pageSize={10}
+                  rowsPerPageOptions={[10]}
+                  checkboxSelection
+                  experimentalFeatures={{ newEditingApi: true }}
+                /> 
+              </Grid>
+              <Grid item style={{ display: 'flex',alignItems: 'center'}} sx={{ ml: {md: 22, lg: 45},maxWidth:'100%'}} >
+              <SubCard elevation={4} title={ <Grid><Typography sx={{ fontSize: 22, minWidth: 370 }} color="primary" gutterBottom> {t('all_quotas_create_quota')} </Typography> </Grid>}   >
+                    <Formik
+                        key={2}
+                        initialValues={{
+                            date: ''
+                        }}
+                        validationSchema={Yup.object().shape({
+                            date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).required(t('sign_up_birth_date_mandatory')),
+                        })}
+                        onSubmit={handleSubmitCreate}
+                    >
+                    {formik => (
+                        <Grid item sx={{ ml: { md: 4, lg: 4 }}} maxWidth={300} >
+                            <Form  >
+                                <DateInputField name='name' label={t('all_quotas_date')}> </DateInputField>
+                                <AnimateButton>
+                                    <LoadingButton
+                                        disableElevation
+                                        fullWidth
+                                        size="large"
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        loading = {loading}
+                                    >
+                                        {t('management_submit')}
+                                    </LoadingButton>
+                                </AnimateButton>
+                            </Form>
+                        </Grid>
+                    )}
+                    </Formik>
+                </SubCard>
+              </Grid>
+          </Grid>
+        )}
       </MainCard> 
     </>
   )

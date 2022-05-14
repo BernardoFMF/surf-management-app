@@ -114,6 +114,7 @@
     "member_id": "ID do Membro",
     "date": "Data",
     "payment_date": "Data de Pagamento",
+    "username": "Nome de utilizador",
 
     "updated_sucessfully": "Atualização realizada com sucesso",
     "type": "Tipo",
@@ -163,5 +164,12 @@
     "management_submit": "Submeter",
     "management_create": "Criar nova quota",
     "managemnet_title": "Gestão de quotas",
-    "management_create_alert": "Novo membro criado com sucesso"
+    "management_create_alert": "Novo membro criado com sucesso",
+
+    "all_sports_create_sport": "Criar novo desporto",
+    "all_sports_name_mandatory": "Nome é obrigatório",
+    "all_sports_name": "Nome",
+
+    "all_quotas_create_quota": "Criar nova quota",
+    "all_quotas_date": "Data"
 }

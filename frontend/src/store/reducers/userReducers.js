@@ -17,6 +17,9 @@ import {
     USER_SPORTS_FETCH_SUCCESS,
     USER_SPORTS_FETCH_FAIL,
     USER_SPORTS_FETCH_REQUEST,
+    USERS_SPORT_FETCH_SUCCESS,
+    USERS_SPORT_FETCH_FAIL,
+    USERS_SPORT_FETCH_REQUEST
   } from '../constants/userConstants'
 
   export const userRegisterReducer = (state = {}, action) => {
@@ -96,3 +99,16 @@ import {
         return state
     }
   }
+
+  export const usersSportFetchReducer = (state = {usersSportGet: []}, action) => {
+    switch (action.type) {
+        case USERS_SPORT_FETCH_REQUEST:
+        return { loading: true }
+        case USERS_SPORT_FETCH_SUCCESS:
+        return { loading: false, usersSportGet: action.payload }
+        case USERS_SPORT_FETCH_FAIL:
+        return { loading: false, error: action.payload }
+        default:
+        return state
+    }
+}

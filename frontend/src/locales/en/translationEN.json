@@ -114,6 +114,7 @@
     "member_id": "Member ID",
     "date": "Date",
     "payment_date": "Payment Date",
+    "username": "Username",
 
     "updated_sucessfully": "Update done successfully",
     "type": "Type",
@@ -163,5 +164,13 @@
     "management_submit": "Submit",
     "management_create": "Create new quota",
     "management_title": "Management quotas",
-    "management_create_alert": "New member type created successfuly"
+    "management_create_alert": "New member type created successfuly",
+
+    
+    "all_sports_create_sport": "Create new sport",
+    "all_sports_name_mandatory": "Name is mandatory",
+    "all_sports_name": "Name",
+
+    "all_quotas_create_quota": "Create new quota",
+    "all_quotas_date": "Date"
 }
