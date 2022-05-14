@@ -163,12 +163,16 @@
     "management_type_mandatory": "Tipo de membro é obrigatório",
     "management_submit": "Submeter",
     "management_create": "Criar nova quota",
-    "managemnet_title": "Gestão de quotas",
+    "management_title": "Gestão de quotas",
     "management_create_alert": "Novo membro criado com sucesso",
 
+    "all_sports": "Desportos",
     "all_sports_create_sport": "Criar novo desporto",
     "all_sports_name_mandatory": "Nome é obrigatório",
     "all_sports_name": "Nome",
+    "all_sports_is_deleted?": "Está eliminado?",
+    "all_sports_pratitioners": "Número de praticantes",
+    "all_sports_update": "Atualizar",
 
     "all_quotas_create_quota": "Criar nova quota",
     "all_quotas_date": "Data"

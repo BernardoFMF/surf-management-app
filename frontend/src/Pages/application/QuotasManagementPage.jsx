@@ -4,7 +4,6 @@ import { getTypes, updateTypes, createType } from '../../store/actions/typeActio
 import * as Yup from 'yup';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
-import { useTheme } from '@mui/material/styles';
 import { Stack, CircularProgress, Grid, Alert, Divider} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box';
@@ -68,28 +67,25 @@ const QuotasManagementPage = () => {
                                             onSubmit={handleSubmitUpdate}
                                         >
                                         {formik => (
-                                            
-                                                <Grid item maxWidth={300}>
-                                                    <Form style={{maxWidth:300}}>
-                                            
-                                                        <Card key={12} elevation={6} sx={{ minWidth: 275 }}>
-                                                            <CardContent>
-                                                                <Typography sx={{ fontSize: 22 }} color="primary" gutterBottom>
-                                                                    {type.type_}
-                                                                </Typography>
-                                                                <br />
-                                                                <InputField name='quota_value' label={t('management_quota_value')} type='text'>
-                                                                    {type.quota_value_}
-                                                                </InputField>
-                                                            </CardContent>
-                                                            <CardActions>
-                                                                <Button size="small" type="submit" onClick={() => setType(type.type_)}>{t('management_submit')}</Button>
-                                                            </CardActions>
-                                                        </Card>
-                                                    </Form>
-                                                </Grid>
-                                                
+                                            <Grid item maxWidth={300}>
+                                                <Form style={{maxWidth:300}}>
                                         
+                                                    <Card key={12} elevation={6} sx={{ minWidth: 275 }}>
+                                                        <CardContent>
+                                                            <Typography sx={{ fontSize: 22 }} color="primary" gutterBottom>
+                                                                {type.type_}
+                                                            </Typography>
+                                                            <br />
+                                                            <InputField name='quota_value' label={t('management_quota_value')} type='text'>
+                                                                {type.quota_value_}
+                                                            </InputField>
+                                                        </CardContent>
+                                                        <CardActions>
+                                                            <Button size="small" type="submit" onClick={() => setType(type.type_)}>{t('management_submit')}</Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </Form>
+                                            </Grid>
                                         )}
                                         </Formik>
                                     )

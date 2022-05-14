@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MainCard from '../../components/cards/MainCard';
 
 
-const AllCandidatesPage = () => {
+const AllCompaniesPage = () => {
 
     const {t} = useTranslation()
     const dispatch = useDispatch()
@@ -105,4 +105,4 @@ const columns = [
   )
 }
 
-export default AllCandidatesPage
+export default AllCompaniesPage

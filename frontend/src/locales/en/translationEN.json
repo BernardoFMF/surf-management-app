@@ -166,10 +166,13 @@
     "management_title": "Management quotas",
     "management_create_alert": "New member type created successfuly",
 
-    
+    "all_sports": "All sports",
     "all_sports_create_sport": "Create new sport",
     "all_sports_name_mandatory": "Name is mandatory",
     "all_sports_name": "Name",
+    "all_sports_is_deleted?": "Is deleted?",
+    "all_sports_pratitioners": "Number of pratitioners",
+    "all_sports_update": "Update",
 
     "all_quotas_create_quota": "Create new quota",
     "all_quotas_date": "Date"
