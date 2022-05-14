@@ -9,7 +9,9 @@ const memberData = (db) => {
 		if (member.member_type_ !== 'corporate') {
 			return await db.getUserByIdData(id_)
 		} else {
-			return await db.getCompanyByIdData(id_)
+			const company = await db.getCompanyByIdData(id_)
+			company.is_admin_ = false
+			return company
 		}
 	}
 

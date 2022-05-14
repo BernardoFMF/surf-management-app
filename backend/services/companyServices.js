@@ -31,16 +31,25 @@ const companyServices = (db) => {
 		return await data.postCompany(name, nif, phone_number, email, postal_code, address, location, username, pwordhashed, type, img)
 	}
 	
-	const updateCompanyServices = async(id, name, nif, phone_number, email, postal_code, address, location, img) => {
+	const updateCompanyServices = async(id, nif, name, phone_number, postal_code, address, location, img, is_deleted) => {
+		console.log(id)
+		console.log(nif)
+		console.log(name)
+		console.log(phone_number)
+		console.log(postal_code)
+		console.log(address)
+		console.log(img)
+		console.log(is_deleted)
+
 		if(!id) throw error(400,'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!name) throw error(400,'Parameter not found: name', 'MESSAGE_CODE_14')
 		if(!nif) throw error(400,'Parameter not found: nif', 'MESSAGE_CODE_14')
 		if(!phone_number) throw error(400, 'Parameter not found: phone_number', 'MESSAGE_CODE_14')
-		if(!email) throw error(400, 'Parameter not found: email', 'MESSAGE_CODE_14')
 		if(!postal_code) throw error(400, 'Parameter not found: postal_code', 'MESSAGE_CODE_14')
 		if(!address) throw error(400, 'Parameter not found: address', 'MESSAGE_CODE_14')
 		if(!location) throw error(400, 'Parameter not found: location', 'MESSAGE_CODE_14')
-		return await data.updateCompany(id, name, nif, phone_number, email, postal_code, address, location, img)
+		if(is_deleted == undefined) throw error(400, 'Parameter not found: is_deleted', 'MESSAGE_CODE_14')
+		return await data.updateCompany(id, nif, name, phone_number, postal_code, address, location, img, is_deleted)
 	}
 	
 	const deleteCompanyServices = async(id) => {

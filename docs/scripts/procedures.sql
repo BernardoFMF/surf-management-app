@@ -257,13 +257,14 @@ $$;
 /**
  * Updates contact & company
  */
-create or replace procedure put_company(cid_ int, p_name_ varchar(40), p_nif_ bigint, p_phone_number_ int, p_email_ varchar(30), p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ text)
+create or replace procedure put_company(cid_ int, p_nif_ bigint, p_name_ varchar(40), p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ text, p_is_deleted_ bool)
 LANGUAGE plpgsql  
 as
 $$
 begin
 	UPDATE Contact_ SET phone_number_ = p_phone_number_, postal_code_ = p_postal_code_,address_ = p_address_, location_ = p_location_ WHERE member_id_ = cid_;
 	UPDATE Company_ SET name_ = p_name_, nif_ = p_nif_ WHERE member_id_ = cid_;
+	update member_  set is_deleted_ = p_is_deleted_;
 
 	if p_img_ is not null then
 		UPDATE Member_Img_ SET img_value_ = p_img_ WHERE member_id_ = cid_;

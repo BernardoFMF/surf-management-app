@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik';
 import InputField from '../multiStepForm/InputField';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { updateUser } from '../../store/actions/userActions';
 import { useTheme } from '@mui/material/styles';
 import AnimateButton from '../extended/AnimateButton';
@@ -22,7 +23,7 @@ const AddressInformationTab = () => {
     const dispatch = useDispatch()
 
     const userUpdate = useSelector((state) => state.userUpdate)
-    const { error, updated } = userUpdate
+    const { loading, error, updated } = userUpdate
 
     const handleSubmit = async (values) => {
         const updatedUser = { ...values, member_id: memberGet.member_id_, username: memberGet.username_, email: memberGet.email_, gender: memberGet.gender_, nationality: memberGet.nationality_, full_name: memberGet.full_name_, cc: memberGet.cc_, nif: memberGet.nif_, birth_date: memberGet.birth_date_, type: memberGet.member_type_, paid_enrollment: memberGet.paid_enrollment_, is_admin: memberGet.is_admin_, is_deleted: memberGet.is_deleted_ }
@@ -79,17 +80,17 @@ const AddressInformationTab = () => {
                                         </Grid>
                                         <Grid item xs={12} sm={6} sx={{ mt: 2}}>
                                             <AnimateButton>
-                                                <Button
-                                                disableElevation
-                                                disabled={formik.isSubmitting}
-                                                fullWidth
-                                                size="normal"
-                                                type="submit"
-                                                variant="contained"
-                                                color="primary"
+                                                <LoadingButton
+                                                    disableElevation
+                                                    fullWidth
+                                                    size="normal"
+                                                    type="submit"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    loading = {loading}
                                                 >
                                                     {t('sign_up_submit')}
-                                                </Button>
+                                                </LoadingButton>
                                             </AnimateButton>
                                         </Grid>
                                     </Grid>

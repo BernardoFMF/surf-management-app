@@ -8,6 +8,9 @@ import {
     COMPANY_FETCH_SUCCESS,
     COMPANY_FETCH_FAIL,
     COMPANY_FETCH_REQUEST,
+    COMPANY_UPDATE_REQUEST,
+    COMPANY_UPDATE_SUCCESS,
+    COMPANY_UPDATE_FAIL
   } from '../constants/companyConstants'
 
 export const companyDeletionReducer = (state = {}, action) => {
@@ -43,6 +46,19 @@ export const companyDeletionReducer = (state = {}, action) => {
       case COMPANY_FETCH_SUCCESS:
         return { loading: false, companyGet: action.payload }
       case COMPANY_FETCH_FAIL:
+        return { loading: false, error: action.payload }
+      default:
+        return state
+    }
+  }
+
+  export const companyUpdateReducer = (state = {}, action) => {
+    switch (action.type) {
+      case COMPANY_UPDATE_REQUEST:
+        return { loading: true }
+      case COMPANY_UPDATE_SUCCESS:
+        return { loading: false, updated: true, updateResult: action.payload }
+      case COMPANY_UPDATE_FAIL:
         return { loading: false, error: action.payload }
       default:
         return state

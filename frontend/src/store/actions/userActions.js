@@ -19,7 +19,7 @@ import {
     USER_SPORTS_FETCH_REQUEST
   } from '../constants/userConstants'
 
-import { MEMBER_LOGIN_SUCCESS } from '../constants/memberConstants'
+import { MEMBER_LOGIN_SUCCESS, MEMBER_FETCH_SUCCESS } from '../constants/memberConstants'
 
 export const signUp = (body) => async (dispatch) => {
   try {
@@ -153,24 +153,24 @@ export const updateUser = (body) => async (dispatch, getState) => {
     })
 
     if (memberInfo.id_ === body.member_id) {
-      const userInfo = {
+      const newMemberInfo = {
         id_: updateResp.member_id_,
         member_type_: updateResp.member_type_,
         username_: updateResp.username_,
         is_admin_: updateResp.is_admin_,
         img_value_: updateResp.img_value_
       }
-
       dispatch({
-        type: MEMBER_LOGIN_SUCCESS,
-        payload: userInfo,
-      })
-      dispatch({
-        type: USER_FETCH_SUCCESS,
+        type: MEMBER_FETCH_SUCCESS,
         payload: updateResp,
       })
+      dispatch({
+        type: MEMBER_LOGIN_SUCCESS,
+        payload: newMemberInfo,
+      })
+      
 
-      sessionStorage.setItem('memberInfo', JSON.stringify(memberInfo))
+      sessionStorage.setItem('memberInfo', JSON.stringify(newMemberInfo))
     }
 
   } catch (error) {

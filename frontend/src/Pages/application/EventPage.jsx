@@ -11,23 +11,14 @@ import { getTypes } from '../../store/actions/typeActions'
 import CircularProgress from '@mui/material/CircularProgress';
 import default_image from './../../assets/data/blank-profile-picture.png'
 
-import PersonalDetailsTab from '../../components/tabs/PersonalDetailsTab'
-import AddressInformationTab from '../../components/tabs/AddressInformationTab'
-import MembershipCardTab from '../../components/tabs/MembershipCardTab'
-import AdminPrivilegesTab from '../../components/tabs/AdminPrivilegesTab'
-
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import HomeIcon from '@mui/icons-material/Home';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 
 import useScriptRef from '../../hooks/useScriptRef'
-
-import TabPanel from '../../components/tabs/TabPanel'
 
 const EventPage = () => {
 

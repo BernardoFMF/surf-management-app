@@ -23,10 +23,12 @@ const companyData = (db) => {
 		return await db.postCompanyData(name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, type_, img_)
 	}
 	
-	const updateCompany = async (id_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, img_) => {
+	const updateCompany = async (id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_) => {
 		await getCompanyById(id_)
-		await db.updateCompanyData(id_, name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, img_)
-		return await getCompanyById(id_)
+		await db.updateCompanyData(id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_)
+		const company = await getCompanyById(id_)
+		company.is_admin_ = false
+		return company
 	}
 	
 	const deleteCompany = async (id_) => {
