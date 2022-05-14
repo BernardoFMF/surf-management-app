@@ -60,15 +60,17 @@ const AllQuotasPage = () => {
     const updateQuotaHandle = async(values) => {
         let date = values.payment_date.toLocaleString().split(',')[0]
         date = date.split('/')
-        const p_date = `${date[2]}-${date[0]}-${date[1]}`
+        const p_date = `${date[2]}-${date[1]}-${date[0]}`
         dispatch(updateQuota(p_date, id))
         dispatch(getQuotas()) //TODO toBe changed
         handleClose()
     }
 
     const handleSubmitCreate = async (values) => {
-        console.log(values.name);
-        dispatch(createQuota(values.name))
+        let date = values.date.toLocaleString().split(',')[0]
+        date = date.split('/')
+        const p_date = `${date[2]}-${date[1]}-${date[0]}`
+        dispatch(createQuota(p_date))
         dispatch(getQuotas())
       }
 
@@ -121,7 +123,6 @@ const columns = [
                     }}
                 >
                     <Formik
-                        key={1}
                         initialValues={{
                             payment_date: ''
                         }}
@@ -172,10 +173,9 @@ const columns = [
                   experimentalFeatures={{ newEditingApi: true }}
                 /> 
               </Grid>
-              <Grid item style={{ display: 'flex',alignItems: 'center'}} sx={{ ml: {md: 22, lg: 45},maxWidth:'100%'}} >
+              <Grid item style={{ display: 'flex',alignItems: 'center'}} sx={{ ml: {md: 22, lg: 45}, mt: {xs: 2},maxWidth:'100%'}} >
               <SubCard elevation={4} title={ <Grid><Typography sx={{ fontSize: 22, minWidth: 370 }} color="primary" gutterBottom> {t('all_quotas_create_quota')} </Typography> </Grid>}   >
                     <Formik
-                        key={2}
                         initialValues={{
                             date: ''
                         }}
@@ -187,7 +187,7 @@ const columns = [
                     {formik => (
                         <Grid item sx={{ ml: { md: 4, lg: 4 }}} maxWidth={300} >
                             <Form  >
-                                <DateInputField name='name' label={t('all_quotas_date')}> </DateInputField>
+                                <DateInputField name='date' label={t('all_quotas_date')}> </DateInputField>
                                 <AnimateButton>
                                     <LoadingButton
                                         disableElevation

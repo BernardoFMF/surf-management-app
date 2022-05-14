@@ -115,7 +115,7 @@ export const createQuota = (date) => async (dispatch, getState) => {
       type: QUOTA_CREATE_REQUEST,
     })
     const response = await fetch(`/api/quotas`, {
-        method: 'PUT',
+        method: 'POST',
         body: JSON.stringify({date}),
         headers: { "Content-Type": "application/json" }
     })
