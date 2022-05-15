@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useTheme } from '@mui/material/styles';
 import { Divider, List, Typography } from '@mui/material';
-
+import { useSelector } from 'react-redux';
 import NavItem from '../NavItem';
 import NavCollapse from '../NavCollapse';
 
@@ -10,7 +10,14 @@ import NavCollapse from '../NavCollapse';
 const NavGroup = ({ item }) => {
     const theme = useTheme();
 
-    const items = item.children?.map((menu) => {
+    const memberLogin = useSelector((state) => state.memberLogin)
+    const { memberInfo } = memberLogin
+
+    const items = item.children?.filter((menu) => {
+        if (menu.hideMenuIfCorporate && memberInfo.member_type_ === 'corporate') return false
+        if (menu.hideMenuIfNotAdmin && memberInfo.is_admin_ === false) return false
+        return true
+    }).map((menu) => {
         switch (menu.type) {
             case 'collapse':
                 return <NavCollapse key={menu.id} menu={menu} level={1} />;

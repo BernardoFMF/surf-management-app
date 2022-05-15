@@ -27,6 +27,7 @@ const pages = {
                     title: 'All Users',
                     type: 'item',
                     hasParams: false,
+                    hideIfNotAdmin: true,
                     url: '/application/users',
                 },
                 {
@@ -34,6 +35,7 @@ const pages = {
                     title: 'All Companies',
                     type: 'item',
                     hasParams: false,
+                    hideIfNotAdmin: true,
                     url: '/application/companies',
                 }
             ]
@@ -43,6 +45,7 @@ const pages = {
             title: 'Sports',
             type: 'collapse',
             icon: SurfingIcon,
+            hideMenuIfCorporate: true,
             children: [
                 {
                     id: 'mysports',
@@ -78,6 +81,7 @@ const pages = {
                     title: 'All Quotas',
                     type: 'item',
                     hasParams: false,
+                    hideIfNotAdmin: true,
                     url: '/application/quotas'
                 },
                 {
@@ -85,6 +89,7 @@ const pages = {
                     title: 'Manage Quotas',
                     type: 'item',
                     hasParams: false,
+                    hideIfNotAdmin: true,
                     url: '/application/quotas/management'
                 }
             ]
@@ -116,7 +121,7 @@ const pages = {
             title: 'Candidates',
             type: 'collapse',
             icon: PersonAddIcon,
-
+            hideMenuIfNotAdmin: true,
             children: [
                 {
                     id: 'allCandidates',

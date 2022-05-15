@@ -14,6 +14,9 @@ const NavCollapse = ({ menu, level }) => {
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
 
+    const memberLogin = useSelector((state) => state.memberLogin)
+    const { memberInfo } = memberLogin
+
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState(null);
 
@@ -22,7 +25,14 @@ const NavCollapse = ({ menu, level }) => {
         setSelected(!selected ? menu.id : null);
     };
 
-    const menus = menu.children?.map((item) => {
+    const menus = menu.children?.filter((item) => {
+        console.log(item);
+        if (item.hideIfNotAdmin === true && memberInfo.is_admin_ === false) {
+            console.log(item);
+            return false
+        }
+        return true
+    }).map((item) => {
         switch (item.type) {
             case 'collapse':
                 return <NavCollapse key={item.id} menu={item} level={level + 1} />;
