@@ -41,8 +41,8 @@ async function insertCandidateDummies() {
 }
 
 async function insertCompanyDummies() {
-	await dbCompany.postCompany('Ericeira surf shop', 231312312, 938172388, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira', 'eric', 'ericeric', 'corporate')
-	await dbCompany.postCompany('Billabong', 423213312, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity', 'billa', 'billabilla', 'corporate')
+	await dbCompany.postCompany('Ericeira surf shop', 231312312, 938172388, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira', 'eric', 'ericeric', 'corporate', '\\xEAABDFFA')
+	await dbCompany.postCompany('Billabong', 423213312, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity', 'billa', 'billabilla', 'corporate', '\\xEAABDFFA')
 }
 
 async function insertUserDummies() {
@@ -115,12 +115,10 @@ test('Update specific sport', async () => {
 
 test('Delete specific sport', async () => {
 	expect.assertions(1)
-	try {
-		await dbSport.deleteSport(1)
-		await dbSport.getSportById(1)
-	} catch (e) {
-		expect(e.message).toBe('Sport does not exist')
-	}
+	await dbSport.deleteSport(1)
+	const sport = await dbSport.getSportById(1)
+	expect(sport.is_deleted_).toBe(true)
+
 })
 
 test('Create a sport', async () => {
@@ -248,20 +246,20 @@ test('Get specific company', async () => {
 
 test('Create a company', async () => {
 	expect.assertions(1)
-	const company_id = await dbCompany.postCompany('Ripcurl', 999321681, 967872388, 'rippy@gmail.com', '2112-829', 'Rua do rip', 'Rip on the curls', 'rippy', 'roppypipy', 'corporate')
+	const company_id = await dbCompany.postCompany('Ripcurl', 999321681, 967872388, 'rippy@gmail.com', '2112-829', 'Rua do rip', 'Rip on the curls', 'rippy', 'roppypipy', 'corporate', '\\xEAABDFFA')
 	expect(company_id).toBe(6)
 })
 
 test('Update a company', async () => {
 	expect.assertions(1)
-	const company = await dbCompany.updateCompany(3, 'Ericeira Surf shop', 354876321, 918923180, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira')
+	const company = await dbCompany.updateCompany(3, 354876321, 'Ericeira Surf shop', 918923180, '2812-829', 'Rua da ericeira', 'Ericeira', '\\xEAABDFFA', false)
 	expect(company.name_).toBe('Ericeira Surf shop')
 })
 
 test('Delete specific company', async () => {
 	expect.assertions(1)
 	const id = await dbCompany.deleteCompany(3)
-	const company = await dbCompany.getCompanyById(3)
+	const company = await dbCompany.getCompanyById(id)
 	expect(company.is_deleted_).toBe(true)
 
 })
