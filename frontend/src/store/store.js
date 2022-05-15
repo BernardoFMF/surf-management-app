@@ -10,7 +10,7 @@ import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer, creat
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyDeletionReducer, companiesFetchReducer, companyFetchReducer, companyUpdateReducer } from './reducers/companyReducers'
 import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
-import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer} from './reducers/eventReducers'
+import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer, memberEventsAttendanceFetchReducer} from './reducers/eventReducers'
 
 const reducer = combineReducers({
   memberLogin: memberLoginReducer,
@@ -44,7 +44,8 @@ const reducer = combineReducers({
   eventFetch : eventFetchReducer,
   eventAttendanceFetch : eventAttendanceFetchReducer,
   companyUpdate: companyUpdateReducer,
-  usersSportFetch: usersSportFetchReducer
+  usersSportFetch: usersSportFetchReducer,
+  memberEventsAttendanceFetch: memberEventsAttendanceFetchReducer
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')

@@ -26,7 +26,6 @@ const NavCollapse = ({ menu, level }) => {
     };
 
     const menus = menu.children?.filter((item) => {
-        console.log(item);
         if (item.hideIfNotAdmin === true && memberInfo.is_admin_ === false) {
             console.log(item);
             return false

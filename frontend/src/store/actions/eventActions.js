@@ -10,7 +10,10 @@ import {
     EVENT_FETCH_REQUEST,
     EVENT_ATTENDANCE_FETCH_SUCCESS,
     EVENT_ATTENDANCE_FETCH_FAIL,
-    EVENT_ATTENDANCE_FETCH_REQUEST
+    EVENT_ATTENDANCE_FETCH_REQUEST,
+    MEMBER_EVENTS_ATTENDANCE_FETCH_REQUEST,
+    MEMBER_EVENTS_ATTENDANCE_FETCH_SUCCESS,
+    MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL
   } from '../constants/eventConstants'
   
 export const getEvents = () => async (dispatch) => {
@@ -112,7 +115,6 @@ export const deleteEvent = (id) => async (dispatch) => {
         return attendance
       })
       let attendance = {text,interested,not_going,going}
-      console.log(attendance)
       if(response.status !== 200) throw Error(text.message_code)
       dispatch({
         type: EVENT_ATTENDANCE_FETCH_SUCCESS,
@@ -122,6 +124,33 @@ export const deleteEvent = (id) => async (dispatch) => {
     } catch (error) {
       dispatch({
         type: EVENT_ATTENDANCE_FETCH_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+  export const getMemberEventsAttendance = (id) => async (dispatch) => {
+    try {
+      dispatch({
+        type: MEMBER_EVENTS_ATTENDANCE_FETCH_REQUEST,
+      })
+      const response = await fetch(`/api/events/members/${id}/attendance`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+      })
+      const text = await response.json()
+      if(response.status !== 200) throw Error(text.message_code)
+      dispatch({
+        type: MEMBER_EVENTS_ATTENDANCE_FETCH_SUCCESS,
+        payload: text,
+      })
+  
+    } catch (error) {
+      dispatch({
+        type: MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

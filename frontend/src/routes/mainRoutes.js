@@ -19,6 +19,8 @@ const ProfileForker = Loadable(lazy(() => import('../Pages/application/ProfileFo
 const MySportsPage = Loadable(lazy(() => import('../Pages/application/MySportsPage')))
 const QuotasManagementPage = Loadable(lazy(() => import('../Pages/application/QuotasManagementPage')))
 const EventPage = Loadable(lazy(() => import('../Pages/application/EventPage')))
+const MyEventsPage = Loadable(lazy(() => import('../Pages/application/MyEventsPage')))
+
 
 //const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
 
@@ -69,6 +71,10 @@ const mainRoutes = {
         {
             path: '/application/events',
             element: <AllEventsPage/>
+        },
+        {
+            path: '/application/events/members/:id',
+            element: <MyEventsPage/>
         },
         {
             path: '/application/members/:id/sports',

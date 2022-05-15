@@ -140,6 +140,7 @@
     "event_name": "Nome",
     "event_initial_date": "Data de inicio",
     "event_end_date": "Data de fim",
+    "event_state": "Estado",
 
     "status_not_started": "ainda não começou",
     "status_event_ended": "já acabou",

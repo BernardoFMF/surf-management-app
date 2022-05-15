@@ -104,8 +104,8 @@ const pages = {
                     id: 'myEvents',
                     title: 'My Events',
                     type: 'item',
-                    hasParams: false,
-                    url: '/profile'
+                    hasParams: true,
+                    url: '/application/events/members/{id}'
                 },
                 {
                     id: 'allEvents',

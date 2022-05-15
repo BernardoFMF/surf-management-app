@@ -26,6 +26,7 @@ const AllEventsPage = () => {
     },[])
 
     useEffect(() => {
+        console.log(eventsGet);
         if(eventsGet){
             setRows(eventsGet.map(event => {
                 let x = {
