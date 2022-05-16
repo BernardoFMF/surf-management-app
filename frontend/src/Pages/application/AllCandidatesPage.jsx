@@ -84,13 +84,13 @@ const AllCandidatesPage = () => {
 const columns = [
     { field: 'id_', headerName: 'ID', width: 70 },
     { field: 'username_', headerName: t('candidates_username'), width: 140 },
-    { field: 'full_name_', headerName: t('candidates_full_name'), width: 250, headerAlign: 'center' },
-    { field: 'email_', headerName: 'Email', width: 170 , headerAlign: 'center' },
+    { field: 'full_name_', headerName: t('candidates_full_name'), width: 250 },
+    { field: 'email_', headerName: 'Email', width: 170},
     { field: 'phone_number_', headerName: t('candidates_phone_number'), width: 150},
     { field: 'gender_', headerName: t('candidates_gender'), width: 130 },
     { field: 'birth_date_', headerName: t('candidates_birth_date'), width: 160, type: 'date' },
     { field: 'location_', headerName: t('candidates_location'), width: 100 },
-    { field: 'address_', headerName: t('candidates_address'), width: 180, headerAlign: 'center'  },
+    { field: 'address_', headerName: t('candidates_address'), width: 180 },
     { field: 'postal_code_', headerName: t('candidates_postal_code'), width: 110 },
     { field: 'cc_', headerName: 'CC', width: 110 },
     { field: 'nif_', headerName: 'NIF', width: 110 },
@@ -177,7 +177,7 @@ const columns = [
                 <Button onClick={handleClose}>Close</Button>
             </DialogActions>
         </Dialog>
-        <MainCard title='Candidates'sx={{height: '100%'}}>
+        <MainCard title={t('all_candidates')} sx={{height: '100%'}}>
         { loading ? 
             <Stack alignItems="center">
                 <CircularProgress size='4rem'/>

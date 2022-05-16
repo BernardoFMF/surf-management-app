@@ -37,13 +37,13 @@ const MyQuotasPage = () => {
     },[memberQuotasGet,dispatch])
 
 const columns = [
-    { field: 'date_', headerName: t('date'), width: 100 },
-    { field: 'payment_date_', headerName: t('payment_date'), width: 130 },
+    { field: 'date_', headerName: t('date'), width: 120 },
+    { field: 'payment_date_', headerName: t('payment_date'), width: 140 },
 ];
 
   return (
     <>
-      <MainCard title='MyQuotas'sx={{height: '100%'}}>
+      <MainCard title={t('my_quotas')} sx={{height: '100%'}}>
         <DataGrid
           autoHeight
           rows={rows}

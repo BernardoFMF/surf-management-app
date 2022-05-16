@@ -84,7 +84,7 @@ const AllQuotasPage = () => {
 
 const columns = [
     { field: 'member_id_', headerName: t('member_id'), width: 120 },
-    { field: 'username_', headerName: t('username'), width: 130 },
+    { field: 'username_', headerName: t('username'), width: 140 },
     { field: 'email_', headerName: "Email", width: 170 },
     { field: 'phone_number_', headerName: t('candidates_phone_number'), width: 150 },
     { field: 'date_', headerName: t('date'), width: 170 },
@@ -158,7 +158,7 @@ const columns = [
                 <Button onClick={handleClose}>Close</Button>
             </DialogActions>
         </Dialog>
-      <MainCard title='Quotas'sx={{height: '100%'}}>
+      <MainCard title={t('all_quotas')} sx={{height: '100%'}}>
       { loading ? 
         <Stack alignItems="center">
             <CircularProgress size='4rem'/>
