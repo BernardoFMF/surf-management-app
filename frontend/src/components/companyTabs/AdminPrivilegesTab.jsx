@@ -54,7 +54,7 @@ const AdminPrivilegesTab = () => {
                                 memberGet.is_deleted_ && ( <>
                                     <Box justifyContent='center' sx={{ pt: 2, width: { md: 400 }}}>
                                         <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.is_deleted} />}
-                                        label="is deleted" name='is_deleted' labelPlacement='start'
+                                        label={t("is_deleted_")} name='is_deleted' labelPlacement='start'
                                         />
                                     </Box>
                                     <Box sx={{ pt: 2, width: { md: 400 }}}>

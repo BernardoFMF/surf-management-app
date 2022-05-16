@@ -16,14 +16,14 @@ const pages = {
             icon: PersonRoundedIcon,
             children: [
                 {
-                    id: 'myprofile',
+                    id: 'my_profile',
                     title: 'My Profile',
                     type: 'item',
                     hasParams: true,
                     url: '/application/members/{id}',
                 },
                 {
-                    id: 'allUsers',
+                    id: 'all_users',
                     title: 'All Users',
                     type: 'item',
                     hasParams: false,
@@ -31,7 +31,7 @@ const pages = {
                     url: '/application/users',
                 },
                 {
-                    id: 'allCompanies',
+                    id: 'all_companies',
                     title: 'All Companies',
                     type: 'item',
                     hasParams: false,
@@ -48,14 +48,14 @@ const pages = {
             hideMenuIfCorporate: true,
             children: [
                 {
-                    id: 'mysports',
+                    id: 'my_sports',
                     title: 'My Sports',
                     type: 'item',
                     hasParams: true,
                     url: '/application/members/{id}/sports'
                 },
                 {
-                    id: 'allSports',
+                    id: 'all_sports',
                     title: 'All Sports',
                     type: 'item',
                     hasParams: false,
@@ -70,14 +70,14 @@ const pages = {
             icon: CreditCardIcon,
             children: [
                 {
-                    id: 'myquotas',
+                    id: 'my_quotas',
                     title: 'My Quotas',
                     type: 'item',
                     hasParams: true,
                     url: '/application/myquotas/{id}'
                 },
                 {
-                    id: 'allQuotas',
+                    id: 'all_quotas',
                     title: 'All Quotas',
                     type: 'item',
                     hasParams: false,
@@ -85,7 +85,7 @@ const pages = {
                     url: '/application/quotas'
                 },
                 {
-                    id: 'managementQuotas',
+                    id: 'management_quotas',
                     title: 'Manage Quotas',
                     type: 'item',
                     hasParams: false,
@@ -101,14 +101,14 @@ const pages = {
             icon: EventIcon,
             children: [
                 {
-                    id: 'myEvents',
+                    id: 'my_events',
                     title: 'My Events',
                     type: 'item',
                     hasParams: true,
                     url: '/application/events/members/{id}'
                 },
                 {
-                    id: 'allEvents',
+                    id: 'all_events',
                     title: 'All Events',
                     type: 'item',
                     hasParams: false,
@@ -124,7 +124,7 @@ const pages = {
             hideMenuIfNotAdmin: true,
             children: [
                 {
-                    id: 'allCandidates',
+                    id: 'all_candidates',
                     title: 'All Candidates',
                     type: 'item',
                     hasParams: false,

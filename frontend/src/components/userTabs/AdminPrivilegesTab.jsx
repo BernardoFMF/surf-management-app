@@ -75,19 +75,19 @@ const AdminPrivilegesTab = () => {
                                         </Box>
                                         <Box justifyContent='center' sx={{ pt: 2, width: { md: 400 }}}>
                                             <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.paid_enrollment} />}
-                                            label="paid enrollment" name='paid_enrollment' labelPlacement='start'
+                                            label={t("paid_enrollment_")} name='paid_enrollment' labelPlacement='start'
                                             />
                                         </Box>
                                         <Box justifyContent='center' sx={{ pt: 2, width: { md: 400 }}}>
                                             <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.is_admin} />}
-                                            label="is admin" name='is_admin' labelPlacement='start'
+                                            label={t("is_admin_")} name='is_admin' labelPlacement='start'
                                             />
                                         </Box>
                                         {
                                             memberGet.is_deleted_ && 
                                                 <Box justifyContent='center' sx={{ pt: 2, width: { md: 400 }}}>
                                                     <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.is_deleted} />}
-                                                    label="is deleted" name='is_deleted' labelPlacement='start'
+                                                    label={t("is_deleted_")} name='is_deleted' labelPlacement='start'
                                                     />
                                                 </Box>
                                         }

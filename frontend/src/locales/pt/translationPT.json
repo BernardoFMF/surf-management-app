@@ -192,5 +192,26 @@
     "event_people_not_going": "Pessoas que não vão",
     "event_people_interested": "Pessoas interessadas",
 
-    "view_sport": "Ver desporto"
+    "view_sport": "Ver desporto",
+
+    "application": "Aplicação",
+    "members": "Membros",
+    "my_profile": "Meu Perfil",
+    "all_users": "Todos Os Utilizadores",
+    "all_companies": "Todas As Empresas",
+    "sports": "Desportos",
+    "my_sports": "Os Meus Desportos",
+    "quotas": "Quotas",
+    "my_quotas": "As Minhas Quotas",
+    "all_quotas": "Todas As Quotas",
+    "management_quotas": "Gestão de Quotas",
+    "events": "Eventos",
+    "my_events": "Os Meus Eventos",
+    "all_events": "Todos Os Eventos",
+    "candidates": "Candidatos",
+    "all_candidates": "Todos Os Candidatos",
+    "about": "Sobre Nós",
+    "dashboard": "Painel De Controlo",
+    "overview": "Visão Geral",
+    "otherPage": "Outros"
 }

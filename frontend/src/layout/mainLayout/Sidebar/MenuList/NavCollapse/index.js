@@ -6,6 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
 import NavItem from '../NavItem';
+import { useTranslation } from 'react-i18next'
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons';
@@ -13,6 +14,7 @@ import { IconChevronDown, IconChevronUp } from '@tabler/icons';
 const NavCollapse = ({ menu, level }) => {
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
+    const { t } = useTranslation()
 
     const memberLogin = useSelector((state) => state.memberLogin)
     const { memberInfo } = memberLogin
@@ -76,7 +78,7 @@ const NavCollapse = ({ menu, level }) => {
                 <ListItemText
                     primary={
                         <Typography variant={selected === menu.id ? 'h5' : 'body1'} color="inherit" sx={{ my: 'auto' }}>
-                            {menu.title}
+                            {t(menu.id)}
                         </Typography>
                     }
                     secondary={

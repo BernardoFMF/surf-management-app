@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { forwardRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
@@ -17,6 +17,7 @@ const parameterize = (path, parameter) => {
 const NavItem = ({ item, level }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
+    const { t } = useTranslation()
     const customization = useSelector((state) => state.customization);
     const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
     const memberLogin = useSelector((state) => state.memberLogin)
@@ -81,7 +82,7 @@ const NavItem = ({ item, level }) => {
             <ListItemText
                 primary={
                     <Typography variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'} color="inherit">
-                        {item.title}
+                        {t(item.id)}
                     </Typography>
                 }
                 secondary={

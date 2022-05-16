@@ -187,6 +187,26 @@
     "event_people_not_going": "People not going",
     "event_people_interested": "People interested",
 
-    "view_sport": "View sport"
+    "view_sport": "View sport",
 
+    "application": "Application",
+    "members": "Members",
+    "my_profile": "My Profile",
+    "all_users": "All Users",
+    "all_companies": "All Companies",
+    "sports": "Sports",
+    "my_sports": "My Sports",
+    "quotas": "Quotas",
+    "my_quotas": "My Quotas",
+    "all_quotas": "All Quotas",
+    "management_quotas": "Management Quotas",
+    "events": "Eventos",
+    "my_events": "My Events",
+    "all_events": "All Events",
+    "candidates": "Candidates",
+    "all_candidates": "All Candidates",
+    "about": "About Us",
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "otherPage": "Others"
 }

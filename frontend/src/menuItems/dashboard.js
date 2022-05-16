@@ -8,7 +8,7 @@ const dashboard = {
     type: 'group',
     children: [
         {
-            id: 'default',
+            id: 'overview',
             title: 'Dashboard',
             type: 'item',
             url: '/dashboard/overview',

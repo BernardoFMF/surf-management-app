@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles';
 import { Divider, List, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import NavCollapse from '../NavCollapse';
 
 const NavGroup = ({ item }) => {
     const theme = useTheme();
+    const { t } = useTranslation()
 
     const memberLogin = useSelector((state) => state.memberLogin)
     const { memberInfo } = memberLogin
@@ -38,7 +39,7 @@ const NavGroup = ({ item }) => {
                 subheader={
                     item.title && (
                         <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
-                            {item.title}
+                            {t(item.id)}
                             {item.caption && (
                                 <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
                                     {item.caption}

@@ -1,7 +1,7 @@
 import InfoIcon from '@mui/icons-material/Info'
 
 const other = {
-    id: 'sample-docs-roadmap',
+    id: 'otherPage',
     title: 'Other',
     type: 'group',
     children: [
