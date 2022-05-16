@@ -45,7 +45,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api_users_body'
+              $ref: '#/components/schemas/api_user_body'
       responses:
         '201':
           description: response body should be a user object
@@ -135,14 +135,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/users_id_body'
+              $ref: '#/components/schemas/api_user_id_body'
       responses:
         '200':
           description: response body should be a user object
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/id'
+                  $ref: '#/components/schemas/userById'
         '400':
           description: response body should be an error object
           content:
@@ -197,6 +197,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
   /api/users/sports:
     get:
       summary: fetches all sports associated with the users
@@ -209,7 +210,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/sportJoinUser'
+                  $ref: '#/components/schemas/usersSports'
         '401':
           description: response body should be an error object
           content:
@@ -242,7 +243,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/sportJoinUser'
+                  $ref: '#/components/schemas/usersSports'
         '400':
           description: response body should be an error object
           content:
@@ -287,7 +288,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/sportJoinUser'
+                  $ref: '#/components/schemas/usersSports'
         '400':
           description: response body should be an error object
           content:
@@ -327,7 +328,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/id_sports_body'
+              $ref: '#/components/schemas/api_user_sport_body'
       responses:
         '201':
           description: response body should be a user object
@@ -388,14 +389,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/sports_sid_body'
+              $ref: '#/components/schemas/api_user_sport_body'
       responses:
         '200':
           description: response body should be a user object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user_sport_ids'
+                $ref: '#/components/schemas/sid_pair'
         '400':
           description: response body should be an error object
           content:
@@ -475,6 +476,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
+  # above is validated
+  # below is not
+                
   /api/sports:
     get:
       summary: fetches a list of sports
@@ -1626,27 +1631,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
 components:
   schemas:
-    message:
-      required:
-        - message
-      type: object
-      properties:
-        message:
-          type: string
-    id:
-      type: integer
-    user_sport_ids:
-      required:
-        - id_
-        - sid_
-      type: object
-      properties:
-        id_:
-          type: integer
-        sid_:
-          type: integer
     user:
       required:
         - member_id_
@@ -1659,6 +1646,14 @@ components:
         - paid_enrollment_
         - is_admin_
         - gender_
+        - member_type_
+        - has_debt_
+        - username_
+        - location_
+        - address_
+        - postal_code_
+        - email_
+        - phone_number_
       type: object
       properties:
         member_id_:
@@ -1683,41 +1678,12 @@ components:
           type: boolean
         gender_:
           type: string
-    userById:
-      required:
-        - address_
-        - birth_date_
-        - cc_
-        - email_
-        - enrollment_date_
-        - full_name_
-        - is_admin_
-        - location_
-        - member_id_
-        - nationality_
-        - nif_
-        - paid_enrollment_
-        - phone_number_
-        - postal_code_
-        - gender_
-      type: object
-      properties:
-        member_id_:
-          type: integer
-        cc_:
-          type: integer
-        nif_:
-          type: integer
-        birth_date_:
+        member_type_:
           type: string
-          format: date
-        full_name_:
-          type: string
-        enrollment_date_:
-          type: string
-          format: date
-        is_admin_:
+        has_debt_:
           type: boolean
+        username_:
+          type: string
         location_:
           type: string
         address_:
@@ -1729,71 +1695,96 @@ components:
           type: string
         phone_number_:
           type: integer
+        img_value_:
+          type: string
+    userById:
+      required:
+        - member_id_
+        - cc_
+        - nif_
+        - birth_date_
+        - nationality_
+        - full_name_
+        - enrollment_date_
+        - paid_enrollment_
+        - is_admin_
+        - gender_
+        - member_type_
+        - has_debt_
+        - username_
+        - location_
+        - address_
+        - postal_code_
+        - email_
+        - phone_number_
+        - is_deleted_
+        - qrcode_
+      type: object
+      properties:
+        member_id_:
+          type: integer
+        cc_:
+          type: integer
+        nif_:
+          type: integer
+        birth_date_:
+          type: string
+          format: date
+        nationality_:
+          type: string
+        full_name_:
+          type: string
+        enrollment_date_:
+          type: string
+          format: date
+        paid_enrollment_:
+          type: boolean
+        is_admin_:
+          type: boolean
         gender_:
           type: string
-    sport:
-      required:
-        - id_
-        - name_
-      type: object
-      properties:
-        id_:
-          type: integer
-        name_:
+        member_type_:
           type: string
-    error:
-      required:
-        - message
-      type: object
-      properties:
-        message:
-          type: string
-        status:
-          type: integer
-        message_code:
-          type: integer
-    html:
-      type: string
-      example: <html>HTML text</html>
-    api_users_body:
-      type: object
-      properties:
-        cc:
-          type: integer
-        nif:
-          type: integer
-        type:
-          type: string
-        birth_date:
-          type: string
-          format: date
-        full_name:
-          type: string
-        enrollment_date:
-          type: string
-          format: date
-        is_admin:
+        has_debt_:
           type: boolean
-        location:
+        username_:
           type: string
-        address:
+        location_:
           type: string
-        postal_code:
+        address_:
+          type: string
+        postal_code_:
           type: string
           format: ^\d{4}-\d{3}$
-        email:
+        email_:
           type: string
-        phone_number:
+        phone_number_:
           type: integer
-        password:
+        img_value_:
           type: string
-          format: password
-        username:
-          type: string
-        paid_enrollment:
+        is_deleted_:
           type: boolean
-    users_id_body:
+        qrcode_:
+          type: string
+    api_user_body:
       type: object
+      required:
+        - cc
+        - nif
+        - type
+        - birth_date
+        - nationality
+        - full_name
+        - location
+        - address
+        - postal_code
+        - email
+        - phone_number
+        - is_admin
+        - password
+        - username
+        - paid_enrollment
+        - gender
       properties:
         cc:
           type: integer
@@ -1806,16 +1797,64 @@ components:
           format: date
         nationality:
           type: string
-        gender:
-          type: string
-        quota_value:
-          type: integer
-        is_deleted:
-          type: boolean
         full_name:
           type: string
+        location:
+          type: string
+        address:
+          type: string
+        postal_code:
+          type: string
+          format: ^\d{4}-\d{3}$
+        email:
+          type: string
+        phone_number:
+          type: integer
         is_admin:
           type: boolean
+        password:
+          type: string
+          format: password
+        username:
+          type: string
+        paid_enrollment:
+          type: boolean
+        gender:
+          type: string
+    api_user_id_body:
+      type: object
+      required:
+        - id
+        - nif
+        - cc
+        - type
+        - birth_date
+        - nationality
+        - full_name
+        - location
+        - address
+        - postal_code
+        - phone_number
+        - is_admin
+        - paid_enrollment
+        - gender
+        - is_deleted
+      properties:
+        id:
+          type: integer
+        cc:
+          type: integer
+        nif:
+          type: integer
+        type:
+          type: string
+        birth_date:
+          type: string
+          format: date
+        nationality:
+          type: string
+        full_name:
+          type: string
         location:
           type: string
         address:
@@ -1825,24 +1864,17 @@ components:
           format: ^\d{4}-\d{3}$
         phone_number:
           type: integer
-        paid_enrollment:
-          type: boolean
         img:
           type: string
-          format: byte
-    api_sports_body:
-      type: object
-      properties:
-        name:
-          type: string
-    sports_id_body:
-      type: object
-      properties:
-        name_:
-          type: string
-        is_deleted_:
+        is_admin:
           type: boolean
-    sportJoinUser:
+        paid_enrollment:
+          type: boolean
+        gender:
+          type: string
+        is_deleted:
+          type: boolean
+    usersSports:
       required:
         - fed_id_
         - fed_name_
@@ -1879,6 +1911,103 @@ components:
           items:
             type: integer
         is_absent_:
+          type: boolean
+    api_user_sport_body:
+      type: object
+      required:
+        - id
+        - sid
+        - fed_id
+        - fed_number
+        - fed_name
+        - type
+        - years_federated
+      properties:
+        id:
+          type: integer
+        sid:
+          type: integer
+        fed_id:
+          type: integer
+        fed_number:
+          type: integer
+        fed_name:
+          type: string
+        type:
+          type: array
+          items:
+            type: string
+        years_federated:
+          type: array
+          items:
+            type: integer
+        is_absent:
+          type: boolean
+    sid_pair:
+      type: object
+      required:
+        - sid
+        - id
+      properties:
+        eid:
+          type: integer
+        id:
+          type: integer 
+         
+    # above is validated
+    # below is not
+          
+    message:
+      required:
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+    id:
+      type: integer
+    user_sport_ids:
+      required:
+        - id_
+        - sid_
+      type: object
+      properties:
+        id_:
+          type: integer
+        sid_:
+          type: integer
+    sport:
+      required:
+        - id_
+        - name_
+      type: object
+      properties:
+        id_:
+          type: integer
+        name_:
+          type: string
+    error:
+      required:
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: integer
+        message_code:
+          type: integer
+    api_sports_body:
+      type: object
+      properties:
+        name:
+          type: string
+    sports_id_body:
+      type: object
+      properties:
+        name_:
+          type: string
+        is_deleted_:
           type: boolean
     quota:
       required:
@@ -1950,25 +2079,6 @@ components:
           type: string
         has_debt_:
           type: boolean
-    id_sports_body:
-      type: object
-      properties:
-        sid:
-          type: integer
-        fed_id:
-          type: integer
-        fed_number:
-          type: integer
-        fed_name:
-          type: string
-        type:
-          type: array
-          items:
-            type: string
-        years_federated:
-          type: array
-          items:
-            type: integer
     sports_sid_body:
       type: object
       properties:
@@ -2119,7 +2229,6 @@ components:
             type: number
         gender_:
           type: string
-          
     api_events_body:
       type: object
       properties:
