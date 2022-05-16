@@ -60,7 +60,7 @@ const columns = [
 
   return (
     <>
-      <MainCard title='My Events'sx={{height: '100%'}}>
+      <MainCard title={t('my_events')} sx={{height: '100%'}}>
       { loading ? 
             <Stack alignItems="center">
                 <CircularProgress size='4rem'/>

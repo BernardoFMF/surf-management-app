@@ -38,7 +38,7 @@ const MySportsPage = () => {
 const columns = [
     { field: 'name_', headerName: t('name'), width: 150 },
     { field: 'type_', headerName: t('type'), width: 150 },
-    { field: 'fed_number_', headerName: t('fed_number_'), width: 130 },
+    { field: 'fed_number_', headerName: t('fed_number_'), width: 160 },
     { field: 'fed_id_', headerName: t('fed_id_'), width: 130 },
     { field: 'fed_name_', headerName: t('fed_name_'), width: 290 },
     { field: 'years_federated_', headerName: t('years_federated_'), width: 150 },
@@ -47,7 +47,7 @@ const columns = [
 
   return (
     <>
-      <MainCard title='MySports'sx={{height: '100%'}}>
+      <MainCard title={t('my_sports')} sx={{height: '100%'}}>
         <DataGrid
           autoHeight
           rows={rows}

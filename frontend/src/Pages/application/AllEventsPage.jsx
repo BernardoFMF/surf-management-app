@@ -95,7 +95,7 @@ const columns = [
 
   return (
     <>
-      <MainCard title='Events'sx={{height: '100%'}}>
+      <MainCard title={t('all_events')} sx={{height: '100%'}}>
       { loading ? 
             <Stack alignItems="center">
                 <CircularProgress size='4rem'/>

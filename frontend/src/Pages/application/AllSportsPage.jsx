@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SurfingIcon from '@mui/icons-material/Surfing'
 import MainCard from '../../components/cards/MainCard'
-import { Stack, CircularProgress, Grid, Divider} from '@mui/material'
+import { Stack, CircularProgress, Grid, Divider, ButtonBase} from '@mui/material'
 import { useNavigate } from 'react-router'
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -104,9 +104,9 @@ const AllSportsPage = () => {
                                                 </Grid>                        
                                             </CardContent>
                                             <CardActions>
-                                                <Button size="small" type="submit" onClick={() => navigate(`/application/sports/${sport.id_}`)}>{t('view_sport')}</Button>
-                                                {!sport.is_deleted_ ? memberInfo.is_admin_ && <Button size="small" color={'secondary'} onClick={() => deleteSportHandle(sport.id_)}> <DeleteIcon sx={{ ml: 17}}  /></Button> 
-                                                : memberInfo.is_admin_ && <Button size="small" color={'secondary'} onClick={() => handleSubmitUpdateByPlus(sport.id_, sport.name_, sport.is_deleted_)}><AddBoxIcon sx={{ ml: 17}}/></Button>}
+                                                <Button size="small" type="submit"  onClick={() => navigate(`/application/sports/${sport.id_}`)}>{t('view_sport')}</Button>
+                                                {!sport.is_deleted_ ? memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '10px' }} color={'secondary'} onClick={() => deleteSportHandle(sport.id_)}> <DeleteIcon  sx={{ ml: 28}}  /></ButtonBase> 
+                                                : memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '10px'}} color={'secondary'} onClick={() => handleSubmitUpdateByPlus(sport.id_, sport.name_, sport.is_deleted_)}><AddBoxIcon  sx={{ ml: 28}} /></ButtonBase>}
                                             </CardActions>
                                         </Card>
                                       </Grid>
