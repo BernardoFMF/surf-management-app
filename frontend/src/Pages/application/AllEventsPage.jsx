@@ -59,7 +59,7 @@ const AllEventsPage = () => {
 
 const columns = [
     { field: 'id_', headerName: "ID", headerAlign: "left", width: 100 },
-    { field: 'name_', headerName: t('name'), headerAlign: "left", width: 150 },
+    { field: 'name_', headerName: t('name'), headerAlign: "left", width: 180 },
     { field: 'initial_date_', headerName: t('event_initial_date'), headerAlign: "left", width: 130 },
     { field: 'end_date_', headerName: t('event_end_date'), headerAlign: "left", width: 170 },
     {

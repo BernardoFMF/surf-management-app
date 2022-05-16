@@ -11,9 +11,9 @@ const sportRoutes = (data) => {
 
 	const controller = sportController(data)
 	
-	app.get('/', authentication.authAdmin, controller.getSports)
+	app.get('/', authentication.authMember, controller.getSports)
     
-	app.get('/:sid', authentication.authAdmin, controller.getSportById)
+	app.get('/:sid', authentication.authMember, controller.getSportById)
     
 	app.post('/', authentication.authAdmin, controller.postSport)
 

@@ -109,12 +109,22 @@
 
     "hello_profile": "Olá,",
     "name": "Nome",
-    "is_deleted": "Está Eliminado",
+    "is_deleted_": "Está Eliminado?",
     "practitioners": "Numero de Praticantes",
     "member_id": "ID do Membro",
     "date": "Data",
     "payment_date": "Data de Pagamento",
     "username": "Nome de utilizador",
+    "full_name": "Nome completo",
+    "gender": "Género",
+    "nationality": "Nacionalidade",
+    "birth_date": "Data de nascimento",
+    "member_type": "Tipo de membro",
+    "has_debt_": "Tem dívidas?",
+    "paid_enrollment_": "Pagou a jóia?",
+    "is_admin_": "É administrador?",
+    "companies": "Empresas",
+
 
     "updated_sucessfully": "Atualização realizada com sucesso",
     "type": "Tipo",
@@ -156,7 +166,7 @@
     "fed_number_": "Número de Federado",
     "fed_name_": "Nome da federação",
     "years_federated_": "Anos federado",
-    "is_absent": "Está aposentado",
+    "is_absent_": "Está aposentado",
     
     "management_quota_value": "Valor da quota",
     "management_quota_value_mandatory": "Valor da quota é obrigatório",
@@ -180,5 +190,7 @@
 
     "event_people_going": "Pessoas que vão",
     "event_people_not_going": "Pessoas que não vão",
-    "event_people_interested": "Pessoas interessadas"
+    "event_people_interested": "Pessoas interessadas",
+
+    "view_sport": "Ver desporto"
 }

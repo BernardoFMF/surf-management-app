@@ -83,7 +83,7 @@ values (1,'Ericeira','Rua do Clérigos n2 3ºesq','2050-032','miguelgbosousa@gmail
 (4,'Billacity','Rua da billa', '2220-829', 'billybonga@gmail.com', 932323238) ;
 
 insert into Company_ 
-values (3,23451789,'Ripcurl shop'),
+values (3,234517789,'Ripcurl shop'),
 (4,423213348,'Billabong');
 
 insert into User_ 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSports, deleteSport, createSport, updateSport } from '../../store/actions/sportActions'
 import { useTheme } from '@mui/material/styles'
@@ -28,12 +28,24 @@ const AllSportsPage = () => {
     const {t, i18n} = useTranslation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [sports, setSports] = useState([])
+
+    const memberLogin = useSelector((state) => state.memberLogin)
+    const { memberInfo } = memberLogin
+
     const sportsFetch = useSelector((state) => state.sportsFetch)
     const { loading, error, sportsGet } = sportsFetch
+
+    const sportsUpdate = useSelector((state) => state.updateSport)
+    const { loading: loadingUpdate } = sportsUpdate
     
     useEffect(() => {
       dispatch(getSports())
     },[])
+
+    useEffect(() => {
+      if(sportsGet) setSports(sportsGet)
+    },[sportsGet])
 
     const deleteSportHandle = async (id) => {
       dispatch(deleteSport(id))
@@ -54,14 +66,14 @@ const AllSportsPage = () => {
     <>
       
       <MainCard title={t('all_sports')} sx={{height: '100%'}}>
-            { loading ? 
+            { loading || loadingUpdate ? 
                 <Stack alignItems="center">
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                     <>
                         <Grid container justifyContent={'center'} spacing={5} >
                             {
-                                sportsGet.map(sport => 
+                                sports.map(sport => 
                                     (
                                       <Grid key={sport.id_} item maxWidth={300}>
                                         <Card key={6} elevation={6} sx={{ minWidth: 275 }}>
@@ -92,9 +104,9 @@ const AllSportsPage = () => {
                                                 </Grid>                        
                                             </CardContent>
                                             <CardActions>
-                                                <Button size="small" type="submit" >{t('all_sports_update')}</Button>
-                                                {!sport.is_deleted_ ? <Button color={'secondary'} onClick={() => deleteSportHandle(sport.id_)}> <DeleteIcon sx={{ ml: 17}}  /></Button> 
-                                                : <Button color={'secondary'} onClick={() => handleSubmitUpdateByPlus(sport.id_, sport.name_, sport.is_deleted_)}><AddBoxIcon sx={{ ml: 17}}/></Button>}
+                                                <Button size="small" type="submit" onClick={() => navigate(`/application/sports/${sport.id_}`)}>{t('view_sport')}</Button>
+                                                {!sport.is_deleted_ ? memberInfo.is_admin_ && <Button size="small" color={'secondary'} onClick={() => deleteSportHandle(sport.id_)}> <DeleteIcon sx={{ ml: 17}}  /></Button> 
+                                                : memberInfo.is_admin_ && <Button size="small" color={'secondary'} onClick={() => handleSubmitUpdateByPlus(sport.id_, sport.name_, sport.is_deleted_)}><AddBoxIcon sx={{ ml: 17}}/></Button>}
                                             </CardActions>
                                         </Card>
                                       </Grid>

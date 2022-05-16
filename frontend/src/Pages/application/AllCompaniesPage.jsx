@@ -55,13 +55,13 @@ const AllCompaniesPage = () => {
     );
 
 const columns = [
-    { field: 'member_id_', headerName: 'ID', width: 70 },
-    { field: 'username_', headerName: t('companies_username'), width: 140 },
-    { field: 'name_', headerName: t('companies_name'), width: 250, headerAlign: 'center' },
-    { field: 'email_', headerName: 'Email', width: 170 , headerAlign: 'center' },    
-    { field: 'has_debt_', headerName: t('companies_has_debt'), type: 'boolean', width: 110 },
+    { field: 'member_id_', headerName: 'ID', width: 40 },
+    { field: 'username_', headerName: t('username'), width: 140 },
+    { field: 'name_', headerName: t('name'), width: 150 },
+    { field: 'email_', headerName: 'Email', width: 170 },    
     { field: 'nif_', headerName: 'NIF', width: 110 },
-    { field: 'is_deleted_', headerName: t('companies_is_deleted'), type: 'boolean', width: 110 },
+    { field: 'has_debt_', headerName: t('has_debt_'), type: 'boolean', width: 130 },
+    { field: 'is_deleted_', headerName: t('is_deleted_'), type: 'boolean', width: 130 },
     {
         field: 'actions',
         type: 'actions',
@@ -85,7 +85,7 @@ const columns = [
 
   return (
     <>
-      <MainCard title='Companies'sx={{height: '100%'}}>
+      <MainCard title={t('companies')}sx={{height: '100%'}}>
       { loading ? 
         <Stack alignItems="center">
             <CircularProgress size='4rem'/>

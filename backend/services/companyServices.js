@@ -32,15 +32,6 @@ const companyServices = (db) => {
 	}
 	
 	const updateCompanyServices = async(id, nif, name, phone_number, postal_code, address, location, img, is_deleted) => {
-		console.log(id)
-		console.log(nif)
-		console.log(name)
-		console.log(phone_number)
-		console.log(postal_code)
-		console.log(address)
-		console.log(img)
-		console.log(is_deleted)
-
 		if(!id) throw error(400,'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!name) throw error(400,'Parameter not found: name', 'MESSAGE_CODE_14')
 		if(!nif) throw error(400,'Parameter not found: nif', 'MESSAGE_CODE_14')

@@ -109,12 +109,21 @@
 
     "hello_profile": "Hello,",
     "name": "Name",
-    "is_deleted": "Is Deleted",
+    "is_deleted_": "Is Deleted?",
     "practitioners": "Number of Practitioners",
     "member_id": "Member ID",
     "date": "Date",
     "payment_date": "Payment Date",
     "username": "Username",
+    "full_name": "Full name",
+    "gender": "Gender",
+    "nationality": "Nationality",
+    "birth_date": "Birth date",
+    "member_type": "Member type",
+    "has_debt_": "Has debt?",
+    "paid_enrollment_": "Paid enrollment?",
+    "is_admin_": "Is admin?",
+    "companies": "Companies",
 
     "updated_sucessfully": "Update done successfully",
     "type": "Type",
@@ -131,11 +140,6 @@
     "candidates_modal_member_type": "Member type",
     "candidates_modal_paid_enrollment": "Paid enrollment",
     "candidates_modal_member_type_mandatory": "Member type is mandatory",
-
-    "companies_username": "Username",
-    "companies_name": "Name",
-    "companies_has_debt": "Has Debt",
-    "companies_is_deleted": "Is Deleted",
 
     "event_name": "Name",
     "event_initial_date": "Initial Date",
@@ -181,5 +185,8 @@
 
     "event_people_going": "People going",
     "event_people_not_going": "People not going",
-    "event_people_interested": "People interested"
+    "event_people_interested": "People interested",
+
+    "view_sport": "View sport"
+
 }

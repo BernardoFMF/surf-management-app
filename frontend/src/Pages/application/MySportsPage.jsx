@@ -40,7 +40,7 @@ const columns = [
     { field: 'type_', headerName: t('type'), width: 150 },
     { field: 'fed_number_', headerName: t('fed_number_'), width: 130 },
     { field: 'fed_id_', headerName: t('fed_id_'), width: 130 },
-    { field: 'fed_name_', headerName: t('fed_name_'), width: 130 },
+    { field: 'fed_name_', headerName: t('fed_name_'), width: 290 },
     { field: 'years_federated_', headerName: t('years_federated_'), width: 150 },
     { field: 'is_absent_', headerName: t('is_absent_'), type: 'boolean', width: 130 },
 ];

@@ -11,7 +11,7 @@ import MainCard from '../../components/cards/MainCard';
 import {  Stack, CircularProgress} from '@mui/material'
 import { useNavigate } from 'react-router';
 
-const MyQuotasPage = () => {
+const MyEventsPage = () => {
     const theme = useTheme();
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
@@ -26,7 +26,7 @@ const MyQuotasPage = () => {
     },[dispatch,id])
 
     useEffect(() => {
-        if(memberEventsAttendanceGet.length !== 0){
+        if(memberEventsAttendanceGet){
             setRows(memberEventsAttendanceGet.map(memberEvent => {
                 let x = {
                     ...memberEvent, id: memberEvent.event_id_
@@ -36,7 +36,7 @@ const MyQuotasPage = () => {
                 return x
             }))
         }
-    },[memberEventsAttendanceGet,dispatch])
+    },[memberEventsAttendanceGet])
 
 const columns = [
     { field: 'event_id_', headerName: 'ID', width: 100 },
@@ -80,4 +80,4 @@ const columns = [
   )
 }
 
-export default MyQuotasPage
+export default MyEventsPage

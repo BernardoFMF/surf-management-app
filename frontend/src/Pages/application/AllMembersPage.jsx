@@ -5,7 +5,7 @@ import { deleteUser, getUsers } from '../../store/actions/userActions'
 import {  useMediaQuery, Box} from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, ptBR } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MainCard from '../../components/cards/MainCard';
@@ -15,7 +15,6 @@ const AllMembersPage = () => {
     const theme = useTheme()
     const navigate = useNavigate()
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
     const userFetch = useSelector((state) => state.usersFetch)
@@ -49,16 +48,17 @@ const AllMembersPage = () => {
     )
 
 const columns = [
-    { field: 'member_id_', headerName: 'ID', width: 70 },
-    { field: 'full_name_', headerName: 'Full name', width: 130 },
-    { field: 'gender_', headerName: 'Gender', width: 130 },
-    { field: 'birth_date_', headerName: 'Birth Date', width: 170 },
-    { field: 'member_type_', headerName: 'Member Type', width: 130 },
-    { field: 'has_debt_', headerName: 'Has Debt', width: 130 , type: 'boolean'},
-    { field: 'nationality_', headerName: 'Nationality', width: 130 },
-    { field: 'paid_enrollment_', headerName: 'Paid Enrollment', width: 130, type: 'boolean' },
-    { field: 'email_', headerName: 'Email', width: 130 },
-    { field: 'is_deleted_', headerName: 'Is Deleted', width: 130 , type: 'boolean'},
+    { field: 'member_id_', headerName: 'ID', width: 40 },
+    { field: 'full_name_', headerName: t('full_name'), width: 180 },
+    { field: 'email_', headerName: 'Email', width: 170},
+    { field: 'gender_', headerName: t('gender'), width: 110 },    
+    { field: 'nationality_', headerName: t('nationality'), width: 130 },
+    { field: 'birth_date_', headerName: t('birth_date'), width: 150 },
+    { field: 'member_type_', headerName: t('member_type'), width: 130 },
+    { field: 'has_debt_', headerName: t('has_debt_'), width: 110 , type: 'boolean'},
+    { field: 'paid_enrollment_', headerName: t('paid_enrollment_'), width: 120, type: 'boolean' },
+    { field: 'is_admin_', headerName: t('is_admin_'), width: 120 , type: 'boolean'},
+    { field: 'is_deleted_', headerName: t('is_deleted_'), width: 120, type: 'boolean'},
     {
         field: 'actions',
         type: 'actions',
@@ -73,7 +73,7 @@ const columns = [
             icon={<DeleteIcon />}
             label="Delete"
             onClick={deleteUserHandle(params.id)}
-            disabled={params.row.is_deleted_}
+            disabled={params.row.is_deleted_ || params.row.member_id_ === params.id}
             />
         ],
     },
@@ -91,6 +91,7 @@ const columns = [
           rowsPerPageOptions={[10]}
           checkboxSelection
           experimentalFeatures={{ newEditingApi: true }}
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
         /> 
       </MainCard> 
     </>

@@ -62,7 +62,6 @@ const router = (app, data) => {
 		async (username, password, done) => {
 			try {
 				const member = await data.getMemberByUsernameData(username)
-				console.log(member);
 				if(!member) {
 					done(error(401, 'Incorrect username', 'MESSAGE_CODE_1'), false, null)
 				} else {

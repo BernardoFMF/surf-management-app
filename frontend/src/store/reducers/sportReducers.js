@@ -44,7 +44,7 @@ export const createSportReducer = (state = {}, action) => {
         case SPORT_CREATE_REQUEST:
             return { loading: true }
         case SPORT_CREATE_SUCCESS:
-            return { loading: false, createType: action.payload }
+            return { loading: false, createSport: action.payload }
         case SPORT_CREATE_FAIL:
             return { loading: false, error: action.payload }
         default:
@@ -57,7 +57,7 @@ export const updateSportReducer = (state = {}, action) => {
         case SPORT_UPDATE_REQUEST:
             return { loading: true }
         case SPORT_UPDATE_SUCCESS:
-            return { loading: false, updateType: action.payload }
+            return { loading: false, updateSport: action.payload }
         case SPORT_UPDATE_FAIL:
             return { loading: false, error: action.payload }
         default:

@@ -18,7 +18,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
-import { Stack, CircularProgress, Grid} from '@mui/material'
+import { Stack, CircularProgress, Grid, Divider} from '@mui/material'
 import InputField from '../../components/multiStepForm/InputField';
 import { Formik, Form } from 'formik';
 import SubCard from '../../components/cards/SubCard'
@@ -83,8 +83,10 @@ const AllQuotasPage = () => {
     }
 
 const columns = [
-    { field: 'member_id_', headerName: t('member_id'), width: 100 },
-    { field: 'username_', headerName: "Username", width: 130 },
+    { field: 'member_id_', headerName: t('member_id'), width: 120 },
+    { field: 'username_', headerName: t('username'), width: 130 },
+    { field: 'email_', headerName: "Email", width: 170 },
+    { field: 'phone_number_', headerName: t('candidates_phone_number'), width: 150 },
     { field: 'date_', headerName: t('date'), width: 170 },
     { field: 'payment_date_', headerName: t('payment_date'), width: 170 },
     {
@@ -161,20 +163,25 @@ const columns = [
         <Stack alignItems="center">
             <CircularProgress size='4rem'/>
         </Stack> : (
-          <Grid container>
-              <Grid item sx={{ width: {md: 1/2, sm: '100%', xs: '100%'} }}>
+          <Grid  >
+            <Grid  >
                 <DataGrid
-                  autoHeight
-                  rows={rows}
-                  columns={columns}
-                  pageSize={10}
-                  rowsPerPageOptions={[10]}
-                  checkboxSelection
-                  experimentalFeatures={{ newEditingApi: true }}
+                    autoHeight
+                    rows={rows}
+                    columns={columns}
+                    pageSize={10}
+                    rowsPerPageOptions={[10]}
+                    checkboxSelection
+                    experimentalFeatures={{ newEditingApi: true }}
                 /> 
-              </Grid>
-              <Grid item style={{ display: 'flex',alignItems: 'center'}} sx={{ ml: {md: 22, lg: 45}, mt: {xs: 2},maxWidth:'100%'}} >
-              <SubCard elevation={4} title={ <Grid><Typography sx={{ fontSize: 22, minWidth: 370 }} color="primary" gutterBottom> {t('all_quotas_create_quota')} </Typography> </Grid>}   >
+            </Grid>
+            <br />
+            <br />
+            <Divider></Divider>
+            <br />
+            <br />
+            <Grid style={{ display: 'flex',alignItems: 'center', justifyContent: 'center'}} sx={{maxWidth:'100%'}} >
+                <SubCard elevation={4} title={ <Grid><Typography sx={{ fontSize: 22, minWidth: 370 }} color="primary" gutterBottom> {t('all_quotas_create_quota')} </Typography> </Grid>}   >
                     <Formik
                         initialValues={{
                             date: ''
@@ -206,7 +213,7 @@ const columns = [
                     )}
                     </Formik>
                 </SubCard>
-              </Grid>
+            </Grid>
           </Grid>
         )}
       </MainCard> 
