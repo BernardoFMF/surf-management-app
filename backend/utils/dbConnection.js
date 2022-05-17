@@ -6,7 +6,10 @@ const pool = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) =>
 		password: PG_PASSWORD,
 		host: PG_HOST,
 		port: PG_PORT,
-		database: PG_DB
+		database: PG_DB,
+		ssl: {
+			rejectUnauthorized: false
+		}
 	})
 
 export default pool
