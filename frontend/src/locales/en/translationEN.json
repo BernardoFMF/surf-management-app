@@ -124,9 +124,9 @@
     "paid_enrollment_": "Paid enrollment?",
     "is_admin_": "Is admin?",
     "companies": "Companies",
-    "my_quotas": "My quotas",
-    "my_sports": "My sports",
-    "my_events": "My events",
+    "my_quotas": "My Quotas",
+    "my_sports": "My Sports",
+    "my_events": "My Events",
 
     "updated_sucessfully": "Update done successfully",
     "type": "Type",
@@ -143,14 +143,13 @@
     "candidates_modal_member_type": "Member type",
     "candidates_modal_paid_enrollment": "Paid enrollment",
     "candidates_modal_member_type_mandatory": "Member type is mandatory",
-    "all_candidates": "All candidates",
+    "all_candidates": "All Candidates",
 
     "event_name": "Name",
     "event_initial_date": "Initial Date",
     "event_end_date": "End Date",
     "event_state": "State",
-    "all_events": "All events",
-
+    "all_events": "All Events",
 
     "status_not_started": "not started yet",
     "status_event_ended": "ended already",
@@ -177,7 +176,7 @@
     "management_title": "Management quotas",
     "management_create_alert": "New member type created successfuly",
 
-    "all_sports": "All sports",
+    "all_sports": "All Sports",
     "all_sports_create_sport": "Create new sport",
     "all_sports_name_mandatory": "Name is mandatory",
     "all_sports_name": "Name",
@@ -188,13 +187,29 @@
 
     "all_quotas_create_quota": "Create new quota",
     "all_quotas_date": "Date",
-    "all_quotas": "All quotas",
+    "all_quotas": "All Quotas",
 
 
-    "event_people_going": "People going",
-    "event_people_not_going": "People not going",
-    "event_people_interested": "People interested"
+    "event_people_going": "People going: ",
+    "event_people_not_going": "People not going: ",
+    "event_people_interested": "People interested: ",
 
-    
+    "application": "Application",
+    "members": "Members",
+    "my_profile": "My Profile",
+    "all_users": "All Users",
+    "all_companies": "All Companies",
+    "sports": "Sports",
+    "quotas": "Quotas",
+    "management_quotas": "Management Quotas",
+    "events": "Events",
+    "candidates": "Candidates",
+    "about": "About Us",
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "otherPage": "Others",
+
+    "event_information": "Event Information",
+    "event_list": "List"
 
 }
