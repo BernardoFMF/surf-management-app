@@ -6,7 +6,7 @@ import pl from '../../utils/dbConnection.js'
 import error from '../../utils/error.js'
 import queries from './dbQueries.js'
 
-const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
+const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const pool = pl(PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB)
 	function formatDate(date) {

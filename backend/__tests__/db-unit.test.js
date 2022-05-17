@@ -6,7 +6,7 @@ dotenv.config()
 
 import db from '../data/__db__/dbDataAccess.js'
 
-const data = db(process.env.PG_USER, process.env.PG_PASSWORD, process.env.PG_HOST, process.env.PG_PORT, process.env.PG_DB_TEST)
+const data = db(process.env.PG_USER, process.env.PG_PASSWORD, process.env.PG_HOST, process.env.PG_PORT, process.env.PG_DB_TEST, process.env.NODE_MODE)
 
 import sport from '../data/sportData.js'
 import event from '../data/eventData.js'

@@ -1,6 +1,6 @@
 import pg from 'pg'
 
-const pool = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
+const pool = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const creds = {
 		user: PG_USER,
 		password: PG_PASSWORD,
