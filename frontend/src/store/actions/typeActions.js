@@ -65,9 +65,7 @@ export const createType = (type, quota_value) => async (dispatch) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({"type": type, "quota_value": quota_value})
     })
-    console.log(response);
     const types = await response.json()
-    console.log(types);
     if(response.status !== 201) throw Error(types.message_code)
     dispatch({
       type: TYPES_CREATE_SUCCESS,

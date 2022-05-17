@@ -47,7 +47,6 @@ const AuthLogin = ({ ...others }) => {
 
     const navigate = useNavigate()
     const { state } = useLocation()
-    console.log(state);
     const dispatch = useDispatch()
     const memberLogin = useSelector((state) => state.memberLogin)
     const { loading, error, memberInfo } = memberLogin

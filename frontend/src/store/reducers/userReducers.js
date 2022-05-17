@@ -66,7 +66,6 @@ import {
       case USER_FETCH_REQUEST:
         return { loading: true }
       case USER_FETCH_SUCCESS:
-        console.log("mudou o user");
         return { loading: false, userGet: action.payload }
       case USER_FETCH_FAIL:
         return { loading: false, error: action.payload }

@@ -97,7 +97,6 @@ export const deleteCompany = (id) => async (dispatch) => {
   }
 
   export const updateCompany = (body) => async (dispatch, getState) => {
-    console.log(body);
     try {
       dispatch({
         type: COMPANY_UPDATE_REQUEST,

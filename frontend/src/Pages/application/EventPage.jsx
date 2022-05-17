@@ -42,7 +42,6 @@ const EventPage = () => {
     },[])
 
     useEffect(() => {
-        console.log(eventAttendanceGet)
         if(eventAttendanceGet){
             setRows(eventAttendanceGet.text.map(event => {
                 let x = {
