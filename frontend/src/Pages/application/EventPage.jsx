@@ -61,18 +61,22 @@ const EventPage = () => {
     return (
         <>
             <MainCard title={eventGet !==undefined ? eventGet.name_ : ""}>
+            <h2>{t("event_information")}</h2>
+            <br></br>
                 <Grid container>
                     <Grid item xs>
-                        {eventGet !==undefined ? "Initial Date:  " + eventGet.initial_date_ : ""}
+                    <b>{eventGet !==undefined ? "Initial Date:  ": ""}</b> {eventGet !==undefined ? eventGet.initial_date_ : ""}
                     </Grid>
                     <Divider orientation="vertical" flexItem>
                     </Divider>
                     <Grid item xs>
-                        {eventGet !==undefined ? "End Date  " + eventGet.end_date_ : ""}
+                        <b>{eventGet !==undefined ? "End Date:  ": ""}</b> {eventGet !==undefined ? eventGet.end_date_ : ""}
                     </Grid>
                 </Grid>
-            </MainCard>
-            <MainCard title='Attendance'sx={{height: '100%'}}>
+                <br></br>
+                <br></br>
+                <h3>{t("event_list")}</h3>
+                <br></br>
                 <DataGrid
                 autoHeight
                 rows={rows}
@@ -87,17 +91,17 @@ const EventPage = () => {
                 <br></br>
                 <Grid container>
                     <Grid item xs>
-                        {eventAttendanceGet !==undefined ? t("event_people_going") + ": " + eventAttendanceGet.going : "" }
+                        <b>{eventAttendanceGet !==undefined ? t("event_people_going")  : ""}</b> {eventAttendanceGet !==undefined ? eventAttendanceGet.going : ""}
                     </Grid>
                     <Divider orientation="vertical" flexItem>
                     </Divider>
                     <Grid item xs>
-                        {eventAttendanceGet !==undefined ? t("event_people_not_going") + ": " + eventAttendanceGet.not_going : "" }
+                    <b>{eventAttendanceGet !==undefined ? t("event_people_not_going")  : ""}</b> {eventAttendanceGet !==undefined ? eventAttendanceGet.not_going : ""}
                     </Grid>
                     <Divider orientation="vertical" flexItem>
                     </Divider>
                     <Grid item xs>
-                        {eventAttendanceGet !==undefined ? t("event_people_interested") + ": " + eventAttendanceGet.interested : "" }
+                    <b>{eventAttendanceGet !==undefined ? t("event_people_interested")  : ""}</b> {eventAttendanceGet !==undefined ? eventAttendanceGet.interested : ""}
                     </Grid>
                 </Grid>
             </MainCard> 
