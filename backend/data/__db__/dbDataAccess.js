@@ -813,6 +813,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB) => {
 			return result.rows[0]
 		} catch (e) {
 			await client.query('rollback')
+			console.log(e);
 			throw e
 		} finally {
 			client.release()

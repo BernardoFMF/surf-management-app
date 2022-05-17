@@ -62,7 +62,9 @@ const router = (app, data) => {
 	passport.use(new LocalStrategy(
 		async (username, password, done) => {
 			try {
+				console.log("entrou no login");
 				const member = await data.getMemberByUsernameData(username)
+				console.log("passou o fetch");
 				if(!member) {
 					done(error(401, 'Incorrect username', 'MESSAGE_CODE_1'), false, null)
 				} else {
