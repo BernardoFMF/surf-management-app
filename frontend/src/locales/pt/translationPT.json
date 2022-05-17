@@ -194,9 +194,9 @@
     "all_quotas_date": "Data",
     "all_quotas": "Todas As Quotas",
 
-    "event_people_going": "Pessoas que vão",
-    "event_people_not_going": "Pessoas que não vão",
-    "event_people_interested": "Pessoas interessadas",
+    "event_people_going": "Pessoas que vão: ",
+    "event_people_not_going": "Pessoas que não vão: ",
+    "event_people_interested": "Pessoas interessadas: ",
 
     "application": "Aplicação",
     "members": "Membros",
@@ -211,6 +211,8 @@
     "about": "Sobre Nós",
     "dashboard": "Painel De Controlo",
     "overview": "Visão Geral",
-    "otherPage": "Outros"
- 
+    "otherPage": "Outros",
+    
+    "event_information": "Informações do evento",
+    "event_list": "Lista"
 }

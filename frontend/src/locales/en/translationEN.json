@@ -190,9 +190,9 @@
     "all_quotas": "All Quotas",
 
 
-    "event_people_going": "People going",
-    "event_people_not_going": "People not going",
-    "event_people_interested": "People interested",
+    "event_people_going": "People going: ",
+    "event_people_not_going": "People not going: ",
+    "event_people_interested": "People interested: ",
 
     "application": "Application",
     "members": "Members",
@@ -207,5 +207,9 @@
     "about": "About Us",
     "dashboard": "Dashboard",
     "overview": "Overview",
-    "otherPage": "Others"
+    "otherPage": "Others",
+
+    "event_information": "Event Information",
+    "event_list": "List"
+
 }
