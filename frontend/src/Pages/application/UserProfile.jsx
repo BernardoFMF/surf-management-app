@@ -27,7 +27,7 @@ const UserProfile = () => {
       setValue(newValue);
     };
 
-    const mediumViewport = useMediaQuery('(min-width:600px)');
+    const mediumViewport = useMediaQuery('(min-width:769px)');
 
     return (
         <Grid container spacing={4} sx={{ pt: 4, pl: 4 }} display={{ sm: "flex" }} justifyContent={{ sm: 'center', md: 'flex-start'}}>
@@ -37,7 +37,7 @@ const UserProfile = () => {
                 value={value}
                 onChange={handleChange}
                 aria-label="Profile tabs"
-                sx={{ borderRight: 1, borderColor: 'divider', width: 400}}
+                sx={{ borderRight: 1, borderColor: 'divider', width: mediumViewport ? 200 : 400 }}
             >
                 <Tab icon={<PersonRoundedIcon/>} label={t('personal_details')} {...{id: `vertical-tab-${0}`, 'aria-controls': `vertical-tabpanel-${0}`}} />
 

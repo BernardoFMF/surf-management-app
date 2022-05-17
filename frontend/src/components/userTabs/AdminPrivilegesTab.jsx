@@ -68,7 +68,7 @@ const AdminPrivilegesTab = () => {
                         >
                         {formik => (
                             <Form>
-                                <Grid container direction="column" sx={{ ml: { md: 4, lg: 4 } }} justifyContent='center' spacing={1}>
+                                <Grid container direction="row" sx={{ ml: { md: 4, lg: 4 } }} justifyContent='center' spacing={1}>
                                     <Grid item>
                                         <Box sx={{ pt: 2, width: { md: 400 }}}>
                                             <DropdownInputField name='type' label={t('type')} options={typesGet.map(type => type.type_).reduce((o, key) => Object.assign(o, {[key]: key}), {})}></DropdownInputField>

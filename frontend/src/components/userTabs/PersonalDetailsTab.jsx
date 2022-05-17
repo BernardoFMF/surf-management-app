@@ -90,7 +90,7 @@ const PersonalDetailsTab = () => {
                             </Box>
                         </Grid>
                         <Grid item>
-                            <Box sx={{ pt: 2, pl: 2, pr: 2, width: { md: 400 }}}>
+                            <Box sx={{ pt: 2, pl: 2, pr: 2, width: { md: 300 }}}>
                                 <InputField name='username' label={t('sign_up_username')} type='text' InputProps={{readOnly: true}}></InputField>
                                 <InputField name='email' label={t('sign_up_email')} type='text' InputProps={{readOnly: true}}></InputField>
                                 <Grid container spacing={matchDownSM ? 0 : 2}>
@@ -104,7 +104,7 @@ const PersonalDetailsTab = () => {
                             </Box>
                         </Grid>
                         <Grid item>
-                            <Box sx={{ pt: 2, pl: 2, pr: 2, width: { md: 400 }}}>
+                            <Box sx={{ pt: 2, pl: 2, pr: 2, width: { md: 300 }}}>
                                 <InputField name='full_name' label={t('sign_up_full_name')} type='text'></InputField>
                                 <Grid container spacing={matchDownSM ? 0 : 2}>
                                     <Grid item xs={12} sm={6}>
