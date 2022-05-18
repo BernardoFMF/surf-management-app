@@ -7,9 +7,7 @@ const pool = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		host: PG_HOST,
 		port: PG_PORT,
 		database: PG_DB,
-	}
-	if (mode == 'production') {
-		creds.ssl = {
+		ssl: {
 			rejectUnauthorized: false
 		}
 	}
