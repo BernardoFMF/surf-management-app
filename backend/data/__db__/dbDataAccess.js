@@ -8,7 +8,7 @@ import queries from './dbQueries.js'
 
 const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
-	const pool = pl(PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB)
+	const pool = pl(PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode)
 	function formatDate(date) {
 		var d = new Date(date),
 			month = '' + (d.getMonth() + 1),
