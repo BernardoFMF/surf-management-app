@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Container, Grid, Typography, Stack, Alert, Avatar, useMediaQuery } from '@mui/material'
+import {Grid,} from '@mui/material'
 import MainCard from '../../components/cards/MainCard'
-import SubCard from '../../components/cards/SubCard'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux';
 import { getEvent , getEventAttendance} from '../../store/actions/eventActions';
 import Divider from '@mui/material/Divider';
-import { getTypes } from '../../store/actions/typeActions'
-import CircularProgress from '@mui/material/CircularProgress';
-import default_image from './../../assets/data/blank-profile-picture.png'
-
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
-import HomeIcon from '@mui/icons-material/Home';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
+import { DataGrid} from '@mui/x-data-grid';
 
 import useScriptRef from '../../hooks/useScriptRef'
 

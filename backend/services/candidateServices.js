@@ -7,8 +7,8 @@ import crypto from '../utils/crypto.js'
 const candidateServices = (db) => {
 	const data = candidateData(db)
 
-	const getCandidatesServices = async () => {
-		return await data.getCandidates()
+	const getCandidatesServices = async (username_filter,name_filter,email_filter,offset,limit) => {
+		return await data.getCandidates(username_filter,name_filter,email_filter,offset,limit)
 	}
 	
 	const getCandidateByIdServices = async (id) => {

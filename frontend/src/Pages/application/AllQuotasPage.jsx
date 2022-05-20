@@ -60,7 +60,7 @@ const AllQuotasPage = () => {
     const updateQuotaHandle = async(values) => {
         let date = values.payment_date.toLocaleString().split(',')[0]
         date = date.split('/')
-        const p_date = `${date[2]}-${date[1]}-${date[0]}`
+        const p_date = `${date[2]}-${date[0]}-${date[1]}`
         dispatch(updateQuota(p_date, id))
         dispatch(getQuotas()) //TODO toBe changed
         handleClose()
@@ -69,7 +69,7 @@ const AllQuotasPage = () => {
     const handleSubmitCreate = async (values) => {
         let date = values.date.toLocaleString().split(',')[0]
         date = date.split('/')
-        const p_date = `${date[2]}-${date[1]}-${date[0]}`
+        const p_date = `${date[2]}-${date[0]}-${date[1]}`
         dispatch(createQuota(p_date))
         dispatch(getQuotas())
       }

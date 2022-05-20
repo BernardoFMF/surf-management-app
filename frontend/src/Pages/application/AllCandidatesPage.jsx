@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteCandidate, getCandidates, approveCandidate } from '../../store/actions/candidateActions'
 import { getTypes } from '../../store/actions/typeActions'
+import InputField from '../../components/multiStepForm/InputField';
 
 import * as Yup from 'yup';
 
@@ -22,6 +23,7 @@ import DropdownInputField from '../../components/multiStepForm/DropdownInputFiel
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import SearchIcon from '@mui/icons-material/Search';
 
 import Button from '@mui/material/Button';
 
@@ -42,6 +44,8 @@ const AllCandidatesPage = () => {
 
     const typesFetch = useSelector((state) => state.typesFetch)
     const { error: errorTypes, typesGet } = typesFetch
+    const [page, setPage] = React.useState(0);
+    const limit = 5
 
     const handleOpen = (id) => {
         setId(id)
@@ -49,13 +53,18 @@ const AllCandidatesPage = () => {
     }
 
     useEffect(() => {
-        dispatch(getCandidates())
+        dispatch(getCandidates(null,null,null,0,limit))
+        dispatch(getTypes())
+    },[])
+
+    useEffect(() => {
+        dispatch(getCandidates(null,null,null,0,limit))
         dispatch(getTypes())
     },[])
 
     useEffect(() => {
         if(candidatesGet){
-            setRows(candidatesGet.map(candidate => {
+            setRows(candidatesGet.candidates.map(candidate => {
                 let x = {
                     ...candidate, id: candidate.id_
                 }
@@ -79,6 +88,10 @@ const AllCandidatesPage = () => {
         dispatch(approveCandidate(id, values.member_type, values.paid_enrollment))
         dispatch(getCandidates()) //TODO toBe changed
         handleClose()
+    }
+
+    const searchHandler = async(values) => {
+        dispatch(getCandidates(values.username_filter,values.name_filter,values.email_filter,page*limit,limit))
     }
 
 const columns = [
@@ -185,14 +198,55 @@ const columns = [
             <>
                 { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
                 { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
+                <Formik
+                        initialValues={{
+                            username_filter: "",
+                            name_filter: "",
+                            email_filter: ""
+                        }}
+                        onSubmit={values => searchHandler(values)}
+                    >
+                    {formik => (
+                        <Form>
+                            <Grid container spacing={2} direction="row" justifyContent='left'>
+                                <Grid item justifyContent='center'>
+                                    <InputField name='username_filter' label={t('sign_up_username')} type='text'></InputField>
+                                </Grid>
+                                <Grid item justifyContent='center'>
+                                    <InputField name='name_filter' label={t('sign_up_full_name')} type='text' ></InputField>
+                                </Grid>
+                                <Grid item justifyContent='center'>
+                                    <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
+                                </Grid>
+                                <Grid item display={'flex'} xs={12} sm={6} sx={{ mt: 1}}>
+                                    <AnimateButton>
+                                        <LoadingButton
+                                            disableElevation
+                                            fullWidth
+                                            size="large"
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            loading = {loading}
+                                            startIcon={<SearchIcon></SearchIcon>}
+                                        >
+                                            {t('Search')}
+                                        </LoadingButton>
+                                    </AnimateButton>
+                                </Grid>    
+                            </Grid>
+                        </Form>
+                    )}
+                    </Formik>
                 <DataGrid
                 autoHeight
                 rows={rows}
+                rowCount={candidatesGet.number_of_candidates}
                 columns={columns}
-                pageSize={10}
-                rowsPerPageOptions={[10]}
+                pageSize={limit}
+                rowsPerPageOptions={[limit]}
                 checkboxSelection
-                experimentalFeatures={{ newEditingApi: true }}
+                onPageChange={(newPage) => setPage(newPage)}
                 /> 
             </>
             )}

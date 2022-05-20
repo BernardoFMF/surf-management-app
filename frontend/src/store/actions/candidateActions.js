@@ -37,7 +37,7 @@ export const deleteCandidate = (id) => async (dispatch) => {
     }
   }
   
-  export const getCandidates = () => async (dispatch) => {
+  export const getCandidates = (username_filter, name_filter, email_filter, offset, limit) => async (dispatch) => {
     function formatDate(date) {
       var d = new Date(date),
           month = '' + (d.getMonth() + 1),
@@ -56,13 +56,13 @@ export const deleteCandidate = (id) => async (dispatch) => {
       dispatch({
         type: CANDIDATES_FETCH_REQUEST,
       })
-      const response = await fetch(`/api/candidates`, {
+      const response = await fetch(`/api/candidates?offset=${offset}&limit=${limit}${username_filter ? `&username=${username_filter}`:""}${name_filter ? `&name=${name_filter}`:""}${email_filter ? `&email=${email_filter}`:""}`, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
       })
       let candidates = await response.json()
       if(response.status !== 200) throw Error(candidates.message_code)
-      candidates = candidates.map(candidate => {
+      candidates.candidates = candidates.candidates.map(candidate => {
         candidate.birth_date_ = formatDate(candidate.birth_date_)
         return candidate
     })
