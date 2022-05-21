@@ -79,22 +79,22 @@ export const deleteUser = (id) => async (dispatch) => {
   }
 }
 
-export const getUsers = () => async (dispatch) => {
+export const getUsers = (username_filter, name_filter, email_filter, offset, limit) => async (dispatch) => {
   try {
     dispatch({
       type: USERS_FETCH_REQUEST,
     })
-    const response = await fetch(`/api/users`, {
+    const response = await fetch(`/api/users?offset=${offset}&limit=${limit}${username_filter ? `&username=${username_filter}`:""}${name_filter ? `&name=${name_filter}`:""}${email_filter ? `&email=${email_filter}`:""}`, {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
     })
     let users = await response.json()
+    console.log(users);
     if(response.status !== 200) throw Error(users.message_code)
     dispatch({
       type: USERS_FETCH_SUCCESS,
       payload: users,
     })
-
   } catch (error) {
     dispatch({
       type: USERS_FETCH_FAIL,

@@ -47,7 +47,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			count++
 		}
 		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
-		console.log(query)
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
@@ -536,21 +535,49 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			client.release()
 		}
 	}
+
 	/**
 	 * Users
 	 */
+	const getUsersData = async (username_filter,name_filter,email_filter,offset,limit) => {
+		let query = queries.QUERY_GET_USERS
+		let count = 0
+		if(username_filter || name_filter || email_filter){
+			query = query + " where "
+		}
+		if(username_filter){
+			count++
+			query = query + ` position('${username_filter}' in username_) > 0`
+		}
+		if(name_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` position('${name_filter}' in full_name_) > 0`
+			count++
+		}
+		if(email_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` position('${email_filter}' in email_) > 0`
+			count++
+		}
+		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
 
-	const getUsersData = async () => {
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
-			const result = await client.query(queries.QUERY_GET_USERS)
+			const users = await client.query(query)
+			const number_of_users = await client.query(queries.QUERY_NUMBER_OF_USERS)
 			await client.query('Commit')
-			result.rows = result.rows.map(user => {
+			users.rows = users.rows.map(user => {
 				user.birth_date_ = formatDate(user.birth_date_)
 				return user
 			})
-			return result.rows
+			console.log(users.rows);
+			const result = {
+				users: users.rows,
+				number_of_users: username_filter || name_filter || email_filter ? users.rows.length : parseInt(number_of_users.rows[0].count)
+			}
+			console.log(result);
+			return result
 		} catch(e) {
 			await client.query('Rollback')
 			throw e

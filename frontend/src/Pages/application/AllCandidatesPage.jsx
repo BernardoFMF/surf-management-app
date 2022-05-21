@@ -6,8 +6,7 @@ import InputField from '../../components/multiStepForm/InputField';
 
 import * as Yup from 'yup';
 
-import { Grid,Stack, CircularProgress, FormControlLabel, Alert} from '@mui/material'
-import { useTheme } from '@mui/material/styles';
+import { Grid,Stack, CircularProgress, FormControlLabel, Alert, Pagination} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
@@ -26,8 +25,6 @@ import DialogContent from '@mui/material/DialogContent';
 import SearchIcon from '@mui/icons-material/Search';
 
 import Button from '@mui/material/Button';
-import { Pagination } from '@mui/material';
-
 
 const AllCandidatesPage = () => {
     const {t} = useTranslation()
@@ -117,16 +114,16 @@ const AllCandidatesPage = () => {
             width: 110,
             getActions: (params) => [
                 <GridActionsCellItem
-                icon={<HowToRegIcon />}
-                label="Approve Candidate"
-                onClick={() => {
-                    handleOpen(params.id)
-                }}
+                    icon={<HowToRegIcon />}
+                    label="Approve Candidate"
+                    onClick={() => {
+                        handleOpen(params.id)
+                    }}
                 />,
                 <GridActionsCellItem
-                icon={<DeleteIcon />}
-                label="Delete"
-                onClick={deleteCandidateHandle(params.id)}
+                    icon={<DeleteIcon />}
+                    label="Delete"
+                    onClick={deleteCandidateHandle(params.id)}
                 />
             ],
         },

@@ -8,7 +8,6 @@ const candidateController = (data) => {
 	const services = candidateServices(data)
 
 	const getCandidates = asyncHandler(async (req, res) => {
-		console.log(req.query.username)
 		const candidates = await services.getCandidatesServices(req.query.username,req.query.name,req.query.email,req.query.offset,req.query.limit)
 		res.json(candidates)
 	})

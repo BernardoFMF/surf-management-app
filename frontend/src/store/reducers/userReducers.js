@@ -48,7 +48,7 @@ import {
     }
   }
 
-  export const usersFetchReducer = (state = {usersGet: []}, action) => {
+  export const usersFetchReducer = (state = {usersGet: {users: [], number_of_users: 0}}, action) => {
     switch (action.type) {
       case USERS_FETCH_REQUEST:
         return { loading: true }

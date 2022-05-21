@@ -4,7 +4,7 @@ const authContext = React.createContext();
 
 function useAuth() {
   const [authed, setAuthed] = React.useState(false);
-  
+
   React.useEffect(() => {
       const auth = sessionStorage.getItem('authed')
       if(auth) {

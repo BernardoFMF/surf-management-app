@@ -7,8 +7,10 @@ import crypto from '../utils/crypto.js'
 const userServices = (db) => {
 	const data = userData(db)
 
-	const getUsersServices = async () => {
-		return await data.getUsers()
+	const getUsersServices = async (username_filter,name_filter,email_filter,offset,limit) => {
+		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
+		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
+		return await data.getUsers(username_filter,name_filter,email_filter,offset,limit)
 	}
 	
 	const getUserByIdServices = async (id) => {
