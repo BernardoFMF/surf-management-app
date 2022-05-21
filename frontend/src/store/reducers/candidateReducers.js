@@ -23,7 +23,7 @@ export const candidateDeletionReducer = (state = {}, action) => {
     }
   }
 
-  export const candidatesFetchReducer = (state = {candidatesGet: []}, action) => {
+  export const candidatesFetchReducer = (state = {candidatesGet: {candidates:[],number_of_candidates:0}}, action) => {
     switch (action.type) {
       case CANDIDATES_FETCH_REQUEST:
         return { loading: true }

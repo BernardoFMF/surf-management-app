@@ -26,17 +26,40 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	 * Candidates
 	 */
 
-	const getCandidatesData = async () => {
+	const getCandidatesData = async (username_filter,name_filter,email_filter,offset,limit) => {
+		let query = queries.QUERY_GET_CANDIDATES
+		let count = 0
+		if(username_filter || name_filter || email_filter){
+			query = query + " where "
+		}
+		if(username_filter){
+			count++
+			query = query + ` position('${username_filter}' in username_) > 0`
+		}
+		if(name_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` position('${name_filter}' in full_name_) > 0`
+			count++
+		}
+		if(email_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` position('${email_filter}' in email_) > 0`
+			count++
+		}
+		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		console.log(query)
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
-			const candidates = await client.query(queries.QUERY_GET_CANDIDATES)
+			const candidates = await client.query(query)
+			const number_of_candidates = await client.query(queries.QUERY_NUMBER_OF_CANDIDATES)
 			await client.query('Commit')
 			candidates.rows = candidates.rows.map(candidate => {
 				candidate.birth_date_ = formatDate(candidate.birth_date_)
 				return candidate
 			})
-			return candidates.rows
+			const result = {candidates:candidates.rows,number_of_candidates:username_filter || name_filter || email_filter ? candidates.rows.length : parseInt(number_of_candidates.rows[0].count)}
+			return result
 		} catch(e) {
 			await client.query('Rollback')
 			throw e
@@ -44,7 +67,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			client.release()
 		}
 	}
-
+	
 	const getCandidateByIdData = async (id_) => {
 		const client = await pool.connect()
 		try {
