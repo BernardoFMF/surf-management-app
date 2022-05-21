@@ -7,8 +7,10 @@ import crypto from '../utils/crypto.js'
 const companyServices = (db) => {
 	const data = companyData(db)
 
-	const getCompaniesServices = async() => {
-		return await data.getCompanies()
+	const getCompaniesServices = async(username_filter,name_filter,email_filter,offset,limit) => {
+		if(!offset) throw error(400,'Parameter not found: offset', 'MESSAGE_CODE_14')
+		if(!limit) throw error(400,'Parameter not found: limit', 'MESSAGE_CODE_14')
+		return await data.getCompanies(username_filter,name_filter,email_filter,offset,limit)
 	}
 	
 	const getCompanyByIdServices = async(id) => {

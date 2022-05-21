@@ -42,12 +42,12 @@ export const deleteCompany = (id) => async (dispatch) => {
     }
   }
   
-  export const getCompanies = () => async (dispatch) => {
+  export const getCompanies = (username_filter, name_filter, email_filter, offset, limit) => async (dispatch) => {
     try {
       dispatch({
         type: COMPANIES_FETCH_REQUEST,
       })
-      const response = await fetch(`/api/companies`, {
+      const response = await fetch(`/api/companies?offset=${offset}&limit=${limit}${username_filter ? `&username=${username_filter}`:""}${name_filter ? `&name=${name_filter}`:""}${email_filter ? `&email=${email_filter}`:""}`, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
       })

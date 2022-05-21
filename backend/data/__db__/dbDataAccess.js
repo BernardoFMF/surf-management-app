@@ -195,13 +195,36 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	 * Companies
 	 */
 
-	const getCompaniesData = async () => {
+	const getCompaniesData = async (username_filter,name_filter,email_filter,offset,limit) => {
+		let query = queries.QUERY_GET_COMPANIES
+		let count = 0
+		if(username_filter || name_filter || email_filter){
+			query = query + " where "
+		}
+		if(username_filter){
+			count++
+			query = query + ` position('${username_filter}' in username_) > 0`
+		}
+		if(name_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` position('${name_filter}' in name_) > 0`
+			count++
+		}
+		if(email_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` position('${email_filter}' in email_) > 0`
+			count++
+		}
+		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		console.log(query)
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
-			const candidates = await company.query(queries.QUERY_GET_COMPANIES)
+			const companies = await company.query(query)
+			const number_of_companies = await company.query(queries.QUERY_NUMBER_OF_COMPANIES)
 			await company.query('Commit')
-			return candidates.rows
+			const result = {companies:companies.rows,number_of_companies:username_filter || name_filter || email_filter ? companies.rows.length : parseInt(number_of_companies.rows[0].count)}
+			return result
 		} catch(e) {
 			await company.query('Rollback')
 			throw e

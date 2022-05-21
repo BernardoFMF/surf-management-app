@@ -26,7 +26,7 @@ export const companyDeletionReducer = (state = {}, action) => {
     }
   }
 
-  export const companiesFetchReducer = (state = {companiesGet: []}, action) => {
+  export const companiesFetchReducer = (state = {companiesGet: {companies:[],number_of_companies:0}}, action) => {
     switch (action.type) {
       case COMPANIES_FETCH_REQUEST:
         return { loading: true }

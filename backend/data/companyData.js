@@ -3,8 +3,8 @@
 import error from '../utils/error.js'
 
 const companyData = (db) => {
-	const getCompanies = async () => {
-		return await db.getCompaniesData()
+	const getCompanies = async (username_filter,name_filter,email_filter,offset,limit) => {
+		return await db.getCompaniesData(username_filter,name_filter,email_filter,offset,limit)
 	}
 	
 	const getCompanyById = async (id_) => {
