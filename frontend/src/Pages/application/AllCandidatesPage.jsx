@@ -26,6 +26,7 @@ import DialogContent from '@mui/material/DialogContent';
 import SearchIcon from '@mui/icons-material/Search';
 
 import Button from '@mui/material/Button';
+import { Pagination } from '@mui/material';
 
 
 const AllCandidatesPage = () => {
@@ -43,8 +44,15 @@ const AllCandidatesPage = () => {
     const { loading, error, candidatesGet } = candidatesFetch
 
     const typesFetch = useSelector((state) => state.typesFetch)
-    const { error: errorTypes, typesGet } = typesFetch
-    const [page, setPage] = React.useState(0);
+    const { loading: loadingTypes, error: errorTypes, typesGet } = typesFetch
+
+    const [ searchState, setSearchState ] = useState({
+        username_filter: "",
+        name_filter: "",
+        email_filter: ""
+    })
+
+    const [page, setPage] = useState(1);
     const limit = 5
 
     const handleOpen = (id) => {
@@ -53,16 +61,12 @@ const AllCandidatesPage = () => {
     }
 
     useEffect(() => {
-        dispatch(getCandidates(null,null,null,0,limit))
+        dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, limit))
         dispatch(getTypes())
-    },[])
+    }, [])
 
     useEffect(() => {
-        dispatch(getCandidates(null,null,null,0,limit))
-        dispatch(getTypes())
-    },[])
-
-    useEffect(() => {
+        console.log(candidatesGet);
         if(candidatesGet){
             setRows(candidatesGet.candidates.map(candidate => {
                 let x = {
@@ -72,6 +76,10 @@ const AllCandidatesPage = () => {
             }))
         }
     },[candidatesGet])
+
+    useEffect(() => {
+        console.log(page);
+    }, [page])
 
     
     const deleteCandidateHandle = React.useCallback(
@@ -86,52 +94,59 @@ const AllCandidatesPage = () => {
 
     const approveCandidateHandle = async(values) => {
         dispatch(approveCandidate(id, values.member_type, values.paid_enrollment))
-        dispatch(getCandidates()) //TODO toBe changed
+        dispatch(getCandidates())
         handleClose()
     }
 
     const searchHandler = async(values) => {
-        dispatch(getCandidates(values.username_filter,values.name_filter,values.email_filter,page*limit,limit))
+        setSearchState(values)
+        setPage(1)
+        setRows([])
+        dispatch(getCandidates(values.username_filter,values.name_filter,values.email_filter,0,limit))
     }
 
-const columns = [
-    { field: 'id_', headerName: 'ID', width: 70 },
-    { field: 'username_', headerName: t('candidates_username'), width: 140 },
-    { field: 'full_name_', headerName: t('candidates_full_name'), width: 250 },
-    { field: 'email_', headerName: 'Email', width: 170},
-    { field: 'phone_number_', headerName: t('candidates_phone_number'), width: 150},
-    { field: 'gender_', headerName: t('candidates_gender'), width: 130 },
-    { field: 'birth_date_', headerName: t('candidates_birth_date'), width: 160, type: 'date' },
-    { field: 'location_', headerName: t('candidates_location'), width: 100 },
-    { field: 'address_', headerName: t('candidates_address'), width: 180 },
-    { field: 'postal_code_', headerName: t('candidates_postal_code'), width: 110 },
-    { field: 'cc_', headerName: 'CC', width: 110 },
-    { field: 'nif_', headerName: 'NIF', width: 110 },
-    {
-        field: 'actions',
-        type: 'actions',
-        width: 110,
-        getActions: (params) => [
-            <GridActionsCellItem
-            icon={<HowToRegIcon />}
-            label="Approve Candidate"
-            onClick={() => {
-                handleOpen(params.id)
-            }}
-            />,
-            <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={deleteCandidateHandle(params.id)}
-            />
-        ],
-    },
-];
+    const columns = [
+        { field: 'id_', headerName: 'ID', width: 70 },
+        { field: 'username_', headerName: t('candidates_username'), width: 140 },
+        { field: 'full_name_', headerName: t('candidates_full_name'), width: 250 },
+        { field: 'email_', headerName: 'Email', width: 170},
+        { field: 'phone_number_', headerName: t('candidates_phone_number'), width: 150},
+        { field: 'gender_', headerName: t('candidates_gender'), width: 130 },
+        { field: 'birth_date_', headerName: t('candidates_birth_date'), width: 160, type: 'date' },
+        { field: 'location_', headerName: t('candidates_location'), width: 100 },
+        { field: 'address_', headerName: t('candidates_address'), width: 180 },
+        { field: 'postal_code_', headerName: t('candidates_postal_code'), width: 110 },
+        { field: 'cc_', headerName: 'CC', width: 110 },
+        { field: 'nif_', headerName: 'NIF', width: 110 },
+        {
+            field: 'actions',
+            type: 'actions',
+            width: 110,
+            getActions: (params) => [
+                <GridActionsCellItem
+                icon={<HowToRegIcon />}
+                label="Approve Candidate"
+                onClick={() => {
+                    handleOpen(params.id)
+                }}
+                />,
+                <GridActionsCellItem
+                icon={<DeleteIcon />}
+                label="Delete"
+                onClick={deleteCandidateHandle(params.id)}
+                />
+            ],
+        },
+    ];
+
+    const changePageHandler = (event, value) => {
+        setPage(value)
+        dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, (value-1)*limit, limit))
+    }
 
 
   return (
     <>
-
         <Dialog
             fullWidth={true}
             open={open}
@@ -191,64 +206,59 @@ const columns = [
             </DialogActions>
         </Dialog>
         <MainCard title={t('all_candidates')} sx={{height: '100%'}}>
-        { loading ? 
-            <Stack alignItems="center">
-                <CircularProgress size='4rem'/>
-            </Stack> : (
-            <>
-                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
-                <Formik
-                        initialValues={{
-                            username_filter: "",
-                            name_filter: "",
-                            email_filter: ""
-                        }}
-                        onSubmit={values => searchHandler(values)}
-                    >
-                    {formik => (
-                        <Form>
-                            <Grid container spacing={2} direction="row" justifyContent='left'>
-                                <Grid item justifyContent='center'>
-                                    <InputField name='username_filter' label={t('sign_up_username')} type='text'></InputField>
-                                </Grid>
-                                <Grid item justifyContent='center'>
-                                    <InputField name='name_filter' label={t('sign_up_full_name')} type='text' ></InputField>
-                                </Grid>
-                                <Grid item justifyContent='center'>
-                                    <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
-                                </Grid>
-                                <Grid item display={'flex'} xs={12} sm={6} sx={{ mt: 1}}>
-                                    <AnimateButton>
-                                        <LoadingButton
-                                            disableElevation
-                                            fullWidth
-                                            size="large"
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            loading = {loading}
-                                            startIcon={<SearchIcon></SearchIcon>}
-                                        >
-                                            {t('Search')}
-                                        </LoadingButton>
-                                    </AnimateButton>
-                                </Grid>    
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
+            <Formik
+                    initialValues={searchState}
+                    enableReinitialize={true}
+                    onSubmit={values => searchHandler(values)}
+                >
+                {formik => (
+                    <Form>
+                        <Grid container spacing={2} direction="row" alignItems={'center'} sx={{ mb: 2}}>
+                            <Grid item>
+                                <InputField name='username_filter' label={t('sign_up_username')} type='text'></InputField>
                             </Grid>
-                        </Form>
-                    )}
-                    </Formik>
-                <DataGrid
-                autoHeight
-                rows={rows}
-                rowCount={candidatesGet.number_of_candidates}
-                columns={columns}
-                pageSize={limit}
-                rowsPerPageOptions={[limit]}
-                checkboxSelection
-                onPageChange={(newPage) => setPage(newPage)}
-                /> 
-            </>
+                            <Grid item>
+                                <InputField name='name_filter' label={t('sign_up_full_name')} type='text' ></InputField>
+                            </Grid>
+                            <Grid item>
+                                <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
+                            </Grid>
+                            <Grid item>
+                                <AnimateButton>
+                                    <LoadingButton
+                                        disableElevation
+                                        size="large"
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        loading = {loading}
+                                        startIcon={<SearchIcon></SearchIcon>}
+                                    >
+                                        {t('Search')}
+                                    </LoadingButton>
+                                </AnimateButton>
+                            </Grid>    
+                        </Grid>
+                    </Form>
+                )}
+            </Formik>
+            { loading || loadingTypes ? 
+                <Stack alignItems="center">
+                    <CircularProgress size='4rem'/>
+                </Stack> : (
+                <>
+                    <DataGrid
+                        autoHeight
+                        rows={rows}
+                        columns={columns}
+                        pageSize={limit}
+                        hideFooter={true}
+                        onPageChange={changePageHandler}
+                    />
+                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.round(candidatesGet.number_of_candidates / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                </>
             )}
         </MainCard> 
     </>
