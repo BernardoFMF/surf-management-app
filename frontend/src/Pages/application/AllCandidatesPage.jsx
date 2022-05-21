@@ -30,8 +30,6 @@ import { Pagination } from '@mui/material';
 
 
 const AllCandidatesPage = () => {
-    const theme = useTheme();
-
     const {t} = useTranslation()
     const dispatch = useDispatch()
 
@@ -66,7 +64,6 @@ const AllCandidatesPage = () => {
     }, [])
 
     useEffect(() => {
-        console.log(candidatesGet);
         if(candidatesGet){
             setRows(candidatesGet.candidates.map(candidate => {
                 let x = {
@@ -76,11 +73,6 @@ const AllCandidatesPage = () => {
             }))
         }
     },[candidatesGet])
-
-    useEffect(() => {
-        console.log(page);
-    }, [page])
-
     
     const deleteCandidateHandle = React.useCallback(
       (id) => () => {
@@ -94,7 +86,7 @@ const AllCandidatesPage = () => {
 
     const approveCandidateHandle = async(values) => {
         dispatch(approveCandidate(id, values.member_type, values.paid_enrollment))
-        dispatch(getCandidates())
+        setRows((prevRows) => prevRows.filter(row => row.id !== id))
         handleClose()
     }
 
@@ -121,6 +113,7 @@ const AllCandidatesPage = () => {
         {
             field: 'actions',
             type: 'actions',
+            headerName: t('actions'),
             width: 110,
             getActions: (params) => [
                 <GridActionsCellItem
@@ -256,8 +249,13 @@ const AllCandidatesPage = () => {
                         pageSize={limit}
                         hideFooter={true}
                         onPageChange={changePageHandler}
+                        sx={{
+                            "& .MuiDataGrid-columnHeaders": {
+                                backgroundColor: "rgba(219, 219, 219, 0.5)"
+                            }
+                        }}
                     />
-                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.round(candidatesGet.number_of_candidates / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(candidatesGet.number_of_candidates / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
                 </>
             )}
         </MainCard> 

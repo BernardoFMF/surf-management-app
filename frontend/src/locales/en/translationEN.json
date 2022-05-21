@@ -210,6 +210,8 @@
     "otherPage": "Others",
 
     "event_information": "Event Information",
-    "event_list": "List"
+    "event_list": "List",
+
+    "actions": "Actions"
 
 }
