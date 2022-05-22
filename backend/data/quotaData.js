@@ -5,8 +5,8 @@ import mailSender from '../utils/email/mailSender.js'
 import { quotaAlertTemplate } from  '../utils/email/mailTemplates.js'
 
 const quotaData = (db) => {
-	const getQuotas = async () => {
-		return await db.getQuotasData()
+	const getQuotas = async (username_filter, email_filter,date_filter,offset,limit) => {
+		return await db.getQuotasData(username_filter, email_filter,date_filter,offset,limit)
 	} 
     
 	const getCompaniesQuotas = async () => {
@@ -17,10 +17,10 @@ const quotaData = (db) => {
 		return await db.getUsersQuotasData()
 	} 
     
-	const getMemberQuotasById = async (id_) => {
+	const getMemberQuotasById = async (id_,offset, limit) => {
 		const member = await db.getMemberByIdData(id_)
 		if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_28')
-		return await db.getMemberQuotasByIdData(id_)
+		return await db.getMemberQuotasByIdData(id_,offset,limit)
 	}
     
 	const postQuota = async (date_) => {

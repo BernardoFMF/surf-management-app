@@ -9,7 +9,7 @@ const quotaController = (data) => {
 	const services = quotaServices(data)
 
 	const getQuotas = asyncHandler(async (req, res) => {
-		const quotas = await services.getQuotasServices()
+		const quotas = await services.getQuotasServices(req.query.username,req.query.email,req.query.date,req.query.offset,req.query.limit)
 		if (quotas) res.json(quotas)
 	})
 	
@@ -29,7 +29,7 @@ const quotaController = (data) => {
 				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
-		const quotas = await services.getMemberQuotasByIdServices(req.params.id)
+		const quotas = await services.getMemberQuotasByIdServices(req.params.id,req.query.offset,req.query.limit)
 		if (quotas) res.json(quotas)
 	})
 	

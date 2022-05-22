@@ -14,12 +14,12 @@ import {
   } from '../constants/quotaConstants'
 
   
-export const getQuotas = () => async (dispatch) => {
+export const getQuotas = (username_filter, email_filter, date_filter, offset, limit) => async (dispatch) => {
   try {
     dispatch({
       type: QUOTAS_FETCH_REQUEST,
     })
-    const response = await fetch(`/api/quotas`, {
+    const response = await fetch(`/api/quotas?offset=${offset}&limit=${limit}${username_filter ? `&username=${username_filter}`:""}${email_filter ? `&email=${email_filter}`:""}${date_filter ? `&date=${date_filter}`:""}`, {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
     })
@@ -81,12 +81,12 @@ export const updateQuota = (payment_date,id) => async (dispatch, getState) => {
   }
 }
 
-export const getMembersQuotas = (id) => async (dispatch) => {
+export const getMembersQuotas = (id,offset,limit) => async (dispatch) => {
   try {
     dispatch({
       type: MEMBER_QUOTAS_FETCH_REQUEST,
     })
-    const response = await fetch(`/api/quotas/members/${id}`, {
+    const response = await fetch(`/api/quotas/members/${id}?offset=${offset}&limit=${limit}`, {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
     })

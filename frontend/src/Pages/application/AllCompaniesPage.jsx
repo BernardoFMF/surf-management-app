@@ -79,7 +79,7 @@ const AllCompaniesPage = () => {
       setPage(1)
       setRows([])
       dispatch(getCompanies(values.username_filter,values.name_filter,values.email_filter,0,limit))
-  }
+    }
 
 const columns = [
     { field: 'member_id_', headerName: 'ID', width: 40 },

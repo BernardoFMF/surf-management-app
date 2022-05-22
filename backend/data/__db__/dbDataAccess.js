@@ -764,17 +764,40 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	/**
 	 * Quotas
 	 */
-	const getQuotasData = async () => {
+	const getQuotasData = async (username_filter,email_filter,date_filter,offset,limit) => {
+		let query = queries.QUERY_GET_QUOTAS
+		let count = 0
+		if(username_filter || email_filter || date_filter){
+			query = query + " where "
+		}
+		if(username_filter){
+			count++
+			query = query + ` position('${username_filter}' in username_) > 0`
+		}
+		if(email_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` position('${email_filter}' in email_) > 0`
+			count++
+		}
+		if(date_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` date_ ='${date_filter}'`
+			count++
+		}
+		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		console.log(query)
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const result = await client.query(queries.QUERY_GET_QUOTAS)
+			const quotas = await client.query(query)
+			const number_of_quotas = await client.query(queries.QUERY_NUMBER_OF_QUOTAS)
 			await client.query('commit')
-			result.rows = result.rows.map(quota => {
+			quotas.rows = quotas.rows.map(quota => {
 				if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
 				return quota
 			})
-			return result.rows
+			const result = {quotas:quotas.rows,number_of_quotas:username_filter || email_filter || date_filter ? quotas.rows.length : parseInt(number_of_quotas.rows[0].count)}
+			return result
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -813,13 +836,18 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}    
 	}
 
-	const getMemberQuotasByIdData = async (id_) => {
+	const getMemberQuotasByIdData = async (id_,offset,limit) => {
+		let query = queries.QUERY_GET_MEMBERS_QUOTAS_BY_ID
+		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		console.log(query)
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const result = await client.query(queries.QUERY_GET_MEMBERS_QUOTAS_BY_ID, [id_])
+			const quotas = await client.query(query, [id_])
+			const number_of_quotas = await client.query(queries.QUERY_NUMBER_OF_MEMBER_QUOTAS,[id_])
 			await client.query('commit')
-			return result.rows
+			const result = {quotas:quotas.rows,number_of_quotas:parseInt(number_of_quotas.rows[0].count)}
+			return result
 		} catch (e) {
 			await client.query('rollback')
 			throw e

@@ -9,6 +9,7 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SurfingIcon from '@mui/icons-material/Surfing';
 import MainCard from '../../components/cards/MainCard';
+import { Pagination, Alert , Box, Stack, CircularProgress} from '@mui/material';
 
 const MyQuotasPage = () => {
     const theme = useTheme();
@@ -20,12 +21,19 @@ const MyQuotasPage = () => {
     let { id } = useParams()
     
     useEffect(() => {
-        dispatch(getMembersQuotas(id))
+        dispatch(getMembersQuotas(id,0,limit))
     },[dispatch,id])
 
     useEffect(() => {
+      dispatch(getMembersQuotas(id,0,limit))
+  }, [])
+
+    const [page, setPage] = useState(1);
+    const limit = 5
+
+    useEffect(() => {
         if(memberQuotasGet){
-            setRows(memberQuotasGet.map(quota => {
+            setRows(memberQuotasGet.quotas.map(quota => {
                 let x = {
                     ...quota, id: quota.id_
                 }
@@ -36,6 +44,11 @@ const MyQuotasPage = () => {
         }
     },[memberQuotasGet,dispatch])
 
+    const changePageHandler = (event, value) => {
+      setPage(value)
+      dispatch(getMembersQuotas(id, (value-1)*limit, limit))
+  }
+
 const columns = [
     { field: 'date_', headerName: t('date'), width: 120 },
     { field: 'payment_date_', headerName: t('payment_date'), width: 140 },
@@ -44,15 +57,28 @@ const columns = [
   return (
     <>
       <MainCard title={t('my_quotas')} sx={{height: '100%'}}>
+      { loading ? 
+        <Stack alignItems="center">
+            <CircularProgress size='4rem'/>
+        </Stack> : (
+        <>
+                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
         <DataGrid
-          autoHeight
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-          experimentalFeatures={{ newEditingApi: true }}
+            autoHeight
+            rows={rows}
+            columns={columns}
+            pageSize={limit}
+            hideFooter={true}
+            onPageChange={changePageHandler}
+            sx={{
+                "& .MuiDataGrid-columnHeaders": {
+                    backgroundColor: "rgba(219, 219, 219, 0.5)"
+                }
+            }}
         /> 
+        <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(memberQuotasGet.number_of_quotas / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+        </>)}
+
       </MainCard> 
     </>
   )

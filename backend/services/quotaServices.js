@@ -6,8 +6,10 @@ import quotaData from '../data/quotaData.js'
 const quotaServices = (db) => {
 	const data = quotaData(db)
 
-	const getQuotasServices = async () => {
-		return await data.getQuotas()
+	const getQuotasServices = async (username_filter,email_filter,date_filter,offset,limit) => {
+		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
+		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
+		return await data.getQuotas(username_filter,email_filter,date_filter,offset,limit)
 	}
 	
 	const getCompaniesQuotasServices = async () => {
@@ -18,9 +20,11 @@ const quotaServices = (db) => {
 		return await data.getUsersQuotas()
 	}
 	
-	const getMemberQuotasByIdServices = async (id) => {
+	const getMemberQuotasByIdServices = async (id,offset,limit) => {
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
-		return await data.getMemberQuotasById(id)
+		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
+		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
+		return await data.getMemberQuotasById(id,offset,limit)
 	}
 	
 	const postQuotaServices = async (date) => {

@@ -13,7 +13,7 @@ import {
     MEMBER_QUOTAS_FETCH_REQUEST
 } from '../constants/quotaConstants'
 
-export const quotasFetchReducer = (state = {quotasGet: []}, action) => {
+export const quotasFetchReducer = (state = {quotasGet: {quotas:[],number_of_quotas:0}}, action) => {
     switch (action.type) {
         case QUOTAS_FETCH_REQUEST:
         return { loading: true }
@@ -39,7 +39,7 @@ export const quotaUpdateReducer = (state = {quotaPut: {}}, action) => {
     }
 }
 
-export const memberQuotasFetchReducer = (state = {memberQuotasGet: []}, action) => {
+export const memberQuotasFetchReducer = (state = {memberQuotasGet: {quotas:[],number_of_quotas:0}}, action) => {
     switch (action.type) {
         case MEMBER_QUOTAS_FETCH_REQUEST:
         return { loading: true }
