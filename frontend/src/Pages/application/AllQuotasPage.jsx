@@ -32,16 +32,21 @@ const AllQuotasPage = () => {
     const quotasFetch = useSelector((state) => state.quotasFetch)
     const { loading, error, quotasGet } = quotasFetch
     const [rows, setRows] = useState([]);
-    const [open, setOpen] = React.useState(false);
+
+    const [openUpdate, setOpenUpdate] = React.useState(false);
     const [id, setId] = React.useState();
-    const handleClose = () => setOpen(false);
+    const handleCloseUpdate = () => setOpenUpdate(false);
+
+    const [openSubmit, setOpenSubmit] = React.useState(false);
+    const handleCloseSubmit = () => setOpenSubmit(false);
+    const handleOpenSubmit = () => setOpenSubmit(true);
 
     const typesFetch = useSelector((state) => state.typesFetch)
     const { loading: loadingTypes, error: errorTypes, typesGet } = typesFetch
 
-    const handleOpen = (id) => {
+    const handleOpenUpdate = (id) => {
         setId(id)
-        setOpen(true);
+        setOpenUpdate(true);
     }
 
     const [page, setPage] = useState(1);
@@ -71,20 +76,17 @@ const AllQuotasPage = () => {
     },[quotasGet])
 
     const updateQuotaHandle = async(values) => {
-        let date = values.payment_date.toLocaleString().split(',')[0]
-        date = date.split('/')
-        const p_date = `${date[2]}-${date[0]}-${date[1]}`
-        dispatch(updateQuota(p_date, id))
-        dispatch(getQuotas()) //TODO toBe changed
-        handleClose()
+        let date = formatDate(values.payment_date)
+        dispatch(updateQuota(date, id))
+        dispatch(getQuotas(searchState.username_filter,searchState.email_filter,searchState.date_filter,0,limit)) //TODO toBe changed
+        handleCloseUpdate()
     }
 
     const handleSubmitCreate = async (values) => {
-        let date = values.date.toLocaleString().split(',')[0]
-        date = date.split('/')
-        const p_date = `${date[2]}-${date[0]}-${date[1]}`
-        dispatch(createQuota(p_date))
-        dispatch(getQuotas())
+        let date = formatDate(values.date)
+        dispatch(createQuota(date))
+        dispatch(getQuotas(searchState.username_filter,searchState.email_filter,searchState.date_filter,0,limit))
+        handleCloseSubmit()
     }
 
     function formatDate(date) {
@@ -146,7 +148,7 @@ const columns = [
             <GridActionsCellItem
             icon={<CreditScoreIcon />}
             label="Show Quota"
-            onClick={() => handleOpen(params.id)}
+            onClick={() => handleOpenUpdate(params.id)}
             disabled={params.row.payment_date_ !== null}
             />
         ],
@@ -158,8 +160,8 @@ const columns = [
     <>
     <Dialog
             fullWidth={true}
-            open={open}
-            onClose={handleClose}
+            open={openUpdate}
+            onClose={handleCloseUpdate}
         >
             <Typography sx={{pl: 5, pt: 5}}  variant="h2" component="h2">
                 {t('payment_date')}
@@ -204,12 +206,75 @@ const columns = [
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Close</Button>
+                <Button onClick={handleCloseUpdate}>Close</Button>
             </DialogActions>
         </Dialog>
-        <MainCard title={t('companies')}sx={{height: '100%'}}>
+        <Dialog
+            fullWidth={true}
+            open={openSubmit}
+            onClose={handleCloseSubmit}
+        >
+            <Typography sx={{pl: 5, pt: 5}}  variant="h2" component="h2">
+                {t('date')}
+            </Typography>
+            <DialogContent>
+                <Box
+                    sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    m: 'auto',
+                    width: 'fit-content',
+                    }}
+                >
+                    <Formik
+                        initialValues={{
+                            date: ''
+                        }}
+                        validationSchema={Yup.object().shape({
+                            date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).required(t('sign_up_birth_date_mandatory')),
+                        })}
+                        onSubmit={handleSubmitCreate}
+                    >
+                    {Formik => (
+                        <Form>
+                            <DateInputField name='date' label={t('date')}></DateInputField>
+                            <AnimateButton>
+                                <LoadingButton
+                                    disableElevation
+                                    fullWidth
+                                    size="large"
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    loading = {loading}
+                                >
+                                    {t('confirm')}
+                                </LoadingButton>
+                            </AnimateButton>
+                        </Form>
+                    )}
+                    </Formik>
+                </Box>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleCloseSubmit}>Close</Button>
+            </DialogActions>
+        </Dialog>
+        <MainCard title={t('Quotas')}sx={{height: '100%'}}>
       { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
             { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
+            <Box
+                sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                gap: 1,
+                gridTemplateRows: 'auto',
+                gridTemplateAreas: `". . . ."
+                "search search search create"
+                ". . . ."`,
+                }}
+            >
+            <Box gridArea={'search'}>
             <Formik
                     initialValues={searchState}
                     enableReinitialize={true}
@@ -217,7 +282,7 @@ const columns = [
                 >
                 {formik => (
                     <Form>
-                        <Grid container spacing={2} direction="row" alignItems={'center'} sx={{ mb: 2}}>
+                        <Grid container spacing={2} direction="row" alignItems={'center'} >
                             <Grid item>
                                 <InputField name='username_filter' label={t('sign_up_username')} type='text'></InputField>
                             </Grid>
@@ -246,6 +311,26 @@ const columns = [
                     </Form>
                 )}
             </Formik>
+            </Box>
+                    <Box gridArea={'create'} alignItems={'center'} display='flex' justifyContent='flex-end'>
+                        <AnimateButton>
+                            <LoadingButton
+                                disableElevation
+                                size="large"
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => {
+                                    handleOpenSubmit()
+                                }}
+                            >
+                                {t('create')}
+                            </LoadingButton>
+                        </AnimateButton>
+                    </Box> 
+                </Box>
+
+
+
       { loading ? 
         <Stack alignItems="center">
             <CircularProgress size='4rem'/>

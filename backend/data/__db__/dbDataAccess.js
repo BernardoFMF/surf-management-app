@@ -793,6 +793,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			const number_of_quotas = await client.query(queries.QUERY_NUMBER_OF_QUOTAS)
 			await client.query('commit')
 			quotas.rows = quotas.rows.map(quota => {
+				quota.date_ = formatDate(quota.date_)
 				if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
 				return quota
 			})
