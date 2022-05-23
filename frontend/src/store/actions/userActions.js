@@ -19,7 +19,10 @@ import {
     USER_SPORTS_FETCH_REQUEST,
     USERS_SPORT_FETCH_SUCCESS,
     USERS_SPORT_FETCH_FAIL,
-    USERS_SPORT_FETCH_REQUEST
+    USERS_SPORT_FETCH_REQUEST,
+    USER_POST_FAIL,
+    USER_POST_REQUEST,
+    USER_POST_SUCCESS
   } from '../constants/userConstants'
 
 import { MEMBER_LOGIN_SUCCESS, MEMBER_FETCH_SUCCESS } from '../constants/memberConstants'
@@ -239,4 +242,33 @@ try {
         : error.message,
   })
 }
+}
+
+export const postUser = (body) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_POST_REQUEST,
+    })
+
+    const response = await fetch(`/api/users`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" }
+    })
+
+    const postResp = await response.json()
+    if(response.status !== 201) throw Error(postResp.message_code)
+    dispatch({
+      type: USER_POST_SUCCESS,
+      payload: postResp,
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_POST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
 }

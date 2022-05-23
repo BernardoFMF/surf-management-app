@@ -138,7 +138,11 @@ const AllCandidatesPage = () => {
   return (
     <>
         <Dialog
-            fullWidth={true}
+            PaperProps={{
+                sx: {
+                    width: 500
+                }
+            }}
             open={open}
             onClose={handleClose}
         >
