@@ -18,10 +18,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
-import { Stack, CircularProgress, Grid, Divider} from '@mui/material'
+import { Stack, CircularProgress, Grid, Alert, Divider} from '@mui/material'
 import InputField from '../../components/multiStepForm/InputField';
 import { Formik, Form } from 'formik';
+import SearchIcon from '@mui/icons-material/Search';
 import SubCard from '../../components/cards/SubCard'
+import { Pagination } from '@mui/material';
 
 const AllQuotasPage = () => {
     const theme = useTheme();
@@ -34,19 +36,30 @@ const AllQuotasPage = () => {
     const [id, setId] = React.useState();
     const handleClose = () => setOpen(false);
 
+    const typesFetch = useSelector((state) => state.typesFetch)
+    const { loading: loadingTypes, error: errorTypes, typesGet } = typesFetch
+
     const handleOpen = (id) => {
         setId(id)
         setOpen(true);
     }
 
+    const [page, setPage] = useState(1);
+    const limit = 5
+
+    const [ searchState, setSearchState ] = useState({
+        username_filter: "",
+        email_filter: "",
+        date_filter: ""
+    })
     
     useEffect(() => {
-            dispatch(getQuotas())
-    },[])
+        dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, limit))
+    }, [])
 
     useEffect(() => {
         if(quotasGet){
-            setRows(quotasGet.map(quota => {
+            setRows(quotasGet.quotas.map(quota => {
                 let x = {
                     ...quota, id: quota.id_
                 }
@@ -72,7 +85,21 @@ const AllQuotasPage = () => {
         const p_date = `${date[2]}-${date[0]}-${date[1]}`
         dispatch(createQuota(p_date))
         dispatch(getQuotas())
-      }
+    }
+
+    function formatDate(date) {
+		var d = new Date(date),
+			month = '' + (d.getMonth() + 1),
+			day = '' + d.getDate(),
+			year = d.getFullYear();
+	
+		if (month.length < 2) 
+			month = '0' + month;
+		if (day.length < 2) 
+			day = '0' + day;
+	
+		return [year, month, day].join('-');
+	}
 
     const parseDate = (originalValue) => {
         let parsedDate = isDate(originalValue)
@@ -80,6 +107,28 @@ const AllQuotasPage = () => {
             : parse(originalValue, "yyyy-MM-dd", new Date())
 
         return parsedDate
+    }
+
+    const searchHandler = async(values) => {
+        const new_values = values
+        console.log(values)
+        if(values.date_filter) {
+            let date = values.date_filter.toLocaleString().split(',')[0]
+            date = date.split('/')
+            const p_date = `${date[2]}-${date[0]}-${date[1]}`
+            console.log(p_date)
+            new_values.date_filter = p_date
+        }
+        setSearchState(new_values)
+        setPage(1)
+        setRows([])
+        
+        dispatch(getQuotas(new_values.username_filter,new_values.email_filter,new_values.date_filter,0,limit))
+    }
+
+    const changePageHandler = (event, value) => {
+        setPage(value)
+        dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, (value-1)*limit, limit))
     }
 
 const columns = [
@@ -158,64 +207,66 @@ const columns = [
                 <Button onClick={handleClose}>Close</Button>
             </DialogActions>
         </Dialog>
-      <MainCard title={t('all_quotas')} sx={{height: '100%'}}>
-      { loading ? 
-        <Stack alignItems="center">
-            <CircularProgress size='4rem'/>
-        </Stack> : (
-          <Grid  >
-            <Grid  >
-                <DataGrid
-                    autoHeight
-                    rows={rows}
-                    columns={columns}
-                    pageSize={10}
-                    rowsPerPageOptions={[10]}
-                    checkboxSelection
-                    experimentalFeatures={{ newEditingApi: true }}
-                /> 
-            </Grid>
-            <br />
-            <br />
-            <Divider></Divider>
-            <br />
-            <br />
-            <Grid style={{ display: 'flex',alignItems: 'center', justifyContent: 'center'}} sx={{maxWidth:'100%'}} >
-                <SubCard elevation={4} title={ <Grid><Typography sx={{ fontSize: 22, minWidth: 370 }} color="primary" gutterBottom> {t('all_quotas_create_quota')} </Typography> </Grid>}   >
-                    <Formik
-                        initialValues={{
-                            date: ''
-                        }}
-                        validationSchema={Yup.object().shape({
-                            date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).required(t('sign_up_birth_date_mandatory')),
-                        })}
-                        onSubmit={handleSubmitCreate}
-                    >
-                    {formik => (
-                        <Grid item sx={{ ml: { md: 4, lg: 4 }}} maxWidth={300} >
-                            <Form  >
-                                <DateInputField name='date' label={t('all_quotas_date')}> </DateInputField>
+        <MainCard title={t('companies')}sx={{height: '100%'}}>
+      { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
+            <Formik
+                    initialValues={searchState}
+                    enableReinitialize={true}
+                    onSubmit={values => searchHandler(values)}
+                >
+                {formik => (
+                    <Form>
+                        <Grid container spacing={2} direction="row" alignItems={'center'} sx={{ mb: 2}}>
+                            <Grid item>
+                                <InputField name='username_filter' label={t('sign_up_username')} type='text'></InputField>
+                            </Grid>
+                            <Grid item>
+                                <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
+                            </Grid>
+                            <Grid item>
+                            <DateInputField name='date_filter' label={t('date')}></DateInputField>
+                            </Grid>
+                            <Grid item>
                                 <AnimateButton>
                                     <LoadingButton
                                         disableElevation
-                                        fullWidth
                                         size="large"
                                         type="submit"
                                         variant="contained"
                                         color="primary"
                                         loading = {loading}
+                                        startIcon={<SearchIcon></SearchIcon>}
                                     >
-                                        {t('management_submit')}
+                                        {t('Search')}
                                     </LoadingButton>
                                 </AnimateButton>
-                            </Form>
+                            </Grid>    
                         </Grid>
-                    )}
-                    </Formik>
-                </SubCard>
-            </Grid>
-          </Grid>
-        )}
+                    </Form>
+                )}
+            </Formik>
+      { loading ? 
+        <Stack alignItems="center">
+            <CircularProgress size='4rem'/>
+        </Stack> : (
+        <>
+        <DataGrid
+            autoHeight
+            rows={rows}
+            columns={columns}
+            pageSize={limit}
+            hideFooter={true}
+            onPageChange={changePageHandler}
+            sx={{
+                "& .MuiDataGrid-columnHeaders": {
+                    backgroundColor: "rgba(219, 219, 219, 0.5)"
+                }
+            }}
+        />
+        <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(quotasGet.number_of_quotas / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+        </>
+      )}
       </MainCard> 
     </>
   )

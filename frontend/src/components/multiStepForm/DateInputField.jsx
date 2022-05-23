@@ -27,6 +27,7 @@ const DateInputField = ({ label, ...props}) => {
                 label={label}
                 onChange={handleDateChange}
                 value={date}
+                clearable = {true}
                 renderInput={(params) => 
                     <TextField 
                         {...params}
