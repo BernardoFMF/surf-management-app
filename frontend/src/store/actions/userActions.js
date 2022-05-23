@@ -244,7 +244,7 @@ try {
 }
 }
 
-export const postUser = (body) => async (dispatch, getState) => {
+export const postUser = (body) => async (dispatch) => {
   try {
     dispatch({
       type: USER_POST_REQUEST,

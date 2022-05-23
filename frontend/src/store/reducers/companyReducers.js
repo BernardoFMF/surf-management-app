@@ -10,8 +10,11 @@ import {
     COMPANY_FETCH_REQUEST,
     COMPANY_UPDATE_REQUEST,
     COMPANY_UPDATE_SUCCESS,
-    COMPANY_UPDATE_FAIL
-  } from '../constants/companyConstants'
+    COMPANY_UPDATE_FAIL,
+    COMPANY_POST_FAIL,
+    COMPANY_POST_REQUEST,
+    COMPANY_POST_SUCCESS
+} from '../constants/companyConstants'
 
 export const companyDeletionReducer = (state = {}, action) => {
     switch (action.type) {
@@ -59,6 +62,19 @@ export const companyDeletionReducer = (state = {}, action) => {
       case COMPANY_UPDATE_SUCCESS:
         return { loading: false, updated: true, updateResult: action.payload }
       case COMPANY_UPDATE_FAIL:
+        return { loading: false, error: action.payload }
+      default:
+        return state
+    }
+  }
+
+  export const companyPostReducer = (state = {}, action) => {
+    switch (action.type) {
+      case COMPANY_POST_REQUEST:
+        return { loading: true }
+      case COMPANY_POST_SUCCESS:
+        return { loading: false, posted: true, postedResult: action.payload }
+      case COMPANY_POST_FAIL:
         return { loading: false, error: action.payload }
       default:
         return state

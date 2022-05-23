@@ -68,10 +68,7 @@ const AllMembersPage = () => {
     const limit = 5
 
     useEffect(() => {
-        console.log('tá no use effect');
-        console.log(posted);
         if (posted) {
-            console.log("foi criado");
             setOpen(false)
             setSearchState({
                 username_filter: "",
@@ -129,8 +126,6 @@ const AllMembersPage = () => {
     }
 
     const handleSubmit = async (values) => {
-        console.log("tá no submit");
-        console.log(values);
         let img = null
         let bdate = values.birthDate.toLocaleString().split(',')[0]
         bdate = bdate.split('/')

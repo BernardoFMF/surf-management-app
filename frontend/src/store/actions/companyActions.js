@@ -10,7 +10,10 @@ import {
     COMPANY_FETCH_REQUEST,
     COMPANY_UPDATE_REQUEST,
     COMPANY_UPDATE_SUCCESS,
-    COMPANY_UPDATE_FAIL
+    COMPANY_UPDATE_FAIL,
+    COMPANY_POST_FAIL,
+    COMPANY_POST_REQUEST,
+    COMPANY_POST_SUCCESS
   } from '../constants/companyConstants'
 
 import { MEMBER_LOGIN_SUCCESS } from '../constants/memberConstants'
@@ -142,6 +145,35 @@ export const deleteCompany = (id) => async (dispatch) => {
     } catch (error) {
       dispatch({
         type: COMPANY_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+  export const postCompany = (body) => async (dispatch) => {
+    try {
+      dispatch({
+        type: COMPANY_POST_REQUEST,
+      })
+  
+      const response = await fetch(`/api/companies`, {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: { "Content-Type": "application/json" }
+      })
+  
+      const postResp = await response.json()
+      if(response.status !== 201) throw Error(postResp.message_code)
+      dispatch({
+        type: COMPANY_POST_SUCCESS,
+        payload: postResp,
+      })
+    } catch (error) {
+      dispatch({
+        type: COMPANY_POST_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
