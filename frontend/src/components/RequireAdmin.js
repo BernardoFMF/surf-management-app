@@ -6,8 +6,7 @@ function RequireAdmin({ children }) {
     let { id } = useParams()
     const memberLogin = useSelector((state) => state.memberLogin)
     const { memberInfo } = memberLogin
-
-    return memberInfo.id_ === id || memberInfo.is_admin_ ? children : <Navigate to='/unauthorized' replace/>
+    return memberInfo.id_ === parseInt(id) || memberInfo.is_admin_ ? children : <Navigate to='/unauthorized' replace/>
 }
 
 export default RequireAdmin
