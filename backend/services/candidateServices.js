@@ -18,7 +18,7 @@ const candidateServices = (db) => {
 		return await data.getCandidateById(id)
 	}
 	
-	const postCandidateServices = async (username, cc, nif, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, img, gender) => {
+	const postCandidateServices = async (username, cc, nif, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, img, gender, iban) => {
 		if(!username) throw error(400, 'Parameter not found: username', 'MESSAGE_CODE_14')
 		if(!cc) throw error(400, 'Parameter not found: cc', 'MESSAGE_CODE_14')
 		if(!nif) throw error(400, 'Parameter not found: nif', 'MESSAGE_CODE_14')
@@ -32,8 +32,10 @@ const candidateServices = (db) => {
 		if(!location) throw error(400, 'Parameter not found: location', 'MESSAGE_CODE_14')
 		if(!password) throw error(400, 'Parameter not found: password', 'MESSAGE_CODE_14')
 		if(!gender) throw error(400, 'Parameter not found: gender', 'MESSAGE_CODE_14')
+		if(!iban) throw error(400, 'Parameter not found: iban', 'MESSAGE_CODE_14')
+
 		const pwordhashed = await crypto.hashpassword(password)
-		return await data.postCandidate(username, cc, nif, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, img, gender)
+		return await data.postCandidate(username, cc, nif, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, img, gender, iban)
 	}
 	
 	const deleteCandidateServices = async (cid) => {

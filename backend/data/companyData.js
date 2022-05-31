@@ -13,19 +13,21 @@ const companyData = (db) => {
 		return company
 	}
 	
-	const postCompany = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, type_, img_) => {
+	const postCompany = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, type_, img_, iban_) => {
 		let member = await db.getMemberByUsernameData(username_)
 		if (member) throw error(409, 'Member with that username already exists', 'MESSAGE_CODE_20')
 		member = await db.getMemberByNifData(nif_)
 		if (member) throw error(409, 'Member with that nif already exists', 'MESSAGE_CODE_22')
 		member = await db.getMemberByEmailData(email_)
 		if (member) throw error(409, 'Member with that email already exists', 'MESSAGE_CODE_23')
-		return await db.postCompanyData(name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, type_, img_)
+		member = await db.getMemberByIbanData(iban_)
+		if (member) throw error(409, 'Member with that iban already exists', 'MESSAGE_CODE_??')
+		return await db.postCompanyData(name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, type_, img_, iban_)
 	}
 	
-	const updateCompany = async (id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_) => {
+	const updateCompany = async (id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
 		await getCompanyById(id_)
-		await db.updateCompanyData(id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_)
+		await db.updateCompanyData(id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_)
 		const company = await getCompanyById(id_)
 		company.is_admin_ = false
 		return company

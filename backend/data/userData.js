@@ -15,7 +15,7 @@ const userData = (db) => {
 		return user
 	}
 	
-	const postUser = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, url) => {
+	const postUser = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, url, iban_) => {
 		let candidate = await db.getCandidateByUsernameData(username_)
 		if (candidate) throw error(409, 'Candidate with that username already exists', 'MESSAGE_CODE_12')
 		candidate = await db.getCandidateByCCData(cc_)
@@ -24,6 +24,9 @@ const userData = (db) => {
 		if (candidate) throw error(409, 'Candidate with that nif already exists', 'MESSAGE_CODE_12')
 		candidate = await db.getCandidateByEmailData(email_)
 		if (candidate) throw error(409, 'Candidate with that email already exists', 'MESSAGE_CODE_12')
+		candidate = await db.getCandidateByIbanData(iban_)
+		if (candidate) throw error(409, 'Candidate with that iban already exists', 'MESSAGE_CODE_12')
+
 
 		let member = await db.getMemberByUsernameData(username_)
 		if (member) throw error(409, 'Member with that username already exists', 'MESSAGE_CODE_20')
@@ -33,8 +36,10 @@ const userData = (db) => {
 		if (member) throw error(409, 'Member with that nif already exists', 'MESSAGE_CODE_22')
 		member = await db.getMemberByEmailData(email_)
 		if (member) throw error(409, 'Member with that email already exists', 'MESSAGE_CODE_23')
+		member = await db.getMemberByIbanData(iban_)
+		if (member) throw error(409, 'Member with that iban already exists', 'MESSAGE_CODE_??')
 
-		const userId = await db.postUserData(cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender)
+		const userId = await db.postUserData(cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, iban_)
 
 		const qrcode_ = await toDataURL(`${url}/members/validate/${userId}`)
 
@@ -43,9 +48,9 @@ const userData = (db) => {
 		return userId
 	}
 	
-	const updateUser = async (id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_) => {
+	const updateUser = async (id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_, iban_) => {
 		await getUserById(id_)
-		await db.updateUserData(id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_)
+		await db.updateUserData(id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_, iban_)
 		return await getUserById(id_)
 	}
 	

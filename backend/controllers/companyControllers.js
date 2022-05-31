@@ -24,7 +24,7 @@ const companyController = (data) => {
 	})
 	
 	const postCompany = asyncHandler(async (req, res) => {
-		const company = await services.postCompanyServices(req.body.name, req.body.nif, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.username, req.body.password, req.body.type, req.body.img)
+		const company = await services.postCompanyServices(req.body.name, req.body.nif, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.username, req.body.password, req.body.type, req.body.img, req.body.iban)
 		if (company) {
 			res.status(201)
 			res.json(company)
@@ -37,7 +37,7 @@ const companyController = (data) => {
 				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
-		const company = await services.updateCompanyServices(req.params.cid, req.body.nif, req.body.name, req.body.phone_number, req.body.postal_code, req.body.address, req.body.location, req.body.img, req.body.is_deleted)
+		const company = await services.updateCompanyServices(req.params.cid, req.body.nif, req.body.name, req.body.phone_number, req.body.postal_code, req.body.address, req.body.location, req.body.img, req.body.is_deleted, req.body.iban)
 		if (company) res.json(company)
 	})
 	

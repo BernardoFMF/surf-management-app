@@ -36,18 +36,18 @@ async function insertEventDummies() {
 }
 
 async function insertCandidateDummies() {
-	await dbCandidate.postCandidate('jobileu', 474389323, 342893489, '12-06-1990', 'Angolana', 'Jobileu Santos', 932727288, 'jobi@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbie2', '\\xEAABDFFA', 'Male')
-	await dbCandidate.postCandidate('carlao', 898942908, 109381908, '15-03-1990', 'Portuguesa', 'Carlitos Roger', 927182837, 'carliti@hotmail.com', '2423-829', 'Rua da banheira', 'Baixa da Banheira', 'duche2', '\\xEAABDFFA', 'Male' )
+	await dbCandidate.postCandidate('jobileu', 474389323, 342893489, '12-06-1990', 'Angolana', 'Jobileu Santos', 932727288, 'jobi@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbie2', '\\xEAABDFFA', 'Male', 'PT50001110000001234567831')
+	await dbCandidate.postCandidate('carlao', 898942908, 109381908, '15-03-1990', 'Portuguesa', 'Carlitos Roger', 927182837, 'carliti@hotmail.com', '2423-829', 'Rua da banheira', 'Baixa da Banheira', 'duche2', '\\xEAABDFFA', 'Male', 'PT50112700000001234567831' )
 }
 
 async function insertCompanyDummies() {
-	await dbCompany.postCompany('Ericeira surf shop', 231312312, 938172388, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira', 'eric', 'ericeric', 'corporate', '\\xEAABDFFA')
-	await dbCompany.postCompany('Billabong', 423213312, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity', 'billa', 'billabilla', 'corporate', '\\xEAABDFFA')
+	await dbCompany.postCompany('Ericeira surf shop', 231312312, 938172388, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira', 'eric', 'ericeric', 'corporate', '\\xEAABDFFA', 'PT50002711110001234567831')
+	await dbCompany.postCompany('Billabong', 423213312, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity', 'billa', 'billabilla', 'corporate', '\\xEAABDFFA', 'PT50002700000011111567831')
 }
 
 async function insertUserDummies() {
-	await dbUser.postUser(383128318, 764291145, 'founder', '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe')
-	await dbUser.postUser(383123818, 763371741, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe')
+	await dbUser.postUser(383128318, 764291145, 'founder', '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe', 'PT50011110000001234567831')
+	await dbUser.postUser(383123818, 763371741, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe', 'PT50002700000011134567831')
 }
 
 async function insertSportsforUsersDummies() {
@@ -209,7 +209,7 @@ test('Get specific candidate', async () => {
 
 test('Create a candidate', async () => {
 	expect.assertions(1)
-	const candidate = await dbCandidate.postCandidate('ze', 672335523, 123213123, '21-06-1990', 'Portuguesa', 'João Santos', 932333288, 'joao@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbi', null, 'Other')
+	const candidate = await dbCandidate.postCandidate('ze', 672335523, 123213123, '21-06-1990', 'Portuguesa', 'João Santos', 932333288, 'joao@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbi', null, 'Other', 'PT50112700000111234567831')
 	expect(candidate).toBe(3)
 })
 
@@ -246,13 +246,13 @@ test('Get specific company', async () => {
 
 test('Create a company', async () => {
 	expect.assertions(1)
-	const company_id = await dbCompany.postCompany('Ripcurl', 999321681, 967872388, 'rippy@gmail.com', '2112-829', 'Rua do rip', 'Rip on the curls', 'rippy', 'roppypipy', 'corporate', '\\xEAABDFFA')
+	const company_id = await dbCompany.postCompany('Ripcurl', 999321681, 967872388, 'rippy@gmail.com', '2112-829', 'Rua do rip', 'Rip on the curls', 'rippy', 'roppypipy', 'corporate', '\\xEAABDFFA', 'PT50111700000001234544441')
 	expect(company_id).toBe(6)
 })
 
 test('Update a company', async () => {
 	expect.assertions(1)
-	const company = await dbCompany.updateCompany(3, 354876321, 'Ericeira Surf shop', 918923180, '2812-829', 'Rua da ericeira', 'Ericeira', '\\xEAABDFFA', false)
+	const company = await dbCompany.updateCompany(3, 354876321, 'Ericeira Surf shop', 918923180, '2812-829', 'Rua da ericeira', 'Ericeira', '\\xEAABDFFA', false, 'PT50111700000111134544441')
 	expect(company.name_).toBe('Ericeira Surf shop')
 })
 
@@ -332,13 +332,13 @@ test('Get a specific user', async () => {
 
 test('Post User', async () => {
 	expect.assertions(1)
-	const user = await dbUser.postUser(383123909, 763841145, 'effective', '03-10-1983', 'Senegales', 'Moussa Marega', 934077623, 'maregagrandefixe@outlook.com', '2835-081', 'Rua D.Batista', 'Lisboa','gandagolo', 'marega', true, 'Male')
+	const user = await dbUser.postUser(383123909, 763841145, 'effective', '03-10-1983', 'Senegales', 'Moussa Marega', 934077623, 'maregagrandefixe@outlook.com', '2835-081', 'Rua D.Batista', 'Lisboa','gandagolo', 'marega', true, 'Male', 'PT50666660000001234567831')
 	expect(user).toBe(7)
 })
 
 test('Update a user', async () => {
 	expect.assertions(1)
-	const user = await dbUser.updateUser(2, 383123818, 763841444, 'effective', '27-10-1993', 'Portuguese', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',false, false, false, 'Other')
+	const user = await dbUser.updateUser(2, 383123818, 763841444, 'effective', '27-10-1993', 'Portuguese', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',false, false, false, 'Other', 'PT50111700000001234567831')
 	expect(user.full_name_).toBe('Luis Marques')
 })
 

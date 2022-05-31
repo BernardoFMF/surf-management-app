@@ -14,6 +14,7 @@ create table Candidate_ (
 	username_		varchar(30) unique,
 	img_ 			text,
 	gender_ 		varchar(40),
+	iban_ 			text unique check (iban_ like 'PT50%'),
 	
 	primary key(id_)
 );
@@ -32,6 +33,7 @@ create table Member_ (
 	is_deleted_ 	bool default false,
 	username_		varchar(30) unique,
 	pword_			varchar(100),
+	iban_			text unique check (iban_ like 'PT50%'),
 	
 	primary key(id_),
 	constraint fk_role foreign key(member_type_) references Member_Types_ (type_)

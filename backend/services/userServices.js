@@ -18,7 +18,7 @@ const userServices = (db) => {
 		return await data.getUserById(id)
 	}
 	
-	const postUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, paid_enrollment, gender, url) => {
+	const postUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, paid_enrollment, gender, url, iban) => {
 		if(!cc) throw error(400, 'Parameter not found: cc', 'MESSAGE_CODE_14')
 		if(!nif) throw error(400, 'Parameter not found: nif', 'MESSAGE_CODE_14')
 		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
@@ -34,13 +34,15 @@ const userServices = (db) => {
 		if(!username) throw error(400, 'Parameter not found: username', 'MESSAGE_CODE_14')
 		if(paid_enrollment == undefined) throw error(400, 'Parameter not found: paid_enrollment', 'MESSAGE_CODE_14')
 		if(!gender) throw error(400, 'Parameter not found: gender', 'MESSAGE_CODE_14')
+		if(!iban) throw error(400, 'Parameter not found: iban', 'MESSAGE_CODE_14')
+
 
 		const pwordhashed = await crypto.hashpassword(password)
 		
-		return await data.postUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment, gender, url)
+		return await data.postUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment, gender, url, iban)
 	}
 	
-	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted, gender) => {
+	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted, gender, iban) => {
 
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!cc) throw error(400, 'Parameter not found: cc', 'MESSAGE_CODE_14')
@@ -57,8 +59,10 @@ const userServices = (db) => {
 		if(is_admin == undefined) throw error(400, 'Parameter not found: is_admin', 'MESSAGE_CODE_14')
 		if(is_deleted == undefined) throw error(400, 'Parameter not found: is_deleted', 'MESSAGE_CODE_14')
 		if(!gender) throw error(400, 'Parameter not found: gender', 'MESSAGE_CODE_14')
+		if(!iban) throw error(400, 'Parameter not found: iban', 'MESSAGE_CODE_14')
 
-		return await data.updateUser(id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted, gender)
+
+		return await data.updateUser(id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted, gender, iban)
 	}
 	
 	const deleteUserServices = async (id) => {
