@@ -17,15 +17,15 @@ const userData = (db) => {
 	
 	const postUser = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, url, iban_) => {
 		let candidate = await db.getCandidateByUsernameData(username_)
-		if (candidate) throw error(409, 'Candidate with that username already exists', 'MESSAGE_CODE_12')
+		if (candidate) throw error(409, 'Candidate with that username already exists', 'MESSAGE_CODE_16')
 		candidate = await db.getCandidateByCCData(cc_)
-		if (candidate) throw error(409, 'Candidate with that cc already exists', 'MESSAGE_CODE_12')
+		if (candidate) throw error(409, 'Candidate with that cc already exists', 'MESSAGE_CODE_17')
 		candidate = await db.getCandidateByNifData(nif_)
-		if (candidate) throw error(409, 'Candidate with that nif already exists', 'MESSAGE_CODE_12')
+		if (candidate) throw error(409, 'Candidate with that nif already exists', 'MESSAGE_CODE_18')
 		candidate = await db.getCandidateByEmailData(email_)
-		if (candidate) throw error(409, 'Candidate with that email already exists', 'MESSAGE_CODE_12')
+		if (candidate) throw error(409, 'Candidate with that email already exists', 'MESSAGE_CODE_19')
 		candidate = await db.getCandidateByIbanData(iban_)
-		if (candidate) throw error(409, 'Candidate with that iban already exists', 'MESSAGE_CODE_12')
+		if (candidate) throw error(409, 'Candidate with that iban already exists', 'MESSAGE_CODE_37')
 
 
 		let member = await db.getMemberByUsernameData(username_)
@@ -37,7 +37,7 @@ const userData = (db) => {
 		member = await db.getMemberByEmailData(email_)
 		if (member) throw error(409, 'Member with that email already exists', 'MESSAGE_CODE_23')
 		member = await db.getMemberByIbanData(iban_)
-		if (member) throw error(409, 'Member with that iban already exists', 'MESSAGE_CODE_??')
+		if (member) throw error(409, 'Member with that iban already exists', 'MESSAGE_CODE_38')
 
 		const userId = await db.postUserData(cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, iban_)
 

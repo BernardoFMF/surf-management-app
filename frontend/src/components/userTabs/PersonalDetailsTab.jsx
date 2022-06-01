@@ -43,7 +43,7 @@ const PersonalDetailsTab = () => {
     const { loading, error, updated } = userUpdate
 
     const handleSubmit = async (values) => {
-        const updatedUser = { ...values, member_id: memberGet.member_id_, type: memberGet.member_type_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, address: memberGet.address_, location: memberGet.location_, paid_enrollment: memberGet.paid_enrollment_, is_admin: memberGet.is_admin_, is_deleted: memberGet.is_deleted_ }
+        const updatedUser = { ...values, member_id: memberGet.member_id_, type: memberGet.member_type_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, address: memberGet.address_, location: memberGet.location_, paid_enrollment: memberGet.paid_enrollment_, is_admin: memberGet.is_admin_, is_deleted: memberGet.is_deleted_, iban_: memberGet.iban_ }
         dispatch(updateUser(updatedUser))
     }
 
@@ -56,6 +56,7 @@ const PersonalDetailsTab = () => {
             initialValues={{
                 username: memberGet.username_,
                 email: memberGet.email_,
+                iban: memberGet.iban_,
                 cc: memberGet.cc_,
                 nif: memberGet.nif_,
                 type: memberGet.member_type_,
@@ -71,6 +72,7 @@ const PersonalDetailsTab = () => {
                 full_name: Yup.string().required(t('sign_up_full_name_mandatory')),
                 cc: Yup.string().matches(/^[0-9]+$/, t('sign_up_only_digits')).min(9, t('sign_up_exact_nine')).max(9,  t('sign_up_exact_nine')).required( t('sign_up_cc_mandatory')),
                 nif: Yup.string().required(t('sign_up_nif_mandatory')).matches(/^[0-9]+$/, t('sign_up_only_digits')).min(9,  t('sign_up_exact_nine')).max(9,  t('sign_up_exact_nine')),
+                iban: Yup.string().test('len', t('sign_up_iban_mandatory'), val => val.length === 25),
                 gender: Yup.string().required(t('sign_up_gender_mandatory')),
                 nationality: Yup.string().required(t('sign_up_nationality_mandatory')),
                 birth_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).max(new Date(), t('sign_up_max_date')).required(t('sign_up_birth_date_mandatory')),
@@ -101,6 +103,7 @@ const PersonalDetailsTab = () => {
                                         <DropdownInputField name='nationality' label={t('sign_up_nationality')} options={countries}></DropdownInputField>
                                     </Grid>
                                 </Grid>
+                                <InputField name='iban' label='IBAN' type='text' ></InputField>
                             </Box>
                         </Grid>
                         <Grid item>

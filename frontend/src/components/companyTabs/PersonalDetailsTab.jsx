@@ -31,7 +31,7 @@ const PersonalDetailsTab = () => {
     const { loading, error, updated } = companyUpdate
 
     const handleSubmit = async (values) => {
-        const updatedCompany = { ...values, cid: memberGet.member_id_, is_deleted: memberGet.is_deleted_, address: memberGet.address_, location: memberGet.location_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_ }
+        const updatedCompany = { ...values, cid: memberGet.member_id_, is_deleted: memberGet.is_deleted_, address: memberGet.address_, location: memberGet.location_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, iban: memberGet.iban_}
         dispatch(updateCompany(updatedCompany))
     }
 
@@ -44,11 +44,13 @@ const PersonalDetailsTab = () => {
                 initialValues={{
                     name: memberGet.name_,
                     nif: memberGet.nif_,
+                    iban: memberGet.iban_,
                     img: memberGet.img_value_
                 }}
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required(t('sign_up_username_mandatory')),
                     nif: Yup.string().required(t('sign_up_nif_mandatory')).matches(/^[0-9]+$/, t('sign_up_only_digits')).min(9,  t('sign_up_exact_nine')).max(9,  t('sign_up_exact_nine')),
+                    iban: Yup.string().test('len', t('sign_up_iban_mandatory'), val => val.length === 25),
                     img: Yup.mixed()
                 })}
                 onSubmit={handleSubmit}
@@ -72,8 +74,9 @@ const PersonalDetailsTab = () => {
                                         </Grid>
                                         <Grid item xs={12} sm={6}>
                                             <InputField name='nif' label={t('sign_up_nif')} type='text'></InputField>
-                                        </Grid>
+                                        </Grid>     
                                     </Grid>
+                                    <InputField name='iban' label='IBAN' type='text'></InputField>
                                     <Grid container spacing={matchDownSM ? 0 : 2}>
                                         <Grid item xs={12} sm={6} sx={{ mt: 2}}>
                                             <AnimateButton>
