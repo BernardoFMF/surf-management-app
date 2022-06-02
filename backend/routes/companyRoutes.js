@@ -14,6 +14,8 @@ const companyRoutes = (data) => {
 	app.get('/', authentication.authAdmin, controller.getCompanies)
 
 	app.get('/:cid', authentication.authMember, controller.getCompanyById)
+
+	app.get('/validate/:cid', authentication.authCompany, controller.getMemberValidation)
     
 	app.post('/', authentication.authAdmin, controller.postCompany)
     

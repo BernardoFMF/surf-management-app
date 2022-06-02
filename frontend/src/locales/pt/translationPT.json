@@ -219,5 +219,9 @@
     "event_information": "Informações do evento",
     "event_list": "Lista",
 
-    "actions": "Ações"
+    "actions": "Ações",
+
+    "validate_the_member": "O membro: ",
+    "validate_member_not_discounts" : "O membro não tem direito a descontos",
+    "validate_member_discounts" : "O membro tem direito a descontos"
 }

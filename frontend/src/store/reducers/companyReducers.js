@@ -13,7 +13,10 @@ import {
     COMPANY_UPDATE_FAIL,
     COMPANY_POST_FAIL,
     COMPANY_POST_REQUEST,
-    COMPANY_POST_SUCCESS
+    COMPANY_POST_SUCCESS,
+    MEMBER_VALIDATION_FETCH_REQUEST,
+    MEMBER_VALIDATION_FETCH_SUCCESS,
+    MEMBER_VALIDATION_FETCH_FAIL
 } from '../constants/companyConstants'
 
 export const companyDeletionReducer = (state = {}, action) => {
@@ -49,6 +52,19 @@ export const companyDeletionReducer = (state = {}, action) => {
       case COMPANY_FETCH_SUCCESS:
         return { loading: false, companyGet: action.payload }
       case COMPANY_FETCH_FAIL:
+        return { loading: false, error: action.payload }
+      default:
+        return state
+    }
+  }
+
+  export const memberValidateFetchReducer = (state = {validateGet: {full_name_ : ""}}, action) => {
+    switch (action.type) {
+      case MEMBER_VALIDATION_FETCH_REQUEST:
+        return { loading: true }
+      case MEMBER_VALIDATION_FETCH_SUCCESS:
+        return { loading: false, validateGet: action.payload }
+      case MEMBER_VALIDATION_FETCH_FAIL:
         return { loading: false, error: action.payload }
       default:
         return state

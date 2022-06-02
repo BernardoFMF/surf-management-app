@@ -46,12 +46,21 @@ const companyController = (data) => {
 		if (company) res.json({ message: 'Company deleted sucessfully', message_code: 'MESSAGE_CODE_6' })
 	})
 
+	const getMemberValidation = asyncHandler(async (req, res) => {
+		if(req.user.member_type_ != "corporate") {
+			throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
+		}
+		const member = await services.getMemberValidation(req.params.cid)
+		if (member) res.json(member)
+	})
+
 	return {
 		getCompanies,
 		getCompanyById,
 		postCompany,
 		updateCompany,
-		deleteCompany
+		deleteCompany,
+		getMemberValidation
 	}
 }
 

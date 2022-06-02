@@ -17,6 +17,11 @@ const companyServices = (db) => {
 		if(!id) throw error(400,'Parameter not found: id', 'MESSAGE_CODE_14')
 		return await data.getCompanyById(id)
 	}
+
+	const getMemberValidation = async(id) => {
+		if(!id) throw error(400,'Parameter not found: id', 'MESSAGE_CODE_14')
+		return await data.getMemberValidation(id)
+	}
 	
 	const postCompanyServices = async(name, nif, phone_number, email, postal_code, address, location, username, password, type, img, iban) => {
 		if(!name) throw error(400,'Parameter not found: name', 'MESSAGE_CODE_14')
@@ -58,7 +63,8 @@ const companyServices = (db) => {
 		getCompanyByIdServices, 
 		postCompanyServices, 
 		updateCompanyServices, 
-		deleteCompanyServices 
+		deleteCompanyServices,
+		getMemberValidation 
 	}
 }
 
