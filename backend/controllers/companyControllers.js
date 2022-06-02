@@ -47,7 +47,6 @@ const companyController = (data) => {
 	})
 
 	const getMemberValidation = asyncHandler(async (req, res) => {
-		console.log(req.user)
 		if(req.user.member_type_ != "corporate") {
 			throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 		}

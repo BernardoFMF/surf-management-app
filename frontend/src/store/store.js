@@ -48,12 +48,9 @@ const reducer = combineReducers({
   memberEventsAttendanceFetch: memberEventsAttendanceFetchReducer,
   userPost: userPostReducer,
   companyPost: companyPostReducer,
-<<<<<<< HEAD
-  validateFetch: memberValidateFetchReducer
-=======
+  validateFetch: memberValidateFetchReducer,
   userSportUpdate: userSportsUpdateReducer,
   userSportDelete: usersSportDeleteReducer
->>>>>>> 642da2668ad09bb569d83963e4239ed5187c01e4
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')

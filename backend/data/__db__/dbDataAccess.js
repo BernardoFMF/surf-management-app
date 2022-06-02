@@ -580,7 +580,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			count++
 		}
 		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
-		console.log(query)
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
