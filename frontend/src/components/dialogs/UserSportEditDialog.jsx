@@ -12,7 +12,7 @@ import CheckInputField from '../multiStepForm/CheckInputField'
 import ChipInputField from '../multiStepForm/ChipInputField'
 import { updateUserSports } from '../../store/actions/userActions'
 
-const UserSportEditDialog = ({open, closeHandler, doWhenUnmount, userSport}) => {
+const UserSportEditDialog = ({open, closeHandler, userSport}) => {
     const { t } = useTranslation()
 
     const dispatch = useDispatch()
@@ -22,14 +22,7 @@ const UserSportEditDialog = ({open, closeHandler, doWhenUnmount, userSport}) => 
     const editUserSportHandler = (values) => {
         dispatch(updateUserSports(userSport.user_id_, userSport.sport_id_, values))
     }
-
-    useEffect(() => {
-        return () => { 
-            console.log("unmounted");
-            doWhenUnmount() 
-        }
-    }, [])
-
+    
     return (
         <>
             <Dialog

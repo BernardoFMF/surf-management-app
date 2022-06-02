@@ -135,7 +135,7 @@ import {
     }
   }
 
-  export const usersSportFetchReducer = (state = {usersSportGet: []}, action) => {
+  export const usersSportFetchReducer = (state = {usersSportGet: {sports: [], number_of_sports: 0}}, action) => {
     switch (action.type) {
         case USERS_SPORT_FETCH_REQUEST:
           return { loading: true }

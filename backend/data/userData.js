@@ -63,10 +63,10 @@ const userData = (db) => {
 		return await db.getUsersSportsData()
 	}
 	
-	const getUsersSport = async (id_) => {
+	const getUsersSport = async (id_, offset, limit) => {
 		const sport = await db.getSportByIdData(id_)
 		if (!sport) throw error(404, 'Sport does not exist', 'MESSAGE_CODE_30')
-		return await db.getUsersSportData(id_)
+		return await db.getUsersSportData(id_, offset, limit)
 	}
 	
 	const getUserSportsById = async (id_, offset_, limit_) => {

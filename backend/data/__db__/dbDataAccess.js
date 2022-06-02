@@ -700,15 +700,21 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const getUsersSportData = async (id_) => {
+	const getUsersSportData = async (id_, offset, limit) => {
+		let query = queries.QUERY_GET_USERS_SPORT
+		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		console.log(query);
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const result = await client.query(queries.QUERY_GET_USERS_SPORT, [id_])
+			const sports = await client.query(query, [id_])
+			const number_of_sports = await client.query(queries.QUERY_NUMBER_OF_SPORT_USERS, [id_])
 			await client.query('commit')
-			return result.rows
+			const result = { sports: sports.rows, number_of_sports: number_of_sports.rows[0].count }
+			return result
 		} catch (e) {
 			await client.query('rollback')
+			console.log(e);
 			throw e
 		} finally {
 			client.release()

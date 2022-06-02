@@ -279,16 +279,17 @@ export const deleteUserSport = (id, sid) => async (dispatch) => {
   }
 }
 
-export const getUsersSport = (id) => async (dispatch) => {
+export const getUsersSport = (id, offset, limit) => async (dispatch) => {
 try {
   dispatch({
     type: USERS_SPORT_FETCH_REQUEST,
   })
-  const response = await fetch(`/api/users/sports/${id}`, {
+  const response = await fetch(`/api/users/sports/${id}?offset=${offset}&limit=${limit}`, {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
   })
   const sports = await response.json()
+  console.log(sports);
   if(response.status !== 200) throw Error(sports.message_code)
   dispatch({
     type: USERS_SPORT_FETCH_SUCCESS,

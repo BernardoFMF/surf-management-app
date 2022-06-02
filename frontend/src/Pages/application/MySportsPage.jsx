@@ -38,6 +38,7 @@ const MySportsPage = () => {
             years_federated_: [ 0 ],
             is_absent_: false
         })
+        setPage(1)
         dispatch(getUserSports(id, 0, limit))
     }, []);
 

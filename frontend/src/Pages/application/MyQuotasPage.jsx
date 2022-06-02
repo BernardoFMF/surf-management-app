@@ -6,8 +6,6 @@ import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SurfingIcon from '@mui/icons-material/Surfing';
 import MainCard from '../../components/cards/MainCard';
 import { Pagination, Alert , Box, Stack, CircularProgress} from '@mui/material';
 
@@ -45,10 +43,10 @@ const MyQuotasPage = () => {
         dispatch(getMembersQuotas(id, (value-1)*limit, limit))
     }
 
-const columns = [
-    { field: 'date_', headerName: t('date'), width: 120 },
-    { field: 'payment_date_', headerName: t('payment_date'), width: 140 },
-];
+    const columns = [
+        { field: 'date_', headerName: t('date'), width: 120 },
+        { field: 'payment_date_', headerName: t('payment_date'), width: 140 },
+    ];
 
   return (
     <>
