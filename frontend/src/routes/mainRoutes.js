@@ -64,7 +64,7 @@ const mainRoutes = {
             element: <RequireAdmin><AllCompaniesPage/></RequireAdmin>
         },
         {
-            path: '/application/myquotas/:id',
+            path: '/application/member/:id/quotas',
             element: <RequireAdmin><MyQuotasPage/></RequireAdmin>
         },
         {

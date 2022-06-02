@@ -220,6 +220,8 @@
 
     "validate_the_member": "The member: ",
     "validate_member_not_discounts" : "The member is not entitled to discounts",
-    "validate_member_discounts" : "The member is entitled to discounts"
+    "validate_member_discounts" : "The member is entitled to discounts",
+
+    "member_since": "Member since: "
 
 }

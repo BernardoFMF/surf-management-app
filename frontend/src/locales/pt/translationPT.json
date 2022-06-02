@@ -223,5 +223,7 @@
 
     "validate_the_member": "O membro: ",
     "validate_member_not_discounts" : "O membro não tem direito a descontos",
-    "validate_member_discounts" : "O membro tem direito a descontos"
+    "validate_member_discounts" : "O membro tem direito a descontos",
+
+    "member_since": "Membro desde: "
 }
