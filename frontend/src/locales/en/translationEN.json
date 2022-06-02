@@ -216,6 +216,11 @@
     "event_information": "Event Information",
     "event_list": "List",
 
-    "actions": "Actions"
+    "actions": "Actions",
+
+    "create_event": "Create an event",
+    "initial_date_mandatory": "Initial date is mandatory",
+    "end_date_mandatory": "End date is mandatory",
+    "create": "Create"
 
 }

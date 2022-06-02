@@ -242,7 +242,7 @@ begin
 		INSERT INTO Member_(member_type_,username_,pword_, iban_) VALUES (mtype_, username_,pword_, iban_) returning id_
 	)
 	select id_ into new_id_ from new_id_table_;
-	
+
 	INSERT INTO Contact_(member_id_,location_,address_,postal_code_,email_,phone_number_) VALUES (new_id_,location_,address_,postal_code_,email_,phone_number_);
 	INSERT INTO Company_(member_id_,nif_,name_) VALUES (new_id_, nif_, name_);
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;

@@ -5,6 +5,9 @@ import {
     EVENT_DELETE_SUCCESS,
     EVENT_DELETE_FAIL,
     EVENT_DELETE_REQUEST,
+    EVENT_CREATE_SUCCESS,
+    EVENT_CREATE_FAIL,
+    EVENT_CREATE_REQUEST,
     EVENT_FETCH_SUCCESS,
     EVENT_FETCH_FAIL,
     EVENT_FETCH_REQUEST,
@@ -36,6 +39,20 @@ export const EventDeletionReducer = (state = {eventDeletion: {}}, action) => {
         case EVENT_DELETE_SUCCESS:
         return { loading: false, eventDeletion: action.payload }
         case EVENT_DELETE_FAIL:
+        return { loading: false, error: action.payload }
+        default:
+        return state
+    }
+}
+
+
+export const createEventReducer = (state = {}, action) => {
+    switch (action.type) {
+        case EVENT_CREATE_REQUEST:
+        return { loading: true }
+        case EVENT_CREATE_SUCCESS:
+        return { loading: false, createEvent: action.payload }
+        case EVENT_CREATE_FAIL:
         return { loading: false, error: action.payload }
         default:
         return state

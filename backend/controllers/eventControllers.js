@@ -9,7 +9,7 @@ const eventController = (data) => {
 	const services = eventServices(data)
 
 	const getEvents = asyncHandler(async (req, res) => {
-		const events = await services.getEventsServices()
+		const events = await services.getEventsServices(req.query.name, req.query.initialDate, req.query.endDate, req.query.offset, req.query.limit)
 		res.json(events)
 	})
 	
@@ -60,7 +60,7 @@ const eventController = (data) => {
 	})
 	
 	const getEventByIdAttendance = asyncHandler(async (req,res) => {
-		const attendance = await services.getEventByIdAttendanceServices(req.params.eid)
+		const attendance = await services.getEventByIdAttendanceServices(req.params.eid, req.query.offset, req.query.limit)
 		res.json(attendance)
 	})
 

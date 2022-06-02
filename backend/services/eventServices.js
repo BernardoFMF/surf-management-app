@@ -6,8 +6,10 @@ import eventData from '../data/eventData.js'
 const eventServices = (db) => {
 	const data = eventData(db)
 
-	const getEventsServices = async() => {
-		return await data.getEvents()
+	const getEventsServices = async(name_filter,initialDate_filter,endDate_filter,offset,limit) => {
+		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
+		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
+		return await data.getEvents(name_filter,initialDate_filter,endDate_filter,offset,limit)
 	}
 	
 	const getEventByIdServices = async(event_id) => {
@@ -49,9 +51,9 @@ const eventServices = (db) => {
 		return await data.updateMemberAttendance(event_id, id, state)
 	}
 	
-	const getEventByIdAttendanceServices = async(event_id) => {
+	const getEventByIdAttendanceServices = async(event_id, offset, limit) => {
 		if(!event_id) throw error(400,'Parameter not found: event_id', 'MESSAGE_CODE_14')
-		return await data.getEventByIdAttendance(event_id)
+		return await data.getEventByIdAttendance(event_id, offset, limit)
 	}
 
 	const getEventMemberByIdAttendanceServices = async(id) => {

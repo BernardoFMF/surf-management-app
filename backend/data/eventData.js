@@ -5,8 +5,8 @@ import mailSender from '../utils/email/mailSender.js'
 import { eventTemplate } from  '../utils/email/mailTemplates.js'
 
 const eventData = (db) => {
-	const getEvents = async () => {
-		return await db.getEventsData()
+	const getEvents = async (name_filter,initialDate_filter,endDate_filter,offset,limit) => {
+		return await db.getEventsData(name_filter,initialDate_filter,endDate_filter,offset,limit)
 	}
 	
 	const getEventById = async (id_) => {
@@ -51,9 +51,9 @@ const eventData = (db) => {
 		return await db.updateMemberAttendanceData(eid_, id_, state_)
 	}
 	
-	const getEventByIdAttendance = async (eid_) => {
+	const getEventByIdAttendance = async (eid_, offset, limit) => {
 		await getEventById(eid_)
-		return await db.getEventByIdAttendanceData(eid_)
+		return await db.getEventByIdAttendanceData(eid_, offset, limit)
 	}
 
 	const getEventMemberByIdAttendance = async (id_) => {

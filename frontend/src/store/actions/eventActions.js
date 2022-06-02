@@ -5,6 +5,9 @@ import {
     EVENT_DELETE_SUCCESS,
     EVENT_DELETE_FAIL,
     EVENT_DELETE_REQUEST,
+    EVENT_CREATE_SUCCESS,
+    EVENT_CREATE_FAIL,
+    EVENT_CREATE_REQUEST,
     EVENT_FETCH_SUCCESS,
     EVENT_FETCH_FAIL,
     EVENT_FETCH_REQUEST,
@@ -16,12 +19,12 @@ import {
     MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL
   } from '../constants/eventConstants'
   
-export const getEvents = () => async (dispatch) => {
+export const getEvents = (name_filter, initial_date_filter, end_date_filter, offset, limit) => async (dispatch) => {
     try {
         dispatch({
         type: EVENTS_FETCH_REQUEST,
         })
-        const response = await fetch(`/api/events`, {
+        const response = await fetch(`/api/events?offset=${offset}&limit=${limit}${name_filter ? `&name=${name_filter}`:""}${initial_date_filter ? `&initialDate=${initial_date_filter}`:""}${end_date_filter ? `&endDate=${end_date_filter}`:""}`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
         })
@@ -70,6 +73,35 @@ export const deleteEvent = (id) => async (dispatch) => {
     }
   }
 
+export const createEvent = (name, initial_date, end_date) => async (dispatch) => {
+    try {
+      dispatch({
+        type: EVENT_CREATE_REQUEST,
+      })
+      const response = await fetch(`/api/events`, {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({name, initial_date, final_date: end_date}),
+
+      })
+      const text = await response.json()
+      if(response.status !== 201) throw Error(text.message_code)
+      dispatch({
+        type: EVENT_CREATE_SUCCESS,
+        payload: text,
+      })
+  
+    } catch (error) {
+      dispatch({
+        type: EVENT_CREATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
   export const getEvent = (id) => async (dispatch) => {
     try {
       dispatch({
@@ -97,12 +129,12 @@ export const deleteEvent = (id) => async (dispatch) => {
     }
   }
 
-  export const getEventAttendance = (id) => async (dispatch) => {
+  export const getEventAttendance = (id, offset, limit) => async (dispatch) => {
     try {
       dispatch({
         type: EVENT_ATTENDANCE_FETCH_REQUEST,
       })
-      const response = await fetch(`/api/events/${id}/attendance`, {
+      const response = await fetch(`/api/events/${id}/attendance?offset=${offset}&limit=${limit}`, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
       })
@@ -110,11 +142,12 @@ export const deleteEvent = (id) => async (dispatch) => {
       let not_going = 0
       let going = 0
       let text = await response.json()
-      text = text.map(attendance => {
+      const number_of_attendance = text.number_of_attendance
+      text = text.attendance.map(attendance => {
         attendance.state_ === "interested" ? interested++ : attendance.state_ === "not going" ? not_going++ : going++
         return attendance
       })
-      let attendance = {text,interested,not_going,going}
+      let attendance = {text, interested, not_going, going, number_of_attendance}
       if(response.status !== 200) throw Error(text.message_code)
       dispatch({
         type: EVENT_ATTENDANCE_FETCH_SUCCESS,
