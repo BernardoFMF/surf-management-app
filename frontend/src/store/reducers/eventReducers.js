@@ -19,7 +19,7 @@ import {
     MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL
 } from '../constants/eventConstants'
 
-export const eventsFetchReducer = (state = {eventsGet: []}, action) => {
+export const eventsFetchReducer = (state = {eventsGet: {events: [], number_of_events : 0}}, action) => {
     switch (action.type) {
         case EVENTS_FETCH_REQUEST:
         return { loading: true }
@@ -31,7 +31,6 @@ export const eventsFetchReducer = (state = {eventsGet: []}, action) => {
         return state
     }
 }
-
 export const EventDeletionReducer = (state = {eventDeletion: {}}, action) => {
     switch (action.type) {
         case EVENT_DELETE_REQUEST:
@@ -72,7 +71,7 @@ export const eventFetchReducer = (state = {eventGet: {}}, action) => {
     }
 }
 
-export const eventAttendanceFetchReducer = (state = {eventAttendanceGet: {text:[],interested:0,not_going:0,going:0}}, action) => {
+export const eventAttendanceFetchReducer = (state = {eventAttendanceGet: {text:[],interested:0,not_going:0,going:0, number_of_attendance:0}}, action) => {
     switch (action.type) {
         case EVENT_ATTENDANCE_FETCH_REQUEST:
         return { loading: true }
