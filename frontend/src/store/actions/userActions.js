@@ -22,7 +22,13 @@ import {
     USERS_SPORT_FETCH_REQUEST,
     USER_POST_FAIL,
     USER_POST_REQUEST,
-    USER_POST_SUCCESS
+    USER_POST_SUCCESS,
+    USER_SPORT_UPDATE_SUCCESS,
+    USER_SPORT_UPDATE_FAIL,
+    USER_SPORT_UPDATE_REQUEST,
+    USER_SPORT_DELETE_REQUEST,
+    USER_SPORT_DELETE_SUCCESS,
+    USER_SPORT_DELETE_FAIL
   } from '../constants/userConstants'
 
 import { MEMBER_LOGIN_SUCCESS, MEMBER_FETCH_SUCCESS } from '../constants/memberConstants'
@@ -190,12 +196,12 @@ export const updateUser = (body) => async (dispatch, getState) => {
   }
 }
 
-export const getUserSports = (id) => async (dispatch) => {
+export const getUserSports = (id, offset, limit) => async (dispatch) => {
   try {
     dispatch({
       type: USER_SPORTS_FETCH_REQUEST,
     })
-    const response = await fetch(`/api/users/${id}/sports`, {
+    const response = await fetch(`/api/users/${id}/sports?offset=${offset}&limit=${limit}`, {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
     })
@@ -209,6 +215,62 @@ export const getUserSports = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_SPORTS_FETCH_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const updateUserSports = (id, sid, body) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_SPORT_UPDATE_REQUEST,
+    })
+    const response = await fetch(`/api/users/${id}/sports/${sid}`, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" }
+    })
+    console.log("fez");
+    const userSport = await response.json()
+    if(response.status !== 200) throw Error(userSport.message_code)
+    dispatch({
+      type: USER_SPORT_UPDATE_SUCCESS,
+      payload: userSport
+    })
+
+  } catch (error) {
+    dispatch({
+      type: USER_SPORT_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const deleteUserSport = (id, sid) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_SPORT_DELETE_REQUEST,
+    })
+    const response = await fetch(`/api/users/${id}/sports/${sid}`, {
+        method: 'DELETE',
+        headers: { "Content-Type": "application/json" }
+    })
+    const userSport = await response.json()
+    if(response.status !== 200) throw Error(userSport.message_code)
+    dispatch({
+      type: USER_SPORT_DELETE_SUCCESS,
+      payload: userSport
+    })
+
+  } catch (error) {
+    dispatch({
+      type: USER_SPORT_DELETE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

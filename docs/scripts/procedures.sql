@@ -103,7 +103,7 @@ LANGUAGE plpgsql
 as
 $$
 begin
-	update User_Sport_ set type_ = p_type_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_ where user_id_ = p_id_ and sport_id_ = p_sid_;
+	update User_Sport_ set type_ = p_type_, fed_number_ = p_fed_number_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 end
 $$;
 

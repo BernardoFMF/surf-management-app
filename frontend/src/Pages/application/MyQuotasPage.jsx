@@ -24,10 +24,6 @@ const MyQuotasPage = () => {
         dispatch(getMembersQuotas(id,0,limit))
     },[dispatch,id])
 
-    useEffect(() => {
-      dispatch(getMembersQuotas(id,0,limit))
-  }, [])
-
     const [page, setPage] = useState(1);
     const limit = 5
 
@@ -45,9 +41,9 @@ const MyQuotasPage = () => {
     },[memberQuotasGet,dispatch])
 
     const changePageHandler = (event, value) => {
-      setPage(value)
-      dispatch(getMembersQuotas(id, (value-1)*limit, limit))
-  }
+        setPage(value)
+        dispatch(getMembersQuotas(id, (value-1)*limit, limit))
+    }
 
 const columns = [
     { field: 'date_', headerName: t('date'), width: 120 },
@@ -62,21 +58,21 @@ const columns = [
             <CircularProgress size='4rem'/>
         </Stack> : (
         <>
-                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-        <DataGrid
-            autoHeight
-            rows={rows}
-            columns={columns}
-            pageSize={limit}
-            hideFooter={true}
-            onPageChange={changePageHandler}
-            sx={{
-                "& .MuiDataGrid-columnHeaders": {
-                    backgroundColor: "rgba(219, 219, 219, 0.5)"
-                }
-            }}
-        /> 
-        <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(memberQuotasGet.number_of_quotas / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            <DataGrid
+                autoHeight
+                rows={rows}
+                columns={columns}
+                pageSize={limit}
+                hideFooter={true}
+                onPageChange={changePageHandler}
+                sx={{
+                    "& .MuiDataGrid-columnHeaders": {
+                        backgroundColor: "rgba(219, 219, 219, 0.5)"
+                    }
+                }}
+            /> 
+            <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(memberQuotasGet.number_of_quotas / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
         </>)}
 
       </MainCard> 

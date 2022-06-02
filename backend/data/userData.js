@@ -69,9 +69,9 @@ const userData = (db) => {
 		return await db.getUsersSportData(id_)
 	}
 	
-	const getUserSportsById = async (id_) => {
+	const getUserSportsById = async (id_, offset_, limit_) => {
 		await getUserById(id_)
-		return await db.getUserSportsByIdData(id_)
+		return await db.getUserSportsByIdData(id_, offset_, limit_)
 	}
 	
 	const postUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
@@ -86,10 +86,12 @@ const userData = (db) => {
 	}
 	
 	const updateUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_) => {
+		console.log(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_);
 		await getUserById(id_)
-		const sports = await db.getUserSportsByIdData(id_)
+		/*const sports = await db.getAllUserSportsByIdData(id_)
+		console.log(sports);
 		const sport = sports.filter(s => s.sport_id_ == sid_)[0]
-		if (!sport) throw error(404, 'User is not related to this Sport', 'MESSAGE_CODE_32')
+		if (!sport) throw error(404, 'User is not related to this Sport', 'MESSAGE_CODE_32')*/
 		return await db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_)
 	}
 	

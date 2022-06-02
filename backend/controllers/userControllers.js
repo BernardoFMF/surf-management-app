@@ -63,7 +63,7 @@ const userController = (data) => {
 				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
-		const userSports = await services.getUserSportsByIdServices(req.params.id)
+		const userSports = await services.getUserSportsByIdServices(req.params.id, req.query.offset, req.query.limit)
 		if (userSports) res.json(userSports)
 	})
 	
