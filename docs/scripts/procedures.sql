@@ -265,7 +265,7 @@ $$
 begin
 	UPDATE Contact_ SET phone_number_ = p_phone_number_, postal_code_ = p_postal_code_,address_ = p_address_, location_ = p_location_ WHERE member_id_ = cid_;
 	UPDATE Company_ SET name_ = p_name_, nif_ = p_nif_ WHERE member_id_ = cid_;
-	update member_  set is_deleted_ = p_is_deleted_, iban_ = p_iban_;
+	update member_  set is_deleted_ = p_is_deleted_, iban_ = p_iban_ WHERE id_ = cid_;
 
 	if p_img_ is not null then
 		UPDATE Member_Img_ SET img_value_ = p_img_ WHERE member_id_ = cid_;

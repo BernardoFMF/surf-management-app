@@ -11,6 +11,17 @@ paths:
     get:
       summary: fetches list of users
       operationId: getUsersApi
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
       responses:
         '200':
           description: response body should be a user object array
@@ -476,17 +487,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-                
-  # above is validated
-  # below is not
-                
   /api/sports:
     get:
       summary: fetches a list of sports
       operationId: getSportsApi
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
       responses:
         '200':
-          description: response body should be a user object array
+          description: response body should be a sport object array
           content:
             application/json:
               schema:
@@ -518,10 +536,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api_sports_body'
+              $ref: '#/components/schemas/post_sports_body'
       responses:
         '201':
-          description: response body should be a user object
+          description: response body should be an id
           content:
             application/json:
               schema:
@@ -564,13 +582,11 @@ paths:
             type: integer
       responses:
         '200':
-          description: response body should be a user object
+          description: response body should be a sport object
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/sport'
+                $ref: '#/components/schemas/sport_by_id'
         '400':
           description: response body should be an error object
           content:
@@ -612,9 +628,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/message'
+                $ref: '#/components/schemas/message'
         '400':
           description: response body should be an error object
           content:
@@ -648,10 +662,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/sports_id_body'
+              $ref: '#/components/schemas/put_sports_body'
       responses:
         '200':
-          description: response body should be a sport object
+          description: response body should be an id
           content:
             application/json:
               schema:
@@ -674,10 +688,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
+                      
+  # above is validated
+  # below is not
   /api/quotas:
     get:
       summary: fetches all quotas
       operationId: getQuotasApi
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
       responses:
         '200':
           description: response body should be a quotas object  array
@@ -828,7 +857,7 @@ paths:
                 $ref: '#/components/schemas/error'
   /api/quotas/members/{id}:
     get:
-      summary: fetches all quotas from companies
+      summary: fetches all quotas from a specific member
       operationId: getMembersQuotasApi
       parameters:
         - name: id
@@ -838,6 +867,16 @@ paths:
           explode: false
           schema:
             type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
       responses:
         '200':
           description: response body should be a quota object array
@@ -875,6 +914,17 @@ paths:
     get:
       summary: fetches all companies
       operationId: getCompaniesApi
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
       responses:
         '200':
           description: response body should be a company object array
@@ -1065,6 +1115,17 @@ paths:
     get:
       summary: fetches all the events
       operationId: getEvents
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
       responses:
         '200':
           description: response body should be a event object
@@ -1441,6 +1502,18 @@ paths:
     get:
       summary: fetches list of candidates
       operationId: getCandidatesApi
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+            
       responses:
         '200':
           description: response body should be a candidate object array
@@ -1654,6 +1727,7 @@ components:
         - postal_code_
         - email_
         - phone_number_
+        - iban
       type: object
       properties:
         member_id_:
@@ -1697,6 +1771,8 @@ components:
           type: integer
         img_value_:
           type: string
+        iban_:
+          type: string
     userById:
       required:
         - member_id_
@@ -1719,6 +1795,7 @@ components:
         - phone_number_
         - is_deleted_
         - qrcode_
+        - iban
       type: object
       properties:
         member_id_:
@@ -1766,6 +1843,8 @@ components:
           type: boolean
         qrcode_:
           type: string
+        iban_:
+          type: string
     api_user_body:
       type: object
       required:
@@ -1785,6 +1864,7 @@ components:
         - username
         - paid_enrollment
         - gender
+        - iban
       properties:
         cc:
           type: integer
@@ -1821,6 +1901,8 @@ components:
           type: boolean
         gender:
           type: string
+        iban:
+          type: string
     api_user_id_body:
       type: object
       required:
@@ -1839,6 +1921,7 @@ components:
         - paid_enrollment
         - gender
         - is_deleted
+        - iban
       properties:
         id:
           type: integer
@@ -1874,6 +1957,8 @@ components:
           type: string
         is_deleted:
           type: boolean
+        iban:
+          type: string
     usersSports:
       required:
         - fed_id_
@@ -1953,16 +2038,15 @@ components:
           type: integer
         id:
           type: integer 
-         
-    # above is validated
-    # below is not
-          
     message:
       required:
         - message
+        - message_code
       type: object
       properties:
         message:
+          type: string
+        message_code:
           type: string
     id:
       type: integer
@@ -1980,12 +2064,31 @@ components:
       required:
         - id_
         - name_
+        - is_deleted_
+        - practitioners_
       type: object
       properties:
         id_:
           type: integer
         name_:
           type: string
+        is_deleted_:
+          type: boolean
+        practitioners_:
+          type: integer
+    sport_by_id:
+      required:
+        - id_
+        - name_
+        - is_deleted_
+      type: object
+      properties:
+        id_:
+          type: integer
+        name_:
+          type: string
+        is_deleted_:
+          type: boolean
     error:
       required:
         - message
@@ -1997,18 +2100,21 @@ components:
           type: integer
         message_code:
           type: integer
-    api_sports_body:
+    post_sports_body:
       type: object
       properties:
         name:
           type: string
-    sports_id_body:
+    put_sports_body:
       type: object
       properties:
         name_:
           type: string
         is_deleted_:
           type: boolean
+             
+    # above is validated
+    # below is not
     quota:
       required:
         - date_
@@ -2016,6 +2122,7 @@ components:
         - member_id_
         - payment_date_
         - username_
+        - iban
       type: object
       properties:
         id_:
@@ -2031,11 +2138,15 @@ components:
         date_:
           type: string
           format: date
+        iban_:
+          type: string
     company:
       required:
         - member_id_
         - name_
         - nif_
+        - iban
+
       type: object
       properties:
         member_id_:
@@ -2044,6 +2155,8 @@ components:
           type: string
         nif_:
           type: integer
+        iban_:
+          type: string
     companyById:
       required:
         - address_
@@ -2056,6 +2169,7 @@ components:
         - phone_number_
         - postal_code_
         - username_
+        - iban
       type: object
       properties:
         member_id_:
@@ -2079,25 +2193,8 @@ components:
           type: string
         has_debt_:
           type: boolean
-    sports_sid_body:
-      type: object
-      properties:
-        fed_id:
-          type: integer
-        fed_number:
-          type: integer
-        fed_name:
+        iban_:
           type: string
-        type:
-          type: array
-          items:
-            type: string
-        years_federated:
-          type: array
-          items:
-            type: integer
-        is_absent:
-          type: boolean
     api_quotas_body:
       type: object
       properties:
@@ -2132,6 +2229,8 @@ components:
         password:
           type: string
           format: password
+        iban:
+          type: string
     companies_cid_body:
       type: object
       properties:
@@ -2148,6 +2247,8 @@ components:
         address:
           type: string
         location:
+          type: string
+        iban:
           type: string
     event:
       type: object
@@ -2228,6 +2329,8 @@ components:
           items:
             type: number
         gender_:
+          type: string
+        iban_:
           type: string
     api_events_body:
       type: object

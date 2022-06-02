@@ -25,7 +25,8 @@ const candidateData = (db) => {
 		candidate = await db.getCandidateByEmailData(email_)
 		if (candidate) throw error(409, 'Candidate with that email already exists', 'MESSAGE_CODE_19')
 		candidate = await db.getCandidateByIbanData(iban_)
-		if (candidate) throw error(409, 'Candidate with that iban already exists', 'MESSAGE_CODE_??')
+		if (candidate) throw error(409, 'Candidate with that iban already exists', 'MESSAGE_CODE_37')
+
 
 		let member = await db.getMemberByUsernameData(username_)
 		if (member) throw error(409, 'Member with that username already exists', 'MESSAGE_CODE_20')
@@ -36,7 +37,7 @@ const candidateData = (db) => {
 		member = await db.getMemberByEmailData(email_)
 		if (member) throw error(409, 'Member with that email already exists', 'MESSAGE_CODE_23')
 		member = await db.getMemberByIbanData(iban_)
-		if (member) throw error(409, 'Member with that iban already exists', 'MESSAGE_CODE_23')
+		if (member) throw error(409, 'Member with that iban already exists', 'MESSAGE_CODE_38')
 
 		return await db.postCandidateData(username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_, gender_, iban_)
 	}

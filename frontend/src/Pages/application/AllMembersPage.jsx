@@ -151,6 +151,7 @@ const AllMembersPage = () => {
         { field: 'username_', headerName: t('candidates_username'), width: 200 },
         { field: 'full_name_', headerName: t('full_name'), width: 180 },
         { field: 'email_', headerName: 'Email', width: 170},
+        { field: 'iban_', headerName: 'IBAN', width: 220},
         { field: 'gender_', headerName: t('gender'), width: 110 },    
         { field: 'nationality_', headerName: t('nationality'), width: 130 },
         { field: 'birth_date_', headerName: t('birth_date'), width: 150 },
