@@ -138,11 +138,11 @@ const AllMembersPage = () => {
                 const base64String = reader.result.replace("data:", "")
                     .replace(/^.+,/, "");
 
-                dispatch(postUser({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img: base64String, type: values.member_type}))
+                dispatch(postUser({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img: base64String, type: values.member_type, iban: values.iban }))
             }
             reader.readAsDataURL(values.image);
         } else {
-            dispatch(postUser({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img, type: values.memberType, paid_enrollment: values.paidEnrollment}))
+            dispatch(postUser({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img, type: values.memberType, paid_enrollment: values.paidEnrollment, iban: values.iban }))
         }
     }
 
@@ -211,7 +211,8 @@ const AllMembersPage = () => {
                             <FormStep stepName='User' validationSchema={Yup.object().shape({
                                 username: Yup.string().required(t('sign_up_username_mandatory')),
                                 email: Yup.string().email(t('sign_up_email_valid')).max(255).required(t('sign_up_email_mandatory')),
-                                password: Yup.string().max(255).required(t('sign_up_password_mandatory'))
+                                password: Yup.string().max(255).required(t('sign_up_password_mandatory')),
+                                iban: Yup.string().required(t('sign_up_iban_mandatory')).test('len', t('sign_up_iban_mandatory'), val => val ? val.length === 25 : true)
                             })}>
                                 <InputField name='username' label={t('sign_up_username')} type='text'></InputField>
                                 <InputField name='email' label={t('sign_up_email')} type='text'></InputField>
@@ -228,6 +229,7 @@ const AllMembersPage = () => {
                                         </IconButton>
                                     </InputAdornment>}>
                                 </PasswordInputField>
+                                <InputField name='iban' label='IBAN' type='text'></InputField>
                             </FormStep>
                             <FormStep stepName='Personal' validationSchema={Yup.object().shape({
                                 fullName: Yup.string().required(t('sign_up_full_name_mandatory')),

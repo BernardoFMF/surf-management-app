@@ -26,7 +26,7 @@ const AddressInformationTab = () => {
     const { loading, error, updated } = companyUpdate
 
     const handleSubmit = async (values) => {
-        const updatedCompany = { ...values, cid: memberGet.member_id_, name: memberGet.name_, nif: memberGet.nif_, is_deleted: memberGet.is_deleted_, img: memberGet.img_value_ }
+        const updatedCompany = { ...values, cid: memberGet.member_id_, name: memberGet.name_, nif: memberGet.nif_, is_deleted: memberGet.is_deleted_, img: memberGet.img_value_, iban: memberGet.iban_ }
         dispatch(updateCompany(updatedCompany))
     }
 

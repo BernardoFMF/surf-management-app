@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next'
 import SwitchButton from '../SwitchButton';
 import { Formik, Form } from 'formik';
-import { updateUser } from '../../store/actions/userActions';
+import { updateCompany } from '../../store/actions/companyActions';
 
 import { useTheme } from '@mui/material/styles';
 
@@ -25,18 +25,18 @@ const AdminPrivilegesTab = () => {
 
     const dispatch = useDispatch()
 
-    const userUpdate = useSelector((state) => state.userUpdate)
-    let { loading: loadingUpdate, error, updated } = userUpdate
+    const companyUpdate = useSelector((state) => state.companyUpdate)
+    const { loading, error, updated } = companyUpdate
 
     const handleSubmit = async (values) => {
-        const updatedUser = { ...values, member_id: memberGet.member_id_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, address: memberGet.address_, location: memberGet.location_, username: memberGet.username_, email: memberGet.email_, gender: memberGet.gender_, nationality: memberGet.nationality_, full_name: memberGet.full_name_, cc: memberGet.cc_, nif: memberGet.nif_, birth_date: memberGet.birth_date_, img: memberGet.img_value_ }
-        dispatch(updateUser(updatedUser))
+        const updatedUser = { ...values, cid: memberGet.member_id_, name: memberGet.name_, nif: memberGet.nif_, address: memberGet.address_, location: memberGet.location_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, iban: memberGet.iban_, img: memberGet.img_value_ }
+        dispatch(updateCompany(updatedUser))
     }
 
     return (
         <>
             { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-            { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {updated = false }}>{t('updated_sucessfully')}</Alert></Box> }
+            { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
             <Formik
                 initialValues={{
                     is_deleted: memberGet.is_deleted_
@@ -83,7 +83,7 @@ const AdminPrivilegesTab = () => {
                                                         type="submit"
                                                         variant="contained"
                                                         color="primary"
-                                                        loading = {loadingUpdate}
+                                                        loading = {loading}
                                                     >
                                                         {t('sign_up_submit')}
                                                     </LoadingButton>

@@ -278,6 +278,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	}
 
 	const updateCompanyData = async (cid_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
+		console.log(cid_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_);
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
@@ -286,6 +287,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			return cid_
 		} catch(e) {
 			await company.query('Rollback')
+			console.log(e);
 			throw e
 		} finally {
 			company.release()
