@@ -35,7 +35,7 @@ const AdminPrivilegesTab = () => {
     },[dispatch])
 
     const handleSubmit = async (values) => {
-        const updatedUser = { ...values, member_id: memberGet.member_id_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, address: memberGet.address_, location: memberGet.location_, username: memberGet.username_, email: memberGet.email_, gender: memberGet.gender_, nationality: memberGet.nationality_, full_name: memberGet.full_name_, cc: memberGet.cc_, nif: memberGet.nif_, birth_date: memberGet.birth_date_, img: memberGet.img_value_ }
+        const updatedUser = { ...values, member_id: memberGet.member_id_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, address: memberGet.address_, location: memberGet.location_, username: memberGet.username_, email: memberGet.email_, gender: memberGet.gender_, nationality: memberGet.nationality_, full_name: memberGet.full_name_, cc: memberGet.cc_, nif: memberGet.nif_, birth_date: memberGet.birth_date_, img: memberGet.img_value_, iban: memberGet.iban_ }
         dispatch(updateUser(updatedUser))
     }
 

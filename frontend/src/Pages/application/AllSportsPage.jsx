@@ -79,8 +79,8 @@ const AllSportsPage = () => {
                                         <Card key={6} elevation={6} sx={{ minWidth: 275 }}>
                                             <CardContent>
                                                 <Grid container>
-                                                  <SurfingIcon sx={{mr: 2}} onClick={() => navigate(`/application/sports/${sport.id_}`)}></SurfingIcon>
-                                                  <Typography sx={{ fontSize: 22 }} color="primary" gutterBottom  onClick={() => navigate(`/application/sports/${sport.id_}`)}>
+                                                  <SurfingIcon sx={{mr: 2}}></SurfingIcon>
+                                                  <Typography sx={{ fontSize: 22 }} color="primary" gutterBottom>
                                                       {sport.name_}
                                                   </Typography>
                                                 </Grid>
@@ -114,46 +114,53 @@ const AllSportsPage = () => {
                                 ) 
                             }
                         </Grid>
-                        <br />
-                        <br />
-                        <Divider></Divider>
-                        <br />
-                        <br />
-                        <Grid item style={{ display: 'flex',alignItems: 'center', justifyContent: 'center'}} sx={{maxWidth:'100%'}} >
-                          <SubCard elevation={4} title={ <Grid><Typography sx={{ fontSize: 22, minWidth: 370 }} color="primary" gutterBottom> {t('all_sports_create_sport')} </Typography> </Grid>}   >
-                                <Formik
-                                    initialValues={{
-                                        name: '',
-                                    }}
-                                    validationSchema={Yup.object().shape({
-                                        name: Yup.string().required(t('all_sports_name_mandatory')),
-                                    })}
-                                    onSubmit={handleSubmitCreate}
-                                >
-                                {formik => (
-                                    <Grid item sx={{ ml: { md: 4, lg: 4 }}} maxWidth={300} >
-                                        <Form  >
-                                            <InputField name='name' label={t('all_sports_name')} type='text'>
-                                            </InputField>
-                                            <AnimateButton>
-                                                <LoadingButton
-                                                    disableElevation
-                                                    fullWidth
-                                                    size="large"
-                                                    type="submit"
-                                                    variant="contained"
-                                                    color="primary"
-                                                    loading = {loading}
-                                                >
-                                                    {t('management_submit')}
-                                                </LoadingButton>
-                                            </AnimateButton>
-                                        </Form>
-                                    </Grid>
-                                )}
-                                </Formik>
-                            </SubCard>
-                        </Grid>
+                        {
+                          memberInfo.is_admin_ && (
+                            <>
+                                <br />
+                                <br />
+                                <Divider></Divider>
+                                <br />
+                                <br />
+                                <Grid item style={{ display: 'flex',alignItems: 'center', justifyContent: 'center'}} sx={{maxWidth:'100%'}} >
+                                  <SubCard elevation={4} title={ <Grid><Typography sx={{ fontSize: 22, minWidth: 370 }} color="primary" gutterBottom> {t('all_sports_create_sport')} </Typography> </Grid>}   >
+                                        <Formik
+                                            initialValues={{
+                                                name: '',
+                                            }}
+                                            validationSchema={Yup.object().shape({
+                                                name: Yup.string().required(t('all_sports_name_mandatory')),
+                                            })}
+                                            onSubmit={handleSubmitCreate}
+                                        >
+                                        {formik => (
+                                            <Grid item sx={{ ml: { md: 4, lg: 4 }}} maxWidth={300} >
+                                                <Form  >
+                                                    <InputField name='name' label={t('all_sports_name')} type='text'>
+                                                    </InputField>
+                                                    <AnimateButton>
+                                                        <LoadingButton
+                                                            disableElevation
+                                                            fullWidth
+                                                            size="large"
+                                                            type="submit"
+                                                            variant="contained"
+                                                            color="primary"
+                                                            loading = {loading}
+                                                        >
+                                                            {t('management_submit')}
+                                                        </LoadingButton>
+                                                    </AnimateButton>
+                                                </Form>
+                                            </Grid>
+                                        )}
+                                        </Formik>
+                                    </SubCard>
+                                </Grid>
+                            </>
+                          )
+                        }
+                        
                       </>                   
                 )
             }
