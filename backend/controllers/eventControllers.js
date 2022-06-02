@@ -65,7 +65,7 @@ const eventController = (data) => {
 	})
 
 	const getEventMemberByIdAttendance = asyncHandler(async (req,res) => {
-		const attendance = await services.getEventMemberByIdAttendanceServices(req.params.id)
+		const attendance = await services.getEventMemberByIdAttendanceServices(req.params.id,req.query.name,req.query.state,req.query.date,req.query.offset,req.query.limit)
 		res.json(attendance)
 	})
 

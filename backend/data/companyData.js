@@ -38,13 +38,20 @@ const companyData = (db) => {
 		return await db.deleteCompanyData(id_)
 	}
 
+	const getMemberValidation = async (id_) => {
+		const member = await db.getMemberValidationData(id_)
+		if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_24')
+		return member
+	}
+
 	return {
 		getCompanies,
 		getCompanyById, 
 		postCompany, 
 		updateCompany, 
-		deleteCompany
-	} 
+		deleteCompany,
+		getMemberValidation
+	}
 }
 
 export default companyData

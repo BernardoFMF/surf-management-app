@@ -8,7 +8,7 @@ import { typesFetchReducer, typesUpdateReducer, createTypeReducer } from './redu
 import { sportsDeletionReducer, sportsFetchReducer, createSportReducer, updateSportReducer} from './reducers/sportReducers'
 import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer, createQuotaReducer} from './reducers/quotaReducers'
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
-import { companyPostReducer, companyDeletionReducer, companiesFetchReducer, companyFetchReducer, companyUpdateReducer } from './reducers/companyReducers'
+import { companyPostReducer, companyDeletionReducer, companiesFetchReducer, companyFetchReducer, companyUpdateReducer, memberValidateFetchReducer } from './reducers/companyReducers'
 import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
 import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer, memberEventsAttendanceFetchReducer} from './reducers/eventReducers'
 
@@ -47,7 +47,8 @@ const reducer = combineReducers({
   usersSportFetch: usersSportFetchReducer,
   memberEventsAttendanceFetch: memberEventsAttendanceFetchReducer,
   userPost: userPostReducer,
-  companyPost: companyPostReducer
+  companyPost: companyPostReducer,
+  validateFetch: memberValidateFetchReducer
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')

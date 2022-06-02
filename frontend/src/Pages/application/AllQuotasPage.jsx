@@ -23,7 +23,7 @@ import InputField from '../../components/multiStepForm/InputField';
 import { Formik, Form } from 'formik';
 import SearchIcon from '@mui/icons-material/Search';
 import SubCard from '../../components/cards/SubCard'
-import { Pagination } from '@mui/material';
+import { Pagination } from '@mui/material'
 
 const AllQuotasPage = () => {
     const theme = useTheme();
