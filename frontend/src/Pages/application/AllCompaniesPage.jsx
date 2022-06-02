@@ -117,7 +117,7 @@ const AllCompaniesPage = () => {
                 return x
             }))
         }
-    },[companiesGet])
+    }, [companiesGet])
 
     
     const deleteCompanyHandle = React.useCallback(
@@ -141,7 +141,8 @@ const columns = [
     { field: 'member_id_', headerName: 'ID', width: 40 },
     { field: 'username_', headerName: t('username'), width: 140 },
     { field: 'name_', headerName: t('name'), width: 150 },
-    { field: 'email_', headerName: 'Email', width: 170 },    
+    { field: 'email_', headerName: 'Email', width: 170 },  
+    { field: 'iban_', headerName: 'IBAN', width: 220},  
     { field: 'nif_', headerName: 'NIF', width: 110 },
     { field: 'has_debt_', headerName: t('has_debt_'), type: 'boolean', width: 130 },
     { field: 'is_deleted_', headerName: t('is_deleted_'), type: 'boolean', width: 130 },

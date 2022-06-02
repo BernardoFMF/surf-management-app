@@ -137,6 +137,7 @@ const columns = [
     { field: 'member_id_', headerName: t('member_id'), width: 120 },
     { field: 'username_', headerName: t('username'), width: 140 },
     { field: 'email_', headerName: "Email", width: 170 },
+    { field: 'iban_', headerName: 'IBAN', width: 220},
     { field: 'phone_number_', headerName: t('candidates_phone_number'), width: 150 },
     { field: 'date_', headerName: t('date'), width: 170 },
     { field: 'payment_date_', headerName: t('payment_date'), width: 170 },
@@ -312,22 +313,22 @@ const columns = [
                 )}
             </Formik>
             </Box>
-                    <Box gridArea={'create'} alignItems={'center'} display='flex' justifyContent='flex-end'>
-                        <AnimateButton>
-                            <LoadingButton
-                                disableElevation
-                                size="large"
-                                variant="outlined"
-                                color="secondary"
-                                onClick={() => {
-                                    handleOpenSubmit()
-                                }}
-                            >
-                                {t('create')}
-                            </LoadingButton>
-                        </AnimateButton>
-                    </Box> 
-                </Box>
+                <Box gridArea={'create'} alignItems={'center'} display='flex' justifyContent='flex-end'>
+                    <AnimateButton>
+                        <LoadingButton
+                            disableElevation
+                            size="large"
+                            variant="outlined"
+                            color="secondary"
+                            onClick={() => {
+                                handleOpenSubmit()
+                            }}
+                        >
+                            {t('create')}
+                        </LoadingButton>
+                    </AnimateButton>
+                </Box> 
+            </Box>
 
 
 

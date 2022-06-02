@@ -64,6 +64,7 @@
     "sign_up_image_too_big": "Imagem demasiado grande",
     "sign_up_image_format": "Formato de imagem não suportado",
     "sign_up_valid_image": "Escolha uma imagem válida",
+    "sign_up_iban_mandatory": "Deve ser exatamente 25 dígitos",
     "male": "Male",
     "female": "Female",
     "other": "Other",
@@ -106,6 +107,8 @@
     "MESSAGE_CODE_34": "Erro interno do servidor",
     "MESSAGE_CODE_35": "Novo cargo de quota criado com sucesso",
     "MESSAGE_CODE_36": "Este tipo não existe",
+    "MESSAGE_CODE_37": "Candidato com este iban já existe",
+    "MESSAGE_CODE_38": "Membro com este iban já existe",
 
     "hello_profile": "Olá,",
     "name": "Nome",

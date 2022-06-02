@@ -64,6 +64,7 @@
     "sign_up_image_too_big": "Image is too big",
     "sign_up_image_format": "Image has unsupported format",
     "sign_up_valid_image": "Choose a valid image",
+    "sign_up_iban_mandatory": "Must be exactly 25 digits",
     "male": "Male",
     "female": "Female",
     "other": "Other",
@@ -106,6 +107,9 @@
     "MESSAGE_CODE_34": "Internal server error",
     "MESSAGE_CODE_35": "New quota role created sucessfully",
     "MESSAGE_CODE_36": "That type does not exist",
+    "MESSAGE_CODE_37": "Candidate with that iban already exists",
+    "MESSAGE_CODE_38": "Member with that iban already exists",
+
 
     "hello_profile": "Hello,",
     "name": "Name",
