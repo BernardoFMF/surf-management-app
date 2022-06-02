@@ -74,14 +74,18 @@ const userServices = (db) => {
 		return await data.getUsersSports()
 	}
 	
-	const getUsersSportServices = async (sid) => {
+	const getUsersSportServices = async (sid, offset, limit) => {
 		if(!sid) throw error(400, 'Parameter not found: sid', 'MESSAGE_CODE_14')
-		return await data.getUsersSport(sid)
+		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
+		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
+		return await data.getUsersSport(sid, offset, limit)
 	}
 	
-	const getUserSportsByIdServices = async (id) => {
+	const getUserSportsByIdServices = async (id, offset, limit) => {
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
-		return await data.getUserSportsById(id)
+		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
+		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
+		return await data.getUserSportsById(id, offset, limit)
 	}
 	
 	const postUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated) => {

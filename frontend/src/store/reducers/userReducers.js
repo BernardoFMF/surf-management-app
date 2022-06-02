@@ -22,7 +22,13 @@ import {
     USERS_SPORT_FETCH_REQUEST,
     USER_POST_REQUEST,
     USER_POST_FAIL,
-    USER_POST_SUCCESS
+    USER_POST_SUCCESS,
+    USER_SPORT_UPDATE_FAIL,
+    USER_SPORT_UPDATE_REQUEST,
+    USER_SPORT_UPDATE_SUCCESS,
+    USER_SPORT_DELETE_REQUEST,
+    USER_SPORT_DELETE_SUCCESS,
+    USER_SPORT_DELETE_FAIL
   } from '../constants/userConstants'
 
   export const userRegisterReducer = (state = {}, action) => {
@@ -103,7 +109,7 @@ import {
     }
   }
 
-  export const userSportsFetchReducer = (state = {userSportsGet: []}, action) => {
+  export const userSportsFetchReducer = (state = {userSportsGet: { sports: [], number_of_sports: 0}}, action) => {
     switch (action.type) {
       case USER_SPORTS_FETCH_REQUEST:
         return { loading: true }
@@ -116,15 +122,41 @@ import {
     }
   }
 
-  export const usersSportFetchReducer = (state = {usersSportGet: []}, action) => {
+  export const userSportsUpdateReducer = (state = {}, action) => {
     switch (action.type) {
-        case USERS_SPORT_FETCH_REQUEST:
+      case USER_SPORT_UPDATE_REQUEST:
         return { loading: true }
-        case USERS_SPORT_FETCH_SUCCESS:
-        return { loading: false, usersSportGet: action.payload }
-        case USERS_SPORT_FETCH_FAIL:
+      case USER_SPORT_UPDATE_SUCCESS:
+        return { loading: false, updated: true, updateResult: action.payload }
+      case USER_SPORT_UPDATE_FAIL:
         return { loading: false, error: action.payload }
-        default:
+      default:
         return state
     }
+  }
+
+  export const usersSportFetchReducer = (state = {usersSportGet: {sports: [], number_of_sports: 0}}, action) => {
+    switch (action.type) {
+        case USERS_SPORT_FETCH_REQUEST:
+          return { loading: true }
+        case USERS_SPORT_FETCH_SUCCESS:
+          return { loading: false, usersSportGet: action.payload }
+        case USERS_SPORT_FETCH_FAIL:
+          return { loading: false, error: action.payload }
+        default:
+          return state
+    }
+}
+
+export const usersSportDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+      case USER_SPORT_DELETE_REQUEST:
+        return { loading: true }
+      case USER_SPORT_DELETE_SUCCESS:
+        return { loading: false, usersSportDelete: action.payload }
+      case USER_SPORT_DELETE_FAIL:
+        return { loading: false, error: action.payload }
+      default:
+        return state
+  }
 }

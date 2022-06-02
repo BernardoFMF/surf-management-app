@@ -117,7 +117,7 @@ const AllCompaniesPage = () => {
                 return x
             }))
         }
-    },[companiesGet])
+    }, [companiesGet])
 
     
     const deleteCompanyHandle = React.useCallback(

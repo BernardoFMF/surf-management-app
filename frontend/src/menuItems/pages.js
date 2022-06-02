@@ -74,7 +74,7 @@ const pages = {
                     title: 'My Quotas',
                     type: 'item',
                     hasParams: true,
-                    url: '/application/myquotas/{id}'
+                    url: '/application/member/{id}/quotas'
                 },
                 {
                     id: 'all_quotas',

@@ -165,20 +165,21 @@ export const createEvent = (name, initial_date, end_date) => async (dispatch) =>
     }
   }
 
-  export const getMemberEventsAttendance = (id) => async (dispatch) => {
+  export const getMemberEventsAttendance = (id,name_filter, state_filter, date_filter, offset, limit) => async (dispatch) => {
     try {
       dispatch({
         type: MEMBER_EVENTS_ATTENDANCE_FETCH_REQUEST,
       })
-      const response = await fetch(`/api/events/members/${id}/attendance`, {
+      const response = await fetch(`/api/events/members/${id}/attendance?offset=${offset}&limit=${limit}${name_filter ? `&name=${name_filter}`:""}${state_filter ? `&state=${state_filter}`:""}${date_filter ? `&date=${date_filter}`:""}`, {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
       })
-      const text = await response.json()
-      if(response.status !== 200) throw Error(text.message_code)
+      const event = await response.json()
+
+      if(response.status !== 200) throw Error(event.message_code)
       dispatch({
         type: MEMBER_EVENTS_ATTENDANCE_FETCH_SUCCESS,
-        payload: text,
+        payload: event,
       })
   
     } catch (error) {

@@ -221,6 +221,11 @@
     "create_event": "Create an event",
     "initial_date_mandatory": "Initial date is mandatory",
     "end_date_mandatory": "End date is mandatory",
-    "create": "Create"
+    "create": "Create",
+    "validate_the_member": "The member: ",
+    "validate_member_not_discounts" : "The member is not entitled to discounts",
+    "validate_member_discounts" : "The member is entitled to discounts",
+
+    "member_since": "Member since: "
 
 }

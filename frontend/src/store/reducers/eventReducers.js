@@ -85,7 +85,7 @@ export const eventAttendanceFetchReducer = (state = {eventAttendanceGet: {text:[
     }
 }
 
-export const memberEventsAttendanceFetchReducer = (state = {memberEventsAttendanceGet: []}, action) => {
+export const memberEventsAttendanceFetchReducer = (state = {memberEventsAttendanceGet: {events:[],number_of_events:0}}, action) => {
     switch (action.type) {
         case MEMBER_EVENTS_ATTENDANCE_FETCH_REQUEST:
         return { loading: true }

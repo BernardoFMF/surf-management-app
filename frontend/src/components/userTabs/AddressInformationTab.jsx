@@ -26,7 +26,7 @@ const AddressInformationTab = () => {
     const { loading, error, updated } = userUpdate
 
     const handleSubmit = async (values) => {
-        const updatedUser = { ...values, member_id: memberGet.member_id_, username: memberGet.username_, email: memberGet.email_, gender: memberGet.gender_, nationality: memberGet.nationality_, full_name: memberGet.full_name_, cc: memberGet.cc_, nif: memberGet.nif_, birth_date: memberGet.birth_date_, type: memberGet.member_type_, paid_enrollment: memberGet.paid_enrollment_, is_admin: memberGet.is_admin_, is_deleted: memberGet.is_deleted_ }
+        const updatedUser = { ...values, member_id: memberGet.member_id_, username: memberGet.username_, email: memberGet.email_, gender: memberGet.gender_, nationality: memberGet.nationality_, full_name: memberGet.full_name_, cc: memberGet.cc_, nif: memberGet.nif_, birth_date: memberGet.birth_date_, type: memberGet.member_type_, paid_enrollment: memberGet.paid_enrollment_, is_admin: memberGet.is_admin_, is_deleted: memberGet.is_deleted_, iban: memberGet.iban_ }
         dispatch(updateUser(updatedUser))
     }
 

@@ -13,7 +13,10 @@ import {
     COMPANY_UPDATE_FAIL,
     COMPANY_POST_FAIL,
     COMPANY_POST_REQUEST,
-    COMPANY_POST_SUCCESS
+    COMPANY_POST_SUCCESS,
+    MEMBER_VALIDATION_FETCH_REQUEST,
+    MEMBER_VALIDATION_FETCH_SUCCESS,
+    MEMBER_VALIDATION_FETCH_FAIL
   } from '../constants/companyConstants'
 
 import { MEMBER_LOGIN_SUCCESS } from '../constants/memberConstants'
@@ -91,6 +94,34 @@ export const deleteCompany = (id) => async (dispatch) => {
     } catch (error) {
       dispatch({
         type: COMPANY_FETCH_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+  export const getMemberValidation = (id) => async (dispatch) => {
+    try {
+      dispatch({
+        type: MEMBER_VALIDATION_FETCH_REQUEST,
+      })
+      const response = await fetch(`/api/companies/validate/${id}`, {
+          method: 'GET',
+          headers: { "Content-Type": "application/json" },
+      })
+      const member = await response.json()
+      console.log(member)
+      if(response.status !== 200) throw Error(member.message_code)
+      dispatch({
+        type: MEMBER_VALIDATION_FETCH_SUCCESS,
+        payload: member,
+      })
+  
+    } catch (error) {
+      dispatch({
+        type: MEMBER_VALIDATION_FETCH_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

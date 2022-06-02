@@ -23,7 +23,7 @@ import InputField from '../../components/multiStepForm/InputField';
 import { Formik, Form } from 'formik';
 import SearchIcon from '@mui/icons-material/Search';
 import SubCard from '../../components/cards/SubCard'
-import { Pagination } from '@mui/material';
+import { Pagination } from '@mui/material'
 
 const AllQuotasPage = () => {
     const theme = useTheme();
@@ -312,22 +312,22 @@ const columns = [
                 )}
             </Formik>
             </Box>
-                    <Box gridArea={'create'} alignItems={'center'} display='flex' justifyContent='flex-end'>
-                        <AnimateButton>
-                            <LoadingButton
-                                disableElevation
-                                size="large"
-                                variant="outlined"
-                                color="secondary"
-                                onClick={() => {
-                                    handleOpenSubmit()
-                                }}
-                            >
-                                {t('create')}
-                            </LoadingButton>
-                        </AnimateButton>
-                    </Box> 
-                </Box>
+                <Box gridArea={'create'} alignItems={'center'} display='flex' justifyContent='flex-end'>
+                    <AnimateButton>
+                        <LoadingButton
+                            disableElevation
+                            size="large"
+                            variant="outlined"
+                            color="secondary"
+                            onClick={() => {
+                                handleOpenSubmit()
+                            }}
+                        >
+                            {t('create')}
+                        </LoadingButton>
+                    </AnimateButton>
+                </Box> 
+            </Box>
 
 
 

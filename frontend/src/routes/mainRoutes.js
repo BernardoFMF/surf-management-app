@@ -3,7 +3,7 @@ import { lazy } from 'react';
 import MainLayout from '../layout/mainLayout'
 import Loadable from '../components/Loadable'
 import RequireAuth from '../components/RequireAuth'
-import RequireAdmin from '../components/RequireAdmin';
+import RequireAdmin from '../components/RequireAdmin'
 
 const DashboardDefault = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
 const DashboardAnalytics = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
@@ -20,7 +20,6 @@ const MySportsPage = Loadable(lazy(() => import('../Pages/application/MySportsPa
 const QuotasManagementPage = Loadable(lazy(() => import('../Pages/application/QuotasManagementPage')))
 const EventPage = Loadable(lazy(() => import('../Pages/application/EventPage')))
 const MyEventsPage = Loadable(lazy(() => import('../Pages/application/MyEventsPage')))
-
 
 //const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
 
@@ -65,7 +64,7 @@ const mainRoutes = {
             element: <RequireAdmin><AllCompaniesPage/></RequireAdmin>
         },
         {
-            path: '/application/myquotas/:id',
+            path: '/application/member/:id/quotas',
             element: <RequireAdmin><MyQuotasPage/></RequireAdmin>
         },
         {

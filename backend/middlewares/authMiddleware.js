@@ -20,7 +20,9 @@ const authMember = asyncHandler(async (req, res, next) => {
 })
 
 const authCompany = asyncHandler(async (req, res, next) => {
-	if(!req.user.member_type_ == 'corporate') {
+	if(!req.user){
+		throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
+	} else 	if(!req.user.member_type_ == 'corporate') {
 		throw error(403, 'Access forbidden', 'MESSAGE_CODE_33')
 	}
 	next()

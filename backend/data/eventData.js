@@ -56,10 +56,10 @@ const eventData = (db) => {
 		return await db.getEventByIdAttendanceData(eid_, offset, limit)
 	}
 
-	const getEventMemberByIdAttendance = async (id_) => {
+	const getEventMemberByIdAttendance = async (id_, name_filter, state_filter,date_filter,offset,limit) => {
 		const user = await db.getUserByIdData(id_)
 		if (!user) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
-		return await db.getEventMemberByIdAttendanceData(id_)
+		return await db.getEventMemberByIdAttendanceData(id_, name_filter, state_filter,date_filter,offset,limit)
 	}
 
 	return {

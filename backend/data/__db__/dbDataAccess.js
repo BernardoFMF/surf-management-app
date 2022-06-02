@@ -278,6 +278,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	}
 
 	const updateCompanyData = async (cid_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
+		console.log(cid_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_);
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
@@ -286,6 +287,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			return cid_
 		} catch(e) {
 			await company.query('Rollback')
+			console.log(e);
 			throw e
 		} finally {
 			company.release()
@@ -584,13 +586,41 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const getEventMemberByIdAttendanceData = async (id_) => {
+	const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,date_filter,offset,limit) => {
+		let query = queries.QUERY_GET_MEMBER_ATTENDANCE
+		query = query +  ` where member_id_ = ${id_}`
+		let count = 0
+		if(name_filter || state_filter || date_filter){
+			query = query + " and "
+		}
+		if(name_filter){
+			count++
+			query = query + ` position('${name_filter}' in name_) > 0`
+		}
+		if(state_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` state_ ='${state_filter}'`
+			count++
+		}
+		if(date_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` initial_date_ ='${date_filter}'`
+			count++
+		}
+		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
-			const result = await client.query(queries.QUERY_GET_MEMBER_ATTENDANCE,[id_])
+			const events = await client.query(query)
+			const number_of_events = await client.query(queries.QUERY_MY_NUMBER_OF_EVENTS,[id_])
 			await client.query('Commit')
-			return result.rows
+			events.rows = events.rows.map(event => {
+				event.initial_date_ = formatDate(event.initial_date_)
+				event.end_date_ = formatDate(event.end_date_)
+				return event
+			})
+			const result = {events:events.rows,number_of_events:name_filter || state_filter || date_filter ? events.rows.length : parseInt(number_of_events.rows[0].count)}
+			return result
 		} catch(e) {
 			await client.query('Rollback')
 			throw e
@@ -726,13 +756,38 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const getUsersSportData = async (id_) => {
+	const getUsersSportData = async (id_, offset, limit) => {
+		let query = queries.QUERY_GET_USERS_SPORT
+		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		console.log(query);
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const result = await client.query(queries.QUERY_GET_USERS_SPORT, [id_])
+			const sports = await client.query(query, [id_])
+			const number_of_sports = await client.query(queries.QUERY_NUMBER_OF_SPORT_USERS, [id_])
 			await client.query('commit')
-			return result.rows
+			const result = { sports: sports.rows, number_of_sports: number_of_sports.rows[0].count }
+			return result
+		} catch (e) {
+			await client.query('rollback')
+			console.log(e);
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getUserSportsByIdData = async (id_, offset, limit) => {
+		let query = queries.QUERY_GET_USER_SPORTS_BY_ID
+		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const sports = await pool.query(query, [id_])
+			const number_of_sports = await client.query(queries.QUERY_NUMBER_OF_USER_SPORTS, [id_])
+			await client.query('commit')
+			const result = { sports: sports.rows, number_of_sports: number_of_sports.rows[0].count }
+			return result
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -741,13 +796,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const getUserSportsByIdData = async (id_) => {
+	const getAllUserSportsByIdData = async (id) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const result = await pool.query(queries.QUERY_GET_USER_SPORTS_BY_ID, [id_])
+			const sports = await pool.query(queries.QUERY_GET_USER_SPORTS_BY_ID, [id_])
 			await client.query('commit')
-			return result.rows
+			return sports.rows
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -780,6 +835,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			return {id_, sid_}
 		} catch (e) {
 			await client.query('rollback')
+			console.log(e)
 			throw e
 		} finally {
 			client.release()
@@ -1204,8 +1260,23 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
+	const getMemberValidationData = async(id_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const member = await client.query(queries.QUERY_GET_MEMBER_VALIDATE, [id_])
+			await client.query('commit')
+			return member.rows[0]
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
 
-	return { getCandidateByIbanData, getMemberByIbanData, getManagementQuotas, getManagementQuotaByType, updateManagementQuotaByType, postManagementQuota, getEventMemberByIdAttendanceData, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails,getUserEmailByIdData, updateUserQrCodeData, getMemberTokenByIdData, deleteMemberTokenData, updateMemberTokenData, postNewTokenData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByNifData, getCandidateByCCData, getCandidateByEmailData, pool }
+
+	return { getCandidateByIbanData, getMemberByIbanData, getAllUserSportsByIdData, getManagementQuotas, getManagementQuotaByType, updateManagementQuotaByType, postManagementQuota, getEventMemberByIdAttendanceData, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails,getUserEmailByIdData, updateUserQrCodeData, getMemberTokenByIdData, deleteMemberTokenData, updateMemberTokenData, postNewTokenData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByNifData, getCandidateByCCData, getCandidateByEmailData, getMemberValidationData, pool }
 
 }
 
