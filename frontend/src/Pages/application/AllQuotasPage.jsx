@@ -113,11 +113,12 @@ const AllQuotasPage = () => {
 
     const searchHandler = async(values) => {
         const new_values = values
-        if(values.date_filter) {
-            let date = values.date_filter.toLocaleString().split(',')[0]
-            date = date.split('/')
-            const p_date = `${date[2]}-${date[1]}-${date[0]}`
-            console.log(p_date)
+        // not the most correct way to do but for now works 03/06/2022
+        if(values.date_filter && values.date_filter.length === undefined) {
+            let day = values.date_filter.getDate()
+            let month = values.date_filter.getMonth() + 1
+            let year = values.date_filter.getFullYear()
+            const p_date = `${year}-${month}-${day}`
             new_values.date_filter = p_date
         }
         setSearchState(new_values)

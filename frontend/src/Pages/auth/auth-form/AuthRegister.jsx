@@ -73,9 +73,10 @@ const AuthRegister = ({ ...others }) => {
 
     const handleSubmit = async (values) => {
         let img = null
-        let bdate = values.birthDate.toLocaleString().split(',')[0]
-        bdate = bdate.split('/')
-        const date = `${bdate[2]}-${bdate[1]}-${bdate[0]}`
+        let day = values.birthDate.getDate()
+        let month = values.birthDate.getMonth() + 1
+        let year = values.birthDate.getFullYear()
+        const date = `${year}-${month}-${day}`
         if (values.image) {
             const buffer = await values.image.arrayBuffer()
             img = new Int8Array(buffer)

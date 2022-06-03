@@ -127,9 +127,10 @@ const AllMembersPage = () => {
 
     const handleSubmit = async (values) => {
         let img = null
-        let bdate = values.birthDate.toLocaleString().split(',')[0]
-        bdate = bdate.split('/')
-        const date = `${bdate[2]}-${bdate[1]}-${bdate[0]}`
+        let day = values.event_initial_date_filter.getDate()
+        let month = values.event_initial_date_filter.getMonth() + 1
+        let year = values.event_initial_date_filter.getFullYear()
+        const date = `${year}-${month}-${day}`
         if (values.image) {
             const buffer = await values.image.arrayBuffer()
             img = new Int8Array(buffer)

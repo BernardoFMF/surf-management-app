@@ -8,7 +8,7 @@
  * if not creates it)
  */
 create or replace procedure post_user(cc_ bigint, nif_ bigint, mtype_ varchar(40), birth_date_ date, nationality_ varchar(30), full_name_ varchar(60),
-										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, gender_ varchar(40), iban_ text, out new_id_ int)
+										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ text, location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, gender_ varchar(40), iban_ text, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
@@ -46,7 +46,7 @@ $$;
  * Creates the user_Img
  */
 create or replace procedure put_user(p_id_ int, p_cc_ bigint, p_nif_ bigint, p_type_ varchar(40), p_birth_date_ date, p_nationality_ varchar(30), p_full_name_ varchar(60), 
-										p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ text, p_is_admin_ bool, p_paid_enrollment_ bool, p_is_deleted_ bool, p_gender_ varchar(40), p_iban_ text)
+										p_phone_number_ int, p_postal_code_ varchar(8), p_address_ text, p_location_ varchar(30), p_img_ text, p_is_admin_ bool, p_paid_enrollment_ bool, p_is_deleted_ bool, p_gender_ varchar(40), p_iban_ text)
 LANGUAGE plpgsql  
 as
 $$
@@ -228,7 +228,7 @@ $$;
  * if not creates it)
  */
 
-create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ varchar(40), location_ varchar(30), username_ varchar(30), pword_ text, mtype_ varchar(40), img_ text, iban_ text, out new_id_ int)
+create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ text, location_ varchar(30), username_ varchar(30), pword_ text, mtype_ varchar(40), img_ text, iban_ text, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
@@ -258,7 +258,7 @@ $$;
 /**
  * Updates contact & company
  */
-create or replace procedure put_company(cid_ int, p_nif_ bigint, p_name_ varchar(40), p_phone_number_ int, p_postal_code_ varchar(8), p_address_ varchar(40), p_location_ varchar(30), p_img_ text, p_is_deleted_ bool, p_iban_ text)
+create or replace procedure put_company(cid_ int, p_nif_ bigint, p_name_ varchar(40), p_phone_number_ int, p_postal_code_ varchar(8), p_address_ text, p_location_ varchar(30), p_img_ text, p_is_deleted_ bool, p_iban_ text)
 LANGUAGE plpgsql  
 as
 $$

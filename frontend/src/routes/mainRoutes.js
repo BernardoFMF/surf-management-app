@@ -4,6 +4,7 @@ import MainLayout from '../layout/mainLayout'
 import Loadable from '../components/Loadable'
 import RequireAuth from '../components/RequireAuth'
 import RequireAdmin from '../components/RequireAdmin'
+import Error from '../Pages/error/Error'
 
 const DashboardDefault = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
 const DashboardAnalytics = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
@@ -25,7 +26,7 @@ const MyEventsPage = Loadable(lazy(() => import('../Pages/application/MyEventsPa
 
 const mainRoutes = {
     path: '/',
-    element: <RequireAuth><MainLayout/></RequireAuth>,
+    element: <Error><RequireAuth><MainLayout/></RequireAuth></Error>,
     children: [
         {
             path: '/dashboard/analytics',

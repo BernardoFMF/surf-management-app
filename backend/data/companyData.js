@@ -16,8 +16,6 @@ const companyData = (db) => {
 	const postCompany = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, type_, img_, iban_) => {
 		let member = await db.getMemberByUsernameData(username_)
 		if (member) throw error(409, 'Member with that username already exists', 'MESSAGE_CODE_20')
-		member = await db.getMemberByCCData(cc_)
-		if (member) throw error(409, 'Member with that cc already exists', 'MESSAGE_CODE_21')
 		member = await db.getMemberByNifData(nif_)
 		if (member) throw error(409, 'Member with that nif already exists', 'MESSAGE_CODE_22')
 		member = await db.getMemberByEmailData(email_)
