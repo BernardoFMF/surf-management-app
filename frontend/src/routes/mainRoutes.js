@@ -26,7 +26,7 @@ const MyEventsPage = Loadable(lazy(() => import('../Pages/application/MyEventsPa
 
 const mainRoutes = {
     path: '/',
-    element: <Error><RequireAuth><MainLayout/></RequireAuth></Error>,
+    element: <RequireAuth><MainLayout/></RequireAuth>,
     children: [
         {
             path: '/dashboard/analytics',

@@ -49,6 +49,22 @@ const userData = (db) => {
 	}
 	
 	const updateUser = async (id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_, iban_) => {
+
+		let candidate = await db.getCandidateByCCData(cc_)
+		if (candidate) throw error(409, 'Candidate with that cc already exists', 'MESSAGE_CODE_17')
+		candidate = await db.getCandidateByNifData(nif_)
+		if (candidate) throw error(409, 'Candidate with that nif already exists', 'MESSAGE_CODE_18')
+		candidate = await db.getCandidateByIbanData(iban_)
+		if (candidate) throw error(409, 'Candidate with that iban already exists', 'MESSAGE_CODE_37')
+
+
+		let member = await db.getMemberByCCData(cc_)
+		if (member && member.id_ != id_) throw error(409, 'Member with that cc already exists', 'MESSAGE_CODE_21')
+		member = await db.getMemberByNifData(nif_)
+		if (member && member.id_ != id_) throw error(409, 'Member with that nif already exists', 'MESSAGE_CODE_22')
+		member = await db.getMemberByIbanData(iban_)
+		if (member && member.id_ != id_) throw error(409, 'Member with that iban already exists', 'MESSAGE_CODE_38')
+
 		await getUserById(id_)
 		await db.updateUserData(id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_, iban_)
 		return await getUserById(id_)

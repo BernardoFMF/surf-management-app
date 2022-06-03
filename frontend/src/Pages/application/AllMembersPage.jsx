@@ -127,9 +127,9 @@ const AllMembersPage = () => {
 
     const handleSubmit = async (values) => {
         let img = null
-        let day = values.event_initial_date_filter.getDate()
-        let month = values.event_initial_date_filter.getMonth() + 1
-        let year = values.event_initial_date_filter.getFullYear()
+        let day = values.birthDate.getDate()
+        let month = values.birthDate.getMonth() + 1
+        let year = values.birthDate.getFullYear()
         const date = `${year}-${month}-${day}`
         if (values.image) {
             const buffer = await values.image.arrayBuffer()
