@@ -44,6 +44,7 @@ export const signUp = (body) => async (dispatch) => {
         headers: { "Content-Type": "application/json" }
     })
     const text = await response.json()
+    console.log(text)
     if(response.status !== 201) throw Error(text.message_code)
     dispatch({
       type: USER_REGISTER_SUCCESS,
