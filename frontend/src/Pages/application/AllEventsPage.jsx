@@ -115,18 +115,20 @@ const AllEventsPage = () => {
 
     const searchHandler = async(values) => {
         const new_values = values
-        
-        // not the most correct way to do but for now works 03/06/2022
+
+        // not the most correct way to do but for now works 03/06/2022&& values.event_initial_date_filter.length === undefined
         if(values.event_initial_date_filter && values.event_initial_date_filter.length === undefined) {
-            let date = values.event_initial_date_filter.toLocaleString().split(',')[0]
-            date = date.split('/')
-            const p_date = `${date[2]}-${date[1]}-${date[0]}`
+            let day = values.event_initial_date_filter.getDate()
+            let month = values.event_initial_date_filter.getMonth() + 1
+            let year = values.event_initial_date_filter.getFullYear()
+            const p_date = `${year}-${month}-${day}`
             new_values.event_initial_date_filter = p_date
         }
         if(values.event_end_date_filter && values.event_end_date_filter.length === undefined) {
-            let date = values.event_end_date_filter.toLocaleString().split(',')[0]
-            date = date.split('/')
-            const p_date = `${date[2]}-${date[1]}-${date[0]}`
+            let day = values.event_end_date_filter.getDate()
+            let month = values.event_end_date_filter.getMonth() + 1
+            let year = values.event_end_date_filter.getFullYear()
+            const p_date = `${year}-${month}-${day}`
             new_values.event_end_date_filter = p_date
         }
         setSearchState(new_values)

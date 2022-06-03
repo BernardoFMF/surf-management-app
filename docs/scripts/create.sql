@@ -6,7 +6,7 @@ create table Candidate_ (
 	nationality_ 	varchar(30),
 	birth_date_		date,
 	location_		varchar(30),
-	address_ 		varchar(40),
+	address_ 		text,
 	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
 	email_ 			varchar(50) check (email_ like '%@%') unique,
 	phone_number_	int,
@@ -73,7 +73,7 @@ create table Quota_ (
 create table Contact_ (
 	member_id_ 	 	int,
 	location_		varchar(30),
-	address_ 		varchar(40),
+	address_ 		text,
 	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
 	email_ 			varchar(50) check (email_ like '%@%') unique,
 	phone_number_	int,
