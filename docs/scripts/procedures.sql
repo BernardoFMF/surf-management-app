@@ -8,7 +8,7 @@
  * if not creates it)
  */
 create or replace procedure post_user(cc_ bigint, nif_ bigint, mtype_ varchar(40), birth_date_ date, nationality_ varchar(30), full_name_ varchar(60),
-										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ text, location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, gender_ varchar(40), iban_ text, out new_id_ int)
+										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ text, location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, gender_ varchar(40), iban_ text, p_img_ text, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
@@ -37,7 +37,7 @@ begin
 		INSERT INTO Quota_(member_id_,payment_date_,amount_,date_) select new_id_, null, quota_value_, date1 from Member_Types_ mt where mt.type_ = mtype_;
 	end if;
 
-	insert into member_img_ values(new_id_, null);
+	insert into member_img_ values(new_id_, p_img_);
 end
 $$;
 
@@ -208,7 +208,7 @@ DECLARE
 begin
 	select nif_,cc_,full_name_,nationality_,birth_date_,location_, address_, postal_code_, email_, phone_number_,pword_, username_, img_, gender_, iban_ into candidate_nif_, candidate_cc_, candidate_full_name_, candidate_nationality_, candidate_birth_date_, candidate_location_, candidate_address_, candidate_postal_code_, candidate_email_, candidate_phone_number_ , candidate_pword_ , candidate_username_, candidate_img_, candidate_gender_, candidate_iban_ FROM Candidate_ WHERE id_ = cid;
 	
-	call post_user(candidate_cc_, candidate_nif_, type_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_gender_, candidate_iban_, candidate_id_);
+	call post_user(candidate_cc_, candidate_nif_, type_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_gender_, candidate_iban_,candidate_img_, candidate_id_);
 	
 	select candidate_id_ into new_id;
 	

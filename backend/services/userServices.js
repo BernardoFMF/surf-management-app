@@ -18,7 +18,7 @@ const userServices = (db) => {
 		return await data.getUserById(id)
 	}
 	
-	const postUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, paid_enrollment, gender, url, iban) => {
+	const postUserServices = async (cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, password, username, paid_enrollment, gender, url, iban, img) => {
 		if(!cc) throw error(400, 'Parameter not found: cc', 'MESSAGE_CODE_14')
 		if(!nif) throw error(400, 'Parameter not found: nif', 'MESSAGE_CODE_14')
 		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
@@ -39,7 +39,7 @@ const userServices = (db) => {
 
 		const pwordhashed = await crypto.hashpassword(password)
 		
-		return await data.postUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment, gender, url, iban)
+		return await data.postUser(cc, nif, type, birth_date, nationality, full_name, phone_number, email, postal_code, address, location, pwordhashed, username, paid_enrollment, gender, url, iban, img)
 	}
 	
 	const updateUserServices = async (id, cc, nif, type, birth_date, nationality, full_name, phone_number, postal_code, address, location, img, paid_enrollment, is_admin, is_deleted, gender, iban) => {
