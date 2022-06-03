@@ -73,6 +73,8 @@ let create = fs.readFileSync('./docs/scripts/create.sql', 'utf8');
 let trigger = fs.readFileSync('./docs/scripts/Triggers.sql', 'utf8');
 let procedures = fs.readFileSync('./docs/scripts/procedures.sql', 'utf8');
 
+const offset = 0
+const limit = 100
 
 beforeAll( async () => {
 	const con = await data.pool.connect()
@@ -131,9 +133,9 @@ test('Create a sport', async () => {
 
 test('Get all events', async () => {
 	expect.assertions(2)
-	const events = await dbEvent.getEvents()
-	expect(events[0].name_).toBe('Assembleia geral.')
-	expect(events[1].name_).toBe('Entrega de prémios.')
+	const events = await dbEvent.getEvents(undefined, undefined, undefined, offset, limit)
+	expect(events.events[0].name_).toBe('Assembleia geral.')
+	expect(events.events[1].name_).toBe('Entrega de prémios.')
 })
 
 test('Get specific event', async () => {
@@ -175,8 +177,8 @@ test('Create a attendance', async () => {
 
 test('Get specific attendance', async () => {
 	expect.assertions(1)
-	const attendance = await dbEvent.getEventByIdAttendance(1)
-	expect(attendance[0].state_).toBe('going')
+	const attendance = await dbEvent.getEventByIdAttendance(1, offset, limit)
+	expect(attendance.attendance[0].state_).toBe('going')
 })
 
 test('Update specific attendance', async () => {
@@ -187,8 +189,8 @@ test('Update specific attendance', async () => {
 
 test('Get specific member attendance', async () => {
 	expect.assertions(1)
-	const attendance = await dbEvent.getEventMemberByIdAttendance(1)
-	expect(attendance[0].member_id_).toBe(1)
+	const attendance = await dbEvent.getEventMemberByIdAttendance(1, undefined, undefined, undefined, offset, limit)
+	expect(attendance.events[0].member_id_).toBe(1)
 })
 
 
@@ -196,9 +198,9 @@ test('Get specific member attendance', async () => {
 
 test('Get all candidates', async () => {
 	expect.assertions(2)
-	const candidates = await dbCandidate.getCandidates()
-	expect(candidates[0].nationality_).toBe('Angolana')
-	expect(candidates[1].nationality_).toBe('Portuguesa')
+	const candidates = await dbCandidate.getCandidates(undefined, undefined, undefined, offset, limit)
+	expect(candidates.candidates[0].nationality_).toBe('Angolana')
+	expect(candidates.candidates[1].nationality_).toBe('Portuguesa')
 })
 
 test('Get specific candidate', async () => {
@@ -233,9 +235,9 @@ test('Approve a candidate', async () => {
 
 test('Get all companies', async () => {
 	expect.assertions(2)
-	const companies = await dbCompany.getCompanies()
-	expect(companies[0].name_).toBe('Ericeira surf shop')
-	expect(companies[1].name_).toBe('Billabong')
+	const companies = await dbCompany.getCompanies(undefined, undefined, undefined, offset, limit)
+	expect(companies.companies[0].name_).toBe('Ericeira surf shop')
+	expect(companies.companies[1].name_).toBe('Billabong')
 })
 
 test('Get specific company', async () => {
@@ -284,10 +286,10 @@ test('Get all companies quotas', async () => {
 	expect(quotas.length).toBe(2)
 })	
 
-test('Get specific company quota', async () => {
+test('Get specific member quota', async () => {
 	expect.assertions(1)
-	const quotas = await dbQuota.getMemberQuotasById(6)
-	expect(quotas[0].date_.getFullYear()).toBe(2022)
+	const quotas = await dbQuota.getMemberQuotasById(6, offset, limit)
+	expect(quotas.quotas[0].date_.getFullYear()).toBe(2022)
 })
 
 test('Update a company quota', async () => {
@@ -320,8 +322,8 @@ test('Create management quota', async () => {
 
 test('Get all users', async () => {
 	expect.assertions(1)
-	const users = await dbUser.getUsers()
-	expect(users.length).toBe(3)
+	const users = await dbUser.getUsers(undefined, undefined, undefined, offset, limit)
+	expect(users.users.length).toBe(3)
 })
 
 test('Get a specific user', async () => {
@@ -360,14 +362,14 @@ test('Get all sports for users', async () => {
 
 test('Get users that practice a given sport ', async () => {
 	expect.assertions(1)
-	const users = await dbUser.getUsersSport(2)
-	expect(users.length).toBe(0) 
+	const users = await dbUser.getUsersSport(2, offset, limit)
+	expect(users.sports.length).toBe(0) 
 })	
 
 test('Get sports that a given user practice', async () => {
 	expect.assertions(1)
-	const sports = await dbUser.getUserSportsById(2)
-	expect(sports.length).toBe(1)
+	const sports = await dbUser.getUserSportsById(2, offset, limit)
+	expect(sports.sports.length).toBe(1)
 })
 
 test('Create a sport for a user', async () => {

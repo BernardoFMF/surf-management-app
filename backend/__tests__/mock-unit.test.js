@@ -1,6 +1,6 @@
 'use strict'
 
-import db from '../data/__mock__/mockDataAccess.js'
+/*import db from '../data/__mock__/mockDataAccess.js'
 
 import sport from '../data/sportData.js'
 import event from '../data/eventData.js'
@@ -21,7 +21,7 @@ async function insertSportDummies() {
 	await dbSport.postSport('Surf')
 	await dbSport.postSport('Bodyboard')
 	await dbSport.postSport('Skysurf')
-	await dbSport.postSport('Windsurf')
+	await dbSport.postSport('Winfsurf')
 }
 
 async function insertEventDummies() {
@@ -30,18 +30,18 @@ async function insertEventDummies() {
 }
 
 async function insertCandidateDummies() {
-	await dbCandidate.postCandidate('jobileu', 74389323248, 342893489348, '12-06-1990', 'Angolana', 'Jobileu Santos', 932727288, 'jobi@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbie2', '\\xEAABDFFA', 'Male')
-	await dbCandidate.postCandidate('carlao', 34898942908, 109381908487, '15-03-1990', 'Portuguesa', 'Carlitos Roger', 927182837, 'carliti@hotmail.com', '2423-829', 'Rua da banheira', 'Baixa da Banheira', 'duche2', '\\xEAABDFFA', 'Male' )
+	await dbCandidate.postCandidate('jobileu', 474389323, 342893489, '12-06-1990', 'Angolana', 'Jobileu Santos', 932727288, 'jobi@clix.pt', '2830-829', 'Rua da bobadela', 'Bobadela', 'barbie2', '\\xEAABDFFA', 'Male', 'PT50001110000001234567831')
+	await dbCandidate.postCandidate('carlao', 898942908, 109381908, '15-03-1990', 'Portuguesa', 'Carlitos Roger', 927182837, 'carliti@hotmail.com', '2423-829', 'Rua da banheira', 'Baixa da Banheira', 'duche2', '\\xEAABDFFA', 'Male', 'PT50112700000001234567831' )
 }
 
 async function insertCompanyDummies() {
-	await dbCompany.postCompany('Ericeira surf shop', 231312312312, 938172388, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira', 'eric', 'ericeric')
-	await dbCompany.postCompany('Billabong', 42321331231, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity', 'billa', 'billabilla')
+	await dbCompany.postCompany('Ericeira surf shop', 231312312, 938172388, 'ess@gmail.com', '2812-829', 'Rua da ericeira', 'Ericeira', 'eric', 'ericeric', 'corporate', '\\xEAABDFFA', 'PT50002711110001234567831')
+	await dbCompany.postCompany('Billabong', 423213312, 932323238, 'billybonga@gmail.com', '2220-829', 'Rua da billa', 'Billacity', 'billa', 'billabilla', 'corporate', '\\xEAABDFFA', 'PT50002700000011111567831')
 }
 
 async function insertUserDummies() {
-	await dbUser.postUser(383128318, 764271741145, 'founder', 0, '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe')
-	await dbUser.postUser(383123818, 763371741145, 'effective', 15,  '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe')
+	await dbUser.postUser(383128318, 764291145, 'founder', '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe', 'PT50011110000001234567831')
+	await dbUser.postUser(383123818, 763371741, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe', 'PT50002700000011134567831')
 }
 
 async function insertSportsforUsersDummies() {
@@ -54,6 +54,8 @@ async function insertSportsforUsersDummies() {
 async function insertAttendanceDummies() {
 	await dbEvent.postMemberAttendance(1,2,'going')
 }
+
+
 
 beforeAll( async () => {
 	await insertSportDummies()
@@ -335,3 +337,4 @@ test('Delete a sport for a user', async () => {
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
 })
+*/

@@ -6,6 +6,7 @@ import { eventTemplate } from  '../utils/email/mailTemplates.js'
 
 const eventData = (db) => {
 	const getEvents = async (name_filter,initialDate_filter,endDate_filter,offset,limit) => {
+		console.log(name_filter)
 		return await db.getEventsData(name_filter,initialDate_filter,endDate_filter,offset,limit)
 	}
 	
@@ -35,9 +36,9 @@ const eventData = (db) => {
 		const event = await getEventById(eid_)
 		const user = await db.getUserByIdData(id_)
 		if (!user) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
-		const attendance = await db.getEventByIdAttendanceData(eid_)
-		if (attendance.filter(att => att.member_id_ == id_)[0])
-			throw error(409, 'User is already related to this Event', 'MESSAGE_CODE_26')
+		/*const attendance = await db.getEventByIdAttendanceData(eid_)
+		if (!attendance.filter(att => att.member_id_ == id_)[0])
+			throw error(409, 'User is not related to this Event', 'MESSAGE_CODE_27')*/
 		return await db.postMemberAttendanceData(event.id_, id_, state_)
 	}
 	
@@ -45,9 +46,9 @@ const eventData = (db) => {
 		await getEventById(eid_)
 		const user = await db.getUserByIdData(id_)
 		if (!user) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
-		const attendance = await db.getEventByIdAttendanceData(eid_)
+		/*const attendance = await db.getEventByIdAttendanceData(eid_)
 		if (!attendance.filter(att => att.member_id_ == id_)[0])
-			throw error(409, 'User is not related to this Event', 'MESSAGE_CODE_27')
+			throw error(409, 'User is not related to this Event', 'MESSAGE_CODE_27')*/
 		return await db.updateMemberAttendanceData(eid_, id_, state_)
 	}
 	

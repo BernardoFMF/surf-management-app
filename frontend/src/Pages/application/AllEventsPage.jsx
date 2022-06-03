@@ -115,13 +115,15 @@ const AllEventsPage = () => {
 
     const searchHandler = async(values) => {
         const new_values = values
-        if(values.event_initial_date_filter) {
+        
+        // not the most correct way to do but for now works 03/06/2022
+        if(values.event_initial_date_filter && values.event_initial_date_filter.length === undefined) {
             let date = values.event_initial_date_filter.toLocaleString().split(',')[0]
             date = date.split('/')
             const p_date = `${date[2]}-${date[1]}-${date[0]}`
             new_values.event_initial_date_filter = p_date
         }
-        if(values.event_end_date_filter) {
+        if(values.event_end_date_filter && values.event_end_date_filter.length === undefined) {
             let date = values.event_end_date_filter.toLocaleString().split(',')[0]
             date = date.split('/')
             const p_date = `${date[2]}-${date[1]}-${date[0]}`
