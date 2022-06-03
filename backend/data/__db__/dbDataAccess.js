@@ -148,6 +148,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getCandidateByCCData = async (cc_) => {
 		const client = await pool.connect()
+		console.log(client);
 		try {
 			await client.query('Begin')
 			const candidates = await client.query(queries.QUERY_GET_CANDIDATE_BY_CC, [cc_])

@@ -226,6 +226,8 @@
     "validate_member_not_discounts" : "The member is not entitled to discounts",
     "validate_member_discounts" : "The member is entitled to discounts",
 
-    "member_since": "Member since: "
+    "member_since": "Member since: ",
+    "create_company": "Create a company",
+    "create_user": "Create a user"
 
 }

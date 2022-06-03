@@ -136,10 +136,11 @@ const AllMembersPage = () => {
             img = new Int8Array(buffer)
             var reader = new FileReader();
             reader.onload = function () {
-                const base64String = reader.result.replace("data:", "")
+                let base64String = reader.result.replace("data:", "")
                     .replace(/^.+,/, "");
+                base64String = 'data:image/jpeg;base64,' + base64String
 
-                dispatch(postUser({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img: base64String, type: values.member_type, iban: values.iban }))
+                dispatch(postUser({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img : base64String, type: values.memberType, paid_enrollment: values.paidEnrollment, iban: values.iban  }))
             }
             reader.readAsDataURL(values.image);
         } else {
@@ -195,7 +196,7 @@ const AllMembersPage = () => {
                 onClose={handleClose}
             >
                 <Typography sx={{pl: 5, pt: 5, mb: 1}} id="modal-modal-title" variant="h2" component="h2">
-                    {t('candidates_modal_title')}
+                    {t('create_user')}
                 </Typography>
                 <DialogContent>
                     <Box
@@ -207,13 +208,12 @@ const AllMembersPage = () => {
                         }}
                     >
                         { errorPost && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorPost)}</Alert></Box> }
-                        <MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null, memberType: '', paidEnrollment: false }}
+                        <MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', iban: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null, memberType: '', paidEnrollment: false }}
                     onSubmit={handleSubmit}>
                             <FormStep stepName='User' validationSchema={Yup.object().shape({
                                 username: Yup.string().required(t('sign_up_username_mandatory')),
                                 email: Yup.string().email(t('sign_up_email_valid')).max(255).required(t('sign_up_email_mandatory')),
                                 password: Yup.string().max(255).required(t('sign_up_password_mandatory')),
-                                iban: Yup.string().required(t('sign_up_iban_mandatory')).test('len', t('sign_up_iban_mandatory'), val => val ? val.length === 25 : true)
                             })}>
                                 <InputField name='username' label={t('sign_up_username')} type='text'></InputField>
                                 <InputField name='email' label={t('sign_up_email')} type='text'></InputField>
@@ -230,10 +230,10 @@ const AllMembersPage = () => {
                                         </IconButton>
                                     </InputAdornment>}>
                                 </PasswordInputField>
-                                <InputField name='iban' label='IBAN' type='text'></InputField>
                             </FormStep>
                             <FormStep stepName='Personal' validationSchema={Yup.object().shape({
                                 fullName: Yup.string().required(t('sign_up_full_name_mandatory')),
+                                iban: Yup.string().required(t('sign_up_iban_mandatory')).test('len', t('sign_up_iban_mandatory'), val => val ? val.length === 25 : true),
                                 cc: Yup.string().matches(/^[0-9]+$/, t('sign_up_only_digits')).min(9, t('sign_up_exact_nine')).max(9,  t('sign_up_exact_nine')).required( t('sign_up_cc_mandatory')),
                                 nif: Yup.string().required(t('sign_up_nif_mandatory')).matches(/^[0-9]+$/, t('sign_up_only_digits')).min(9,  t('sign_up_exact_nine')).max(9,  t('sign_up_exact_nine')),
                                 gender: Yup.string().required(t('sign_up_gender_mandatory')),
@@ -241,6 +241,7 @@ const AllMembersPage = () => {
                                 birthDate: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).max(new Date(), t('sign_up_max_date')).required(t('sign_up_birth_date_mandatory'))
                             })}>
                                 <InputField name='fullName' label={t('sign_up_full_name')} type='text'></InputField>
+                                <InputField name='iban' label='IBAN' type='text'></InputField>
                                 <Grid container spacing={matchDownSM ? 0 : 2}>
                                     <Grid item xs={12} sm={6}>
                                         <InputField name='cc' label={t('sign_up_cc')} type='text'></InputField>

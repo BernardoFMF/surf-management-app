@@ -230,5 +230,8 @@
     "validate_member_not_discounts" : "O membro não tem direito a descontos",
     "validate_member_discounts" : "O membro tem direito a descontos",
 
-    "member_since": "Membro desde: "
+    "member_since": "Membro desde: ",
+    "create_company": "Criação de uma empresa",
+    "create_user": "Criação de um utilizador"
+
 }
