@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import Loadable from '../components/Loadable'
 import MinimalLayout from '../layout/minimalLayout/index'
 import RequireCompany from '../components/RequireCompany'
+import RequireAuth from '../components/RequireAuth'
 
 const AuthLogin = Loadable(lazy(() => import('../Pages/auth/SignInPage')))
 const AuthRegister = Loadable(lazy(() => import('../Pages/auth/SignUpPage')))
@@ -23,7 +24,7 @@ const authRoutes = {
         },
         {
             path: 'validate/:id',
-            element: <RequireCompany><ValidatePage/></RequireCompany>
+            element: <RequireAuth><RequireCompany><ValidatePage/></RequireCompany></RequireAuth>
         },
     ]
 };

@@ -300,7 +300,7 @@ const AllMembersPage = () => {
                     gap: 1,
                     gridTemplateRows: 'auto',
                     gridTemplateAreas: `". . . ."
-                    "search search . create"
+                    "search search search create"
                     ". . . ."`,
                     }}
                 >
@@ -333,7 +333,7 @@ const AllMembersPage = () => {
                                                     loading = {loading}
                                                     startIcon={<SearchIcon></SearchIcon>}
                                                 >
-                                                    {t('Search')}
+                                                    {t('search')}
                                                 </LoadingButton>
                                             </AnimateButton>
                                         </Grid>     

@@ -232,6 +232,9 @@
 
     "member_since": "Membro desde: ",
     "create_company": "Criação de uma empresa",
-    "create_user": "Criação de um utilizador"
+    "create_user": "Criação de um utilizador",
+
+    "logout": "Sair",
+    "search": "Pesquisar"
 
 }
