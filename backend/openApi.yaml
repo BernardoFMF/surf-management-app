@@ -7,6 +7,69 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0-oas3
 paths:
+  /api/auth/login:
+    post:
+      summary: login
+      operationId: postLoginApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login_body'
+      responses:
+        '200':
+          description: response body should be a member object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/auth/logout:
+    post:
+      summary: logout
+      operationId: postLogoutApi
+      responses:
+        '200':
+          description: response body should be a message object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'  
   /api/users:
     get:
       summary: fetches list of users
@@ -749,153 +812,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    get:
-      summary: fetches a single sport
-      operationId: getSportByIdApi
-      parameters:
-        - name: sid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: response body should be a sport object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/sport_by_id'
-        '400':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '401':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '404':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '500':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    delete:
-      summary: deletes a sport
-      operationId: deleteSportApi
-      parameters:
-        - name: sid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: response body should be a sport object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/message'
-        '400':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '401':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '404':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    put:
-      summary: updates a sport
-      operationId: updateSportApi
-      parameters:
-        - name: sid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/put_sports_body'
-      responses:
-        '200':
-          description: response body should be an id
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/id'
-        '400':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '401':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '404':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-                
-                      
-  # above is validated
-  # below is not
   /api/quotas:
     get:
       summary: fetches all quotas
       operationId: getQuotasApi
       parameters:
         - in: query
+          name: username
+          schema:
+            type: string
+          description: Username of the member
+        - in: query
+          name: email
+          schema:
+            type: integer
+          description: Email of the member
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          description: Date of the quota
+        - in: query
           name: offset
+          required: true
           schema:
             type: integer
           description: The number of items to skip before starting to collect the result set
         - in: query
           name: limit
+          required: true
           schema:
             type: integer
           description: The numbers of items to return
       responses:
         '200':
-          description: response body should be a quotas object  array
+          description: response body should be a quotas object
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/quota'
+                $ref: '#/components/schemas/quotas'
         '401':
           description: response body should be an error object
           content:
@@ -915,12 +871,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              items:
-                $ref: '#/components/schemas/message'
+              $ref: '#/components/schemas/quotas_body'
       responses:
         '201':
-          description: response body should be a user object
+          description: response body should be a quota object
           content:
             application/json:
               schema:
@@ -962,7 +916,7 @@ paths:
               $ref: '#/components/schemas/quotas_id_body'
       responses:
         '200':
-          description: response body should be a quotas object
+          description: response body should be the quota id
           content:
             application/json:
               schema:
@@ -1049,23 +1003,142 @@ paths:
             type: integer
         - in: query
           name: offset
+          required: true
           schema:
             type: integer
           description: The number of items to skip before starting to collect the result set
         - in: query
           name: limit
+          required: true
           schema:
             type: integer
           description: The numbers of items to return
       responses:
         '200':
-          description: response body should be a quota object array
+          description: response body should be a quota object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quotas'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/quotas/management:
+    get:
+      summary: fetches all quotas from a specific member
+      operationId: getManagementQuotasApi
+      responses:
+        '200':
+          description: response body should be a quota management object
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/quota'
+                  $ref: '#/components/schemas/quotas_management'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: creates a management quota
+      operationId: postManagementQuotasApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quotas_management_body'
+      responses:
+        '200':
+          description: response body should be a message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/quotas/management/{type}:
+    put:
+      summary: updates a quota type
+      operationId: putManagementQuotasApi
+      parameters:
+        - name: type
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: response body should be a quota type string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quota_type'
         '400':
           description: response body should be an error object
           content:
@@ -1096,6 +1169,21 @@ paths:
       operationId: getCompaniesApi
       parameters:
         - in: query
+          name: username
+          schema:
+            type: string
+          description: Username of the company
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Name of the company
+        - in: query
+          name: email
+          schema:
+            type: string
+          description: Email of the company
+        - in: query
           name: offset
           schema:
             type: integer
@@ -1107,13 +1195,11 @@ paths:
           description: The numbers of items to return
       responses:
         '200':
-          description: response body should be a company object array
+          description: response body should be a company object
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/company'
+                $ref: '#/components/schemas/companies'
         '400':
           description: response body should be an error object
           content:
@@ -1139,16 +1225,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
     post:
-      summary: creates a quota
+      summary: creates a company
       operationId: postCompanyApi
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api_companies_body'
+              $ref: '#/components/schemas/company_body'
       responses:
         '201':
-          description: response body should be a user object
+          description: response body should be an id
           content:
             application/json:
               schema:
@@ -1229,14 +1315,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/companies_cid_body'
+              $ref: '#/components/schemas/company_cid_body'
       responses:
         '200':
-          description: response body should be an id
+          description: response body should be an company object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/id'
+                $ref: '#/components/schemas/company_cid'
         '400':
           description: response body should be an error object
           content:
@@ -1749,6 +1835,21 @@ paths:
       operationId: getCandidatesApi
       parameters:
         - in: query
+          name: username
+          schema:
+            type: string
+          description: Username of the candidate
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Name of the candidate
+        - in: query
+          name: email
+          schema:
+            type: string
+          description: Email of the candidate
+        - in: query
           name: offset
           schema:
             type: integer
@@ -1758,16 +1859,13 @@ paths:
           schema:
             type: integer
           description: The numbers of items to return
-            
       responses:
         '200':
-          description: response body should be a candidate object array
+          description: response body should be a candidate object
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/candidate'
+                $ref: '#/components/schemas/candidates'
         '401':
           description: response body should be an error object
           content:
@@ -1793,7 +1891,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/candidate'
+              $ref: '#/components/schemas/candidate_body'
       responses:
         '201':
           description: response body should be a candidate object
@@ -1843,9 +1941,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/candidate'
+                $ref: '#/components/schemas/candidate_id'
         '400':
           description: response body should be an error object
           content:
@@ -1885,7 +1981,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/candidate'
+              $ref: '#/components/schemas/approve_candidate_body'
       responses:
         '200':
           description: response body should be an id
@@ -1928,9 +2024,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/message'
+                $ref: '#/components/schemas/message'
         '400':
           description: response body should be an error object
           content:
@@ -2414,15 +2508,6 @@ components:
           type: string
         is_deleted_:
           type: boolean
-      type: object
-      properties:
-        name_:
-          type: string
-        is_deleted_:
-          type: boolean
-             
-    # above is validated
-    # below is not
     quota:
       required:
         - date_
@@ -2430,7 +2515,7 @@ components:
         - member_id_
         - payment_date_
         - username_
-        - iban
+        - iban_
       type: object
       properties:
         id_:
@@ -2448,13 +2533,54 @@ components:
           format: date
         iban_:
           type: string
+    quotas:
+      type: object
+      properties:
+        quotas:
+          type: array
+          items:                   
+            $ref: '#/components/schemas/quota'
+        number_of_quotas:
+          type: integer
+    quotas_management:
+      type: object
+      properties:
+        type_:
+          type: string
+        quota_value_:
+          type: integer
+    quotas_management_body:
+      type: object
+      properties:
+        type_:
+          type: string
+        quota_value_:
+          type: integer
+    quota_type:
+      type: string
+    quotas_body:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+    quotas_id_body:
+      type: object
+      properties:
+        payment_date_:
+          type: string
+          format: date
     company:
       required:
         - member_id_
         - name_
         - nif_
-        - iban
-
+        - username_
+        - member_type_
+        - has_debt_
+        - email_
+        - is_deleted_
+        - iban_
       type: object
       properties:
         member_id_:
@@ -2463,8 +2589,27 @@ components:
           type: string
         nif_:
           type: integer
+        username_:
+          type: string
+        email_:
+          type: string
+        member_type_:
+          type: string
+        has_debt_:
+          type: boolean
+        is_deleted_:
+          type: boolean
         iban_:
           type: string
+    companies:
+      type: object
+      properties:
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/company'
+        number_of_companies:
+          type: integer
     companyById:
       required:
         - address_
@@ -2477,7 +2622,10 @@ components:
         - phone_number_
         - postal_code_
         - username_
-        - iban
+        - is_deleted_
+        - img_value_
+        - member_type_
+        - iban_
       type: object
       properties:
         member_id_:
@@ -2501,21 +2649,15 @@ components:
           type: string
         has_debt_:
           type: boolean
+        is_deleted_:
+          type: boolean
+        img_value_:
+          type: string
+        member_type_:
+          type: string
         iban_:
           type: string
-    api_quotas_body:
-      type: object
-      properties:
-        date:
-          type: string
-          format: date
-    quotas_id_body:
-      type: object
-      properties:
-        payment_date_:
-          type: string
-          format: date
-    api_companies_body:
+    company_body:
       type: object
       properties:
         name:
@@ -2537,9 +2679,13 @@ components:
         password:
           type: string
           format: password
+        type:
+          type: string
+        img: 
+          type: string
         iban:
           type: string
-    companies_cid_body:
+    company_cid_body:
       type: object
       properties:
         name:
@@ -2556,8 +2702,62 @@ components:
           type: string
         location:
           type: string
+        img:
+          type: string
+        is_deleted:
+          type: boolean
         iban:
           type: string
+    company_cid:
+      required:
+        - address_
+        - email_
+        - has_debt_
+        - location_
+        - member_id_
+        - name_
+        - nif_
+        - phone_number_
+        - postal_code_
+        - username_
+        - is_deleted_
+        - img_value_
+        - member_type_
+        - iban_
+        - is_admin_
+      type: object
+      properties:
+        member_id_:
+          type: integer
+        name_:
+          type: string
+        nif_:
+          type: integer
+        location_:
+          type: string
+        address_:
+          type: string
+        postal_code_:
+          type: string
+          format: ^\d{4}-\d{3}$
+        email_:
+          type: string
+        phone_number_:
+          type: integer
+        username_:
+          type: string
+        has_debt_:
+          type: boolean
+        is_deleted_:
+          type: boolean
+        img_value_:
+          type: string
+        member_type_:
+          type: string
+        iban_:
+          type: string
+        is_admin_:
+          type: boolean
     events:
       type: object
       properties:
@@ -2617,45 +2817,6 @@ components:
         end_date_:
           type: string
           format: date
-    candidate:
-      type: object
-      properties:
-        id_:
-          type: integer
-        username_:
-          type: string
-        cc:
-          type: string
-        nif:
-          type: string
-        birth_date_:
-          type: string
-          format: date
-        nationality_:
-          type: string
-        full_name_:
-          type: string
-        phone_number_:
-          type: integer
-        email_:
-          type: string
-          format: email
-        postal_code_:
-          type: string
-        address_:
-          type: string
-        location_:
-          type: string
-        pword_:
-          type: string
-        img_ :
-          type: array
-          items:
-            type: number
-        gender_:
-          type: string
-        iban_:
-          type: string
     api_events_body:
       type: object
       properties:
@@ -2681,7 +2842,152 @@ components:
           type: integer
         id:
           type: integer
-          
+    candidate:
+      type: object
+      properties:
+        id_:
+          type: integer
+        username_:
+          type: string
+        cc_:
+          type: string
+        nif_:
+          type: string
+        birth_date_:
+          type: string
+          format: date
+        nationality_:
+          type: string
+        full_name_:
+          type: string
+        phone_number_:
+          type: integer
+        email_:
+          type: string
+          format: email
+        postal_code_:
+          type: string
+        address_:
+          type: string
+        location_:
+          type: string
+        gender_:
+          type: string
+        iban_:
+          type: string
+    candidates:
+      type: object
+      properties:
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/candidate'
+        number_of_candidates:
+          type: integer
+    candidate_body:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        cc:
+          type: string
+        nif:
+          type: string
+        birth_date:
+          type: string
+          format: date
+        nationality:
+          type: string
+        full_name:
+          type: string
+        phone_number:
+          type: integer
+        email:
+          type: string
+          format: email
+        postal_code:
+          type: string
+        address:
+          type: string
+        location:
+          type: string
+        img:
+          type: string
+        gender:
+          type: string
+        iban:
+          type: string
+    candidate_id:
+      type: object
+      properties:
+        id_:
+          type: integer
+        username_:
+          type: string
+        cc_:
+          type: string
+        nif_:
+          type: string
+        birth_date_:
+          type: string
+          format: date
+        nationality_:
+          type: string
+        full_name_:
+          type: string
+        phone_number_:
+          type: integer
+        email_:
+          type: string
+          format: email
+        postal_code_:
+          type: string
+        address_:
+          type: string
+        location_:
+          type: string
+        gender_:
+          type: string
+        iban_:
+          type: string
+        img_:
+          type: string
+    approve_candidate_body:
+      type: object
+      properties:
+        type_:
+          type: string
+        paid_enrollment_:
+          type: boolean
+    member:
+      type: object
+      properties:
+        id_:
+          type: integer
+        member_type_:
+          type: string
+        has_debt_:
+          type: boolean 
+        quota_value_:
+          type: integer 
+        is_deleted_:
+          type: boolean 
+        username_:
+          type: string
+        pword_:
+          type: string 
+        iban_:
+          type: string 
+    login_body:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    
   parameters:
     qidParameter:
       name: qid
