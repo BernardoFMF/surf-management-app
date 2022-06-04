@@ -135,7 +135,6 @@ export const deleteCompany = (id) => async (dispatch) => {
       dispatch({
         type: COMPANY_UPDATE_REQUEST,
       })
-  
       const { memberLogin: { memberInfo } } = getState()
   
       const response = await fetch(`/api/companies/${body.cid}`, {
@@ -160,16 +159,17 @@ export const deleteCompany = (id) => async (dispatch) => {
           is_admin_: updateResp.is_admin_,
           img_value_: updateResp.img_value_
         }
-  
-        dispatch({
-          type: MEMBER_LOGIN_SUCCESS,
-          payload: userInfo,
-        })
+
         dispatch({
           type: COMPANY_FETCH_SUCCESS,
           payload: updateResp,
         })
-  
+
+        dispatch({
+          type: MEMBER_LOGIN_SUCCESS,
+          payload: userInfo,
+        })
+
         sessionStorage.setItem('memberInfo', JSON.stringify(memberInfo))
       }
   

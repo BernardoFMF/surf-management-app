@@ -1120,21 +1120,41 @@ paths:
           name: offset
           schema:
             type: integer
+          required: true
           description: The number of items to skip before starting to collect the result set
         - in: query
           name: limit
           schema:
             type: integer
+          required: true
           description: The numbers of items to return
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Filtering by name
+        - in: query
+          name: initialDate
+          schema:
+            type: string
+            format: date
+          required: false
+          description: Filtering by initial date
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date
+          required: false
+          description: Filtering by end date
       responses:
         '200':
-          description: response body should be a event object
+          description: response body should be a object with an array and a integer
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/event'
+                  $ref: '#/components/schemas/events'
         '400':
           description: response body should be an error object
           content:
@@ -1169,7 +1189,7 @@ paths:
               $ref: '#/components/schemas/api_events_body'
       responses:
         '201':
-          description: response body should be a event object
+          description: response body should be a event id
           content:
             application/json:
               schema:
@@ -1216,9 +1236,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/event'
+                $ref: '#/components/schemas/event'
         '400':
           description: response body should be an error object
           content:
@@ -1301,9 +1319,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/message'
+                $ref: '#/components/schemas/message'
         '400':
           description: response body should be an error object
           content:
@@ -1324,7 +1340,7 @@ paths:
                 $ref: '#/components/schemas/error'
   /api/events/members/{id}/attendance:
     get: 
-      summary: fetches a specific member attendance
+      summary: fetches a specific member attendances
       operationId: getEventAttendanceByMemberIdApi
       parameters:
         - name: id
@@ -1334,15 +1350,51 @@ paths:
           explode: false
           schema:
             type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          required: true
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: true
+          description: The numbers of items to return
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Filtering by name
+        - in: query
+          name: state
+          schema:
+            type: string
+          required: false
+          description: Filtering by initial date
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: false
+          description: Filtering by end date
       responses:
         '200':
-          description: response body should be a attendance object
+          description: response body should be a object with a array a number of events
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/attendance_event'
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/attendance_event_member'
+                  number_of_events:
+                    type: integer
         '400':
           description: response body should be an error object
           content:
@@ -1367,27 +1419,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  /api/events/{id}/attendance:
+  /api/events/{eid}/attendance:
     get:
       summary: fetches a specific event
       operationId: getEventAttendanceByIdApi
       parameters:
-        - name: id
+        - name: eid
           in: path
           required: true
           style: simple
           explode: false
           schema:
             type: integer
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          required: true
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: true
+          description: The numbers of items to return
       responses:
         '200':
-          description: response body should be a event object
+          description: response body should be a object with a array and number of attendances
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/event_attendance'
+                type: object
+                properties:
+                  attendance:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/event_attendance'
+                  number_of_attendance:
+                    type: integer
         '400':
           description: response body should be an error object
           content:
@@ -1416,7 +1485,7 @@ paths:
       summary: updates a event
       operationId: postEventAttendanceApi
       parameters:
-        - name: id
+        - name: eid
           in: path
           required: true
           style: simple
@@ -1434,9 +1503,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/id_pair'
+                $ref: '#/components/schemas/id_pair'
         '400':
           description: response body should be an error object
           content:
@@ -1459,7 +1526,7 @@ paths:
       summary: updates a event
       operationId: putEventAttendanceApi
       parameters:
-        - name: id
+        - name: eid
           in: path
           required: true
           style: simple
@@ -1470,16 +1537,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/event'
+              $ref: '#/components/schemas/api_attendance_body'
       responses:
         '200':
           description: response body should be an id
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/id_pair'
+                $ref: '#/components/schemas/id_pair'
         '400':
           description: response body should be an error object
           content:
@@ -2250,6 +2315,15 @@ components:
           type: string
         iban:
           type: string
+    events:
+      type: object
+      properties:
+        events:
+          type: array
+          items: 
+            $ref: '#/components/schemas/event'
+        number_of_events:
+          type: integer
     event:
       type: object
       properties:
@@ -2260,39 +2334,46 @@ components:
         initial_date_:
           type: string
           format: date
-        final_date_:
+        end_date_:
           type: string
           format: date
+        status:
+          type: string
     event_attendance:
       type: object
       properties:
         member_id_:
           type: integer
+        username_:
+          type: string
         event_id_:
           type: integer
         name_:
           type: string
         state_:
+          type: string
+        email_:
+          type: string
+          format: date
+        phone_number_:
+          type: string
+    attendance_event_member:
+      type: object
+      properties:
+        member_id:
+          type: integer
+        event_id_:
+          type: integer
+        name_:
+          type: string
+        state:
           type: string
         initial_date_:
           type: string
           format: date
-        final_date_:
+        end_date_:
           type: string
           format: date
-    attendance_event:
-      type: object
-      properties:
-        member_id_:
-          type: integer
-        event_id_:
-          type: integer
-        state_:
-          type: string
-        username_:
-          type: string
-        name_:
-          type: string
     candidate:
       type: object
       properties:
