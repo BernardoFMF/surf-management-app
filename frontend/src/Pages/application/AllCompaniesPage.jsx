@@ -253,7 +253,7 @@ const columns = [
                 <Button onClick={handleClose}>Close</Button>
             </DialogActions>
         </Dialog>
-        <MainCard title={t('companies')}sx={{height: '100%'}}>
+        <MainCard title={t('all_companies')}sx={{height: '100%'}}>
             { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
             { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
             <Box
@@ -263,7 +263,7 @@ const columns = [
                     gap: 1,
                     gridTemplateRows: 'auto',
                     gridTemplateAreas: `". . . ."
-                    "search search . create"
+                    "search search search create"
                     ". . . ."`,
                     }}
             >
@@ -296,7 +296,7 @@ const columns = [
                                                 loading = {loading}
                                                 startIcon={<SearchIcon></SearchIcon>}
                                             >
-                                                {t('Search')}
+                                                {t('search')}
                                             </LoadingButton>
                                         </AnimateButton>
                                     </Grid>    

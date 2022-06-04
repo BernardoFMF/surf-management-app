@@ -228,6 +228,9 @@
 
     "member_since": "Member since: ",
     "create_company": "Create a company",
-    "create_user": "Create a user"
+    "create_user": "Create a user",
+
+    "logout": "Leave",
+    "search": "Search"
 
 }
