@@ -92,7 +92,7 @@ const columns = [
     { field: 'name_', headerName: t('name'), width: 180 },
     {
         field: "state_",
-        headerName: "State",
+        headerName: t('event_state'),
         width: 160,
         description: "States",
         headerAlign: "left",
@@ -159,7 +159,7 @@ const columns = [
                                         loading = {loading}
                                         startIcon={<SearchIcon></SearchIcon>}
                                     >
-                                        {t('Search')}
+                                        {t('search')}
                                     </LoadingButton>
                                 </AnimateButton>
                             </Grid>    

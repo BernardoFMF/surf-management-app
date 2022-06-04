@@ -73,33 +73,33 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
                             <Form>
                                 <CheckGroupInputField
                                     name="type"
-                                    label="Types"
+                                    label={t("types")}
                                     options={[
                                         {
                                             name: "practitioner",
-                                            label: "Practitioner"
+                                            label: t("practitioner")
                                         },
                                         { 
                                             name: "coach", 
-                                            label: "Coach" 
+                                            label: t("coach") 
                                         },
                                         {
                                             name: "apprentice", 
-                                            label: "Apprentice" 
+                                            label: t("apprentice") 
                                         },
                                         {
                                             name: "jury", 
-                                            label: "Jury" 
+                                            label: t("jury") 
                                         },
                                     ]}
                                 />
-                                <InputField name='fed_number' label={t('fed_number')} type='text'></InputField>
-                                <InputField name='fed_id' label={t('fed_id')} type='text'></InputField>
-                                <InputField name='fed_name' label={t('fed_name')} type='text'></InputField>
+                                <InputField name='fed_number' label={t('fed_number_')} type='text'></InputField>
+                                <InputField name='fed_id' label={t('fed_id_')} type='text'></InputField>
+                                <InputField name='fed_name' label={t('fed_name_')} type='text'></InputField>
                                 <Box sx={{ pt: 2, pb: 2 }}>
-                                    <ChipInputField name='years_federated' label={t('years_federated')} startingOptions={userSport.years_federated_} type='number' placeholder={t('year')}></ChipInputField>
+                                    <ChipInputField name='years_federated' label={t('years_federated_')} startingOptions={userSport.years_federated_} type='number' placeholder={t('year')}></ChipInputField>
                                 </Box>
-                                {userSport.is_absent_ && <CheckInputField name='is_absent' label={t('is_absent')}/>}
+                                {userSport.is_absent_ && <CheckInputField name='is_absent' label={t('is_absent_')}/>}
                                 <AnimateButton>
                                     <LoadingButton
                                         disableElevation

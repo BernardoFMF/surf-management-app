@@ -143,6 +143,7 @@ const columns = [
     { field: 'payment_date_', headerName: t('payment_date'), width: 170 },
     {
         field: 'actions',
+        headerName: t('actions'),
         type: 'actions',
         width: 110,
         getActions: (params) => [
@@ -216,7 +217,7 @@ const columns = [
             onClose={handleCloseSubmit}
         >
             <Typography sx={{pl: 5, pt: 5}}  variant="h2" component="h2">
-                {t('date')}
+                {t('quota_creation')}
             </Typography>
             <DialogContent>
                 <Box
@@ -304,7 +305,7 @@ const columns = [
                                         loading = {loading}
                                         startIcon={<SearchIcon></SearchIcon>}
                                     >
-                                        {t('Search')}
+                                        {t('search')}
                                     </LoadingButton>
                                 </AnimateButton>
                             </Grid>    

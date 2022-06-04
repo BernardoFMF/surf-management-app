@@ -133,7 +133,7 @@
     "my_events": "My Events",
 
     "updated_sucessfully": "Update done successfully",
-    "type": "Type",
+    "type": "Type(s)",
     
     "candidates_username": "Username",
     "candidates_full_name": "Full name",
@@ -169,7 +169,7 @@
     "fed_number_": "Federation Number",
     "fed_name_": "Federation Name",
     "years_federated_": "Years Federated",
-    "is_absent_": "Absent",
+    "is_absent_": "Is absent?",
     
     "management_quota_value": "Quota Value",
     "management_quota_value_mandatory": "Quota Value is mandatory",
@@ -231,6 +231,28 @@
     "create_user": "Create a user",
 
     "logout": "Leave",
-    "search": "Search"
+    "search": "Search",
 
+    "sport_type_mandatory": "Type is mandatory",
+    "fed_number_mandatory": "Federate number is mandatory",
+    "fed_id_mandatory": "Federation number is mandatory",
+    "fed_name_mandatory": "Federation name is mandatory",
+
+    "practitioner": "Practitioner",
+    "coach": "Coach",
+    "apprentice": "Apprentice",
+    "jury": "Jury",
+
+    "types": "Types",
+
+    "year": "Years",
+
+    "going": "Going",
+    "interested": "Interested",
+    "not going": "Not going",
+
+    "start_date": "Initial date",
+    "end_date": "Final date",
+
+    "quota_creation": "Create new quota"
 }
