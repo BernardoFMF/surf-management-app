@@ -2160,7 +2160,8 @@ components:
         - phone_number_
         - is_deleted_
         - qrcode_
-        - iban
+        - iban_
+        - img_value_
       type: object
       properties:
         member_id_:
