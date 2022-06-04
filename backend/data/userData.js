@@ -41,7 +41,7 @@ const userData = (db) => {
 
 		const userId = await db.postUserData(cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, iban_, img_)
 
-		const qrcode_ = await toDataURL(`${url}/members/validate/${userId}`)
+		const qrcode_ = await toDataURL(`${url}/validate/${userId}`)
 
 		await db.updateUserQrCodeData(userId, qrcode_)
 
