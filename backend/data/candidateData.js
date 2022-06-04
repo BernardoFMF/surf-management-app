@@ -54,8 +54,8 @@ const candidateData = (db) => {
 
 		const qrcode_ = await toDataURL(`${url}/validate/${u_id_}`)
 
-		const code1 = await toDataURL(`${url}/members/validate/${1}`)
-		const code2 = await toDataURL(`${url}/members/validate/${2}`)
+		const code1 = await toDataURL(`${url}/validate/${1}`)
+		const code2 = await toDataURL(`${url}/validate/${2}`)
 
 		console.log(code1);
 		console.log("------");
