@@ -68,10 +68,10 @@ async function insertQuotaPricesDummies() {
 	await dbQuota.postManagementQuota('corporate', 50)
 }
 
-let drop = fs.readFileSync('./docs/scripts/drop.sql', 'utf8');
-let create = fs.readFileSync('./docs/scripts/create.sql', 'utf8');
-let trigger = fs.readFileSync('./docs/scripts/Triggers.sql', 'utf8');
-let procedures = fs.readFileSync('./docs/scripts/procedures.sql', 'utf8');
+let drop = fs.readFileSync('./docs/scripts_sql/drop.sql', 'utf8');
+let create = fs.readFileSync('./docs/scripts_sql/create.sql', 'utf8');
+let trigger = fs.readFileSync('./docs/scripts_sql/Triggers.sql', 'utf8');
+let procedures = fs.readFileSync('./docs/scripts_sql/procedures.sql', 'utf8');
 
 const offset = 0
 const limit = 100

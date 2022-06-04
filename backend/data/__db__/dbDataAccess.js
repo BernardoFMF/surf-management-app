@@ -978,7 +978,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 				quota.payment_date_ = formatDate(quota.payment_date_)
 				return quota
 			})
-			return qid_
+			return parseInt(qid_)
 		} catch (e) {
 			await client.query('rollback')
 			throw e
