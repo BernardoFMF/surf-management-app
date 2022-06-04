@@ -231,7 +231,7 @@ const AllCandidatesPage = () => {
                                         loading = {loading}
                                         startIcon={<SearchIcon></SearchIcon>}
                                     >
-                                        {t('Search')}
+                                        {t('search')}
                                     </LoadingButton>
                                 </AnimateButton>
                             </Grid>    

@@ -48,10 +48,10 @@ const EventPage = () => {
 
     const columns = [
         { field: 'member_id_', headerName: t('member_id'), width: 120 },
-        { field: 'username_', headerName: "Name", headerAlign: "left", width: 150 },
+        { field: 'username_', headerName: t("username"), headerAlign: "left", width: 150 },
         { field: 'email_', headerName: "Email", width: 200 },
         { field: 'phone_number_', headerName: t('candidates_phone_number'), width: 150 },
-        { field: 'state_', headerName: t('state'), headerAlign: "left", width: 150 },
+        { field: 'state_', headerName: t('event_state'), headerAlign: "left", width: 150 },
     ];
 
     const changePageHandler = (event, value) => {
@@ -65,12 +65,12 @@ const EventPage = () => {
             <br></br>
                 <Grid container>
                     <Grid item xs>
-                    <b>{eventGet !==undefined ? "Initial Date:  ": ""}</b> {eventGet !==undefined ? eventGet.initial_date_ : ""}
+                    <b>{eventGet !==undefined ? t("start_date") : ""}</b> {eventGet !==undefined ? eventGet.initial_date_ : ""}
                     </Grid>
                     <Divider orientation="vertical" flexItem>
                     </Divider>
                     <Grid item xs>
-                        <b>{eventGet !==undefined ? "End Date:  ": ""}</b> {eventGet !==undefined ? eventGet.end_date_ : ""}
+                        <b>{eventGet !==undefined ? t("end_date") : ""}</b> {eventGet !==undefined ? eventGet.end_date_ : ""}
                     </Grid>
                 </Grid>
                 <br></br>

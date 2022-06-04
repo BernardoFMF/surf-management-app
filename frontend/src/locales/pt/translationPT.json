@@ -132,7 +132,7 @@
     "my_events": "Os Meus Eventos",
 
     "updated_sucessfully": "Atualização realizada com sucesso",
-    "type": "Tipo",
+    "type": "Tipo(s)",
     
     "candidates_username": "Nome de utilizador",
     "candidates_full_name": "Nome completo",
@@ -173,7 +173,7 @@
     "fed_number_": "Número de Federado",
     "fed_name_": "Nome da federação",
     "years_federated_": "Anos federado",
-    "is_absent_": "Está aposentado",
+    "is_absent_": "Está aposentado?",
     
     "management_quota_value": "Valor da quota",
     "management_quota_value_mandatory": "Valor da quota é obrigatório",
@@ -235,6 +235,28 @@
     "create_user": "Criação de um utilizador",
 
     "logout": "Sair",
-    "search": "Pesquisar"
+    "search": "Pesquisar",
 
+    "sport_type_mandatory": "Tipo é obrigatório",
+    "fed_number_mandatory": "Número de federado é obrigatório",
+    "fed_id_mandatory": "Número da federação é obrigatório",
+    "fed_name_mandatory": "Nome da federação é obrigatório",
+
+    "practitioner": "Praticante",
+    "coach": "Treinador",
+    "apprentice": "Aprendiz",
+    "jury": "Júri",
+
+    "types": "Tipos",
+
+    "year": "Anos",
+
+    "going": "Vou",
+    "interested": "Interessado",
+    "not going": "Não vou",
+
+    "start_date": "Data inicial",
+    "end_date": "Data final",
+
+    "quota_creation": "Criar nova quota"
 }

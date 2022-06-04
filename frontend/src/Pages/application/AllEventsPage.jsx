@@ -149,7 +149,7 @@ const columns = [
     { field: 'end_date_', headerName: t('event_end_date'), headerAlign: "left", width: 170 },
     {
         field: "status",
-        headerName: "Status",
+        headerName: t("event_state"),
         width: 160,
         description: "Status",
         headerAlign: "left",
@@ -159,6 +159,7 @@ const columns = [
     },
     {
         field: 'actions',
+        headerName: t('actions'),
         type: 'actions',
         width: 110,
         getActions: (params) => [
@@ -278,7 +279,7 @@ const columns = [
                                         loading = {loading}
                                         startIcon={<SearchIcon></SearchIcon>}
                                     >
-                                        {t('Search')}
+                                        {t('search')}
                                     </LoadingButton>
                                 </AnimateButton>
                             </Grid>    

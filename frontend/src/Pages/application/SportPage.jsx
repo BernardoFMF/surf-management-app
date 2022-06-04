@@ -41,7 +41,7 @@ const SportPage = () => {
 
     const columns = [
         { field: 'username_', headerName: t('username'), width: 150 },
-        { field: 'type_', headerName: 'Position(s)', width: 170 },
+        { field: 'type_', headerName: t('type'), width: 170 },
         { field: 'fed_number_', headerName: t('fed_number_'), width: 150 },
         { field: 'fed_id_', headerName: t('fed_id_'), width: 130 },
         { field: 'fed_name_', headerName: t('fed_name_'), width: 250 },
