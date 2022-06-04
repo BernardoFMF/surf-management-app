@@ -15,8 +15,10 @@ let members = [{
 	quota_value_: 0,
 	pword_: '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',
 	username_: 'senhorJoel',
-	is_deleted_: false
+	is_deleted_: false,
+	iban_: "PT50111111111111111111111"
 }]
+
 let users = [{
 	member_id_: indexObj.idxMember, 
 	cc_: 987654321,
@@ -29,6 +31,7 @@ let users = [{
 	is_admin_: true,
 	gender_: 'Male'
 }]
+
 let companies = []
 let candidates = []
 let events = []
@@ -47,6 +50,7 @@ let users_sports = []
 let membership_cards = []
 let quotas = []
 
+let member_types_ = []
 /**
  * Candidates
  */
@@ -60,7 +64,7 @@ const getCandidateByIdData = async (id_) => {
 	return candidate
 }
 
-const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_, gender_) => {
+const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_, gender_, iban_) => {
 	indexObj.idxCandidates++
 	const candidate = {
 		id_: indexObj.idxCandidates, 
@@ -77,7 +81,8 @@ const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_
 		location_, 
 		pword_,
 		img_,
-		gender_
+		gender_,
+		iban_
 	}
 	candidates.push(candidate)
 	return candidate.id_
@@ -93,7 +98,7 @@ const approveCandidateData = async (id_, type_, quota_value_, paid_enrollment_) 
 
 	candidates = candidates.filter(candidate => candidate.id_ != id_)
 
-	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, quota_value_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_, candidate.gender_)
+	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, quota_value_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_, candidate.gender_, candidate.iban_)
 
 	if(!candidate.img_) {
 		const img = {
@@ -134,6 +139,14 @@ const getCandidateByEmailData = async (email_) => {
 	return undefined
 }
 
+const getCandidateByIbanData = async (iban_) => {
+	let candidate = candidates.filter(candidate => candidate.iban_ == iban_)[0]
+	if (candidate) {
+		return candidate
+	}
+	return undefined
+}
+
 /**
  * Companies
  */
@@ -163,7 +176,9 @@ const getCompanyByIdData = async (id_) => {
 				phone_number_:contact.phone_number_,
 				username_:member.username_,
 				has_debt_:member.has_debt_,
-				member_type_:member.member_type_
+				member_type_:member.member_type_,
+				iban_: member.iban_,
+				is_deleted_: member.is_deleted_
 			}
 			return ret
 		}
@@ -171,7 +186,7 @@ const getCompanyByIdData = async (id_) => {
 	return undefined
 }
 
-const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_,username_, pword_) => {
+const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_,username_, pword_, iban_) => {
 	indexObj.idxMember++
 	const member = {
 		id_: indexObj.idxMember,
@@ -180,7 +195,8 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 		quota_value_: 50,
 		is_deleted_: false,
 		username_,
-		pword_
+		pword_,
+		iban_
 	}
 	const company = {
 		member_id_: indexObj.idxMember, 
@@ -214,13 +230,14 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 	return company.member_id_
 }
 
-const updateCompanyData = async (id_, name_, nif_, phone_number_, email_, postal_code_, address_, location_) => {
+const updateCompanyData = async (id_, nif_, name_, phone_number_, postal_code_, address_, location_, iban_) => {
+	const idxMember = members.findIndex((member => member.id_ == id_))
+	members[idxMember].iban_ = iban_
 	const idxCompany = companies.findIndex((company => company.member_id_ == id_))
 	companies[idxCompany].name_ = name_
 	companies[idxCompany].nif_ = nif_
 	const idxContact = contacts.findIndex((contact => contact.member_id_ == id_))
 	contacts[idxContact].phone_number_ = phone_number_
-	contacts[idxContact].email_ = email_
 	contacts[idxContact].postal_code_ = postal_code_
 	contacts[idxContact].address_ = address_
 	contacts[idxContact].location_ = location_
@@ -229,10 +246,8 @@ const updateCompanyData = async (id_, name_, nif_, phone_number_, email_, postal
 }
 
 const deleteCompanyData = async (id_) => {
-	members = members.map(member => {
-		if (member.id_ == id_) member.is_deleted_ = true
-		return member
-	})
+	const idxCompany = members.findIndex(m => m.id_ == id_)
+	members[idxCompany].is_deleted_ = true
 	return id_
 }
 
@@ -255,7 +270,8 @@ const postEventData = async (name_, initial_date_, final_date_) => {
 		id_: indexObj.idxEvents, 
 		name_, 
 		initial_date_, 
-		final_date_}
+		final_date_
+	}
 	events.push(event)
 	return event.id_
 }
@@ -295,6 +311,8 @@ const getEventByIdAttendanceData = async (eid_) => {
 	for (const idx in attendance) {
 		if(attendance[idx].event_id_ == eid_) {
 			const member = await getMemberByIdData(attendance[idx].member_id_)
+			const idxContact = contacts.findIndex((contact => contact.member_id_ == attendance[idx].member_id_))
+	
 			if (member) {
 				const event = await getEventByIdData(eid_)
 				const obj = {
@@ -302,7 +320,9 @@ const getEventByIdAttendanceData = async (eid_) => {
 					username_:member.username_,
 					event_id_: event.id_,
 					name_: event.name_,
-					state_:attendance[idx].state_
+					state_:attendance[idx].state_,
+					email_: contacts[idxContact].email_,
+					phone_number_: contacts[idxContact].phone_number_
 				}
 				ret.push(obj)
 			}
@@ -325,7 +345,7 @@ const getSportsData = async () => {
 
 const getSportByIdData = async (id_) => {
 	const sport = sports.filter(sport => sport.id_ == id_)[0]
-	if (sport && !sport.is_deleted_) return sport
+	if (sport) return sport
 	return undefined
 }
 
@@ -348,7 +368,8 @@ const updateSportData = async (id_, is_deleted_, name_) => {
 }
 
 const deleteSportData = async (id_) => {
-	sports = sports.filter(sport => sport.id_ != id_)
+	const idxSport = sports.findIndex(sport => sport.id_ == id_)
+	sports[idxSport].is_deleted_ = true
 	return id_
 }
 
@@ -407,6 +428,15 @@ const getMemberByEmailData = async (email_) => {
 	return undefined
 }
 
+
+const getMemberByIbanData = async (iban_) => {
+	let member = members.filter(member => member.iban_ == iban_)[0]
+	if (member ) {
+		return member
+	}
+	return undefined
+}
+
 /**
  * Users
  */
@@ -430,16 +460,16 @@ const getUserByIdData = async (id_) => {
 	return undefined
 }
 
-const postUserData = async (cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_) => {
+const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, iban_) => {
 	indexObj.idxMember++
 	const member = {
 		id_: indexObj.idxMember,
 		member_type_: type_,
 		has_debt_: true,
-		quota_value_,
 		pword_,
 		username_,
-		is_deleted_: false
+		is_deleted_: false,
+		iban_
 	}
 	const user = {
 		member_id_: indexObj.idxMember, 
@@ -488,11 +518,12 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 	membership_cards.push(membership_card)
 }
 
-const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_) => {
+const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_, iban_) => {
 	const idxMember = members.findIndex(member => member.id_ == id_)
 	members[idxMember].is_deleted_ = is_deleted_
 	members[idxMember].type_ = type_
 	members[idxMember].quota_value_ = quota_value_
+	members[idxMember].iban_ = iban_
 
 	const idxUser = users.findIndex(user => user.member_id_ == id_)
 	users[idxUser].cc_ = cc_
@@ -657,6 +688,29 @@ const getQuotaByIdData = async (qid_) => {
 	return quota
 }
 
+const getManagementQuotas = async() => {
+	return member_types_
+}
+
+const updateManagementQuotaByType = async(type_, quota_value_) => {
+	const member_type_idx = member_types_.findIndex(mt => mt.type_ == type_)
+	member_types_[member_type_idx].quota_value_ = quota_value_
+	return type_
+}
+
+const postManagementQuota = async(type_, quota_value_) => {
+	const mt = {
+		type_,
+		quota_value_
+	}
+	member_types_.push(mt)
+	return type_
+}
+
+const getManagementQuotaByType = async(type_) => {
+	return member_types_.filter(mt => mt.type_ == type_)[0]
+}
+
 const getEmails = async() => {
 	let emails = []
 	for(let idx in contacts) {
@@ -665,6 +719,8 @@ const getEmails = async() => {
 	return emails
 }
 
-const mock_data = { getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getEventMemberByIdAttendanceData, getSportsData, getSportByIdData, postSportData,updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByEmailData, getCandidateByCCData, getCandidateByNifData }
+
+
+const mock_data = { getMemberByIbanData, getCandidateByIbanData, getManagementQuotas,updateManagementQuotaByType, getManagementQuotaByType, postManagementQuota, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getEventMemberByIdAttendanceData, getSportsData, getSportByIdData, postSportData,updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByEmailData, getCandidateByCCData, getCandidateByNifData }
 
 export default mock_data
