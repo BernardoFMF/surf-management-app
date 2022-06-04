@@ -106,7 +106,6 @@ const userData = (db) => {
 	const updateUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_) => {
 		await getUserById(id_)
 		/*const sports = await db.getAllUserSportsByIdData(id_)
-		console.log(sports);
 		const sport = sports.filter(s => s.sport_id_ == sid_)[0]
 		if (!sport) throw error(404, 'User is not related to this Sport', 'MESSAGE_CODE_32')*/
 		return await db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_)

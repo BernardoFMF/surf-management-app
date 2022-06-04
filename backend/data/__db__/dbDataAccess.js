@@ -92,7 +92,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('Begin')
 			const candidate = await client.query(queries.QUERY_POST_CANDIDATE, [nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_, img_, gender_, iban_])
 			await client.query('Commit')
-			console.log(candidate)
 			return candidate.rows[0].id_
 		} catch(e) {
 			await client.query('Rollback')
@@ -149,7 +148,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getCandidateByCCData = async (cc_) => {
 		const client = await pool.connect()
-		console.log(client);
 		try {
 			await client.query('Begin')
 			const candidates = await client.query(queries.QUERY_GET_CANDIDATE_BY_CC, [cc_])
@@ -280,7 +278,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	}
 
 	const updateCompanyData = async (cid_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
-		console.log(cid_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_);
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
@@ -670,12 +667,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 				user.birth_date_ = formatDate(user.birth_date_)
 				return user
 			})
-			console.log(users.rows);
 			const result = {
 				users: users.rows,
 				number_of_users: username_filter || name_filter || email_filter ? users.rows.length : parseInt(number_of_users.rows[0].count)
 			}
-			console.log(result);
 			return result
 		} catch(e) {
 			await client.query('Rollback')
@@ -765,7 +760,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const getUsersSportData = async (id_, offset, limit) => {
 		let query = queries.QUERY_GET_USERS_SPORT
 		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
-		console.log(query);
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
@@ -941,7 +935,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const getMemberQuotasByIdData = async (id_,offset,limit) => {
 		let query = queries.QUERY_GET_MEMBERS_QUOTAS_BY_ID
 		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
-		console.log(query)
 		const client = await pool.connect()
 		try {
 			await client.query('begin')

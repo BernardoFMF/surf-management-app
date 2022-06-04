@@ -6,7 +6,6 @@ import { eventTemplate } from  '../utils/email/mailTemplates.js'
 
 const eventData = (db) => {
 	const getEvents = async (name_filter,initialDate_filter,endDate_filter,offset,limit) => {
-		console.log(name_filter)
 		return await db.getEventsData(name_filter,initialDate_filter,endDate_filter,offset,limit)
 	}
 	
