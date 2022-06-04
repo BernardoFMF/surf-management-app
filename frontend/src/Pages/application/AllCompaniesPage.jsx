@@ -97,14 +97,15 @@ const AllCompaniesPage = () => {
             img = new Int8Array(buffer)
             var reader = new FileReader();
             reader.onload = function () {
-                const base64String = reader.result.replace("data:", "")
+                let base64String = reader.result.replace("data:", "")
                     .replace(/^.+,/, "");
+                base64String = 'data:image/jpeg;base64,' + base64String
 
-                dispatch(postCompany({name: values.fullName, nif: values.nif, username: values.username, email: values.email, password: values.password, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img: base64String, type: values.memberType}))
+                dispatch(postCompany({name: values.fullName, nif: values.nif, username: values.username, email: values.email, password: values.password, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img: base64String, type: values.memberType, iban: values.iban}))
             }
             reader.readAsDataURL(values.image);
         } else {
-            dispatch(postCompany({name: values.fullName, nif: values.nif, username: values.username, email: values.email, password: values.password, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, type: values.memberType}))
+            dispatch(postCompany({name: values.fullName, nif: values.nif, username: values.username, email: values.email, password: values.password, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img , type: values.memberType, iban: values.iban}))
         }
     }
 
@@ -180,7 +181,7 @@ const columns = [
                 onClose={handleClose}
         >
             <Typography sx={{pl: 5, pt: 5, mb: 1}} id="modal-modal-title" variant="h2" component="h2">
-                {t('candidates_modal_title')}
+                {t('create_company')}
             </Typography>
             <DialogContent>
                 <Box
@@ -192,7 +193,7 @@ const columns = [
                     }}
                 >
                     { errorPost && <Box sx={{ pt: 2 }}><Alert severity="error">{t(errorPost)}</Alert></Box> }
-                    <MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null, memberType: '', paidEnrollment: false }}
+                    <MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', iban: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null, memberType: '', paidEnrollment: false }}
                 onSubmit={handleSubmit}>
                         <FormStep stepName='User' validationSchema={Yup.object().shape({
                             username: Yup.string().required(t('sign_up_username_mandatory')),
@@ -218,9 +219,11 @@ const columns = [
                         <FormStep stepName='Personal' validationSchema={Yup.object().shape({
                             fullName: Yup.string().required(t('sign_up_full_name_mandatory')),
                             nif: Yup.string().required(t('sign_up_nif_mandatory')).matches(/^[0-9]+$/, t('sign_up_only_digits')).min(9,  t('sign_up_exact_nine')).max(9,  t('sign_up_exact_nine')),
+                            iban: Yup.string().required(t('sign_up_iban_mandatory')).test('len', t('sign_up_iban_mandatory'), val => val ? val.length === 25 : true)
                         })}>
                             <InputField name='fullName' label={t('sign_up_full_name')} type='text'></InputField>
                             <InputField name='nif' label={t('sign_up_nif')} type='text'></InputField>
+                            <InputField name='iban' label='IBAN' type='text'></InputField>
                         </FormStep>
                         <FormStep stepName='Personal' validationSchema={Yup.object().shape({
                             location: Yup.string().required(t('sign_up_location_mandatory')),

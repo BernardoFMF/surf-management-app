@@ -27,6 +27,11 @@ const companyData = (db) => {
 	}
 	
 	const updateCompany = async (id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
+		let member = await db.getMemberByNifData(nif_)
+		if (member && member.id_ != id_) throw error(409, 'Member with that nif already exists', 'MESSAGE_CODE_22')
+		member = await db.getMemberByIbanData(iban_)
+		if (member && member.id_ != id_) throw error(409, 'Member with that iban already exists', 'MESSAGE_CODE_38')
+
 		await getCompanyById(id_)
 		await db.updateCompanyData(id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_)
 		const company = await getCompanyById(id_)
