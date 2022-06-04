@@ -47,6 +47,10 @@ const ProfileSection = () => {
     const { loading, error, memberInfo } = memberLogin
     const { logoutHook } = useAuth()
 
+    useEffect(() => {
+        console.log(memberInfo.img_value_);
+    }, [memberInfo])
+
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      **/

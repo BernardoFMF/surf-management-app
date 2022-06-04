@@ -92,6 +92,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('Begin')
 			const candidate = await client.query(queries.QUERY_POST_CANDIDATE, [nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_, img_, gender_, iban_])
 			await client.query('Commit')
+			console.log(candidate)
 			return candidate.rows[0].id_
 		} catch(e) {
 			await client.query('Rollback')
@@ -318,9 +319,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
-			const sports = await client.query(queries.QUERY_GET_SPORTS)
+			let sports = await client.query(queries.QUERY_GET_SPORTS)
 			await client.query('Commit')
-			return sports.rows
+			sports = sports.rows.map(sport => {
+				sport.practitioners_ = parseInt(sport.practitioners_)
+				return sport
+			})
+			return sports
 		} catch(e) {
 			await client.query('Rollback')
 			throw e
@@ -365,7 +370,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('Begin')
 			await client.query(queries.QUERY_UPDATE_SPORT, [id_, is_deleted_, name_])
 			await client.query('Commit')
-			return id_
+			return parseInt(id_)
 		} catch(e) {
 			await client.query('Rollback')
 			throw e

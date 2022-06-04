@@ -14,23 +14,41 @@ paths:
       parameters:
         - in: query
           name: offset
+          required: true
           schema:
             type: integer
           description: The number of items to skip before starting to collect the result set
         - in: query
           name: limit
+          required: true
           schema:
             type: integer
           description: The numbers of items to return
+        - in: query
+          name: username
+          required: false
+          schema:
+            type: string
+          description: The name to be filtered
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: string
+          description: The username to be filtered
+        - in: query
+          name: email
+          required: false
+          schema:
+            type: string
+          description: The email to be filtered
       responses:
         '200':
           description: response body should be a user object array
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/users'
         '401':
           description: response body should be an error object
           content:
@@ -59,7 +77,7 @@ paths:
               $ref: '#/components/schemas/api_user_body'
       responses:
         '201':
-          description: response body should be a user object
+          description: response body should be the id
           content:
             application/json:
               schema:
@@ -185,11 +203,11 @@ paths:
             type: integer
       responses:
         '200':
-          description: response body should be a message object
+          description: response body should be the id
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/message'
+                  $ref: '#/components/schemas/id'
         '400':
           description: response body should be an error object
           content:
@@ -208,7 +226,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-                
   /api/users/sports:
     get:
       summary: fetches all sports associated with the users
@@ -219,9 +236,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/usersSports'
+                $ref: '#/components/schemas/usersSports'
         '401':
           description: response body should be an error object
           content:
@@ -246,15 +261,25 @@ paths:
           explode: false
           schema:
             type: integer
+        - in: query
+          name: offset
+          required: true
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          required: true
+          schema:
+            type: integer
+          description: The numbers of items to return
       responses:
         '200':
           description: response body should be a sport object joined with user object array
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/usersSports'
+                $ref: '#/components/schemas/usersSports'
         '400':
           description: response body should be an error object
           content:
@@ -291,15 +316,25 @@ paths:
           explode: false
           schema:
             type: integer
+        - in: query
+          name: offset
+          required: true
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          required: true
+          schema:
+            type: integer
+          description: The numbers of items to return
       responses:
         '200':
           description: response body should be a sport object joined with user object array
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/usersSports'
+                $ref: '#/components/schemas/usersSports'
         '400':
           description: response body should be an error object
           content:
@@ -339,10 +374,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api_user_sport_body'
+              $ref: '#/components/schemas/api_user_sport_post_body'
       responses:
         '201':
-          description: response body should be a user object
+          description: response body should be a pair of ids
           content:
             application/json:
               schema:
@@ -400,14 +435,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api_user_sport_body'
+              $ref: '#/components/schemas/api_user_sport_put_body'
       responses:
         '200':
           description: response body should be a user object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sid_pair'
+                $ref: '#/components/schemas/user_sport_ids'
         '400':
           description: response body should be an error object
           content:
@@ -458,7 +493,7 @@ paths:
             type: integer
       responses:
         '200':
-          description: response body should be a user object
+          description: response body should be a message
           content:
             application/json:
               schema:
@@ -491,17 +526,6 @@ paths:
     get:
       summary: fetches a list of sports
       operationId: getSportsApi
-      parameters:
-        - in: query
-          name: offset
-          schema:
-            type: integer
-          description: The number of items to skip before starting to collect the result set
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: The numbers of items to return
       responses:
         '200':
           description: response body should be a sport object array
@@ -569,6 +593,162 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
   /api/sports/{sid}:
+    get:
+      summary: fetches a single sport
+      operationId: getSportByIdApi
+      parameters:
+        - name: sid
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a sport object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sport_by_id'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      summary: deletes a sport
+      operationId: deleteSportApi
+      parameters:
+        - name: sid
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    put:
+      summary: updates a sport
+      operationId: updateSportApi
+      parameters:
+        - name: sid
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/put_sports_body'
+      responses:
+        '200':
+          description: response body should be an id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/id'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/validate/{id}:
+    get:
+      summary: validates a member
+      operationId: validateApi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a user information on validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validated_user'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     get:
       summary: fetches a single sport
       operationId: getSportByIdApi
@@ -1772,6 +1952,28 @@ paths:
                 
 components:
   schemas:
+    validated_user:
+      type: object
+      required:
+        - has_debt_
+        - full_name_
+      properties:
+        has_debt_:
+          type: boolean
+        member_type_:
+          type: string
+    users:
+      type: object
+      required:
+        - users
+        - number_of_users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+        number_of_users:
+          type: integer
     user:
       required:
         - member_id_
@@ -1792,6 +1994,8 @@ components:
         - postal_code_
         - email_
         - phone_number_
+        - img_value_
+        - is_deleted_
         - iban
       type: object
       properties:
@@ -1836,6 +2040,8 @@ components:
           type: integer
         img_value_:
           type: string
+        is_deleted_:
+          type: boolean
         iban_:
           type: string
     userById:
@@ -1919,12 +2125,11 @@ components:
         - birth_date
         - nationality
         - full_name
+        - phone_number
+        - email
+        - postal_code
         - location
         - address
-        - postal_code
-        - email
-        - phone_number
-        - is_admin
         - password
         - username
         - paid_enrollment
@@ -1955,8 +2160,6 @@ components:
           type: string
         phone_number:
           type: integer
-        is_admin:
-          type: boolean
         password:
           type: string
           format: password
@@ -1967,6 +2170,8 @@ components:
         gender:
           type: string
         iban:
+          type: string
+        img:
           type: string
     api_user_id_body:
       type: object
@@ -2026,6 +2231,18 @@ components:
           type: string
     usersSports:
       required:
+        - sports
+        - number_of_sports
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/usersSport'
+        number_of_users:
+          type: integer
+    usersSport:
+      required:
         - fed_id_
         - fed_name_
         - fed_number_
@@ -2062,7 +2279,7 @@ components:
             type: integer
         is_absent_:
           type: boolean
-    api_user_sport_body:
+    api_user_sport_post_body:
       type: object
       required:
         - id
@@ -2091,18 +2308,38 @@ components:
           type: array
           items:
             type: integer
-        is_absent:
-          type: boolean
-    sid_pair:
+    api_user_sport_put_body:
       type: object
       required:
-        - sid
         - id
+        - sid
+        - fed_id
+        - fed_number
+        - fed_name
+        - type
+        - years_federated
+        - is_absent
       properties:
-        eid:
-          type: integer
         id:
-          type: integer 
+          type: integer
+        sid:
+          type: integer
+        fed_id:
+          type: integer
+        fed_number:
+          type: integer
+        fed_name:
+          type: string
+        type:
+          type: array
+          items:
+            type: string
+        years_federated:
+          type: array
+          items:
+            type: integer
+        is_absent:
+          type: boolean
     message:
       required:
         - message
@@ -2171,6 +2408,12 @@ components:
         name:
           type: string
     put_sports_body:
+      type: object
+      properties:
+        name_:
+          type: string
+        is_deleted_:
+          type: boolean
       type: object
       properties:
         name_:
