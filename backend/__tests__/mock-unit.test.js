@@ -321,7 +321,7 @@ test('Post User', async () => {
 })
 
 test('Update a user', async () => {
-	expect.assertions(1)
+	expect.assertions(1)				
 	const user = await dbUser.updateUser(2, 383123818, 763841444, 'effective', '27-10-1993', 'Portuguese', 'Luis Marques', 967022783, '2080-478', 'Rua da Estrela', 'Lisboa','/xB33FDEAF',false, false, false, 'Other', 'PT50111700000001234567831')
 	expect(user.full_name_).toBe('Luis Marques')
 })
@@ -344,19 +344,20 @@ test('Create a sport for a user', async () => {
 test('Get all sports for users', async () => {
 	expect.assertions(1)
 	const userSports = await dbUser.getUsersSports()
-	expect(userSports.length).toBe(0) 
+	expect(userSports.length).toBe(5) 
 })
 
 test('Get users that practice a given sport ', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsersSport(2)
-	expect(users.length).toBe(0) 
+	expect(users.length).toBe(1) 
 })	
 
 test('Get sports that a given user practice', async () => {
 	expect.assertions(1)
 	const sports = await dbUser.getUserSportsById(2)
-	expect(sports.sports.length).toBe(1)
+	console.log(sports)
+	expect(sports.length).toBe(3)
 })
 
 test('Update a sport for a user', async () => {

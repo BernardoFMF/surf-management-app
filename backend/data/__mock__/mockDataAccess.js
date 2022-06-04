@@ -186,11 +186,11 @@ const getCompanyByIdData = async (id_) => {
 	return undefined
 }
 
-const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_,username_, pword_, iban_) => {
+const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_, img_, iban_) => {
 	indexObj.idxMember++
 	const member = {
 		id_: indexObj.idxMember,
-		member_type_: 'corporate',
+		member_type_: type_,
 		has_debt_: true,
 		quota_value_: 50,
 		is_deleted_: false,
@@ -223,6 +223,14 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 		}
 		quotas.push(quota)
 	}
+
+	if (img_) {
+		const user_img_ = {
+			user_id_ : indexObj.idxMember,
+			img_,
+		}
+		user_imgs.push(user_img_)
+	}
 	members.push(member)
 	companies.push(company)
 	contacts.push(contact)
@@ -230,9 +238,10 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 	return company.member_id_
 }
 
-const updateCompanyData = async (id_, nif_, name_, phone_number_, postal_code_, address_, location_, iban_) => {
+const updateCompanyData = async (id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
 	const idxMember = members.findIndex((member => member.id_ == id_))
 	members[idxMember].iban_ = iban_
+	members[idxMember].is_deleted_ = is_deleted_
 	const idxCompany = companies.findIndex((company => company.member_id_ == id_))
 	companies[idxCompany].name_ = name_
 	companies[idxCompany].nif_ = nif_
@@ -241,6 +250,14 @@ const updateCompanyData = async (id_, nif_, name_, phone_number_, postal_code_, 
 	contacts[idxContact].postal_code_ = postal_code_
 	contacts[idxContact].address_ = address_
 	contacts[idxContact].location_ = location_
+
+	if (img_) {
+		const user_img_ = {
+			user_id_ : id_,
+			img_,
+		}
+		user_imgs.push(user_img_)
+	}
 
 	return companies[idxCompany].member_id_
 }
@@ -378,7 +395,7 @@ const deleteSportData = async (id_) => {
  */
 
 const getMemberByIdData = async (id_) => {
-	const member = members.filter(member => member.id_ == id_ && !member.is_deleted_)[0]
+	const member = members.filter(member => member.id_ == id_)[0]
 	return member
 }
 
@@ -453,14 +470,14 @@ const getUserByIdData = async (id_) => {
 	let user = users.filter(user => user.member_id_ == id_)[0]
 	if (user) {
 		const contact = contacts[contacts.findIndex(c => c.member_id_ == id_)]
-		user = {...user, ...contact}
 		const member = await getMemberByIdData(user.member_id_)
+		user = {...user, ...contact, ...member}
 		if (member) return user
 	}
 	return undefined
 }
 
-const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, iban_) => {
+const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, url, iban_, img_) => {
 	indexObj.idxMember++
 	const member = {
 		id_: indexObj.idxMember,
@@ -503,6 +520,14 @@ const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_na
 		}
 		quotas.push(quota)
 	}
+
+	if (img_) {
+		const user_img_ = {
+			user_id_ : indexObj.idxMember,
+			img_,
+		}
+		user_imgs.push(user_img_)
+	}
 	members.push(member)
 	users.push(user)
 	contacts.push(contact)
@@ -518,11 +543,10 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 	membership_cards.push(membership_card)
 }
 
-const updateUserData = async (id_, cc_, nif_, type_, quota_value_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_, iban_) => {
+const updateUserData = async (id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_, iban_) => {
 	const idxMember = members.findIndex(member => member.id_ == id_)
 	members[idxMember].is_deleted_ = is_deleted_
 	members[idxMember].type_ = type_
-	members[idxMember].quota_value_ = quota_value_
 	members[idxMember].iban_ = iban_
 
 	const idxUser = users.findIndex(user => user.member_id_ == id_)
