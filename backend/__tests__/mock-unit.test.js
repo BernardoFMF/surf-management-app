@@ -117,8 +117,8 @@ test('Create a sport', async () => {
 test('Get all events', async () => {
 	expect.assertions(2)
 	const events = await dbEvent.getEvents()
-	expect(events[0].name_).toBe('Assembleia geral.')
-	expect(events[1].name_).toBe('Entrega de prémios.')
+	expect(events.events[0].name_).toBe('Assembleia geral.')
+	expect(events.events[1].name_).toBe('Entrega de prémios.')
 })
 
 test('Get specific event', async () => {
@@ -182,8 +182,8 @@ test('Get specific member attendance', async () => {
 test('Get all candidates', async () => {
 	expect.assertions(2)
 	const candidates = await dbCandidate.getCandidates()
-	expect(candidates[0].nationality_).toBe('Angolana')
-	expect(candidates[1].nationality_).toBe('Portuguesa')
+	expect(candidates.candidates[0].nationality_).toBe('Angolana')
+	expect(candidates.candidates[1].nationality_).toBe('Portuguesa')
 })
 
 test('Get specific candidate', async () => {

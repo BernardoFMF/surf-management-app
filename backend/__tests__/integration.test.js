@@ -410,7 +410,7 @@ test('Post, Gets, Put & Delete user sport', async () => {
 	expect(deleteRes).toSatisfyApiSpec()
     expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
 })
-
+*/
 //Events
 
 test('Post, Put, Gets & Delete event', async () => {
@@ -432,10 +432,14 @@ test('Post, Put, Gets & Delete event', async () => {
 		.get('/api/events')
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
+		.query({
+			"offset": 0,
+			"limit": 100
+		})
 		.expect('Content-Type', /json/)
 		.expect(200)
 	expect(getAllRes).toSatisfyApiSpec()
-	expect(getAllRes.body[0]).toSatisfySchemaInApiSpec('event')
+	expect(getAllRes.body.events[0]).toSatisfySchemaInApiSpec('event')
 
 	const getByIdRes = await supertest(app)
 		.get(`/api/events/${createRes.body}`)
@@ -471,7 +475,7 @@ test('Post, Put, Gets & Delete event', async () => {
 })
 
 //Attendance
-
+/*
 test('Post, Put & Get an attendance', async () => {
 	const userRes = await supertest(app)
         .post('/api/users')

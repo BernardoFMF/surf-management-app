@@ -83,6 +83,7 @@ const getCandidatesData = () => {
 
 const getCandidateByIdData = async (id_) => {
 	const candidate = candidates.filter(c => c.id_ == id_)[0]
+	if (!candidate) return candidate
 	const newCandidate = {
 		id_: candidate.id_,
 		username_: candidate.username_,
@@ -317,12 +318,33 @@ const deleteCompanyData = async (id_) => {
  */
 
 const getEventsData = async () => {
-	return events
+	const obj = {
+		events: events.map(event => {
+			const newEvent = {
+				id_: event.id_,
+				name_: event.name_,
+				initial_date_: event.initial_date_,
+				end_date: event.end_date,
+				status: "not started",
+			}
+			return newEvent
+		}),
+		number_of_events: events.length
+	}
+	return obj
 }
 
 const getEventByIdData = async (id_) => {
 	const event = events.filter(event => event.id_ == id_)[0]
-	return event
+	if (!event) return event
+	const newEvent = {
+		id_: event.id_,
+		name_: event.name_,
+		initial_date_: event.initial_date_,
+		end_date: event.end_date,
+		status: "not started",
+	}
+	return newEvent
 }
 
 const postEventData = async (name_, initial_date_, final_date_) => {
