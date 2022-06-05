@@ -266,11 +266,11 @@ paths:
             type: integer
       responses:
         '200':
-          description: response body should be the id
+          description: response body should be a message
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/id'
+                  $ref: '#/components/schemas/message'
         '400':
           description: response body should be an error object
           content:
@@ -852,6 +852,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/quotas'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
         '401':
           description: response body should be an error object
           content:
@@ -1050,7 +1056,7 @@ paths:
       operationId: getManagementQuotasApi
       responses:
         '200':
-          description: response body should be a quota management object
+          description: response body should be a quota management array
           content:
             application/json:
               schema:
@@ -1064,12 +1070,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
         '401':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '404':
           description: response body should be an error object
           content:
             application/json:
@@ -1090,7 +1090,7 @@ paths:
             schema:
               $ref: '#/components/schemas/quotas_management_body'
       responses:
-        '200':
+        '201':
           description: response body should be a message
           content:
             application/json:
@@ -1132,6 +1132,11 @@ paths:
           explode: false
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/put_quotas_management_body'
       responses:
         '200':
           description: response body should be a quota type string
@@ -1185,11 +1190,13 @@ paths:
           description: Email of the company
         - in: query
           name: offset
+          required: true
           schema:
             type: integer
           description: The number of items to skip before starting to collect the result set
         - in: query
           name: limit
+          required: true
           schema:
             type: integer
           description: The numbers of items to return
@@ -2069,28 +2076,6 @@ components:
         number_of_users:
           type: integer
     user:
-      required:
-        - member_id_
-        - cc_
-        - nif_
-        - birth_date_
-        - nationality_
-        - full_name_
-        - enrollment_date_
-        - paid_enrollment_
-        - is_admin_
-        - gender_
-        - member_type_
-        - has_debt_
-        - username_
-        - location_
-        - address_
-        - postal_code_
-        - email_
-        - phone_number_
-        - img_value_
-        - is_deleted_
-        - iban
       type: object
       properties:
         member_id_:
@@ -2139,29 +2124,6 @@ components:
         iban_:
           type: string
     userById:
-      required:
-        - member_id_
-        - cc_
-        - nif_
-        - birth_date_
-        - nationality_
-        - full_name_
-        - enrollment_date_
-        - paid_enrollment_
-        - is_admin_
-        - gender_
-        - member_type_
-        - has_debt_
-        - username_
-        - location_
-        - address_
-        - postal_code_
-        - email_
-        - phone_number_
-        - is_deleted_
-        - qrcode_
-        - iban_
-        - img_value_
       type: object
       properties:
         member_id_:
@@ -2213,23 +2175,6 @@ components:
           type: string
     api_user_body:
       type: object
-      required:
-        - cc
-        - nif
-        - type
-        - birth_date
-        - nationality
-        - full_name
-        - phone_number
-        - email
-        - postal_code
-        - location
-        - address
-        - password
-        - username
-        - paid_enrollment
-        - gender
-        - iban
       properties:
         cc:
           type: integer
@@ -2270,26 +2215,7 @@ components:
           type: string
     api_user_id_body:
       type: object
-      required:
-        - id
-        - nif
-        - cc
-        - type
-        - birth_date
-        - nationality
-        - full_name
-        - location
-        - address
-        - postal_code
-        - phone_number
-        - is_admin
-        - paid_enrollment
-        - gender
-        - is_deleted
-        - iban
       properties:
-        id:
-          type: integer
         cc:
           type: integer
         nif:
@@ -2325,9 +2251,6 @@ components:
         iban:
           type: string
     usersSports:
-      required:
-        - sports
-        - number_of_sports
       type: object
       properties:
         users:
@@ -2337,17 +2260,6 @@ components:
         number_of_users:
           type: integer
     usersSport:
-      required:
-        - fed_id_
-        - fed_name_
-        - fed_number_
-        - is_absent_
-        - name_
-        - sport_id_
-        - type_
-        - user_id_
-        - username_
-        - years_federated_
       type: object
       properties:
         username_:
@@ -2376,14 +2288,6 @@ components:
           type: boolean
     api_user_sport_post_body:
       type: object
-      required:
-        - id
-        - sid
-        - fed_id
-        - fed_number
-        - fed_name
-        - type
-        - years_federated
       properties:
         id:
           type: integer
@@ -2405,15 +2309,6 @@ components:
             type: integer
     api_user_sport_put_body:
       type: object
-      required:
-        - id
-        - sid
-        - fed_id
-        - fed_number
-        - fed_name
-        - type
-        - years_federated
-        - is_absent
       properties:
         id:
           type: integer
@@ -2458,11 +2353,6 @@ components:
         sid_:
           type: integer
     sport:
-      required:
-        - id_
-        - name_
-        - is_deleted_
-        - practitioners_
       type: object
       properties:
         id_:
@@ -2474,10 +2364,6 @@ components:
         practitioners_:
           type: integer
     sport_by_id:
-      required:
-        - id_
-        - name_
-        - is_deleted_
       type: object
       properties:
         id_:
@@ -2510,13 +2396,6 @@ components:
         is_deleted_:
           type: boolean
     quota:
-      required:
-        - date_
-        - id_
-        - member_id_
-        - payment_date_
-        - username_
-        - iban_
       type: object
       properties:
         id_:
@@ -2553,9 +2432,14 @@ components:
     quotas_management_body:
       type: object
       properties:
-        type_:
+        type:
           type: string
-        quota_value_:
+        quota_value:
+          type: integer
+    put_quotas_management_body:
+      type: object
+      properties:
+        quota_value:
           type: integer
     quota_type:
       type: string
@@ -2572,16 +2456,6 @@ components:
           type: string
           format: date
     company:
-      required:
-        - member_id_
-        - name_
-        - nif_
-        - username_
-        - member_type_
-        - has_debt_
-        - email_
-        - is_deleted_
-        - iban_
       type: object
       properties:
         member_id_:
@@ -2612,21 +2486,6 @@ components:
         number_of_companies:
           type: integer
     companyById:
-      required:
-        - address_
-        - email_
-        - has_debt_
-        - location_
-        - member_id_
-        - name_
-        - nif_
-        - phone_number_
-        - postal_code_
-        - username_
-        - is_deleted_
-        - img_value_
-        - member_type_
-        - iban_
       type: object
       properties:
         member_id_:
@@ -2710,22 +2569,6 @@ components:
         iban:
           type: string
     company_cid:
-      required:
-        - address_
-        - email_
-        - has_debt_
-        - location_
-        - member_id_
-        - name_
-        - nif_
-        - phone_number_
-        - postal_code_
-        - username_
-        - is_deleted_
-        - img_value_
-        - member_type_
-        - iban_
-        - is_admin_
       type: object
       properties:
         member_id_:
