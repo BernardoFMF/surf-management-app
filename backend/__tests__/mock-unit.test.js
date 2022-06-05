@@ -219,8 +219,8 @@ test('Approve a candidate', async () => {
 test('Get all companies', async () => {
 	expect.assertions(2)
 	const companies = await dbCompany.getCompanies()
-	expect(companies[0].name_).toBe('Ericeira surf shop')
-	expect(companies[1].name_).toBe('Billabong')
+	expect(companies.companies[0].name_).toBe('Ericeira surf shop')
+	expect(companies.companies[1].name_).toBe('Billabong')
 })
 
 test('Get specific company', async () => {
@@ -305,7 +305,7 @@ test('Create management quota', async () => {
 test('Get all users', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsers()
-	expect(users.length).toBe(4)
+	expect(users.users.length).toBe(4)
 })
 
 test('Get a specific user', async () => {

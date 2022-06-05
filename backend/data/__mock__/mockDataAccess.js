@@ -152,11 +152,16 @@ const getCandidateByIbanData = async (iban_) => {
  */
 
 const getCompaniesData = async () => {
-	return companies.filter(async (company) => {
+	let count = 0
+	const companiesArray = companies.filter(async (company) => {
 		const member = await getMemberByIdData(company.member_id_)
-		if (member) return true
+		if (member) {
+			++count
+			return true
+		}
 		return false
 	})
+	return {companies: companiesArray, number_of_companies: count}
 }
 
 const getCompanyByIdData = async (id_) => {
@@ -459,11 +464,16 @@ const getMemberByIbanData = async (iban_) => {
  */
 
 const getUsersData = async () => {
-	return users.filter(async (user) => {
+	let count = 0
+	const usersArray = users.filter(async (user) => {
 		const member = await getMemberByIdData(user.member_id_)
-		if (member) return true
+		if (member) {
+			++count
+			return true
+		}
 		return false
 	})
+	return {users: usersArray, number_of_users: count}
 }
 
 const getUserByIdData = async (id_) => {
@@ -643,7 +653,16 @@ const deleteUserSportData = async (id_, sid_) => {
  */
 
 const getQuotasData = async () => {
-	return quotas
+	let count = 0
+	let quotasArray = []
+	quotas.forEach(async (element) => {
+		const member = await getMemberByIdData(element.member_id_)
+		if (member) {
+			++count
+			quotasArray.push({...element, iban_: member.iban_})
+		}
+	});
+	return {quotas: quotasArray, number_of_quotas: count}
 }
 
 const getCompaniesQuotasData = async () => {
