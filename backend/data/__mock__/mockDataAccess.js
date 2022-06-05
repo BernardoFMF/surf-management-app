@@ -56,12 +56,51 @@ let member_types_ = []
  */
 
 const getCandidatesData = () => {
-	return candidates
+	const obj = {
+		candidates: candidates.map(candidate => {
+			const newCandidate = {
+				id_: candidate.id_,
+				username_: candidate.username_,
+				cc_: candidate.cc_,
+				nif_: candidate.nif_,
+				birth_date_: candidate.birth_date_,
+				nationality_: candidate.nationality_,
+				full_name_: candidate.full_name_,
+				phone_number_: candidate.phone_number_,
+				email_: candidate.email_,
+				postal_code_: candidate.postal_code_,
+				address_: candidate.address_,
+				location_: candidate.location_,
+				gender_: candidate.gender_,
+				iban_: candidate.iban_,
+			}
+			return newCandidate
+		}),
+		number_of_candidates: candidates.length
+	}
+	return obj
 }
 
 const getCandidateByIdData = async (id_) => {
 	const candidate = candidates.filter(c => c.id_ == id_)[0]
-	return candidate
+	const newCandidate = {
+		id_: candidate.id_,
+		username_: candidate.username_,
+		cc_: candidate.cc_,
+		nif_: candidate.nif_,
+		birth_date_: candidate.birth_date_,
+		nationality_: candidate.nationality_,
+		full_name_: candidate.full_name_,
+		phone_number_: candidate.phone_number_,
+		email_: candidate.email_,
+		postal_code_: candidate.postal_code_,
+		address_: candidate.address_,
+		location_: candidate.location_,
+		gender_: candidate.gender_,
+		iban_: candidate.iban_,
+		img_: candidate.img_
+	}
+	return newCandidate
 }
 
 const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_, gender_, iban_) => {

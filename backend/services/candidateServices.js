@@ -8,6 +8,8 @@ const candidateServices = (db) => {
 	const data = candidateData(db)
 
 	const getCandidatesServices = async (username_filter,name_filter,email_filter,offset,limit) => {
+		console.log(offset);
+		console.log(limit);
 		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
 		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
 		return await data.getCandidates(username_filter,name_filter,email_filter,offset,limit)

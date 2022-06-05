@@ -15,7 +15,7 @@ let session = null
 
 beforeEach(async () => {
     const res = await supertest(app)
-        .post('/api/members/login')
+        .post('/api/auth/login')
         .send({
          'username': 'senhorJoel',
          'password': '123'
@@ -567,6 +567,7 @@ test('Post, Put & Get an attendance', async () => {
 	expect(getMemberRes).toSatisfyApiSpec()
 	expect(getMemberRes.body[0]).toSatisfySchemaInApiSpec('attendance_event')
 })
+*/
 
 //Candidate
 
@@ -576,6 +577,7 @@ test('Create, Get & Delete candidate', async () => {
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.send({
+			"username": "jmiguel12345",
 			"cc": 23451224,
 			"nif": 29012459,
 			"birth_date": "09-05-2000",
@@ -587,9 +589,9 @@ test('Create, Get & Delete candidate', async () => {
 			"address": "Rua da Borboletas n45 2esq",
 			"location": "Porto Covo",
 			"password": "123",
-			"username": "jmiguel12345",
 			"gender": "Male",
-			"img": [13, 16, 83, 1]
+			"img": "imgfixe",
+			"iban": "pt50159595959595959595959"
 		})
 		.expect('Content-Type', /json/)
 		.expect(201)
@@ -600,9 +602,13 @@ test('Create, Get & Delete candidate', async () => {
 		.get('/api/candidates')
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
+		.query({
+			"offset": 0,
+			"limit": 100
+		})
 		.expect(200)
 	expect(getRes).toSatisfyApiSpec()
-	expect(getRes.body[0]).toSatisfySchemaInApiSpec("candidate")
+	expect(getRes.body.candidates[0]).toSatisfySchemaInApiSpec("candidate")
 
 	const getByIdRes = await supertest(app)
 		.get(`/api/candidates/${postRes.body}`)
@@ -627,6 +633,7 @@ test('Approve candidate', async () => {
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.send({
+			"username": "jmiguel12345",
 			"cc": 23451224,
 			"nif": 29012459,
 			"birth_date": "09-05-2000",
@@ -638,9 +645,9 @@ test('Approve candidate', async () => {
 			"address": "Rua da Borboletas n45 2esq",
 			"location": "Porto Covo",
 			"password": "123",
-			"username": "jmiguel12345",
 			"gender": "Male",
-			"img": [13, 16, 83, 1]
+			"img": "imgfixe",
+			"iban": "pt50159595959595959595959"
 		})
 		.expect('Content-Type', /json/)
 		.expect(201)
@@ -651,9 +658,11 @@ test('Approve candidate', async () => {
 		.put(`/api/candidates/${postRes.body}`)
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
+		.send({
+			"type_": "effective",
+			"paid_enrollment": true
+		})
 		.expect(200)
 	expect(approveRes).toSatisfyApiSpec()
 	expect(approveRes.body).toSatisfySchemaInApiSpec("message")
 })
-
-*/

@@ -2851,9 +2851,9 @@ components:
         username_:
           type: string
         cc_:
-          type: string
+          type: integer
         nif_:
-          type: string
+          type: integer
         birth_date_:
           type: string
           format: date
@@ -2888,8 +2888,6 @@ components:
     candidate_body:
       type: object
       properties:
-        id:
-          type: integer
         username:
           type: string
         cc:
@@ -2920,6 +2918,8 @@ components:
           type: string
         iban:
           type: string
+        password:
+          type: string
     candidate_id:
       type: object
       properties:
@@ -2928,9 +2928,9 @@ components:
         username_:
           type: string
         cc_:
-          type: string
+          type: integer
         nif_:
-          type: string
+          type: integer
         birth_date_:
           type: string
           format: date
