@@ -411,12 +411,13 @@ const getEventByIdAttendanceData = async (eid_) => {
 			}
 		}
 	}
-	return ret
+	return {ret,number_of_events:ret.length}
 }
 
 const getEventMemberByIdAttendanceData = async (id_) => {
 	const ret = attendance.filter(att => att.member_id_ == id_)
-	return ret
+	let number_of_events = ret.length
+	return {ret,number_of_events}
 }
 /**
  * Sports
@@ -662,17 +663,20 @@ const getUsersSportsData = async () => {
 		const sport = await getSportByIdData(users_sports[idx].sport_id_)
 		if (member && sport) users_sports_array.push({...users_sports[idx], username_: member.username_, name_: sport.name_})
 	}
-	return users_sports_array
+	return {users_sports_array,number_of_sports:users_sports_array.length}
 }
 
 const getUsersSportData = async (id_) => {
 	let sports_tuples = await getUsersSportsData()
-	return sports_tuples.filter(sport => sport.sport_id_ == id_)
+	console.log(sports_tuples)
+	let res = sports_tuples.users_sports_array.filter(sport => sport.sport_id_ == id_)
+	return {res,number_of_sports:res.length}
 }
 
 const getUserSportsByIdData = async (id_) => {
 	let sports_tuples = await getUsersSportsData()
-	return sports_tuples.filter(user => user.user_id_ == id_)
+	let res = sports_tuples.users_sports_array.filter(user => user.user_id_ == id_)
+	return {res,number_of_sports:res.length}
 }
 
 const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
