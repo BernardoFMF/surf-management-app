@@ -117,8 +117,8 @@ test('Create a sport', async () => {
 test('Get all events', async () => {
 	expect.assertions(2)
 	const events = await dbEvent.getEvents()
-	expect(events[0].name_).toBe('Assembleia geral.')
-	expect(events[1].name_).toBe('Entrega de prémios.')
+	expect(events.events[0].name_).toBe('Assembleia geral.')
+	expect(events.events[1].name_).toBe('Entrega de prémios.')
 })
 
 test('Get specific event', async () => {
@@ -161,7 +161,7 @@ test('Create a attendance', async () => {
 test('Get specific attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventByIdAttendance(1)
-	expect(attendance[0].state_).toBe('going')
+	expect(attendance.ret[0].state_).toBe('going')
 })
 
 test('Update specific attendance', async () => {
@@ -173,7 +173,7 @@ test('Update specific attendance', async () => {
 test('Get specific member attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventMemberByIdAttendance(1)
-	expect(attendance[0].member_id_).toBe(1)
+	expect(attendance.ret[0].member_id_).toBe(1)
 })
 
 
@@ -182,8 +182,8 @@ test('Get specific member attendance', async () => {
 test('Get all candidates', async () => {
 	expect.assertions(2)
 	const candidates = await dbCandidate.getCandidates()
-	expect(candidates[0].nationality_).toBe('Angolana')
-	expect(candidates[1].nationality_).toBe('Portuguesa')
+	expect(candidates.candidates[0].nationality_).toBe('Angolana')
+	expect(candidates.candidates[1].nationality_).toBe('Portuguesa')
 })
 
 test('Get specific candidate', async () => {
@@ -344,20 +344,21 @@ test('Create a sport for a user', async () => {
 test('Get all sports for users', async () => {
 	expect.assertions(1)
 	const userSports = await dbUser.getUsersSports()
-	expect(userSports.length).toBe(5) 
+	console.log(userSports)
+	expect(userSports.users_sports_array.length).toBe(5)
 })
 
 test('Get users that practice a given sport ', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsersSport(2)
-	expect(users.length).toBe(1) 
+	expect(users.number_of_sports).toBe(1) 
 })	
 
 test('Get sports that a given user practice', async () => {
 	expect.assertions(1)
 	const sports = await dbUser.getUserSportsById(2)
 	console.log(sports)
-	expect(sports.length).toBe(3)
+	expect(sports.number_of_sports).toBe(3)
 })
 
 test('Update a sport for a user', async () => {

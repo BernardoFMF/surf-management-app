@@ -56,12 +56,52 @@ let member_types_ = []
  */
 
 const getCandidatesData = () => {
-	return candidates
+	const obj = {
+		candidates: candidates.map(candidate => {
+			const newCandidate = {
+				id_: candidate.id_,
+				username_: candidate.username_,
+				cc_: candidate.cc_,
+				nif_: candidate.nif_,
+				birth_date_: candidate.birth_date_,
+				nationality_: candidate.nationality_,
+				full_name_: candidate.full_name_,
+				phone_number_: candidate.phone_number_,
+				email_: candidate.email_,
+				postal_code_: candidate.postal_code_,
+				address_: candidate.address_,
+				location_: candidate.location_,
+				gender_: candidate.gender_,
+				iban_: candidate.iban_,
+			}
+			return newCandidate
+		}),
+		number_of_candidates: candidates.length
+	}
+	return obj
 }
 
 const getCandidateByIdData = async (id_) => {
 	const candidate = candidates.filter(c => c.id_ == id_)[0]
-	return candidate
+	if (!candidate) return candidate
+	const newCandidate = {
+		id_: candidate.id_,
+		username_: candidate.username_,
+		cc_: candidate.cc_,
+		nif_: candidate.nif_,
+		birth_date_: candidate.birth_date_,
+		nationality_: candidate.nationality_,
+		full_name_: candidate.full_name_,
+		phone_number_: candidate.phone_number_,
+		email_: candidate.email_,
+		postal_code_: candidate.postal_code_,
+		address_: candidate.address_,
+		location_: candidate.location_,
+		gender_: candidate.gender_,
+		iban_: candidate.iban_,
+		img_: candidate.img_
+	}
+	return newCandidate
 }
 
 const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_, gender_, iban_) => {
@@ -278,12 +318,33 @@ const deleteCompanyData = async (id_) => {
  */
 
 const getEventsData = async () => {
-	return events
+	const obj = {
+		events: events.map(event => {
+			const newEvent = {
+				id_: event.id_,
+				name_: event.name_,
+				initial_date_: event.initial_date_,
+				end_date: event.end_date,
+				status: "not started",
+			}
+			return newEvent
+		}),
+		number_of_events: events.length
+	}
+	return obj
 }
 
 const getEventByIdData = async (id_) => {
 	const event = events.filter(event => event.id_ == id_)[0]
-	return event
+	if (!event) return event
+	const newEvent = {
+		id_: event.id_,
+		name_: event.name_,
+		initial_date_: event.initial_date_,
+		end_date: event.end_date,
+		status: "not started",
+	}
+	return newEvent
 }
 
 const postEventData = async (name_, initial_date_, final_date_) => {
@@ -350,12 +411,13 @@ const getEventByIdAttendanceData = async (eid_) => {
 			}
 		}
 	}
-	return ret
+	return {ret,number_of_events:ret.length}
 }
 
 const getEventMemberByIdAttendanceData = async (id_) => {
 	const ret = attendance.filter(att => att.member_id_ == id_)
-	return ret
+	let number_of_events = ret.length
+	return {ret,number_of_events}
 }
 /**
  * Sports
@@ -601,17 +663,20 @@ const getUsersSportsData = async () => {
 		const sport = await getSportByIdData(users_sports[idx].sport_id_)
 		if (member && sport) users_sports_array.push({...users_sports[idx], username_: member.username_, name_: sport.name_})
 	}
-	return users_sports_array
+	return {users_sports_array,number_of_sports:users_sports_array.length}
 }
 
 const getUsersSportData = async (id_) => {
 	let sports_tuples = await getUsersSportsData()
-	return sports_tuples.filter(sport => sport.sport_id_ == id_)
+	console.log(sports_tuples)
+	let res = sports_tuples.users_sports_array.filter(sport => sport.sport_id_ == id_)
+	return {res,number_of_sports:res.length}
 }
 
 const getUserSportsByIdData = async (id_) => {
 	let sports_tuples = await getUsersSportsData()
-	return sports_tuples.filter(user => user.user_id_ == id_)
+	let res = sports_tuples.users_sports_array.filter(user => user.user_id_ == id_)
+	return {res,number_of_sports:res.length}
 }
 
 const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {

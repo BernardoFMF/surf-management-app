@@ -304,7 +304,7 @@ test('Post, Gets, Put quotas', async () => {
 })
 
 //User Sports
-/*
+
 test('Post, Gets, Put & Delete user sport', async () => {
 	// the user creation is needed 
 	const userRes = await supertest(app)
@@ -312,21 +312,23 @@ test('Post, Gets, Put & Delete user sport', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
         .send({
-            "cc": 234568444,
-            "nif": 294547459,
+            "cc": 23456058,
+            "nif": 29067435,
             "type": "effective",
-            "birth_date": "09-05-2000",
+            "birth_date": "11-05-1999",
             "nationality": "Portuguesa",
-            "full_name": "João Miguel",
-            "phone_number": 934509248,
-            "email": "mofiguel@gmail.com",
-            "postal_code": "2745-056",
-            "address": "Rua da Borboletas n45 2esq",
-            "location": "Porto Covo",
+            "full_name": "José Lopes",
+            "phone_number": 934509667,
+            "email": "jlopes@gmail.com",
+            "postal_code": "2600-546",
+            "address": "Rua Afonso Henriques n03 1esq",
+            "location": "Lisboa",
             "password": "123",
-            "username": "mofiguel",
-            "paid_enrollment": false,
-            "gender": "Male"
+            "username": "joselopes",
+            "paid_enrollment": true,
+            "gender": "Male",
+			"iban" : "PT501231010101085672",
+			"img" : "imagem5"
         })
         .expect('Content-Type', /json/)
         .expect(201)
@@ -368,21 +370,21 @@ test('Post, Gets, Put & Delete user sport', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
     expect(getRes).toSatisfyApiSpec()
-    expect(getRes.body[0]).toSatisfySchemaInApiSpec("sportJoinUser")
+    expect(getRes.body).toSatisfySchemaInApiSpec("usersSports")
 
 	const getSidRes = await supertest(app)
-		.get(`/api/users/sports/${sportRes.body}`)
+		.get(`/api/users/sports/${sportRes.body}?offset=0&limit=10`)
         .set('Accept', 'application/json')
         .set('Cookie', session)
     expect(getSidRes).toSatisfyApiSpec()
-    expect(getSidRes.body[0]).toSatisfySchemaInApiSpec("sportJoinUser")
+    expect(getSidRes.body).toSatisfySchemaInApiSpec("usersSports")
 
 	const getUidRes = await supertest(app)
-		.get(`/api/users/${userRes.body}/sports`)
+		.get(`/api/users/${userRes.body}/sports?offset=0&limit=10`)
         .set('Accept', 'application/json')
         .set('Cookie', session)
     expect(getUidRes).toSatisfyApiSpec()
-    expect(getUidRes.body[0]).toSatisfySchemaInApiSpec("sportJoinUser")
+    expect(getUidRes.body).toSatisfySchemaInApiSpec("usersSports")
 
 	const putRes = await supertest(app)
 		.put(`/api/users/${userRes.body}/sports/${sportRes.body}`)
@@ -410,7 +412,6 @@ test('Post, Gets, Put & Delete user sport', async () => {
 	expect(deleteRes).toSatisfyApiSpec()
     expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
 })
-
 //Events
 
 test('Post, Put, Gets & Delete event', async () => {
@@ -432,10 +433,14 @@ test('Post, Put, Gets & Delete event', async () => {
 		.get('/api/events')
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
+		.query({
+			"offset": 0,
+			"limit": 100
+		})
 		.expect('Content-Type', /json/)
 		.expect(200)
 	expect(getAllRes).toSatisfyApiSpec()
-	expect(getAllRes.body[0]).toSatisfySchemaInApiSpec('event')
+	expect(getAllRes.body.events[0]).toSatisfySchemaInApiSpec('event')
 
 	const getByIdRes = await supertest(app)
 		.get(`/api/events/${createRes.body}`)
@@ -478,21 +483,23 @@ test('Post, Put & Get an attendance', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
         .send({
-            "cc": 23456834,
-            "nif": 29067439,
+            "cc": 23456823,
+            "nif": 29067458,
             "type": "effective",
-            "birth_date": "09-05-2000",
+            "birth_date": "09-05-2001",
             "nationality": "Portuguesa",
-            "full_name": "João Miguel",
-            "phone_number": 934509248,
-            "email": "jmiguel12@gmail.com",
-            "postal_code": "2745-056",
-            "address": "Rua da Borboletas n45 2esq",
+            "full_name": "Miguel João",
+            "phone_number": 934509267,
+            "email": "miguelj@gmail.com",
+            "postal_code": "2835-056",
+            "address": "Rua dos Corvos n41 3esq",
             "location": "Porto Covo",
             "password": "123",
-            "username": "jmiguel12",
-            "paid_enrollment": false,
-            "gender": "Male"
+            "username": "miguelj",
+            "paid_enrollment": true,
+            "gender": "Male",
+			"iban" : "PT501231010101010857",
+			"img" : "imagem2"
         })
         .expect('Content-Type', /json/)
         .expect(201)
@@ -512,7 +519,6 @@ test('Post, Put & Get an attendance', async () => {
 		.expect(201)
 	expect(createRes).toSatisfyApiSpec()
 	expect(createRes.body).toSatisfySchemaInApiSpec('id')
-
 	const createAttRes = await supertest(app)
 		.post(`/api/events/${createRes.body}/attendance`)
 		.set('Accept', 'application/json')
@@ -546,16 +552,17 @@ test('Post, Put & Get an attendance', async () => {
 		.expect('Content-Type', /json/)
 		.expect(200)
 	expect(getRes).toSatisfyApiSpec()
-	expect(getRes.body[0]).toSatisfySchemaInApiSpec('event_attendance')
+	expect(getRes.body).toSatisfySchemaInApiSpec('event_attendances')
 
 	const getMemberRes = await supertest(app)
-		.get(`/api/events/members/${userRes.body}/attendance`)
+		.get(`/api/events/members/${userRes.body}/attendance?offset=0&limit=10`)
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.expect('Content-Type', /json/)
 		.expect(200)
+		console.log(userRes.body)
 	expect(getMemberRes).toSatisfyApiSpec()
-	expect(getMemberRes.body[0]).toSatisfySchemaInApiSpec('attendance_event')
+	expect(getMemberRes.body).toSatisfySchemaInApiSpec('attendances_event_member')
 })
 
 //Candidate
@@ -566,6 +573,7 @@ test('Create, Get & Delete candidate', async () => {
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.send({
+			"username": "jmiguel12345",
 			"cc": 23451224,
 			"nif": 29012459,
 			"birth_date": "09-05-2000",
@@ -577,9 +585,9 @@ test('Create, Get & Delete candidate', async () => {
 			"address": "Rua da Borboletas n45 2esq",
 			"location": "Porto Covo",
 			"password": "123",
-			"username": "jmiguel12345",
 			"gender": "Male",
-			"img": [13, 16, 83, 1]
+			"img": "imgfixe",
+			"iban": "pt50159595959595959595959"
 		})
 		.expect('Content-Type', /json/)
 		.expect(201)
@@ -590,9 +598,13 @@ test('Create, Get & Delete candidate', async () => {
 		.get('/api/candidates')
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
+		.query({
+			"offset": 0,
+			"limit": 100
+		})
 		.expect(200)
 	expect(getRes).toSatisfyApiSpec()
-	expect(getRes.body[0]).toSatisfySchemaInApiSpec("candidate")
+	expect(getRes.body.candidates[0]).toSatisfySchemaInApiSpec("candidate")
 
 	const getByIdRes = await supertest(app)
 		.get(`/api/candidates/${postRes.body}`)
@@ -617,6 +629,7 @@ test('Approve candidate', async () => {
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.send({
+			"username": "jmiguel12345",
 			"cc": 23451224,
 			"nif": 29012459,
 			"birth_date": "09-05-2000",
@@ -628,9 +641,9 @@ test('Approve candidate', async () => {
 			"address": "Rua da Borboletas n45 2esq",
 			"location": "Porto Covo",
 			"password": "123",
-			"username": "jmiguel12345",
 			"gender": "Male",
-			"img": [13, 16, 83, 1]
+			"img": "imgfixe",
+			"iban": "pt50159595959595959595959"
 		})
 		.expect('Content-Type', /json/)
 		.expect(201)
@@ -641,9 +654,11 @@ test('Approve candidate', async () => {
 		.put(`/api/candidates/${postRes.body}`)
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
+		.send({
+			"type_": "effective",
+			"paid_enrollment": true
+		})
 		.expect(200)
 	expect(approveRes).toSatisfyApiSpec()
 	expect(approveRes.body).toSatisfySchemaInApiSpec("message")
 })
-
-*/
