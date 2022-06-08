@@ -88,11 +88,16 @@ returns trigger
 language plpgsql
 as
 $body$
+declare
+	txt text;
 begin 
-	if p_group_type_ = 'member_type' then
+	if new.group_type_ = 'member_type' then
 		insert into Group_Member_ (member_id_, group_id_) select id_, new.group_id_ from Member_ where member_type_ = any(new.types_);
-	elsif p_group_type_ = 'member_sport_type' then
-		insert into Group_Member_ (member_id_, group_id_) select id_, new.group_id_ from Member_ m join User_Sport_ us on m.id_ = us.user_id_ where new.group_type_ = any(us.type_);
+	elsif new.group_type_ = 'member_sport_type' then 
+		foreach txt in array new.types_
+	   	LOOP
+	    	insert into Group_Member_ (member_id_, group_id_) select distinct id_, new.group_id_ from Member_ m join User_Sport_ us on m.id_ = us.user_id_ where txt = any(us.type_);
+	   	END LOOP;
 	end if;
 	return new;
 end

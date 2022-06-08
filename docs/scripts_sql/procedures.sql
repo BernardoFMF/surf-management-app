@@ -350,5 +350,3 @@ begin
 	select group_id_ into new_id_ from new_id_table_;
 end
 $$;
-
-
