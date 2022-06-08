@@ -697,11 +697,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, iban_, img_) => {
+	const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, iban_, img_, enrollment_date_) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const result = await client.query(queries.QUERY_POST_USER, [cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, iban_ ,img_, 0])
+			const result = await client.query(queries.QUERY_POST_USER, [cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, iban_ ,img_, enrollment_date_, 0])
 			await client.query('commit')
 			return result.rows[0].new_id_
 		} catch (e) {
@@ -1199,11 +1199,15 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const getManagementQuotas = async() => {
+	const getManagementQuotas = async(category_) => {
+		let query = queries.QUERY_GET_MANAGEMENT_QUOTAS
+		if(category_) {
+			query += ` where category_ = ${category_}`
+		}
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const allMemberQuotas = await client.query(queries.QUERY_GET_MANAGEMENT_QUOTAS)
+			const allMemberQuotas = await client.query(query)
 			await client.query('commit')
 			return allMemberQuotas.rows
 		} catch (e) {
@@ -1229,11 +1233,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const postManagementQuota = async(type_, quota_value_) => {
+	const postManagementQuota = async(type_, quota_value_, category_) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			await client.query(queries.QUERY_POST_MEMBER_TOKEN, [type_, quota_value_])
+			await client.query(queries.QUERY_POST_MEMBER_TYPE, [type_, quota_value_, category_])
 			await client.query('commit')
 			return type_
 		} catch (e) {

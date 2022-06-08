@@ -15,7 +15,7 @@ const userData = (db) => {
 		return user
 	}
 	
-	const postUser = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, url, iban_, img_) => {
+	const postUser = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, url, iban_, img_, enrollment_date_) => {
 		let candidate = await db.getCandidateByUsernameData(username_)
 		if (candidate) throw error(409, 'Candidate with that username already exists', 'MESSAGE_CODE_16')
 		candidate = await db.getCandidateByCCData(cc_)
@@ -39,7 +39,7 @@ const userData = (db) => {
 		member = await db.getMemberByIbanData(iban_)
 		if (member) throw error(409, 'Member with that iban already exists', 'MESSAGE_CODE_38')
 
-		const userId = await db.postUserData(cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, iban_, img_)
+		const userId = await db.postUserData(cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender, iban_, img_, enrollment_date_)
 
 		const qrcode_ = await toDataURL(`${url}/validate/${userId}`)
 

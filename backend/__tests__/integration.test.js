@@ -47,7 +47,8 @@ test('Post, Gets, Put & Delete user', async () => {
             "paid_enrollment": false,
             "gender": "Male",
 			"iban" : "PT501231010101010101",
-			"img" : "imagem"
+			"img" : "imagem",
+			"paid_enrollment": "01-01-2019"
         })
         .expect('Content-Type', /json/)
         .expect(201)
@@ -328,7 +329,8 @@ test('Post, Gets, Put & Delete user sport', async () => {
             "paid_enrollment": true,
             "gender": "Male",
 			"iban" : "PT501231010101085672",
-			"img" : "imagem5"
+			"img" : "imagem5",
+			"paid_enrollment": "01-01-2019"
         })
         .expect('Content-Type', /json/)
         .expect(201)
@@ -499,7 +501,8 @@ test('Post, Put & Get an attendance', async () => {
             "paid_enrollment": true,
             "gender": "Male",
 			"iban" : "PT501231010101010857",
-			"img" : "imagem2"
+			"img" : "imagem2",
+			"paid_enrollment": "01-01-2019"
         })
         .expect('Content-Type', /json/)
         .expect(201)

@@ -47,7 +47,7 @@ const quotaController = (data) => {
 	})
 
 	const getManagementQuotas = asyncHandler(async (req, res) => {
-		const quota = await services.getManagementQuotasServices()
+		const quota = await services.getManagementQuotasServices(req.query.category)
 		if (quota) res.json(quota)
 	})
 
@@ -57,7 +57,7 @@ const quotaController = (data) => {
 	})
 
 	const postManagementQuota = asyncHandler(async (req, res) => {
-		const quota = await services.postManagementQuotaServices(req.body.type, req.body.quota_value)
+		const quota = await services.postManagementQuotaServices(req.body.type, req.body.quota_value, req.body.category)
 		if (quota) {
 			res.status(201)
 			res.json({ message: 'New quota role created sucessfully', message_code: 'MESSAGE_CODE_35' })

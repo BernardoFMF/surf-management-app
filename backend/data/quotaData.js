@@ -35,8 +35,8 @@ const quotaData = (db) => {
 		return await db.updateMemberQuotaData(qid_, payment_date_)
 	}
 
-	const getManagementQuotas = async () => {
-		return await db.getManagementQuotas()
+	const getManagementQuotas = async (category_) => {
+		return await db.getManagementQuotas(category_)
 	}
 
 	const getManagementQuotaByType = async (type_) => {
@@ -49,8 +49,8 @@ const quotaData = (db) => {
 		return await db.updateManagementQuotaByType(type_, quota_value_)
 	}
 
-	const postManagementQuota = async (type_, quota_value_) => {
-		return await db.postManagementQuota(type_, quota_value_)
+	const postManagementQuota = async (type_, quota_value_, category_) => {
+		return await db.postManagementQuota(type_, quota_value_, category_)
 	}
 
 	return {

@@ -25,7 +25,7 @@ const userController = (data) => {
 	
 	const postUser = asyncHandler(async (req, res) => {
 		const url = req.protocol + '://' + req.get('host')
-		const user = await services.postUserServices(req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password, req.body.username, req.body.paid_enrollment, req.body.gender, url, req.body.iban, req.body.img)
+		const user = await services.postUserServices(req.body.cc, req.body.nif, req.body.type, req.body.birth_date, req.body.nationality, req.body.full_name, req.body.phone_number, req.body.email, req.body.postal_code, req.body.address, req.body.location, req.body.password, req.body.username, req.body.paid_enrollment, req.body.gender, url, req.body.iban, req.body.img, req.body.enrollment_date)
 		if (user) {
 			res.status(201)
 			res.json(user)

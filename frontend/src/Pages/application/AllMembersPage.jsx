@@ -177,7 +177,7 @@ const AllMembersPage = () => {
                     icon={<DeleteIcon />}
                     label="Delete"
                     onClick={deleteUserHandle(params.id)}
-                    disabled={params.row.is_deleted_ || params.row.member_id_ === params.id}
+                    disabled={params.row.is_deleted_ }
                 />
             ],
         },
