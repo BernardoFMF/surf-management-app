@@ -67,7 +67,6 @@ on User_
 execute procedure deleteSportsForDeletedUser();
 
 
-
 create or replace function deleteSportsForDeletedSport()
 returns trigger 
 language plpgsql
@@ -84,5 +83,24 @@ after update
 on Sport_
 execute procedure deleteSportsForDeletedSport();
 
+create or replace function addGroupMembers()
+returns trigger
+language plpgsql
+as
+$body$
+begin 
+	if p_group_type_ = 'member_type' then
+		insert into Group_Member_ (member_id_, group_id_) select id_, new.group_id_ from Member_ where member_type_ = any(new.types_);
+	elsif p_group_type_ = 'member_sport_type' then
+		insert into Group_Member_ (member_id_, group_id_) select id_, new.group_id_ from Member_ m join User_Sport_ us on m.id_ = us.user_id_ where new.group_type_ = any(us.type_);
+	end if;
+	return new;
+end
+$body$;
 
+create or replace trigger addGroupMembersTrigger 
+after insert 
+on Group_
+for each row
+execute procedure addGroupMembers();
 

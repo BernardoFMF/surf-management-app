@@ -8,7 +8,7 @@
  * if not creates it)
  */
 create or replace procedure post_user(cc_ bigint, nif_ bigint, mtype_ varchar(40), birth_date_ date, nationality_ varchar(30), full_name_ varchar(60),
-										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ text, location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, gender_ varchar(40), iban_ text, p_img_ text, out new_id_ int)
+										phone_number_ int, email_ varchar(50), postal_code_ varchar(8), address_ text, location_ varchar(30), pword_ text, username_ varchar(30), paid_enrollment_ bool, gender_ varchar(40), iban_ text, p_img_ text, p_enrollment_date_ date, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
@@ -16,7 +16,6 @@ declare
 	date1 DATE;
 	curr_year int;
 	year1 int;
-	curr_date DATE;
 begin
 	with new_id_table_ as (
 		insert into Member_ (member_type_, username_, pword_, iban_) values (mtype_, username_, pword_, iban_) returning id_
@@ -25,10 +24,11 @@ begin
 
 	insert into Contact_ (member_id_, location_, address_, postal_code_, email_, phone_number_) 
 	values (new_id_, location_, address_, postal_code_, email_, phone_number_);
-	
-	select current_date into curr_date;
+
 	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, gender_)
-	values (new_id_, nif_, cc_, full_name_, nationality_, birth_date_, curr_date, paid_enrollment_, gender_); 
+	values (new_id_, nif_, cc_, full_name_, nationality_, birth_date_, p_enrollment_date_, paid_enrollment_, gender_); 
+
+	insert into Group_Member_ (member_id_, group_id_) select new_id_, id_ from Group_ where group_type_ = 'member_type' and mtype_ = any(types_);
 
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;
@@ -50,7 +50,17 @@ create or replace procedure put_user(p_id_ int, p_cc_ bigint, p_nif_ bigint, p_t
 LANGUAGE plpgsql  
 as
 $$
+declare
+	old_type varchar(40);
 begin
+	select member_type_ into old_type from Member_ where id_ = p_id_;
+	
+	if old_type != p_type_ then
+		delete from Group_Member_ where member_id_ = p_id_;
+		
+		insert into Group_Member_ (member_id_, group_id_) select p_id_, id_ from Group_ where group_type_ = 'member_type' and p_type_ = any(types_);
+	end if;
+	
 	update Contact_ set location_ = p_location_, address_ = p_address_, postal_code_ = p_postal_code_, phone_number_= p_phone_number_ where member_id_ = p_id_;
 
 	update Member_ set is_deleted_ = p_is_deleted_, member_type_ = p_type_, iban_ = p_iban_ where id_ = p_id_;
@@ -204,11 +214,14 @@ DECLARE
  	candidate_img_ text;
  	candidate_gender_ varchar(40);
  	candidate_iban_ text;
+ 	curr_date DATE;
 	
 begin
 	select nif_,cc_,full_name_,nationality_,birth_date_,location_, address_, postal_code_, email_, phone_number_,pword_, username_, img_, gender_, iban_ into candidate_nif_, candidate_cc_, candidate_full_name_, candidate_nationality_, candidate_birth_date_, candidate_location_, candidate_address_, candidate_postal_code_, candidate_email_, candidate_phone_number_ , candidate_pword_ , candidate_username_, candidate_img_, candidate_gender_, candidate_iban_ FROM Candidate_ WHERE id_ = cid;
 	
-	call post_user(candidate_cc_, candidate_nif_, type_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_gender_, candidate_iban_,candidate_img_, candidate_id_);
+	select current_date into curr_date;
+	
+	call post_user(candidate_cc_, candidate_nif_, type_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_gender_, candidate_iban_,candidate_img_, curr_date_, candidate_id_);
 	
 	select candidate_id_ into new_id;
 	
@@ -245,6 +258,9 @@ begin
 
 	INSERT INTO Contact_(member_id_,location_,address_,postal_code_,email_,phone_number_) VALUES (new_id_,location_,address_,postal_code_,email_,phone_number_);
 	INSERT INTO Company_(member_id_,nif_,name_) VALUES (new_id_, nif_, name_);
+
+	insert into Group_Member_ (member_id_, group_id_) select new_id_, id_ from Group_ where group_type_ = 'member_type' and mtype_ = any(types_);
+
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;
 	SELECT extract(YEAR FROM current_date) into curr_date;
@@ -262,7 +278,17 @@ create or replace procedure put_company(cid_ int, p_nif_ bigint, p_name_ varchar
 LANGUAGE plpgsql  
 as
 $$
+declare
+	old_type varchar(40);
 begin
+	select member_type_ into old_type from Member_ where id_ = cid_;
+	
+	if old_type != p_type_ then
+		delete from Group_Member_ where member_id_ = cid_;
+		
+		insert into Group_Member_ select cid_, id_ from Group_ where group_type_ = 'member_type' and p_type_ = any(types_);
+	end if;
+	
 	UPDATE Contact_ SET phone_number_ = p_phone_number_, postal_code_ = p_postal_code_,address_ = p_address_, location_ = p_location_ WHERE member_id_ = cid_;
 	UPDATE Company_ SET name_ = p_name_, nif_ = p_nif_ WHERE member_id_ = cid_;
 	update member_  set is_deleted_ = p_is_deleted_, iban_ = p_iban_ WHERE id_ = cid_;
@@ -313,11 +339,16 @@ begin
 end
 $$;
 
-
-
-
-
-
-
+create or replace procedure post_group(p_name_ text, p_types_ text[], p_group_type_ text, out new_id_ int)
+LANGUAGE plpgsql  
+as
+$$
+begin
+	with new_id_table_ as (
+		insert into Group_ (name_, group_type_, types_) values (p_name_, p_group_type_, p_types_) returning group_id_
+	)
+	select group_id_ into new_id_ from new_id_table_;
+end
+$$;
 
 

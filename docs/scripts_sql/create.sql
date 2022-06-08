@@ -22,6 +22,7 @@ create table Candidate_ (
 create table Member_Types_ (
 	type_ 			varchar(40),
 	quota_value_	int,
+	category_		text check (category_ in ('user', 'company')),
 	
 	primary key(type_)
 );
@@ -38,6 +39,25 @@ create table Member_ (
 	primary key(id_),
 	constraint fk_role foreign key(member_type_) references Member_Types_ (type_)
 );
+
+create table Group_ (
+	group_id_ 	 	int generated always as identity,
+	name_			text,
+	group_type_		text check (group_type_ in ('member_type', 'member_sport_type')),
+	types_			text[],
+	
+	primary key (group_id_)
+);
+
+create table Group_Member_ (
+	member_id_		int,
+	group_id_		int,
+	
+	primary key (member_id_, group_id_),
+	constraint fk_member foreign key(member_id_) references Member_(id_),
+	constraint fk_group foreign key(group_id_) references Group_(group_id_)
+);
+
 
 create table Event_ (
 	id_ 			int generated always as identity,
@@ -153,5 +173,4 @@ create table Member_token_ (
 	
 	primary key(member_id_),
 	constraint fk_user foreign key(member_id_) references Member_(id_)
-)
-
+);

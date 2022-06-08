@@ -9,6 +9,8 @@ drop table if exists Contact_;
 drop table if exists Quota_;
 drop table if exists Attendance_;
 drop table if exists Event_;
+drop table if exists Group_Member_;
+drop table if exists Group_;
 drop table if exists Member_;
 drop table if exists Member_Types_;
 drop table if exists Candidate_;
