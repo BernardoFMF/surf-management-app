@@ -1278,8 +1278,223 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
+	const getGroupsData = async (name_filter, group_type_filter, offset, limit) => {
+		let query = queries.QUERY_GET_GROUPS
+		let count = 0
+		if(name_filter || group_type_filter){
+			query = query + " where "
+		}
+		if(name_filter){
+			count++
+			query = query + ` position('${name_filter}' in name_) > 0`
+		}
+		if(group_type_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` group_type_ = ${group_type_filter}`
+		}
+		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const groups = await client.query(query)
+			const number_of_groups = await client.query(queries.QUERY_NUMBER_OF_GROUPS)
+			await client.query('commit')
+			const result = {groups:groups.rows, number_of_groups:name_filter || group_type_filter ? groups.rows.length : parseInt(number_of_groups.rows[0].count)}
+			return result
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
 
-	return { getCandidateByIbanData, getMemberByIbanData, getAllUserSportsByIdData, getManagementQuotas, getManagementQuotaByType, updateManagementQuotaByType, postManagementQuota, getEventMemberByIdAttendanceData, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getSportsData, getSportByIdData, postSportData, updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails,getUserEmailByIdData, updateUserQrCodeData, getMemberTokenByIdData, deleteMemberTokenData, updateMemberTokenData, postNewTokenData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByNifData, getCandidateByCCData, getCandidateByEmailData, getMemberValidationData, pool }
+	const getGroupByIdData = async (id_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const group = await client.query(queries.QUERY_GET_GROUP_BY_ID, [id_])
+			await client.query('commit')
+			return group.rows[0]
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getGroupByNameData = async (name_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const group = await client.query(queries.QUERY_GET_GROUP_BY_NAME, [name_])
+			await client.query('commit')
+			return group.rows[0]
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const postGroupData = async (name_, description_, group_type_, types_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const group = await client.query(queries.QUERY_POST_GROUP, [name_, description_, group_type_, types_, 0])
+			await client.query('commit')
+			return group.rows[0].new_id_
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const deleteGroupData = async (id_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			await client.query(queries.QUERY_DELETE_GROUP, [id_])
+			await client.query('commit')
+			return id_
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getMemberGroupsData = async (id_, offset_, limit_) => {
+		let query = queries.QUERY_GET_MEMBER_GROUPS
+		query = query + ` offset ${offset_} FETCH FIRST ${limit_} ROWS only`
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const groups = await client.query(query, [id_])
+			const number_of_groups = await client.query(queries.QUERY_NUMBER_OF_MEMBER_GROUPS)
+			await client.query('commit')
+			const result = {groups:groups.rows, number_of_groups: parseInt(number_of_groups.rows[0].count)}
+			return result
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const postMemberInGroupData = async (id_, user_id_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			await client.query(queries.QUERY_POST_MEMBER_GROUP, [id_, user_id_])
+			await client.query('commit')
+			return { id, user_id_ }
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const deleteMemberInGroupData = async (id_, user_id_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			await client.query(queries.QUERY_DELETE_MEMBER_GROUP, [id_, user_id_])
+			await client.query('commit')
+			return { id, user_id_ }
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}	
+	}
+
+	return { 
+		getGroupsData, 
+		getGroupByIdData, 
+		getGroupByNameData,
+		postGroupData,
+		deleteGroupData,
+		getMemberGroupsData,
+		postMemberInGroupData,
+		deleteMemberInGroupData,
+		getCandidateByIbanData,
+		getMemberByIbanData, 
+		getAllUserSportsByIdData,
+		getManagementQuotas, 
+		getManagementQuotaByType, 
+		updateManagementQuotaByType,
+		postManagementQuota,
+		getEventMemberByIdAttendanceData,
+		getCandidatesData,
+		getCandidateByIdData,
+		postCandidateData,
+		deleteCandidateData,
+		approveCandidateData,
+		getCandidateByUsernameData,
+		getCompaniesData,
+		getCompanyByIdData,
+		postCompanyData,
+		updateCompanyData,
+		deleteCompanyData,
+		getEventsData,
+		getEventByIdData,
+		postEventData,
+		updateEventData,
+		deleteEventData,
+		postMemberAttendanceData,
+		updateMemberAttendanceData,
+		getEventByIdAttendanceData,
+		getSportsData,
+		getSportByIdData,
+		postSportData,
+		updateSportData,
+		deleteSportData, 
+		getUsersData, 
+		getUserByIdData, 
+		postUserData, 
+		updateUserData, 
+		deleteUserData, 
+		getUsersSportsData, 
+		getUsersSportData, 
+		getUserSportsByIdData, 
+		postUserSportData, 
+		updateUserSportData, 
+		deleteUserSportData, 
+		getQuotasData, 
+		getCompaniesQuotasData, 
+		getUsersQuotasData, 
+		getMemberQuotasByIdData, 
+		postQuotaData, 
+		updateMemberQuotaData, 
+		getMemberByIdData, 
+		getMemberByUsernameData, 
+		getQuotaByIdData, 
+		getEmails,
+		getUserEmailByIdData,
+		updateUserQrCodeData, 
+		getMemberTokenByIdData, 
+		deleteMemberTokenData, 
+		updateMemberTokenData, 
+		postNewTokenData, 
+		getMemberByCCData,
+		getMemberByNifData, 
+		getMemberByEmailData, 
+		getCandidateByNifData, 
+		getCandidateByCCData, 
+		getCandidateByEmailData, 
+		getMemberValidationData, 
+		pool 
+	}
 
 }
 
