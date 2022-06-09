@@ -29,7 +29,7 @@ const ProfileForker = () => {
             : (
                 <>
                 {
-                    error ? <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> : memberGet.member_type_ === 'corporate' ? <CompanyProfile/> : <UserProfile/>
+                    error ? <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> : memberGet.category_ === 'company' ? <CompanyProfile/> : <UserProfile/>
                 }
                 </>
             )

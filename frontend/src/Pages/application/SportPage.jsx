@@ -1,12 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUsersSport } from  '../../store/actions/userActions'
 import { useParams } from 'react-router-dom'
 
 import { useTranslation } from 'react-i18next'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import MainCard from '../../components/cards/MainCard'
-import { Stack, CircularProgress, Box, Alert, Pagination } from '@mui/material'
+import { Grid, Stack, CircularProgress, Box, Alert, Pagination, Dialog, Typography, DialogContent, DialogActions, } from '@mui/material'
+import UserSportEditDialog from '../../components/dialogs/UserSportEditDialog';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { deleteUserSport } from '../../store/actions/userActions';
+import { Form, Formik } from 'formik';
+import SearchIcon from '@mui/icons-material/Search';
+import InputField from '../../components/multiStepForm/InputField';
+import AnimateButton from '../../components/extended/AnimateButton'
+import LoadingButton from '@mui/lab/LoadingButton'
+import CheckInputField from '../../components/multiStepForm/CheckInputField'
+
 
 const SportPage = () => {
     const {t} = useTranslation()
@@ -15,10 +26,51 @@ const SportPage = () => {
     const usersSportFetch = useSelector((state) => state.usersSportFetch)
     const { loading, error, usersSportGet } = usersSportFetch
     const [rows, setRows] = useState([]);
-    
+
+    const [ searchState, setSearchState ] = useState({
+        username_filter: "",
+        toggle_filter: false
+    })
+
+    const [open, setOpen] = useState(false);
+    const handleClose = () => setOpen(false);
+    const handleOpen = () => setOpen(true);
+
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+    const closeDialogHandler = useCallback(function _handleClose() {
+        setOpenEditDialog(false);
+        setselectedUserSport({
+            type_: [ "" ],
+            fed_number_: 0,
+            fed_id_: 0,
+            fed_name_: "",
+            years_federated_: [ 0 ],
+            is_absent_: false
+        })
+        setPage(1)
+        dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
+    }, []);
+
+    const [selectedUserSport, setselectedUserSport] = useState({
+        type_: [ "" ],
+        fed_number_: 0,
+        fed_id_: 0,
+        fed_name_: "",
+        years_federated_: [ 0 ],
+        is_absent_: false
+    })
+
+    function userSportEditHandler(userSport) {
+        setselectedUserSport({ ...userSport })
+        setOpenEditDialog(true)
+    }
     useEffect(() => { 
-        dispatch(getUsersSport(id, 0, limit))
+        dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
     },[])
+
+    useEffect(() => { 
+        console.log(searchState.toggle_filter);
+    },[searchState])
 
     const [page, setPage] = useState(1);
     const limit = 5
@@ -36,7 +88,19 @@ const SportPage = () => {
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getUsersSport(id, (value-1)*limit, limit))
+        dispatch(getUsersSport(id, (value-1)*limit, limit, searchState.toggle_filter))
+    }
+
+    const deleteUserSportHandle = (id, sid) => {
+        dispatch(deleteUserSport(id, sid, searchState.toggle_filter))
+        dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
+    }
+
+    const searchHandler = async(values) => {
+        setSearchState(values)
+        setPage(1)
+        setRows([])
+        dispatch(getUsersSport(id, 0, limit, values.toggle_filter))
     }
 
     const columns = [
@@ -44,20 +108,121 @@ const SportPage = () => {
         { field: 'type_', headerName: t('type'), width: 170 },
         { field: 'fed_number_', headerName: t('fed_number_'), width: 150 },
         { field: 'fed_id_', headerName: t('fed_id_'), width: 130 },
-        { field: 'fed_name_', headerName: t('fed_name_'), width: 250 },
+        { field: 'fed_name_', headerName: t('fed_name_'), width: 300 },
         { field: 'years_federated_', headerName: t('years_federated_'), width: 150 },
         { field: 'is_absent_', headerName: t('is_absent_'), type: 'boolean',  width: 130 },
+        { field: 'is_candidate_', headerName: t('is_candidate_'), type: 'boolean',  width: 130 },
+        {
+            field: 'actions',
+            type: 'actions',
+            headerName: t('actions'),
+            width: 110,
+            getActions: (params) => [
+                <GridActionsCellItem
+                    icon={<EditIcon />}
+                    label="Edit User Sport"
+                    onClick={() => {
+                        userSportEditHandler(params.row)
+                    }}
+                />,
+                <GridActionsCellItem
+                    icon={<DeleteIcon />}
+                    label="Delete"
+                    onClick={() => { deleteUserSportHandle(params.row.user_id_, params.row.sport_id_) }}
+                    disabled={params.row.is_absent_}
+                />
+            ],
+      },
     ];
 
 return (
     <>
-        <MainCard title={usersSportGet && usersSportGet.sports.length != 0 && usersSportGet.sports[0] ? usersSportGet.sports[0].name_ : ''} sx={{height: '100%'}}>
+        <Dialog
+            PaperProps={{
+                sx: {
+                    width: 500,
+                    height: 600
+                }
+            }}
+            open={open}
+            onClose={handleClose}
+        >
+            
+        </Dialog>
+        <UserSportEditDialog
+            open={openEditDialog}
+            closeHandler={closeDialogHandler}
+            userSport={selectedUserSport}
+        />
+        <MainCard title={usersSportGet && usersSportGet.sports.length !== 0 && usersSportGet.sports[0] ? usersSportGet.sports[0].name_ : ''} sx={{height: '100%'}}>
         { loading ? 
             <Stack alignItems="center">
                 <CircularProgress size='4rem'/>
             </Stack> : (
             <>
                 { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+                <Box
+                    sx={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(4, 1fr)',
+                    gap: 1,
+                    gridTemplateRows: 'auto',
+                    gridTemplateAreas: `". . . ."
+                    "search search search create"
+                    ". . . ."`,
+                    }}
+                >
+                    <Box gridArea={'search'}>
+                        <Formik
+                            initialValues={searchState}
+                            enableReinitialize={true}
+                            onSubmit={values => searchHandler(values)}
+                        >
+                            {formik => (
+                                <Form>
+                                    <Grid container spacing={2} direction="row" alignItems={'center'}>
+                                        <Grid item>
+                                            <InputField name='username_filter' label={t('sign_up_username')} type='text'></InputField>
+                                        </Grid>
+                                        <Grid item>
+                                            <CheckInputField name='toggle_filter' label={t('is_candidate_')} type='boolean'></CheckInputField>
+                                        </Grid>
+                                        <Grid item>
+                                            <AnimateButton>
+                                                <LoadingButton
+                                                    disableElevation
+                                                    size="large"
+                                                    type="submit"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    loading = {loading}
+                                                    startIcon={<SearchIcon></SearchIcon>}
+                                                >
+                                                    {t('search')}
+                                                </LoadingButton>
+                                            </AnimateButton>
+                                        </Grid>     
+                                    </Grid>
+                                </Form>
+                            )}
+                        </Formik>
+                    </Box>
+                    <Box gridArea={'create'} alignItems={'center'} display='flex' justifyContent='flex-end'>
+                        <AnimateButton>
+                            <LoadingButton
+                                disableElevation
+                                size="large"
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => {
+                                    handleOpen()
+                                }}
+                            >
+                                {t('create')}
+                            </LoadingButton>
+                        </AnimateButton>
+                    </Box> 
+                </Box>
                 <DataGrid
                     autoHeight
                     rows={rows}

@@ -62,7 +62,7 @@ const AllMembersPage = () => {
       username_filter: "",
       name_filter: "",
       email_filter: ""
-  })
+    })
 
     const [page, setPage] = useState(1);
     const limit = 5

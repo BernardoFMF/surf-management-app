@@ -31,6 +31,8 @@ const NavCollapse = ({ menu, level }) => {
         if (item.hideIfNotAdmin === true && memberInfo.is_admin_ === false) {
             return false
         }
+        if (item.hideIfZeroValue && memberInfo.quota_value_ === 0) return false
+
         return true
     }).map((item) => {
         switch (item.type) {

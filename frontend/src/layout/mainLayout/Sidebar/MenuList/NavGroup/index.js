@@ -15,7 +15,7 @@ const NavGroup = ({ item }) => {
     const { memberInfo } = memberLogin
 
     const items = item.children?.filter((menu) => {
-        if (menu.hideMenuIfCorporate && memberInfo.member_type_ === 'corporate') return false
+        if (menu.hideMenuIfCorporate && memberInfo.category_ === 'company') return false
         if (menu.hideMenuIfNotAdmin && memberInfo.is_admin_ === false) return false
         return true
     }).map((menu) => {

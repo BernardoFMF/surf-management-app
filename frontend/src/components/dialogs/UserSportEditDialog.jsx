@@ -35,7 +35,7 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
                 onClose={closeHandler}
             >
                 <Typography sx={{pl: 5, pt: 5}} id="modal-modal-title" variant="h2" component="h2">
-                    teste
+                    {t('Update')}
                 </Typography>
                 <DialogContent>
                     { error && <Box sx={{ pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }

@@ -23,6 +23,7 @@ import * as Yup from 'yup';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import ForwardIcon from '@mui/icons-material/Forward';
 
 const AllSportsPage = () => {
     const {t, i18n} = useTranslation()
@@ -36,12 +37,20 @@ const AllSportsPage = () => {
     const sportsFetch = useSelector((state) => state.sportsFetch)
     const { loading, error, sportsGet } = sportsFetch
 
-    const sportsUpdate = useSelector((state) => state.updateSport)
-    const { loading: loadingUpdate } = sportsUpdate
+    const sportUpdate = useSelector((state) => state.updateSport)
+    const { loading: loadingUpdate, updateSport: update } = sportUpdate
+
+    const sportDelete = useSelector((state) => state.sportDeletion)
+    const { sportsDeletion } = sportDelete
     
     useEffect(() => {
       dispatch(getSports())
+    },[update, sportsDeletion])
+
+    useEffect(() => {
+      dispatch(getSports())
     },[])
+
 
     useEffect(() => {
       if(sportsGet) setSports(sportsGet)
@@ -49,12 +58,10 @@ const AllSportsPage = () => {
 
     const deleteSportHandle = async (id) => {
       dispatch(deleteSport(id))
-      dispatch(getSports())
     }
 
     const handleSubmitUpdateByPlus = async (id, name, is_deleted) => {
       dispatch(updateSport(id, name, !is_deleted))
-      dispatch(getSports())
     }
 
     const handleSubmitCreate = async (values) => {
@@ -84,15 +91,7 @@ const AllSportsPage = () => {
                                                       {sport.name_}
                                                   </Typography>
                                                 </Grid>
-                                                <br />
-                                                <Grid container>
-                                                  <Typography sx={{ fontSize: 18 }}  gutterBottom>
-                                                    {t('all_sports_is_deleted?')}
-                                                  </Typography>
-                                                  <Typography sx={{ ml: 2, fontSize: 17 }}  gutterBottom>
-                                                    {sport.is_deleted_? <CheckCircleIcon></CheckCircleIcon> : <HighlightOffIcon></HighlightOffIcon>}
-                                                  </Typography>
-                                                </Grid>
+                                                
                                                 <br />
                                                 <Grid container>
                                                   <Typography sx={{ fontSize: 18 }} >
@@ -104,7 +103,8 @@ const AllSportsPage = () => {
                                                 </Grid>                        
                                             </CardContent>
                                             <CardActions>
-                                                <Button size="small" type="submit"  onClick={() => navigate(`/application/sports/${sport.id_}`)}>{t('view_sport')}</Button>
+                                                {!memberInfo.is_admin_ && <Button size="small" type="submit"  >{t('apply')}</Button>}
+                                                {memberInfo.is_admin_ && <Button size="small" type="submit"  onClick={() => navigate(`/application/sports/${sport.id_}`)}>{t('view_sport')}</Button>}
                                                 {!sport.is_deleted_ ? memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '10px' }} color={'secondary'} onClick={() => deleteSportHandle(sport.id_)}> <DeleteIcon  sx={{ ml: 28}}  /></ButtonBase> 
                                                 : memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '10px'}} color={'secondary'} onClick={() => handleSubmitUpdateByPlus(sport.id_, sport.name_, sport.is_deleted_)}><AddBoxIcon  sx={{ ml: 28}} /></ButtonBase>}
                                             </CardActions>

@@ -153,6 +153,7 @@ create table User_Sport_ (
 	fed_name_		varchar(60),
 	years_federated_ int [],
 	is_absent_		bool default false,
+	is_candidate_ 	bool default false,
 
 	primary key (user_id_, sport_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_),

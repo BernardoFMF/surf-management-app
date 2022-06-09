@@ -64,21 +64,23 @@ const QUERY_UPDATE_USER = 'call put_user($1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 
 const QUERY_DELETE_USER = 'call delete_user($1);'
 
-const QUERY_GET_USERS_SPORTS = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false'
+const QUERY_GET_USERS_SPORTS = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_, is_candidate_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false'
 
-const QUERY_GET_USERS_SPORT = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false and sport_id_ = $1'
+const QUERY_GET_USERS_SPORT = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_, is_candidate_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false and sport_id_ = $1 and is_candidate_ = $2'
 
-const QUERY_GET_USER_SPORTS_BY_ID = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false and user_id_ = $1'
+const QUERY_GET_USER_SPORTS_BY_ID = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_, is_candidate_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false and user_id_ = $1'
 
 const QUERY_NUMBER_OF_USER_SPORTS = 'select count(*) from User_sport_ where user_id_ = $1'
 
 const QUERY_NUMBER_OF_SPORT_USERS = 'select count(*) from User_sport_ where sport_id_ = $1'
 
-const QUERY_POST_USER_SPORT = 'call post_user_sport($1, $2, $3, $4, $5, $6, $7)'
+const QUERY_POST_USER_SPORT = 'call post_user_sport($1, $2, $3, $4, $5, $6, $7, $8)'
 
-const QUERY_UPDATE_USER_SPORT = 'call put_user_sport($1, $2, $3, $4, $5, $6, $7, $8)'
+const QUERY_UPDATE_USER_SPORT = 'call put_user_sport($1, $2, $3, $4, $5, $6, $7, $8, $9)'
 
 const QUERY_DELETE_USER_SPORT = 'update User_sport_ set is_absent_ = true where user_id_ = $1 and sport_id_ = $2'
+
+const QUERY_DELETE_USER_SPORT_CANDIDATE = 'delete from User_sport_ where user_id_ = $1 and sport_id_ = $2'
 
 const QUERY_GET_QUOTAS = 'select q.id_, q.member_id_, username_, payment_date_, date_, email_, phone_number_, iban_ from Quota_ q join Member_ m on q.member_id_ = m.id_ join Contact_ c on m.id_ = c.member_id_'
 
@@ -96,7 +98,7 @@ const QUERY_POST_QUOTA = 'call post_quotas($1, $2)'
 
 const QUERY_UPDATE_MEMBER_QUOTA = 'update Quota_ set payment_date_ = $1 where id_ = $2'
 
-const QUERY_GET_MEMBER_BY_ID = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_, img_value_, iban_ from Member_ m join Member_Types_ qp on m.member_type_ = qp.type_ join Member_img_ mi on m.id_ = mi.member_id_ where id_ = $1'
+const QUERY_GET_MEMBER_BY_ID = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_, img_value_, iban_, category_, quota_value_ from Member_ m join Member_Types_ qp on m.member_type_ = qp.type_ join Member_img_ mi on m.id_ = mi.member_id_ where id_ = $1'
 
 const QUERY_GET_MEMBER_BY_USERNAME = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_, iban_ from Member_ m join Member_Types_ qp on m.member_type_ = qp.type_  where username_ = $1'
 
@@ -176,6 +178,7 @@ const QUERY_NUMBER_OF_MEMBERS_IN_GROUP = 'select count(*) from Group_Member_ whe
 
 export default {
     QUERY_GET_GROUP_MEMBERS,
+    QUERY_DELETE_USER_SPORT_CANDIDATE,
     QUERY_NUMBER_OF_MEMBERS_IN_GROUP,
     QUERY_DELETE_MEMBER_GROUP, 
     QUERY_POST_MEMBER_GROUP, 
