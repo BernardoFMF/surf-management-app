@@ -43,6 +43,7 @@ create table Member_ (
 create table Group_ (
 	group_id_ 	 	int generated always as identity,
 	name_			text,
+	description_	text,
 	group_type_		text check (group_type_ in ('member_type', 'member_sport_type')),
 	types_			text[],
 	

@@ -339,13 +339,13 @@ begin
 end
 $$;
 
-create or replace procedure post_group(p_name_ text, p_types_ text[], p_group_type_ text, out new_id_ int)
+create or replace procedure post_group(p_name_ text, p_description_ text, p_types_ text[], p_group_type_ text, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
 begin
 	with new_id_table_ as (
-		insert into Group_ (name_, group_type_, types_) values (p_name_, p_group_type_, p_types_) returning group_id_
+		insert into Group_ (name_, description_, group_type_, types_) values (p_name_, p_description_, p_group_type_, p_types_) returning group_id_
 	)
 	select group_id_ into new_id_ from new_id_table_;
 end
