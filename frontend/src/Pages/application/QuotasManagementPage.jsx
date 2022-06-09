@@ -16,6 +16,7 @@ import MainCard from '../../components/cards/MainCard';
 import InputField from '../../components/multiStepForm/InputField';
 import { Formik, Form } from 'formik';
 import SubCard from '../../components/cards/SubCard'
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 
 
 const QuotasManagementPage = () => {
@@ -26,7 +27,7 @@ const QuotasManagementPage = () => {
     const update = useSelector((state) => state.typesUpdate)
     const { typesUpdate } = update
     const create = useSelector((state) => state.createType)
-    const { createType } = create
+    const { createT } = create
 
     const [type, setType] = React.useState();
     
@@ -39,14 +40,14 @@ const QuotasManagementPage = () => {
     }
 
     const handleSubmitCreate = async (values) => {
-        dispatch(createType(values.type, values.quota_value))
+        dispatch(createType(values.type, values.quota_value, values.category))
         dispatch(getTypes())
     }
     return (
     <>
         <MainCard title={t('management_title')} sx={{height: '100%'}}>
             { typesUpdate && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success">{t('updated_sucessfully')}</Alert></Box> }
-            { createType && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success">{t('management_create_alert')}</Alert></Box> }
+            { createT && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success">{t('management_create_alert')}</Alert></Box> }
             { loading ? 
                 <Stack alignItems="center">
                     <CircularProgress size='4rem'/>
@@ -75,6 +76,9 @@ const QuotasManagementPage = () => {
                                                             <Typography sx={{ fontSize: 22 }} color="primary" gutterBottom>
                                                                 {type.type_}
                                                             </Typography>
+                                                            <Typography sx={{ fontSize: 16 }} color="secondary" gutterBottom>
+                                                                {type.category_}
+                                                            </Typography>
                                                             <br />
                                                             <InputField name='quota_value' label={t('management_quota_value')} type='text'>
                                                                 {type.quota_value_}
@@ -98,15 +102,17 @@ const QuotasManagementPage = () => {
                         <br />
                         <br />
                         <Grid style={{ display: 'flex',alignItems: 'center',justifyContent: 'center'}} sx={{ maxWidth: '100%' }}>
-                            <SubCard title={ <Typography sx={{ fontSize: 22, minWidth: 370 }} color="primary" gutterBottom> {t('management_create')} </Typography>}   >
+                            <SubCard elevation={2} title={ <Typography sx={{ fontSize: 22, minWidth: 370 }} color="primary" gutterBottom> {t('management_create')} </Typography>}   >
                                 <Formik
                                     initialValues={{
                                         type: '',
                                         quota_value: '', 
+                                        category: ''
                                     }}
                                     validationSchema={Yup.object().shape({
                                         type: Yup.string().required(t('management_type_mandatory')),
                                         quota_value: Yup.string().required(t('management_quota_value_mandatory')),
+                                        category: Yup.string().required(t('category_mandatory'))
                                     })}
                                     onSubmit={handleSubmitCreate}
                                 >
@@ -117,6 +123,8 @@ const QuotasManagementPage = () => {
                                             </InputField>
                                             <InputField name='quota_value' label={t('management_quota_value')} type='text'>
                                             </InputField>
+                                            <DropdownInputField name='category' label={t('category')} options={['user', 'company']}></DropdownInputField>
+                                            <br/>
                                             <AnimateButton>
                                                 <LoadingButton
                                                     disableElevation

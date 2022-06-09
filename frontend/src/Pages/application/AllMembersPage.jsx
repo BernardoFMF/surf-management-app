@@ -140,11 +140,11 @@ const AllMembersPage = () => {
                     .replace(/^.+,/, "");
                 base64String = 'data:image/jpeg;base64,' + base64String
 
-                dispatch(postUser({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img : base64String, type: values.memberType, paid_enrollment: values.paidEnrollment, iban: values.iban  }))
+                dispatch(postUser({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img : base64String, type: values.memberType, paid_enrollment: values.paidEnrollment, iban: values.iban, enrollment_date: values.enrollmentDate  }))
             }
             reader.readAsDataURL(values.image);
         } else {
-            dispatch(postUser({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img, type: values.memberType, paid_enrollment: values.paidEnrollment, iban: values.iban }))
+            dispatch(postUser({full_name: values.fullName,birth_date: date, gender: values.gender, cc: values.cc, nif: values.nif, username: values.username, email: values.email, password: values.password, nationality: values.nationality, location: values.location, address: values.address, phone_number: values.phoneNumber, postal_code: values.postalCode, img, type: values.memberType, paid_enrollment: values.paidEnrollment, iban: values.iban,  enrollment_date: values.enrollmentDate }))
         }
     }
 
@@ -158,6 +158,7 @@ const AllMembersPage = () => {
         { field: 'nationality_', headerName: t('nationality'), width: 130 },
         { field: 'birth_date_', headerName: t('birth_date'), width: 150 },
         { field: 'member_type_', headerName: t('member_type'), width: 130 },
+        { field: 'enrollment_date_', headerName: t('enrollment_date'), width: 150 },
         { field: 'has_debt_', headerName: t('has_debt_'), width: 110 , type: 'boolean'},
         { field: 'paid_enrollment_', headerName: t('paid_enrollment_'), width: 120, type: 'boolean' },
         { field: 'is_admin_', headerName: t('is_admin_'), width: 120 , type: 'boolean'},
@@ -208,7 +209,7 @@ const AllMembersPage = () => {
                         }}
                     >
                         { errorPost && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorPost)}</Alert></Box> }
-                        <MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', iban: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null, memberType: '', paidEnrollment: false }}
+                        <MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', iban: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null, memberType: '', paidEnrollment: false, enrollmentDate: '' }}
                     onSubmit={handleSubmit}>
                             <FormStep stepName='User' validationSchema={Yup.object().shape({
                                 username: Yup.string().required(t('sign_up_username_mandatory')),
@@ -278,10 +279,12 @@ const AllMembersPage = () => {
                             </FormStep>
                             <FormStep stepName='Member' validationSchema={Yup.object().shape({
                                 memberType: Yup.string().required(t('candidates_modal_member_type_mandatory')),
-                                paidEnrollment: Yup.bool().required('é obrigatório')
+                                paidEnrollment: Yup.bool().required('é obrigatório'),
+                                enrollmentDate: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).max(new Date(), t('sign_up_max_date')).required(t('enrollment_date_mandatory'))
                             })}>
                                 <DropdownInputField name='memberType' label={t('candidates_modal_member_type')} options={typesGet && typesGet.map(type => type.type_).reduce((o, key) => Object.assign(o, {[key]: key}), {})}></DropdownInputField>
-                                <CheckInputField name='paidEnrollment' label='paid enrollment'/>
+                                <CheckInputField name='paidEnrollment' label={t('paid_enrollment_')}/>
+                                <DateInputField name='enrollmentDate' label={t('enrollment_date')}></DateInputField>
                             </FormStep>
                         </MultiStepForm>
                     </Box>

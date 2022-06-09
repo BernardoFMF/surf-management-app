@@ -138,7 +138,7 @@ const QUERY_UPDATE_MEMBER_TOKEN = 'update Member_token_ set token_ = $2, created
 
 const QUERY_POST_NEW_TOKEN = 'call post_token($1,$2)'
 
-const QUERY_GET_MANAGEMENT_QUOTAS = 'select type_, quota_value_ from Member_Types_'
+const QUERY_GET_MANAGEMENT_QUOTAS = 'select type_, quota_value_, category_ from Member_Types_'
 
 const QUERY_UPDATE_MANAGEMENT_QUOTAS = 'update Member_Types_ set quota_value_ = $1 where type_ = $2'
 

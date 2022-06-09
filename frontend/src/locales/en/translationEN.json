@@ -254,5 +254,13 @@
     "start_date": "Initial date",
     "end_date": "Final date",
 
-    "quota_creation": "Create new quota"
+    "quota_creation": "Create new quota",
+
+    "enrollment_date_mandatory": "Enrollment date is mandatory",
+    "enrollment_date": "Enrollment date",
+    "category": "Category",
+    "category_mandatory" : "Category is mandatory"
+
+
+
 }

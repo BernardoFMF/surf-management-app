@@ -665,6 +665,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('Commit')
 			users.rows = users.rows.map(user => {
 				user.birth_date_ = formatDate(user.birth_date_)
+				user.enrollment_date_ = formatDate(user.enrollment_date_)
 				return user
 			})
 			const result = {
@@ -686,6 +687,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
 			result.rows = result.rows.map(user => {
 				user.birth_date_ = formatDate(user.birth_date_)
+				user.enrollment_date_ = formatDate(user.enrollment_date_)
 				return user
 			})
 			return result.rows[0]

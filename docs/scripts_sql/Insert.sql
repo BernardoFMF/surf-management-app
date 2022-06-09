@@ -16,7 +16,7 @@ values ('effective', 15, 'user'),
 ('founder', 0, 'user');
 								
 insert into Member_(member_type_, has_debt_, is_deleted_, username_, pword_, iban_) 
-values ('founder',false,false, 'afonsoribeiro', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K', 'PT50002700000001234567833'), 
+values ('founder',false,false, 'afonsoribeiro', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K', 'PT50001100000001234567833'), 
 ('effective',true,FALSE, 'joselopes', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K', 'PT50001234270000000567833'),
 ('corporate',false,FALSE, 'ripcurl','$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',  'PT50001230056742700000833'), 
 ('corporate',false, FALSE,'billabong','$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',  'PT50001211116742700000833');
