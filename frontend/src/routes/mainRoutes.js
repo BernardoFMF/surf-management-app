@@ -4,6 +4,7 @@ import MainLayout from '../layout/mainLayout'
 import Loadable from '../components/Loadable'
 import RequireAuth from '../components/RequireAuth'
 import RequireAdmin from '../components/RequireAdmin'
+import RequireUser from '../components/RequireUser'
 import Error from '../Pages/error/Error'
 
 const DashboardDefault = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
@@ -65,8 +66,8 @@ const mainRoutes = {
             element: <RequireAdmin><AllCompaniesPage/></RequireAdmin>
         },
         {
-            path: '/application/member/:id/quotas',
-            element: <RequireAdmin><MyQuotasPage/></RequireAdmin>
+            path: '/application/quotas/members/:id',
+            element: <RequireUser><MyQuotasPage/></RequireUser>
         },
         {
             path: '/application/events',
@@ -74,11 +75,11 @@ const mainRoutes = {
         },
         {
             path: '/application/events/members/:id',
-            element: <MyEventsPage/>
+            element: <RequireUser><MyEventsPage/></RequireUser>
         },
         {
-            path: '/application/members/:id/sports',
-            element: <RequireAdmin><MySportsPage/></RequireAdmin>
+            path: '/application/sports/members/:id',
+            element: <RequireUser><MySportsPage/></RequireUser>
         },
         {
             path: '/application/quotas/management',

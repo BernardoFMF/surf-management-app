@@ -2,11 +2,11 @@ import { Navigate} from 'react-router-dom';
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-function RequireAdmin({ children }) {
+function RequireUser({ children }) {
     let { id } = useParams()
     const memberLogin = useSelector((state) => state.memberLogin)
     const { memberInfo } = memberLogin
-    return memberInfo.is_admin_ ? children : <Navigate to='/unauthorized' replace/>
+    return memberInfo.id_ === parseInt(id) ? children : <Navigate to='/unauthorized' replace/>
 }
 
-export default RequireAdmin
+export default RequireUser

@@ -4,7 +4,6 @@ import express from 'express'
 
 import authentication from '../middlewares/authMiddleware.js'
 
-import groupController from '../controllers/groupControllers.js'
 
 const groupRoutes = (data) => {
 	const app = express.Router()

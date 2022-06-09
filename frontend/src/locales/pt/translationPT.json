@@ -258,5 +258,11 @@
     "start_date": "Data inicial",
     "end_date": "Data final",
 
-    "quota_creation": "Criar nova quota"
+    "quota_creation": "Criar nova quota",
+
+    "enrollment_date_mandatory": "Data de inscrição é obrigatória",
+    "enrollment_date": "Data de inscrição",
+    "category": "Categoria",
+    "category_mandatory" : "Categoria é obrigatório"
+
 }

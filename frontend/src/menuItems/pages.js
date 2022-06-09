@@ -52,7 +52,7 @@ const pages = {
                     title: 'My Sports',
                     type: 'item',
                     hasParams: true,
-                    url: '/application/members/{id}/sports'
+                    url: '/application/sports/members/{id}'
                 },
                 {
                     id: 'all_sports',
@@ -74,7 +74,7 @@ const pages = {
                     title: 'My Quotas',
                     type: 'item',
                     hasParams: true,
-                    url: '/application/member/{id}/quotas'
+                    url: '/application/quotas/members/{id}'
                 },
                 {
                     id: 'all_quotas',

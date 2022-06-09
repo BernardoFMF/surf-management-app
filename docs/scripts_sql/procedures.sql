@@ -28,7 +28,7 @@ begin
 	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, gender_)
 	values (new_id_, nif_, cc_, full_name_, nationality_, birth_date_, p_enrollment_date_, paid_enrollment_, gender_); 
 
-	insert into Group_Member_ (member_id_, group_id_) select new_id_, id_ from Group_ where group_type_ = 'member_type' and mtype_ = any(types_);
+	insert into Group_Member_ (member_id_, group_id_) select new_id_, group_id_ from Group_ where group_type_ = 'member_type' and mtype_ = any(types_);
 
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;

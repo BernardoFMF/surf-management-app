@@ -55,7 +55,7 @@ export const updateTypes = (type, quota_value) => async (dispatch) => {
   }
 }
 
-export const createType = (type, quota_value) => async (dispatch) => {
+export const createType = (type, quota_value, category) => async (dispatch) => {
   try {
     dispatch({
       type: TYPES_CREATE_REQUEST,
@@ -63,7 +63,7 @@ export const createType = (type, quota_value) => async (dispatch) => {
     const response = await fetch(`/api/quotas/management`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({"type": type, "quota_value": quota_value})
+        body: JSON.stringify({"type": type, "quota_value": quota_value, category})
     })
     const types = await response.json()
     if(response.status !== 201) throw Error(types.message_code)
