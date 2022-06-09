@@ -350,3 +350,14 @@ begin
 	select group_id_ into new_id_ from new_id_table_;
 end
 $$;
+
+create or replace procedure delete_group(p_group_id_ int)
+LANGUAGE plpgsql  
+as
+$$
+begin
+	/*delete from Event_Group_ where group_id_ = p_group_id_;*/
+	delete from Group_Member_ where group_id_ = p_group_id_;
+	delete from Group_ where group_id_ = p_group_id_;
+end
+$$;

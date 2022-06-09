@@ -40,7 +40,7 @@ const groupControllers = (data) => {
 	})
 
     const deleteMemberInGroup = asyncHandler(async (req, res) => {
-        const member = await services.deleteMemberInGroupServices(req.params.id, req.body.user_id)
+        const member = await services.deleteMemberInGroupServices(req.params.id, req.params.uid)
         if (member) res.json({ message: 'Member deleted sucessfully', message_code: 'MESSAGE_CODE_41' })
 	})
 

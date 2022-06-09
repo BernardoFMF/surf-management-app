@@ -1345,7 +1345,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const group = await client.query(queries.QUERY_POST_GROUP, [name_, description_, group_type_, types_, 0])
+			const group = await client.query(queries.QUERY_POST_GROUP, [name_, description_, types_, group_type_, 0])
 			await client.query('commit')
 			return group.rows[0].new_id_
 		} catch (e) {
@@ -1378,7 +1378,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		try {
 			await client.query('begin')
 			const groups = await client.query(query, [id_])
-			const number_of_groups = await client.query(queries.QUERY_NUMBER_OF_MEMBER_GROUPS)
+			const number_of_groups = await client.query(queries.QUERY_NUMBER_OF_MEMBER_GROUPS, [id_])
 			await client.query('commit')
 			const result = {groups:groups.rows, number_of_groups: parseInt(number_of_groups.rows[0].count)}
 			return result
@@ -1396,7 +1396,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('begin')
 			await client.query(queries.QUERY_POST_MEMBER_GROUP, [id_, user_id_])
 			await client.query('commit')
-			return { id, user_id_ }
+			return { id_, user_id_ }
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1411,7 +1411,25 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('begin')
 			await client.query(queries.QUERY_DELETE_MEMBER_GROUP, [id_, user_id_])
 			await client.query('commit')
-			return { id, user_id_ }
+			return { id_, user_id_ }
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}	
+	}
+
+	const getGroupByIdMembersData = async (id_, offset_, limit_) => {
+		let query = queries.QUERY_GET_GROUP_MEMBERS
+		query = query + ` offset ${offset_} FETCH FIRST ${limit_} ROWS only`
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const members = await client.query(query, [id_])
+			const number_of_members = await client.query(queries.QUERY_NUMBER_OF_MEMBERS_IN_GROUP, [id_])
+			await client.query('commit')
+			return { members: members.rows, number_of_members: parseInt(number_of_members.rows[0].count) }
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1429,6 +1447,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getMemberGroupsData,
 		postMemberInGroupData,
 		deleteMemberInGroupData,
+		getGroupByIdMembersData,
 		getCandidateByIbanData,
 		getMemberByIbanData, 
 		getAllUserSportsByIdData,

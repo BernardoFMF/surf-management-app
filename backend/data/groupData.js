@@ -10,6 +10,7 @@ const groupData = (db) => {
     const getGroupById = async (id_) => {
         const group = await db.getGroupByIdData(id_)
         if (!group) throw error(404, 'Group does not exist', 'MESSAGE_CODE_42')
+        return group
     }
 
     const postGroup = async (name_, description_, group_type_, types_) => {
@@ -20,7 +21,7 @@ const groupData = (db) => {
     }
 
     const deleteGroup = async (id_) => {
-        await getGroupById()
+        await getGroupById(id_)
         return await db.deleteGroupData(id_)
     }
 

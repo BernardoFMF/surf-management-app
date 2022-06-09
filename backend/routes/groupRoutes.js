@@ -3,12 +3,14 @@
 import express from 'express'
 
 import authentication from '../middlewares/authMiddleware.js'
-
+import groupController from '../controllers/groupControllers.js'
 
 const groupRoutes = (data) => {
 	const app = express.Router()
 
 	const controller = groupController(data)
+
+	app.get('/:id/members', authentication.authAdmin, controller.getGroupByIdMembers)
 
 	app.get('/', authentication.authAdmin, controller.getGroups)
 
@@ -16,15 +18,15 @@ const groupRoutes = (data) => {
 
 	app.post('/', authentication.authAdmin, controller.postGroup)
 
-	app.delete('/', authentication.authAdmin, controller.deleteGroup)
+	app.delete('/:id', authentication.authAdmin, controller.deleteGroup)
 
 	app.get('/members/:id', authentication.authMember, controller.getMemberGroups)
 
-	app.post('/:id', authentication.authAdmin, controller.postMemberInGroup)
+	app.post('/:id/members', authentication.authAdmin, controller.postMemberInGroup)
 
-	app.delete('/:id', authentication.authAdmin, controller.deleteMemberInGroup)
+	app.delete('/:id/members/:uid', authentication.authAdmin, controller.deleteMemberInGroup)
 
-	app.get(':id/members', authentication.authAdmin, controller.getGroupByIdMembers)
+	
 
 	return app
 }
