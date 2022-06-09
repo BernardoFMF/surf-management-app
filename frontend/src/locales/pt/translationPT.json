@@ -263,6 +263,11 @@
     "enrollment_date_mandatory": "Data de inscrição é obrigatória",
     "enrollment_date": "Data de inscrição",
     "category": "Categoria",
-    "category_mandatory" : "Categoria é obrigatório"
+    "category_mandatory" : "Categoria é obrigatório",
+
+    "apply": "Candidatar",
+    "Update": "Atualizar",
+    "is_candidate_": "É candidato?"
+
 
 }

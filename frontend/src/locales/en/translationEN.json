@@ -259,8 +259,10 @@
     "enrollment_date_mandatory": "Enrollment date is mandatory",
     "enrollment_date": "Enrollment date",
     "category": "Category",
-    "category_mandatory" : "Category is mandatory"
+    "category_mandatory" : "Category is mandatory",
 
-
+    "apply": "Apply",
+    "Update": "Update",
+    "is_candidate_": "Is candidate?"
 
 }

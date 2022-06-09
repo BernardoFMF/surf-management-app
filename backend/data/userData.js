@@ -79,10 +79,10 @@ const userData = (db) => {
 		return await db.getUsersSportsData()
 	}
 	
-	const getUsersSport = async (id_, offset, limit) => {
+	const getUsersSport = async (id_, offset, limit, is_candidate) => {
 		const sport = await db.getSportByIdData(id_)
 		if (!sport) throw error(404, 'Sport does not exist', 'MESSAGE_CODE_30')
-		return await db.getUsersSportData(id_, offset, limit)
+		return await db.getUsersSportData(id_, offset, limit, is_candidate)
 	}
 	
 	const getUserSportsById = async (id_, offset_, limit_) => {
@@ -90,7 +90,7 @@ const userData = (db) => {
 		return await db.getUserSportsByIdData(id_, offset_, limit_)
 	}
 	
-	const postUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
+	const postUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_candidate_) => {
 		const user = await getUserById(id_)
 		const sport = await db.getSportByIdData(sid_)
 		if (!sport) throw error(404, 'Sport does not exist', 'MESSAGE_CODE_30')
@@ -100,22 +100,22 @@ const userData = (db) => {
 		if (user_sport)
 			throw error(409, 'User is already related to this Sport', 'MESSAGE_CODE_31')
 		*/
-		return await db.postUserSportData(user.member_id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_)
+		return await db.postUserSportData(user.member_id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_candidate_)
 	}
 	
-	const updateUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_) => {
+	const updateUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_) => {
 		await getUserById(id_)
 		/*const sports = await db.getAllUserSportsByIdData(id_)
 		const sport = sports.filter(s => s.sport_id_ == sid_)[0]
 		if (!sport) throw error(404, 'User is not related to this Sport', 'MESSAGE_CODE_32')*/
-		return await db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_)
+		return await db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_)
 	}
 	
-	const deleteUserSport = async (id_, sid_) => {
+	const deleteUserSport = async (id_, sid_, is_candidate_) => {
 		await getUserById(id_)
 		const sport = await db.getSportByIdData(sid_)
 		if (!sport) throw error(404, 'Sport does not exist', 'MESSAGE_CODE_30')
-		return await db.deleteUserSportData(id_, sid_)
+		return await db.deleteUserSportData(id_, sid_, is_candidate_)
 	}
 
 	return { 

@@ -91,7 +91,7 @@ $$;
  * Creates a user_sport
  * Verifies if this user had already practiced this sport before
  */
-create or replace procedure post_user_sport(id_ int, sid_ int, fed_id_ int, fed_number_ int, fed_name_ varchar(30), type_ text [], years_federated_ int [])
+create or replace procedure post_user_sport(id_ int, sid_ int, fed_id_ int, fed_number_ int, fed_name_ varchar(30), type_ text [], years_federated_ int [], is_candidate_ bool)
 LANGUAGE plpgsql  
 as
 $$
@@ -100,20 +100,20 @@ begin
 		update 	User_Sport_ set is_absent_ = false where user_id_ = id_ and sport_id_ = sid_;
 	end if;
 	
-	insert into User_Sport_ (user_id_, sport_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_)
-	values (id_, sid_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_);
+	insert into User_Sport_ (user_id_, sport_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_, is_candidate_)
+	values (id_, sid_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_, is_candidate_);
 end
 $$;
 
 /**
  * Updates user_sport
  */
-create or replace procedure put_user_sport(p_id_ int, p_sid_ int, p_fed_id_ int, p_fed_number_ int, p_fed_name_ varchar(30), p_type_ text [], p_years_federated_ int [], p_is_absent_ bool) 
+create or replace procedure put_user_sport(p_id_ int, p_sid_ int, p_fed_id_ int, p_fed_number_ int, p_fed_name_ varchar(30), p_type_ text [], p_years_federated_ int [], p_is_absent_ bool, p_is_candidate_ bool) 
 LANGUAGE plpgsql  
 as
 $$
 begin
-	update User_Sport_ set type_ = p_type_, fed_number_ = p_fed_number_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_ where user_id_ = p_id_ and sport_id_ = p_sid_;
+	update User_Sport_ set type_ = p_type_, fed_number_ = p_fed_number_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_, is_candidate_ = p_is_candidate_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 end
 $$;
 

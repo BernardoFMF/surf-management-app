@@ -759,16 +759,16 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const getUsersSportData = async (id_, offset, limit) => {
+	const getUsersSportData = async (id_, offset, limit, is_candidate_) => {
 		let query = queries.QUERY_GET_USERS_SPORT
 		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const sports = await client.query(query, [id_])
+			const sports = await client.query(query, [id_, is_candidate_])
 			const number_of_sports = await client.query(queries.QUERY_NUMBER_OF_SPORT_USERS, [id_])
 			await client.query('commit')
-			const result = { sports: sports.rows, number_of_sports: number_of_sports.rows[0].count }
+			const result = { sports: sports.rows, number_of_sports: parseInt(number_of_sports.rows[0].count) }
 			return result
 		} catch (e) {
 			await client.query('rollback')
@@ -788,7 +788,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			const sports = await pool.query(query, [id_])
 			const number_of_sports = await client.query(queries.QUERY_NUMBER_OF_USER_SPORTS, [id_])
 			await client.query('commit')
-			const result = { sports: sports.rows, number_of_sports: number_of_sports.rows[0].count }
+			const result = { sports: sports.rows, number_of_sports: parseInt(number_of_sports.rows[0].count) }
 			return result
 		} catch (e) {
 			await client.query('rollback')
@@ -813,11 +813,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
+	const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_candidate_) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			await client.query(queries.QUERY_POST_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_])
+			await client.query(queries.QUERY_POST_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_candidate_])
 			await client.query('commit')
 			return {id_, sid_}
 		} catch (e) {
@@ -828,11 +828,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_) => {
+	const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			await client.query(queries.QUERY_UPDATE_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_])
+			await client.query(queries.QUERY_UPDATE_USER_SPORT, [id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_])
 			await client.query('commit')
 			return {id_, sid_}
 		} catch (e) {
@@ -844,11 +844,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const deleteUserSportData = async (id_, sid_) => {
+	const deleteUserSportData = async (id_, sid_, is_candidate_) => {
+		const query = is_candidate_ ? queries.QUERY_DELETE_USER_SPORT : queries.QUERY_DELETE_USER_SPORT_CANDIDATE
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			await pool.query(queries.QUERY_DELETE_USER_SPORT, [id_, sid_])
+			await pool.query(query, [id_, sid_])
 			await client.query('commit')
 			return {id_, sid_}
 		} catch (e) {

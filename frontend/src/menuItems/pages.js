@@ -74,6 +74,7 @@ const pages = {
                     title: 'My Quotas',
                     type: 'item',
                     hasParams: true,
+                    hideIfZeroValue: true,
                     url: '/application/quotas/members/{id}'
                 },
                 {
