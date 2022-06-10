@@ -5,8 +5,6 @@ import {
   } from '../constants/uploadConstants'
 
   export const uploadFile = (file) => async (dispatch) => {
-    console.log(file)
-    console.log(JSON.stringify(file))
     try {
       dispatch({
         type: UPLOAD_REQUEST,
