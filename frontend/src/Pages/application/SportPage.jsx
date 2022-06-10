@@ -175,7 +175,7 @@ return (
             sid={id}
             byAdmin={true}
         />
-        <MainCard title={usersSportGet && usersSportGet.users.length !== 0 && usersSportGet.users[0] ? usersSportGet.users[0].name_ : ''} sx={{height: '100%'}}>
+        <MainCard title={usersSportGet && usersSportGet.sport ? usersSportGet.sport.name_ : ''} sx={{height: '100%'}}>
         { loading ? 
             <Stack alignItems="center">
                 <CircularProgress size='4rem'/>

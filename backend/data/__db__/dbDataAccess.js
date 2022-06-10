@@ -767,10 +767,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
+			const sport = await client.query(queries.QUERY_GET_SPORT_BY_ID, [id_])
+			console.log(sport);
 			const sports = await client.query(query, [id_, is_candidate_])
-			const number_of_sports = await client.query(query, [id_, is_candidate_])
+			const number_of_sports = await client.query(queries.QUERY_NUMBER_OF_SPORT_USERS, [id_, is_candidate_])
 			await client.query('commit')
-			const result = { users: sports.rows, number_of_users: parseInt(number_of_sports.rows[0].count) }
+			const result = { users: sports.rows, number_of_users: parseInt(number_of_sports.rows[0].count),  sport : sport.rows[0] }
 			return result
 		} catch (e) {
 			await client.query('rollback')
