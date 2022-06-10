@@ -11,6 +11,7 @@ import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReduc
 import { companyPostReducer, companyDeletionReducer, companiesFetchReducer, companyFetchReducer, companyUpdateReducer, memberValidateFetchReducer } from './reducers/companyReducers'
 import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
 import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer, memberEventsAttendanceFetchReducer, createEventReducer} from './reducers/eventReducers'
+import { uploadReducer} from './reducers/uploadReducers'
 
 const reducer = combineReducers({
   memberLogin: memberLoginReducer,
@@ -51,7 +52,8 @@ const reducer = combineReducers({
   createEvent: createEventReducer,
   validateFetch: memberValidateFetchReducer,
   userSportUpdate: userSportsUpdateReducer,
-  userSportDelete: usersSportDeleteReducer
+  userSportDelete: usersSportDeleteReducer,
+  uploadFileFetch: uploadReducer
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')
