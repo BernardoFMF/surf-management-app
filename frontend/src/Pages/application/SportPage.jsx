@@ -8,15 +8,17 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import MainCard from '../../components/cards/MainCard'
 import { Grid, Stack, CircularProgress, Box, Alert, Pagination, Dialog, Typography, DialogContent, DialogActions, } from '@mui/material'
 import UserSportEditDialog from '../../components/dialogs/UserSportEditDialog';
+import UserSportApplyDialog from '../../components/dialogs/UserSportApplyDialog';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { deleteUserSport } from '../../store/actions/userActions';
+import { deleteUserSport, updateUserSports } from '../../store/actions/userActions';
 import { Form, Formik } from 'formik';
 import SearchIcon from '@mui/icons-material/Search';
 import InputField from '../../components/multiStepForm/InputField';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import CheckInputField from '../../components/multiStepForm/CheckInputField'
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 
 const SportPage = () => {
@@ -33,7 +35,10 @@ const SportPage = () => {
     })
 
     const [open, setOpen] = useState(false);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false)
+        dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
+    };
     const handleOpen = () => setOpen(true);
 
     const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -51,6 +56,7 @@ const SportPage = () => {
         dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
     }, []);
 
+
     const [selectedUserSport, setselectedUserSport] = useState({
         type_: [ "" ],
         fed_number_: 0,
@@ -64,20 +70,18 @@ const SportPage = () => {
         setselectedUserSport({ ...userSport })
         setOpenEditDialog(true)
     }
+
     useEffect(() => { 
         dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
     },[])
 
-    useEffect(() => { 
-        console.log(searchState.toggle_filter);
-    },[searchState])
 
     const [page, setPage] = useState(1);
     const limit = 5
 
     useEffect(() => {
         if(usersSportGet){
-            setRows(usersSportGet.sports.map(sport => {
+            setRows(usersSportGet.users.map(sport => {
                 let x = {
                     ...sport, id: sport.user_id_
                 }
@@ -93,6 +97,20 @@ const SportPage = () => {
 
     const deleteUserSportHandle = (id, sid) => {
         dispatch(deleteUserSport(id, sid, searchState.toggle_filter))
+        dispatch(getUsersSport(sid, 0, limit, searchState.toggle_filter))
+    }
+
+    const approveUserSportHandle = (userSport) => {
+        const body = {
+            fed_id: userSport.fed_id_,
+            fed_number: userSport.fed_number_,
+            fed_name: userSport.fed_name_,
+            type: userSport.type_,
+            years_federated: userSport.years_federated_,
+            is_absent: userSport.is_absent_,
+            is_candidate: false
+        }
+        dispatch(updateUserSports(userSport.user_id_, userSport.sport_id_, body))
         dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
     }
 
@@ -100,7 +118,7 @@ const SportPage = () => {
         setSearchState(values)
         setPage(1)
         setRows([])
-        dispatch(getUsersSport(id, 0, limit, values.toggle_filter))
+        dispatch(getUsersSport(id, 0, limit, values.toggle_filter, values.username_filter))
     }
 
     const columns = [
@@ -118,13 +136,22 @@ const SportPage = () => {
             headerName: t('actions'),
             width: 110,
             getActions: (params) => [
+                !searchState.toggle_filter ?
                 <GridActionsCellItem
                     icon={<EditIcon />}
                     label="Edit User Sport"
                     onClick={() => {
                         userSportEditHandler(params.row)
                     }}
-                />,
+                /> :
+                <GridActionsCellItem
+                    icon={<HowToRegIcon />}
+                    label="Approve"
+                    onClick={() => {
+                        approveUserSportHandle(params.row)
+                    }}
+                />
+                ,
                 <GridActionsCellItem
                     icon={<DeleteIcon />}
                     label="Delete"
@@ -137,24 +164,18 @@ const SportPage = () => {
 
 return (
     <>
-        <Dialog
-            PaperProps={{
-                sx: {
-                    width: 500,
-                    height: 600
-                }
-            }}
-            open={open}
-            onClose={handleClose}
-        >
-            
-        </Dialog>
         <UserSportEditDialog
             open={openEditDialog}
             closeHandler={closeDialogHandler}
             userSport={selectedUserSport}
         />
-        <MainCard title={usersSportGet && usersSportGet.sports.length !== 0 && usersSportGet.sports[0] ? usersSportGet.sports[0].name_ : ''} sx={{height: '100%'}}>
+        <UserSportApplyDialog
+            open={open}
+            closeHandler={handleClose}
+            sid={id}
+            byAdmin={true}
+        />
+        <MainCard title={usersSportGet && usersSportGet.sport ? usersSportGet.sport.name_ : ''} sx={{height: '100%'}}>
         { loading ? 
             <Stack alignItems="center">
                 <CircularProgress size='4rem'/>
@@ -218,7 +239,7 @@ return (
                                     handleOpen()
                                 }}
                             >
-                                {t('create')}
+                                {t('apply')}
                             </LoadingButton>
                         </AnimateButton>
                     </Box> 
@@ -236,7 +257,7 @@ return (
                         }
                     }}
                 />
-                <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(usersSportGet.number_of_sports / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(usersSportGet.number_of_users / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
             </>
             )
         }

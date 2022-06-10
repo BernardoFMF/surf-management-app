@@ -6,7 +6,6 @@ const CheckGroupInputField = ({ options, ...props}) => {
     const [field, meta, helpers] = useField({ ...props, type: "checkbox" });
     
     const { setValue, setTouched } = helpers;
-    console.log(field.value);
     return (
         <FormControl component="fieldset">
             <FormLabel component="legend">{props.label}</FormLabel>

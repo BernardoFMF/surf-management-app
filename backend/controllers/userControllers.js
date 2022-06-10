@@ -53,7 +53,7 @@ const userController = (data) => {
 	})
 	
 	const getUsersSport = asyncHandler(async (req,res) => {
-		const usersWithsport = await services.getUsersSportServices(req.params.sid, req.query.offset, req.query.limit, req.query.is_candidate)
+		const usersWithsport = await services.getUsersSportServices(req.params.sid, req.query.offset, req.query.limit, req.query.is_candidate, req.query.username)
 		if (usersWithsport) res.json(usersWithsport)
 	})
 	
@@ -86,7 +86,11 @@ const userController = (data) => {
 				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
-		const userSport = await services.updateUserSportServices(req.params.id, req.params.sid, req.body.fed_id, req.body.fed_number, req.body.fed_name, req.body.type, req.body.years_federated, req.body.is_absent, req.body.is_candidate)
+		let is_candidate = false
+		if (req.body.is_candidate === undefined)
+			is_candidate = false
+		else is_candidate = req.body.is_candidate
+		const userSport = await services.updateUserSportServices(req.params.id, req.params.sid, req.body.fed_id, req.body.fed_number, req.body.fed_name, req.body.type, req.body.years_federated, req.body.is_absent, is_candidate)
 		if (userSport) res.json(userSport)
 	})
 	

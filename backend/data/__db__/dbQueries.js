@@ -32,7 +32,7 @@ const QUERY_UPDATE_COMPANY = 'call put_company($1, $2, $3, $4, $5, $6, $7, $8, $
 
 const QUERY_DELETE_COMPANY = 'update member_ set is_deleted_ = true where id_ = $1;'
 
-const QUERY_GET_SPORTS = 'select id_, name_, is_deleted_ , (select count(*) as practitioners_ from user_sport_ us where sport_id_ = id_) from sport_ s2 ;'
+const QUERY_GET_SPORTS = 'select id_, name_, is_deleted_ , (select count(*) as practitioners_ from user_sport_ us where sport_id_ = id_ and is_candidate_ = false) from sport_ s2 ;'
 
 const QUERY_GET_SPORT_BY_ID = 'select id_, name_, is_deleted_ from Sport_ where id_ = $1;'
 
@@ -72,7 +72,7 @@ const QUERY_GET_USER_SPORTS_BY_ID = 'select username_, name_, user_id_, sport_id
 
 const QUERY_NUMBER_OF_USER_SPORTS = 'select count(*) from User_sport_ where user_id_ = $1'
 
-const QUERY_NUMBER_OF_SPORT_USERS = 'select count(*) from User_sport_ where sport_id_ = $1'
+const QUERY_NUMBER_OF_SPORT_USERS = 'select count(*) from User_sport_ where sport_id_ = $1 and is_candidate_ = $2'
 
 const QUERY_POST_USER_SPORT = 'call post_user_sport($1, $2, $3, $4, $5, $6, $7, $8)'
 

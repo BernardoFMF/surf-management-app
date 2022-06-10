@@ -267,7 +267,10 @@
 
     "apply": "Candidatar",
     "Update": "Atualizar",
-    "is_candidate_": "É candidato?"
+    "is_candidate_": "É candidato?",
+    "application_sucessfully" : "Candidatura bem sucedida",
+    "associate_n_mandatory": "Número de sócio é obrigatório",
+    "associate_number": "Número de sócio"
 
 
 }
