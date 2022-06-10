@@ -28,7 +28,7 @@ begin
 	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, gender_)
 	values (new_id_, nif_, cc_, full_name_, nationality_, birth_date_, p_enrollment_date_, paid_enrollment_, gender_); 
 
-	insert into Group_Member_ (member_id_, group_id_) select new_id_, id_ from Group_ where group_type_ = 'member_type' and mtype_ = any(types_);
+	insert into Group_Member_ (member_id_, group_id_) select new_id_, group_id_ from Group_ where group_type_ = 'member_type' and mtype_ = any(types_);
 
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;
@@ -91,7 +91,7 @@ $$;
  * Creates a user_sport
  * Verifies if this user had already practiced this sport before
  */
-create or replace procedure post_user_sport(id_ int, sid_ int, fed_id_ int, fed_number_ int, fed_name_ varchar(30), type_ text [], years_federated_ int [])
+create or replace procedure post_user_sport(id_ int, sid_ int, fed_id_ int, fed_number_ int, fed_name_ varchar(30), type_ text [], years_federated_ int [], is_candidate_ bool)
 LANGUAGE plpgsql  
 as
 $$
@@ -100,20 +100,20 @@ begin
 		update 	User_Sport_ set is_absent_ = false where user_id_ = id_ and sport_id_ = sid_;
 	end if;
 	
-	insert into User_Sport_ (user_id_, sport_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_)
-	values (id_, sid_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_);
+	insert into User_Sport_ (user_id_, sport_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_, is_candidate_)
+	values (id_, sid_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_, is_candidate_);
 end
 $$;
 
 /**
  * Updates user_sport
  */
-create or replace procedure put_user_sport(p_id_ int, p_sid_ int, p_fed_id_ int, p_fed_number_ int, p_fed_name_ varchar(30), p_type_ text [], p_years_federated_ int [], p_is_absent_ bool) 
+create or replace procedure put_user_sport(p_id_ int, p_sid_ int, p_fed_id_ int, p_fed_number_ int, p_fed_name_ varchar(30), p_type_ text [], p_years_federated_ int [], p_is_absent_ bool, p_is_candidate_ bool) 
 LANGUAGE plpgsql  
 as
 $$
 begin
-	update User_Sport_ set type_ = p_type_, fed_number_ = p_fed_number_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_ where user_id_ = p_id_ and sport_id_ = p_sid_;
+	update User_Sport_ set type_ = p_type_, fed_number_ = p_fed_number_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_, is_candidate_ = p_is_candidate_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 end
 $$;
 
@@ -339,14 +339,25 @@ begin
 end
 $$;
 
-create or replace procedure post_group(p_name_ text, p_types_ text[], p_group_type_ text, out new_id_ int)
+create or replace procedure post_group(p_name_ text, p_description_ text, p_types_ text[], p_group_type_ text, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
 begin
 	with new_id_table_ as (
-		insert into Group_ (name_, group_type_, types_) values (p_name_, p_group_type_, p_types_) returning group_id_
+		insert into Group_ (name_, description_, group_type_, types_) values (p_name_, p_description_, p_group_type_, p_types_) returning group_id_
 	)
 	select group_id_ into new_id_ from new_id_table_;
+end
+$$;
+
+create or replace procedure delete_group(p_group_id_ int)
+LANGUAGE plpgsql  
+as
+$$
+begin
+	/*delete from Event_Group_ where group_id_ = p_group_id_;*/
+	delete from Group_Member_ where group_id_ = p_group_id_;
+	delete from Group_ where group_id_ = p_group_id_;
 end
 $$;

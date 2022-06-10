@@ -43,6 +43,7 @@ create table Member_ (
 create table Group_ (
 	group_id_ 	 	int generated always as identity,
 	name_			text,
+	description_	text,
 	group_type_		text check (group_type_ in ('member_type', 'member_sport_type')),
 	types_			text[],
 	
@@ -152,6 +153,7 @@ create table User_Sport_ (
 	fed_name_		varchar(60),
 	years_federated_ int [],
 	is_absent_		bool default false,
+	is_candidate_ 	bool default false,
 
 	primary key (user_id_, sport_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_),

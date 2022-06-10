@@ -28,7 +28,10 @@ import {
     USER_SPORT_UPDATE_REQUEST,
     USER_SPORT_DELETE_REQUEST,
     USER_SPORT_DELETE_SUCCESS,
-    USER_SPORT_DELETE_FAIL
+    USER_SPORT_DELETE_FAIL,
+    USERS_SPORTS_CREATE_REQUEST,
+    USERS_SPORTS_CREATE_SUCCESS,
+    USERS_SPORTS_CREATE_FAIL
   } from '../constants/userConstants'
 
 import { MEMBER_LOGIN_SUCCESS, MEMBER_FETCH_SUCCESS } from '../constants/memberConstants'
@@ -234,8 +237,8 @@ export const updateUserSports = (id, sid, body) => async (dispatch) => {
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
     })
-    console.log("fez");
     const userSport = await response.json()
+    console.log(userSport);
     if(response.status !== 200) throw Error(userSport.message_code)
     dispatch({
       type: USER_SPORT_UPDATE_SUCCESS,
@@ -253,13 +256,14 @@ export const updateUserSports = (id, sid, body) => async (dispatch) => {
   }
 }
 
-export const deleteUserSport = (id, sid) => async (dispatch) => {
+export const deleteUserSport = (id, sid, is_candidate) => async (dispatch) => {
   try {
     dispatch({
       type: USER_SPORT_DELETE_REQUEST,
     })
     const response = await fetch(`/api/users/${id}/sports/${sid}`, {
         method: 'DELETE',
+        body: JSON.stringify({is_candidate}),
         headers: { "Content-Type": "application/json" }
     })
     const userSport = await response.json()
@@ -280,32 +284,61 @@ export const deleteUserSport = (id, sid) => async (dispatch) => {
   }
 }
 
-export const getUsersSport = (id, offset, limit) => async (dispatch) => {
-try {
-  dispatch({
-    type: USERS_SPORT_FETCH_REQUEST,
-  })
-  const response = await fetch(`/api/users/sports/${id}?offset=${offset}&limit=${limit}`, {
-      method: 'GET',
-      headers: { "Content-Type": "application/json" }
-  })
-  const sports = await response.json()
-  console.log(sports);
-  if(response.status !== 200) throw Error(sports.message_code)
-  dispatch({
-    type: USERS_SPORT_FETCH_SUCCESS,
-    payload: sports,
-  })
+export const getUsersSport = (id, offset, limit, is_candidate, username) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USERS_SPORT_FETCH_REQUEST,
+    })
+    let path = `/api/users/sports/${id}?offset=${offset}&limit=${limit}&is_candidate=${is_candidate}`
+    if (username) path = `/api/users/sports/${id}?offset=${offset}&limit=${limit}&is_candidate=${is_candidate}&username=${username}`
+    const response = await fetch(path, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" },
+    })
+    const sports = await response.json()
+    if(response.status !== 200) throw Error(sports.message_code)
+    dispatch({
+      type: USERS_SPORT_FETCH_SUCCESS,
+      payload: sports,
+    })
 
-} catch (error) {
-  dispatch({
-    type: USERS_SPORT_FETCH_FAIL,
-    payload:
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message,
-  })
+  } catch (error) {
+    dispatch({
+      type: USERS_SPORT_FETCH_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
 }
+
+export const createUsersSport = (id, body) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USERS_SPORTS_CREATE_REQUEST,
+    })
+    const response = await fetch(`/api/users/${id}/sports`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    })
+    const sports = await response.json()
+    if(response.status !== 201) throw Error(sports.message_code)
+    dispatch({
+      type: USERS_SPORTS_CREATE_SUCCESS,
+      payload: sports,
+    })
+
+  } catch (error) {
+    dispatch({
+      type: USERS_SPORTS_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
 }
 
 export const postUser = (body) => async (dispatch) => {

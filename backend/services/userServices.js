@@ -75,11 +75,13 @@ const userServices = (db) => {
 		return await data.getUsersSports()
 	}
 	
-	const getUsersSportServices = async (sid, offset, limit) => {
+	const getUsersSportServices = async (sid, offset, limit, is_candidate, username) => {
 		if(!sid) throw error(400, 'Parameter not found: sid', 'MESSAGE_CODE_14')
 		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
 		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
-		return await data.getUsersSport(sid, offset, limit)
+		if(is_candidate == undefined) throw error(400, 'Parameter not found: is_candidate', 'MESSAGE_CODE_14')
+
+		return await data.getUsersSport(sid, offset, limit, is_candidate, username)
 	}
 	
 	const getUserSportsByIdServices = async (id, offset, limit) => {
@@ -89,7 +91,7 @@ const userServices = (db) => {
 		return await data.getUserSportsById(id, offset, limit)
 	}
 	
-	const postUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated) => {
+	const postUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated, is_candidate) => {
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!sid) throw error(400, 'Parameter not found: sid', 'MESSAGE_CODE_14')
 		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
@@ -98,10 +100,12 @@ const userServices = (db) => {
 		if(!fed_name) throw error(400, 'Parameter not found: fed_name', 'MESSAGE_CODE_14')
 		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
 		if(!years_federated) throw error(400, 'Parameter not found: years_federated', 'MESSAGE_CODE_14')
-		return await data.postUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated)
+		if(is_candidate == undefined) throw error(400, 'Parameter not found: is_candidate', 'MESSAGE_CODE_14')
+
+		return await data.postUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated, is_candidate)
 	}
 	
-	const updateUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_) => {
+	const updateUserSportServices = async (id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_, is_candidate) => {
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!sid) throw error(400, 'Parameter not found: sid', 'MESSAGE_CODE_14')
 		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
@@ -111,13 +115,17 @@ const userServices = (db) => {
 		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
 		if(!years_federated) throw error(400, 'Parameter not found: years_federated', 'MESSAGE_CODE_14')
 		if(is_absent_ == undefined) throw error(400, 'Parameter not found: is_absent_', 'MESSAGE_CODE_14')
-		return await data.updateUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_)
+		if(is_candidate == undefined) throw error(400, 'Parameter not found: is_candidate', 'MESSAGE_CODE_14')
+
+		return await data.updateUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated, is_absent_, is_candidate)
 	}
 	
-	const deleteUserSportServices = async (id, sid) => {
+	const deleteUserSportServices = async (id, sid, is_candidate) => {
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!sid) throw error(400, 'Parameter not found: sid', 'MESSAGE_CODE_14')
-		return await data.deleteUserSport(id, sid)
+		if(is_candidate == undefined) throw error(400, 'Parameter not found: is_candidate', 'MESSAGE_CODE_14')
+
+		return await data.deleteUserSport(id, sid, is_candidate)
 	}
 	
 	return {

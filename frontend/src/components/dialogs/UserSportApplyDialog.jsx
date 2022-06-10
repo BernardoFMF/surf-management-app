@@ -8,19 +8,34 @@ import AnimateButton from '../extended/AnimateButton';
 import * as Yup from 'yup'
 import InputField from '../multiStepForm/InputField'
 import CheckGroupInputField from '../multiStepForm/CheckGroupInputField'
-import CheckInputField from '../multiStepForm/CheckInputField'
 import ChipInputField from '../multiStepForm/ChipInputField'
-import { updateUserSports } from '../../store/actions/userActions'
+import { createUsersSport } from '../../store/actions/userActions'
 
-const UserSportEditDialog = ({open, closeHandler, userSport}) => {
+const UserSportApplyDialog = ({open, closeHandler, sid, byAdmin}) => {
     const { t } = useTranslation()
 
     const dispatch = useDispatch()
-    const userSportUpdate = useSelector((state) => state.userSportUpdate)
-    const { loading, error, updateResult } = userSportUpdate
+    const create = useSelector((state) => state.usersSportsCreate)
+    const { loading, error, usersSportsCreate } = create
 
-    const editUserSportHandler = (values) => {
-        dispatch(updateUserSports(userSport.user_id_, userSport.sport_id_, values))
+    const member = useSelector((state) => state.memberLogin)
+    const { memberInfo } = member
+
+    const createUserSportHandler = (values) => {
+        const body = {
+            sid,
+            fed_id: values.fed_id,
+            fed_number: values.fed_number,
+            fed_name: values.fed_name,
+            type: values.type,
+            years_federated: values.years_federated,
+            is_candidate: byAdmin ? false : true
+        }
+        if (byAdmin) {
+            dispatch(createUsersSport(values.id, body))
+        } else {
+            dispatch(createUsersSport(memberInfo.id_, body))
+        }
     }
     
     return (
@@ -35,11 +50,11 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
                 onClose={closeHandler}
             >
                 <Typography sx={{pl: 5, pt: 5}} id="modal-modal-title" variant="h2" component="h2">
-                    {t('Update')}
+                    {t('apply')}
                 </Typography>
                 <DialogContent>
                     { error && <Box sx={{ pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                    { updateResult && <Box sx={{ pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
+                    { usersSportsCreate && <Box sx={{ pt: 2 }}><Alert severity="success">{t('application_sucessfully')}</Alert></Box> }
                     <Box
                         sx={{
                             display: 'flex',
@@ -52,25 +67,26 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
                         <Formik
                             enableReinitialize={true}
                             initialValues={{
-                                type: userSport.type_,
-                                fed_number: userSport.fed_number_,
-                                fed_id: userSport.fed_id_,
-                                fed_name: userSport.fed_name_,
-                                years_federated: userSport.years_federated_,
-                                is_absent: userSport.is_absent_
+                                id: byAdmin ? '' : memberInfo.id_,
+                                type:'',
+                                fed_number: '',
+                                fed_id: '',
+                                fed_name: '',
+                                years_federated: []
                             }}
                             validationSchema={Yup.object().shape({
+                                id: Yup.number().required(t('associate_n_mandatory')),
                                 type: Yup.array().of(Yup.string()).min(1, t('sport_type_mandatory')),
                                 fed_number: Yup.string().required(t('fed_number_mandatory')),
                                 fed_id: Yup.string().required(t('fed_id_mandatory')),
                                 fed_name: Yup.string().required(t('fed_name_mandatory')),
-                                years_federated: Yup.array().of(Yup.number()),
-                                is_absent: Yup.bool()
+                                years_federated: Yup.array().of(Yup.number())
                             })}
-                            onSubmit={editUserSportHandler}
+                            onSubmit={createUserSportHandler}
                         >
                         {formik => (
                             <Form>
+                                {byAdmin && <InputField name='id' label={t('associate_number')} type='number'></InputField>}
                                 <CheckGroupInputField
                                     name="type"
                                     label={t("types")}
@@ -97,9 +113,8 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
                                 <InputField name='fed_id' label={t('fed_id_')} type='text'></InputField>
                                 <InputField name='fed_name' label={t('fed_name_')} type='text'></InputField>
                                 <Box sx={{ pt: 2, pb: 2 }}>
-                                    <ChipInputField name='years_federated' label={t('years_federated_')} startingOptions={userSport.years_federated_} type='number' placeholder={t('year')}></ChipInputField>
+                                    <ChipInputField name='years_federated' label={t('years_federated_')} startingOptions={[]} type='number' placeholder={t('year')}></ChipInputField>
                                 </Box>
-                                {userSport.is_absent_ && <CheckInputField name='is_absent' label={t('is_absent_')}/>}
                                 <AnimateButton>
                                     <LoadingButton
                                         disableElevation
@@ -126,4 +141,4 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
     )
 }
 
-export default UserSportEditDialog
+export default UserSportApplyDialog

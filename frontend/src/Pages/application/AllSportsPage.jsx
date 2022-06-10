@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback  } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSports, deleteSport, createSport, updateSport } from '../../store/actions/sportActions'
 import { useTheme } from '@mui/material/styles'
@@ -23,11 +23,20 @@ import * as Yup from 'yup';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import ForwardIcon from '@mui/icons-material/Forward';
+import UserSportApplyDialog from '../../components/dialogs/UserSportApplyDialog';
 
 const AllSportsPage = () => {
     const {t, i18n} = useTranslation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [openDialog, setOpenDialog] = useState(false);
+    const closeDialogHandler = useCallback(function _handleClose() {
+      setOpenDialog(false);
+      dispatch(getSports())
+    }, []);
+    const [sid, setSid] = useState(0);
+
     const [sports, setSports] = useState([])
 
     const memberLogin = useSelector((state) => state.memberLogin)
@@ -36,12 +45,20 @@ const AllSportsPage = () => {
     const sportsFetch = useSelector((state) => state.sportsFetch)
     const { loading, error, sportsGet } = sportsFetch
 
-    const sportsUpdate = useSelector((state) => state.updateSport)
-    const { loading: loadingUpdate } = sportsUpdate
+    const sportUpdate = useSelector((state) => state.updateSport)
+    const { loading: loadingUpdate, updateSport: update } = sportUpdate
+
+    const sportDelete = useSelector((state) => state.sportDeletion)
+    const { sportsDeletion } = sportDelete
     
     useEffect(() => {
       dispatch(getSports())
+    },[update, sportsDeletion])
+
+    useEffect(() => {
+      dispatch(getSports())
     },[])
+
 
     useEffect(() => {
       if(sportsGet) setSports(sportsGet)
@@ -49,12 +66,10 @@ const AllSportsPage = () => {
 
     const deleteSportHandle = async (id) => {
       dispatch(deleteSport(id))
-      dispatch(getSports())
     }
 
     const handleSubmitUpdateByPlus = async (id, name, is_deleted) => {
       dispatch(updateSport(id, name, !is_deleted))
-      dispatch(getSports())
     }
 
     const handleSubmitCreate = async (values) => {
@@ -62,9 +77,19 @@ const AllSportsPage = () => {
       dispatch(getSports())
     }
 
+    function userSportApplyHandler(sid) {
+      setSid(sid)
+      setOpenDialog(true)
+  }
+
   return (
     <>
-      
+      <UserSportApplyDialog
+        open={openDialog}
+        closeHandler={closeDialogHandler}
+        sid={sid}
+        byAdmin={false}
+      />
       <MainCard title={t('all_sports')} sx={{height: '100%'}}>
             { loading || loadingUpdate ? 
                 <Stack alignItems="center">
@@ -75,7 +100,7 @@ const AllSportsPage = () => {
                             {
                                 sports.map(sport => 
                                     (
-                                      <Grid key={sport.id_} item maxWidth={300}>
+                                      ((!memberInfo.is_admin_ && !sport.is_deleted_) || memberInfo.is_admin_) && <Grid key={sport.id_} item maxWidth={300}>
                                         <Card key={6} elevation={6} sx={{ minWidth: 275 }}>
                                             <CardContent>
                                                 <Grid container>
@@ -84,15 +109,7 @@ const AllSportsPage = () => {
                                                       {sport.name_}
                                                   </Typography>
                                                 </Grid>
-                                                <br />
-                                                <Grid container>
-                                                  <Typography sx={{ fontSize: 18 }}  gutterBottom>
-                                                    {t('all_sports_is_deleted?')}
-                                                  </Typography>
-                                                  <Typography sx={{ ml: 2, fontSize: 17 }}  gutterBottom>
-                                                    {sport.is_deleted_? <CheckCircleIcon></CheckCircleIcon> : <HighlightOffIcon></HighlightOffIcon>}
-                                                  </Typography>
-                                                </Grid>
+                                                
                                                 <br />
                                                 <Grid container>
                                                   <Typography sx={{ fontSize: 18 }} >
@@ -104,9 +121,10 @@ const AllSportsPage = () => {
                                                 </Grid>                        
                                             </CardContent>
                                             <CardActions>
-                                                <Button size="small" type="submit"  onClick={() => navigate(`/application/sports/${sport.id_}`)}>{t('view_sport')}</Button>
+                                                {!memberInfo.is_admin_ && !sport.is_deleted_ && <Button size="small" type="submit"  onClick={() => userSportApplyHandler(sport.id_)}>{t('apply')}</Button>}
+                                                {memberInfo.is_admin_ && !sport.is_deleted_ && <Button size="small" type="submit"  onClick={() => navigate(`/application/sports/${sport.id_}`)}>{t('view_sport')}</Button>}
                                                 {!sport.is_deleted_ ? memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '10px' }} color={'secondary'} onClick={() => deleteSportHandle(sport.id_)}> <DeleteIcon  sx={{ ml: 28}}  /></ButtonBase> 
-                                                : memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '10px'}} color={'secondary'} onClick={() => handleSubmitUpdateByPlus(sport.id_, sport.name_, sport.is_deleted_)}><AddBoxIcon  sx={{ ml: 28}} /></ButtonBase>}
+                                                : memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '10px'}} color={'secondary'} onClick={() => handleSubmitUpdateByPlus(sport.id_, sport.name_, sport.is_deleted_)}><AddBoxIcon  sx={{  mt: 0.7, ml: !sport.is_deleted_ ? 28 : 50 }} /></ButtonBase>}
                                             </CardActions>
                                         </Card>
                                       </Grid>

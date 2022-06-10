@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import { userDeletionReducer, userFetchReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer, userSportsFetchReducer, usersSportDeleteReducer, usersSportFetchReducer, userPostReducer, userSportsUpdateReducer } from './reducers/userReducers'
+import { userDeletionReducer, userFetchReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer, userSportsFetchReducer, usersSportDeleteReducer, usersSportFetchReducer, userPostReducer, userSportsUpdateReducer, usersSportsCreateReducer } from './reducers/userReducers'
 import customizationReducer from './reducers/customizationReducers'
 import { typesFetchReducer, typesUpdateReducer, createTypeReducer } from './reducers/typeReducer'
 import { sportsDeletionReducer, sportsFetchReducer, createSportReducer, updateSportReducer} from './reducers/sportReducers'
@@ -53,7 +53,8 @@ const reducer = combineReducers({
   validateFetch: memberValidateFetchReducer,
   userSportUpdate: userSportsUpdateReducer,
   userSportDelete: usersSportDeleteReducer,
-  uploadFileFetch: uploadReducer
+  uploadFileFetch: uploadReducer,
+  usersSportsCreate: usersSportsCreateReducer
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')

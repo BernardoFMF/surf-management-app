@@ -1,13 +1,13 @@
 insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_, gender_, iban_) 
 values (154781132, 156784242,'Miguel da Silva Lopes','Portuguese','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com', 967021559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','miguelf', 'Male', 'PT50002700000001234567831'),
 (151444331, 156722241,'João Silva','Portuguese','2001-10-19','Lisboa','Rua do Cobre n22','2001-226','Silva@gmail.com', 933321559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Silva', 'Male', 'PT50002700000001234567832'),
-(151111332, 151111242,'Roberto Bolha','Portuguese','1999-05-19','Porto','Rua da madeira n15','2075-543','Bolha@gmail.com', 922221559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Bolha', 'Other', 'PT50002700000001234567833'),
-(152222333, 156333243,'Amilcar Dias','Portuguese','2000-09-19','Braga','Rua do Ouro n45','2330-216','Dias@gmail.com', 911121559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Dias', 'Other', 'PT50002700000001234567835'),
+(151142332, 151111142,'Roberto Bolha','Portuguese','1999-05-19','Porto','Rua da madeira n15','2075-543','Bolha@gmail.com', 922221559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Bolha', 'Other', 'PT50002700000001234567833'),
+(152242333, 156333243,'Amilcar Dias','Portuguese','2000-09-19','Braga','Rua do Ouro n45','2330-216','Dias@gmail.com', 911121559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Dias', 'Other', 'PT50002700000001234567835'),
 (222783334, 156111244,'Américo Jorge','Portuguese','2000-02-17','Coimbra','Rua da laranja n67','2321-541','Jorge@gmail.com', 937821559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Jorge', 'Male', 'PT50002700000001234567834'),
 (123782333, 159994243,'Roger Dias','Portuguese','1999-01-11','Santarém','Rua da santa n45','2355-216','Roger@gmail.com', 911144559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Roger', 'Other', 'PT50002700000001234567836'),
-(222782333, 155554243,'Tiago Pedro','Portuguese','1987-05-27','Portimão','Rua da mão n11','2220-216','Pedro@gmail.com', 911121999,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Pedro', 'Male', 'PT50002700000001234567838'),
-(221782333, 133384243,'Nuna Dias','Portuguese','1967-04-11','Lisboa','Rua do Bolha n45','2344-216','Nuna@gmail.com', 911224543,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Nuna', 'Female', 'PT50002700000001234567837'),
-(224782333, 156664243,'Rui Frango','Portuguese','1984-02-12','Lisboa','Rua do Calvário n45','2322-216','Frango@gmail.com', 911231469,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Frango', 'Other', 'PT50002700000001234567839');
+(222782133, 155554243,'Tiago Pedro','Portuguese','1987-05-27','Portimão','Rua da mão n11','2220-216','Pedro@gmail.com', 911121999,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Pedro', 'Male', 'PT50002700000001234567838'),
+(221782233, 133384243,'Nuna Dias','Portuguese','1967-04-11','Lisboa','Rua do Bolha n45','2344-216','Nuna@gmail.com', 911224543,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Nuna', 'Female', 'PT50002700000001234567837'),
+(224782433, 156664243,'Rui Frango','Portuguese','1984-02-12','Lisboa','Rua do Calvário n45','2322-216','Frango@gmail.com', 911231469,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Frango', 'Other', 'PT50002700000001234567839');
 
 insert into Member_Types_ 
 values ('effective', 15, 'user'),
@@ -16,7 +16,7 @@ values ('effective', 15, 'user'),
 ('founder', 0, 'user');
 								
 insert into Member_(member_type_, has_debt_, is_deleted_, username_, pword_, iban_) 
-values ('founder',false,false, 'afonsoribeiro', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K', 'PT50002700000001234567833'), 
+values ('founder',false,false, 'afonsoribeiro', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K', 'PT50001100000001234567833'), 
 ('effective',true,FALSE, 'joselopes', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K', 'PT50001234270000000567833'),
 ('corporate',false,FALSE, 'ripcurl','$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',  'PT50001230056742700000833'), 
 ('corporate',false, FALSE,'billabong','$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',  'PT50001211116742700000833');
@@ -128,10 +128,10 @@ values (2,1,array['apprentice'],4890, 54,'Federacao Portuguesa de Surf',array[20
 (1,11,array['practitioner'],4891, 55,'Federacao Portuguesa de Kayak Polo',array[2020,2021],false); 
 
 
-insert into Group_(name_, group_type_, types_) 
-values ('grupo para fundadores', 'member_type', array['founder']),
-('grupo para effective e corporate', 'member_type', array['effective', 'corporate']),
-('grupo para coaches', 'member_sport_type', array['coach']);
+insert into Group_(name_, description_, group_type_, types_) 
+values ('grupo para fundadores', 'descricao de grupo', 'member_type', array['founder']),
+('grupo para effective e corporate', 'descricao de grupo', 'member_type', array['effective', 'corporate']),
+('grupo para coaches', 'descricao de grupo', 'member_sport_type', array['coach']);
 
 insert into Membership_card_ 
 values (1,'data:image/png;base64,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'),

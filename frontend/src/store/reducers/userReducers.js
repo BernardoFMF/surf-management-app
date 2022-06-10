@@ -28,7 +28,10 @@ import {
     USER_SPORT_UPDATE_SUCCESS,
     USER_SPORT_DELETE_REQUEST,
     USER_SPORT_DELETE_SUCCESS,
-    USER_SPORT_DELETE_FAIL
+    USER_SPORT_DELETE_FAIL,
+    USERS_SPORTS_CREATE_REQUEST,
+    USERS_SPORTS_CREATE_SUCCESS,
+    USERS_SPORTS_CREATE_FAIL
   } from '../constants/userConstants'
 
   export const userRegisterReducer = (state = {}, action) => {
@@ -135,7 +138,7 @@ import {
     }
   }
 
-  export const usersSportFetchReducer = (state = {usersSportGet: {sports: [], number_of_sports: 0}}, action) => {
+  export const usersSportFetchReducer = (state = {usersSportGet: {users: [], number_of_users: 0, sport: {}}}, action) => {
     switch (action.type) {
         case USERS_SPORT_FETCH_REQUEST:
           return { loading: true }
@@ -155,6 +158,19 @@ export const usersSportDeleteReducer = (state = {}, action) => {
       case USER_SPORT_DELETE_SUCCESS:
         return { loading: false, usersSportDelete: action.payload }
       case USER_SPORT_DELETE_FAIL:
+        return { loading: false, error: action.payload }
+      default:
+        return state
+  }
+}
+
+export const usersSportsCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+      case USERS_SPORTS_CREATE_REQUEST:
+        return { loading: true }
+      case USERS_SPORTS_CREATE_SUCCESS:
+        return { loading: false, usersSportsCreate: action.payload }
+      case USERS_SPORTS_CREATE_FAIL:
         return { loading: false, error: action.payload }
       default:
         return state
