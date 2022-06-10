@@ -26,14 +26,14 @@ const companyData = (db) => {
 		return await db.postCompanyData(name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, password_, type_, img_, iban_)
 	}
 	
-	const updateCompany = async (id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
+	const updateCompany = async (id_, nif_, type_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
 		let member = await db.getMemberByNifData(nif_)
 		if (member && member.id_ != id_) throw error(409, 'Member with that nif already exists', 'MESSAGE_CODE_22')
 		member = await db.getMemberByIbanData(iban_)
 		if (member && member.id_ != id_) throw error(409, 'Member with that iban already exists', 'MESSAGE_CODE_38')
 
 		await getCompanyById(id_)
-		await db.updateCompanyData(id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_)
+		await db.updateCompanyData(id_, nif_, type_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_)
 		const company = await getCompanyById(id_)
 		company.is_admin_ = false
 		return company

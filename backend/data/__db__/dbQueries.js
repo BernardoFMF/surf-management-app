@@ -28,7 +28,7 @@ const QUERY_GET_COMPANY_BY_ID = 'select c.member_id_, c.nif_, c.name_, co.locati
 
 const QUERY_POST_COMPANY = 'call post_company($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);'
 
-const QUERY_UPDATE_COMPANY = 'call put_company($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);'
+const QUERY_UPDATE_COMPANY = 'call put_company($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);'
 
 const QUERY_DELETE_COMPANY = 'update member_ set is_deleted_ = true where id_ = $1;'
 
