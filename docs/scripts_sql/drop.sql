@@ -1,3 +1,4 @@
+drop table if exists User_Sport_Types;
 drop table if exists Member_token_;
 drop table if exists Membership_card_;
 drop table if exists User_Sport_;
