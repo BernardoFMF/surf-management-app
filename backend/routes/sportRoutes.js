@@ -12,6 +12,8 @@ const sportRoutes = (data) => {
 	const controller = sportController(data)
 	
 	app.get('/', authentication.authMember, controller.getSports)
+
+	app.get('/types', authentication.authMember, controller.getUsersSportsTypes)
     
 	app.get('/:sid', authentication.authMember, controller.getSportById)
     

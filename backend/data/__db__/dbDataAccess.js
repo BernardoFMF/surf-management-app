@@ -1443,6 +1443,28 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}	
 	}
 
+	const GetUserSportTypesData = async () => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const types = await client.query(queries.QUERY_GET_USER_SPORT_TYPES)
+			await client.query('commit')
+			let result = types.rows.map(row => {
+				let newRow ={
+					name: row.type_,
+					label: row.type_
+				}
+				return newRow
+			})
+			return result
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}	
+	}
+
 	return { 
 		getGroupsData, 
 		getGroupByIdData, 
@@ -1518,7 +1540,8 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getCandidateByNifData, 
 		getCandidateByCCData, 
 		getCandidateByEmailData, 
-		getMemberValidationData, 
+		getMemberValidationData,
+		GetUserSportTypesData, 
 		pool 
 	}
 

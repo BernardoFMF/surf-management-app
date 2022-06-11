@@ -1,9 +1,11 @@
 import React from 'react'
 import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import { FieldArray, useField } from 'formik'
+import { useTranslation } from 'react-i18next'
 
 const CheckGroupInputField = ({ options, ...props}) => {
     const [field, meta, helpers] = useField({ ...props, type: "checkbox" });
+    const {t, i18n} = useTranslation()
     
     const { setValue, setTouched } = helpers;
     return (
@@ -19,7 +21,7 @@ const CheckGroupInputField = ({ options, ...props}) => {
                                 key={index}
                                 name={field.name}
                                 control={<Checkbox checked={field.value.includes(option.name)}/>}
-                                label={option.label}
+                                label={t(option.label)}
                                 value={option.name}
                                 onChange={(e, checked) => {
                                     if (checked) {

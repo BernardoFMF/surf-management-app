@@ -11,6 +11,7 @@ import CheckGroupInputField from '../multiStepForm/CheckGroupInputField'
 import CheckInputField from '../multiStepForm/CheckInputField'
 import ChipInputField from '../multiStepForm/ChipInputField'
 import { updateUserSports } from '../../store/actions/userActions'
+import { getUserSportsTypes } from '../../store/actions/sportActions'
 
 const UserSportEditDialog = ({open, closeHandler, userSport}) => {
     const { t } = useTranslation()
@@ -19,9 +20,16 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
     const userSportUpdate = useSelector((state) => state.userSportUpdate)
     const { loading, error, updateResult } = userSportUpdate
 
+    const userSportsTypesFetch = useSelector((state) => state.userSportsTypesFetch)
+    const { loadingTypes, errorTypes, userSportsTypesGet } = userSportsTypesFetch
+
     const editUserSportHandler = (values) => {
         dispatch(updateUserSports(userSport.user_id_, userSport.sport_id_, values))
     }
+
+    useEffect(() => {
+        dispatch(getUserSportsTypes())
+    }, [])
     
     return (
         <>
@@ -74,24 +82,8 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
                                 <CheckGroupInputField
                                     name="type"
                                     label={t("types")}
-                                    options={[
-                                        {
-                                            name: "practitioner",
-                                            label: t("practitioner")
-                                        },
-                                        { 
-                                            name: "coach", 
-                                            label: t("coach") 
-                                        },
-                                        {
-                                            name: "apprentice", 
-                                            label: t("apprentice") 
-                                        },
-                                        {
-                                            name: "jury", 
-                                            label: t("jury") 
-                                        },
-                                    ]}
+                                    options={userSportsTypesGet}
+                                    loading={loadingTypes}
                                 />
                                 <InputField name='fed_number' label={t('fed_number_')} type='text'></InputField>
                                 <InputField name='fed_id' label={t('fed_id_')} type='text'></InputField>

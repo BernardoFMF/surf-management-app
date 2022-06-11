@@ -35,12 +35,18 @@ const sportController = (data) => {
 		if (sport) res.json({ message: 'Sport deleted sucessfully', message_code: 'MESSAGE_CODE_9' })
 	})
 
+	const getUsersSportsTypes = asyncHandler(async (req, res) => {
+		const types = await services.GetUserSportsTypesServices()
+		res.json(types)
+	})
+
 	return {
 		getSports,
 		getSportById,
 		postSport,
 		updateSport,
-		deleteSport
+		deleteSport,
+		getUsersSportsTypes
 	}
 }
 

@@ -176,6 +176,8 @@ const QUERY_GET_GROUP_MEMBERS = 'select id_, username_, member_type_ from Member
 
 const QUERY_NUMBER_OF_MEMBERS_IN_GROUP = 'select count(*) from Group_Member_ where group_id_ = $1'
 
+const QUERY_GET_USER_SPORT_TYPES = 'select * from User_Sport_Types_'
+
 export default {
     QUERY_GET_GROUP_MEMBERS,
     QUERY_DELETE_USER_SPORT_CANDIDATE,
@@ -264,5 +266,6 @@ export default {
     QUERY_NUMBER_OF_QUOTAS, 
     QUERY_NUMBER_OF_MEMBER_QUOTAS, 
     QUERY_MY_NUMBER_OF_EVENTS, 
-    QUERY_GET_MEMBER_VALIDATE
+    QUERY_GET_MEMBER_VALIDATE,
+    QUERY_GET_USER_SPORT_TYPES
 }

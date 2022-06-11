@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { userDeletionReducer, userFetchReducer, userRegisterReducer, usersFetchReducer, userUpdateReducer, userSportsFetchReducer, usersSportDeleteReducer, usersSportFetchReducer, userPostReducer, userSportsUpdateReducer, usersSportsCreateReducer } from './reducers/userReducers'
 import customizationReducer from './reducers/customizationReducers'
 import { typesFetchReducer, typesUpdateReducer, createTypeReducer } from './reducers/typeReducer'
-import { sportsDeletionReducer, sportsFetchReducer, createSportReducer, updateSportReducer} from './reducers/sportReducers'
+import { sportsDeletionReducer, sportsFetchReducer, createSportReducer, updateSportReducer, userSportsTypesFetchReducer} from './reducers/sportReducers'
 import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer, createQuotaReducer} from './reducers/quotaReducers'
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyPostReducer, companyDeletionReducer, companiesFetchReducer, companyFetchReducer, companyUpdateReducer, memberValidateFetchReducer } from './reducers/companyReducers'
@@ -54,7 +54,8 @@ const reducer = combineReducers({
   userSportUpdate: userSportsUpdateReducer,
   userSportDelete: usersSportDeleteReducer,
   uploadFileFetch: uploadReducer,
-  usersSportsCreate: usersSportsCreateReducer
+  usersSportsCreate: usersSportsCreateReducer,
+  userSportsTypesFetch : userSportsTypesFetchReducer
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')

@@ -32,12 +32,18 @@ const sportServices = (db) => {
 		return await data.deleteSport(sid)
 	}
 
+
+	const GetUserSportsTypesServices = async () => {
+		return await data.GetUserSportTypes()
+	}
+
 	return {
 		getSportsServices, 
 		getSportByIdServices, 
 		postSportServices,
 		updateSportServices, 
-		deleteSportServices
+		deleteSportServices,
+		GetUserSportsTypesServices
 	}
 }
 

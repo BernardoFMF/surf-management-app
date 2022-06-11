@@ -10,7 +10,10 @@ import {
     SPORT_CREATE_REQUEST,
     SPORT_UPDATE_SUCCESS,
     SPORT_UPDATE_FAIL,
-    SPORT_UPDATE_REQUEST
+    SPORT_UPDATE_REQUEST,
+    USER_SPORT_TYPES_FETCH_REQUEST,
+    USER_SPORT_TYPES_FETCH_SUCCESS,
+    USER_SPORT_TYPES_FETCH_FAIL
   } from '../constants/sportConstants'
 
 export const getSports = () => async (dispatch) => {
@@ -116,6 +119,34 @@ export const createSport = (name) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SPORT_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const getUserSportsTypes = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_SPORT_TYPES_FETCH_REQUEST,
+    })
+    const response = await fetch(`/api/sports/types`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+    })
+    const types = await response.json()
+    console.log(types);
+    if(response.status !== 200) throw Error(types.message_code)
+    dispatch({
+      type: USER_SPORT_TYPES_FETCH_SUCCESS,
+      payload: types,
+    })
+
+  } catch (error) {
+    dispatch({
+      type: USER_SPORT_TYPES_FETCH_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

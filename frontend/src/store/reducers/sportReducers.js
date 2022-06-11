@@ -10,7 +10,10 @@ import {
     SPORT_CREATE_REQUEST,
     SPORT_UPDATE_SUCCESS,
     SPORT_UPDATE_FAIL,
-    SPORT_UPDATE_REQUEST
+    SPORT_UPDATE_REQUEST,
+    USER_SPORT_TYPES_FETCH_REQUEST,
+    USER_SPORT_TYPES_FETCH_SUCCESS,
+    USER_SPORT_TYPES_FETCH_FAIL
 } from '../constants/sportConstants'
 
 export const sportsFetchReducer = (state = {sportsGet: []}, action) => {
@@ -62,5 +65,18 @@ export const updateSportReducer = (state = {}, action) => {
             return { loading: false, error: action.payload }
         default:
             return state
+    }
+}
+
+export const userSportsTypesFetchReducer = (state = {userSportsTypesGet: []}, action) => {
+    switch (action.type) {
+        case USER_SPORT_TYPES_FETCH_REQUEST:
+        return { loading: true }
+        case USER_SPORT_TYPES_FETCH_SUCCESS:
+        return { loading: false, userSportsTypesGet: action.payload }
+        case USER_SPORT_TYPES_FETCH_FAIL:
+        return { loading: false, error: action.payload }
+        default:
+        return state
     }
 }
