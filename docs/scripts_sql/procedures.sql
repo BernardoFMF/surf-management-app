@@ -28,7 +28,9 @@ begin
 	insert into User_ (member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, gender_)
 	values (new_id_, nif_, cc_, full_name_, nationality_, birth_date_, p_enrollment_date_, paid_enrollment_, gender_); 
 
-	insert into Group_Member_ (member_id_, group_id_) select new_id_, group_id_ from Group_ where group_type_ = 'member_type' and mtype_ = any(types_);
+	insert into Group_Member_ (member_id_, group_id_) 
+	select new_id_, g.group_id_ from Group_ g join Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_
+	where g.group_type_ = 'member_type' and gmt.member_type_ = mtype_;
 
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;
@@ -54,15 +56,19 @@ declare
 	old_type varchar(40);
 begin
 	select member_type_ into old_type from Member_ where id_ = p_id_;
-	
+
 	if old_type != p_type_ then
 		delete from Group_Member_ gm where gm.member_id_ = p_id_ and gm.group_id_ in (
-			select gm2.group_id_ from Group_Member_ gm2 join Group_ g on gm2.group_id_ = g.group_id_ where g.group_type_ = 'member_type' and old_type = any(g.types_)
+			select gm2.group_id_ 
+			from Group_Member_ gm2 join Group_ g on gm2.group_id_ = g.group_id_ join Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_
+			where g.group_type_ = 'member_type' and gmt.member_type_ = old_type
 		);
 		
-		insert into Group_Member_ (member_id_, group_id_) select p_id_, group_id_ from Group_ where group_type_ = 'member_type' and p_type_ = any(types_);
+		insert into Group_Member_ (member_id_, group_id_) 
+		select p_id_, g.group_id_ from Group_ g join Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_
+		where g.group_type_ = 'member_type' and gmt.member_type_ = p_type_;
 	end if;
-	
+
 	update Contact_ set location_ = p_location_, address_ = p_address_, postal_code_ = p_postal_code_, phone_number_= p_phone_number_ where member_id_ = p_id_;
 
 	update Member_ set is_deleted_ = p_is_deleted_, member_type_ = p_type_, iban_ = p_iban_ where id_ = p_id_;
@@ -98,22 +104,22 @@ LANGUAGE plpgsql
 as
 $$
 declare
-	txt text;
+	type_elem_ text;
 begin
 	if exists (select * from User_Sport_ where user_id_ = id_ and sport_id_ = sid_ and is_absent_ = true) then
 		update 	User_Sport_ set is_absent_ = false where user_id_ = id_ and sport_id_ = sid_;
 	end if;
 
-	foreach txt in array type_
-   	LOOP
+	foreach type_elem_ in array type_
+   	loop
     	insert into Group_Member_ (member_id_, group_id_) 
-    	select distinct id_, group_id_ 
-    	from Group_ g
-    	where g.group_type_ = 'member_sport_type' and txt = any(g.types_) and g.group_id_ not in (
-    		select gm.group_id_ from Group_Member_ gm join Group_ g2 on gm.group_id_ = g2.group_id_ where txt = any(g2.types_) and gm.member_id_ = id_
+    	select distinct id_, g.group_id_ 
+    	from Group_ g join Group_Sports_ gs on g.group_id_ = gs.group_id_ 
+    	where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = type_elem_ and g.group_id_ not in (
+    		select gm.group_id_ from Group_Member_ gm join Group_Sports_ gs on gm.group_id_ = gs.group_id_ where gs.sport_member_type_ = type_elem_ and gm.member_id_ = id_
     	);
-   	END LOOP;
-	
+   	end loop;
+
 	insert into User_Sport_ (user_id_, sport_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_, is_candidate_)
 	values (id_, sid_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_, is_candidate_);
 end
@@ -128,20 +134,24 @@ as
 $$
 declare
 	old_types text[];
-	txt text;
+	type_elem_ text;
 begin
 	select type_ into old_types from User_Sport_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 
-	if not(old_types <@ p_type_ and p_type_ @> old_types) then
-		delete from Group_Member_ where member_id_ = p_id_ and group_id_ in (
-			select member_id_ from Group_Member_ gm join Group_ g on gm.group_id_ = g.group_id_ where g.group_type_ = 'member_sport_type' and txt = any(g.types_)
-		);
-		foreach txt in array p_type_
-	   	loop
-			insert into Group_Member_ (member_id_, group_id_) select distinct p_id_, group_id_ from Group_ where group_type_ = 'member_sport_type' and txt = any(types_);
-	   	END LOOP;
-
-	end if;
+	foreach type_elem_ in array old_types
+   	loop
+    	if not(type_elem_ = any(p_type_)) then
+    		delete from Group_Member_ where member_id_ = p_id_ and group_id_ in (
+				select g.group_id_ from Group_Member_ gm join Group_ g on gm.group_id_ = g.group_id_ join Group_Sports_ gs on g.group_id_ = gs.group_id_
+				where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = type_elem_
+			);
+    	else
+    		insert into Group_Member_ (member_id_, group_id_) 
+    		select distinct p_id_, g.group_id_ 
+    		from Group_ g join Group_Sports_ gs on g.group_id_ = gs.group_id_
+    		where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = type_elem_;
+    	end if;
+   	end loop;
 
 	update User_Sport_ set type_ = p_type_, fed_number_ = p_fed_number_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_, is_candidate_ = p_is_candidate_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 end
@@ -292,7 +302,9 @@ begin
 	INSERT INTO Contact_(member_id_,location_,address_,postal_code_,email_,phone_number_) VALUES (new_id_,location_,address_,postal_code_,email_,phone_number_);
 	INSERT INTO Company_(member_id_,nif_,name_) VALUES (new_id_, nif_, name_);
 
-	insert into Group_Member_ (member_id_, group_id_) select new_id_, group_id_ from Group_ where group_type_ = 'member_type' and mtype_ = any(types_);
+	insert into Group_Member_ (member_id_, group_id_) 
+	select new_id_, g.group_id_ from Group_ g join Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_
+	where g.group_type_ = 'member_type' and gmt.member_type_ = mtype_;
 
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;
@@ -315,18 +327,22 @@ declare
 	old_type varchar(40);
 begin
 	select member_type_ into old_type from Member_ where id_ = cid_;
-	
+
 	if old_type != p_type_ then
 		delete from Group_Member_ gm where gm.member_id_ = cid_ and gm.group_id_ in (
-			select gm2.group_id_ from Group_Member_ gm2 join Group_ g on gm2.group_id_ = g.group_id_ where g.group_type_ = 'member_type' and old_type = any(g.types_)
+			select gm2.group_id_ 
+			from Group_Member_ gm2 join Group_ g on gm2.group_id_ = g.group_id_ join Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_
+			where g.group_type_ = 'member_type' and gmt.member_type_ = old_type
 		);
 		
-		insert into Group_Member_ (member_id_, group_id_) select cid_, group_id_ from Group_ where group_type_ = 'member_type' and p_type_ = any(types_);	
+		insert into Group_Member_ (member_id_, group_id_) 
+		select cid_, g.group_id_ from Group_ g join Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_
+		where g.group_type_ = 'member_type' and gmt.member_type_ = p_type_;
 	end if;
-	
+
 	UPDATE Contact_ SET phone_number_ = p_phone_number_, postal_code_ = p_postal_code_,address_ = p_address_, location_ = p_location_ WHERE member_id_ = cid_;
 	UPDATE Company_ SET name_ = p_name_, nif_ = p_nif_ WHERE member_id_ = cid_;
-	update member_  set is_deleted_ = p_is_deleted_, iban_ = p_iban_ WHERE id_ = cid_;
+	update member_  set is_deleted_ = p_is_deleted_, iban_ = p_iban_, member_type_ = p_type_ WHERE id_ = cid_;
 
 	if p_img_ is not null then
 		UPDATE Member_Img_ SET img_value_ = p_img_ WHERE member_id_ = cid_;
@@ -373,15 +389,33 @@ begin
 end
 $$;
 
-create or replace procedure post_group(p_name_ text, p_description_ text, p_types_ text[], p_group_type_ text, out new_id_ int)
+create or replace procedure post_group(p_name_ text, p_description_ text, p_types_ text[], p_group_type_ text, p_sports_ int[], out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
+declare
+	type_ text;
+	sport_ int;
 begin
 	with new_id_table_ as (
-		insert into Group_ (name_, description_, group_type_, types_) values (p_name_, p_description_, p_group_type_, p_types_) returning group_id_
+		insert into Group_ (name_, description_, group_type_) values (p_name_, p_description_, p_group_type_) returning group_id_
 	)
 	select group_id_ into new_id_ from new_id_table_;
+
+	if p_group_type_ = 'member_type' then
+		foreach type_ in array p_types_
+	   	loop
+			insert into Group_Member_Types_ (group_id_, member_type_) values (new_id_, type_::varchar(40));
+		end loop;
+	elsif p_group_type_ = 'member_sport_type' then
+		foreach type_ in array p_types_
+	   	loop
+		   	foreach sport_ in array p_sports_
+		   	loop
+				insert into Group_Sports_ (group_id_, sport_id_, sport_member_type_) values (new_id_, sport_, type_);
+			end loop;
+		end loop;
+	end if;
 end
 $$;
 
@@ -392,6 +426,8 @@ $$
 begin
 	/*delete from Event_Group_ where group_id_ = p_group_id_;*/
 	delete from Group_Member_ where group_id_ = p_group_id_;
+	delete from Group_Sports_ where group_id_ = p_group_id_;
+	delete from Group_Member_Types_ where group_id_ = p_group_id_;
 	delete from Group_ where group_id_ = p_group_id_;
 end
 $$;

@@ -266,6 +266,9 @@
     "is_candidate_": "Is candidate?",
     "application_sucessfully" : "Application done successfully",
     "associate_n_mandatory": "Associate number is mandatory",
-    "associate_number": "Associate number"
+    "associate_number": "Associate number",
+
+    "sport_create_alert" : "New sport created with success"
+
 
 }

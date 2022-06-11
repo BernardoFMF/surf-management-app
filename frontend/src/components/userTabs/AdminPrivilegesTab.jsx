@@ -14,7 +14,7 @@ import { getTypes } from '../../store/actions/typeActions'
 
 const AdminPrivilegesTab = () => {
     const theme = useTheme()
-    
+    const category = 'user'
     const { t } = useTranslation()
 
     const memberFetch = useSelector((state) => state.memberFetch)
@@ -31,7 +31,7 @@ const AdminPrivilegesTab = () => {
     const { loading, error: errorTypes, typesGet } = typesFetch
 
     useEffect(() => {
-        dispatch(getTypes())
+        dispatch(getTypes(category))
     },[dispatch])
 
     const handleSubmit = async (values) => {

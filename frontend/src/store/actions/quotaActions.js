@@ -46,7 +46,6 @@ export const updateQuota = (payment_date,id) => async (dispatch, getState) => {
     dispatch({
       type: QUOTA_UPDATE_REQUEST,
     })
-    console.log(payment_date)
     const { quotasFetch: { quotasGet } } = getState()
 
     const response = await fetch(`/api/quotas/${id}`, {

@@ -110,7 +110,7 @@ export const createSport = (name) => async (dispatch) => {
         body: JSON.stringify({name}),
     })
     const sports = await response.json()
-    if(response.status !== 200) throw Error(sports.message_code)
+    if(response.status !== 201) throw Error(sports.message_code)
     dispatch({
       type: SPORT_CREATE_SUCCESS,
       payload: sports,

@@ -20,10 +20,10 @@ import Button from '@mui/material/Button';
 import { Formik, Form } from 'formik';
 import SubCard from '../../components/cards/SubCard'
 import * as Yup from 'yup';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Box from '@mui/material/Box';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import ForwardIcon from '@mui/icons-material/Forward';
+import SportCreateDialog from '../../components/dialogs/SportCreateDialog'
 import UserSportApplyDialog from '../../components/dialogs/UserSportApplyDialog';
 
 const AllSportsPage = () => {
@@ -35,6 +35,7 @@ const AllSportsPage = () => {
       setOpenDialog(false);
       dispatch(getSports())
     }, []);
+    
     const [sid, setSid] = useState(0);
 
     const [sports, setSports] = useState([])
@@ -72,15 +73,17 @@ const AllSportsPage = () => {
       dispatch(updateSport(id, name, !is_deleted))
     }
 
-    const handleSubmitCreate = async (values) => {
-      dispatch(createSport(values.name))
-      dispatch(getSports())
-    }
-
     function userSportApplyHandler(sid) {
       setSid(sid)
       setOpenDialog(true)
-  }
+    }
+
+    const [open, setOpen] = useState(false);
+    const handleClose = () => {
+        setOpen(false)
+        dispatch(getSports())
+    };
+    const handleOpen = () => setOpen(true);
 
   return (
     <>
@@ -90,12 +93,33 @@ const AllSportsPage = () => {
         sid={sid}
         byAdmin={false}
       />
+      <SportCreateDialog
+        open={open}
+        closeHandler={handleClose}
+      />
       <MainCard title={t('all_sports')} sx={{height: '100%'}}>
             { loading || loadingUpdate ? 
                 <Stack alignItems="center">
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                     <>
+                      {
+                        memberInfo.is_admin_ && <Box sx={{mb : 5}} gridArea={'create'} alignItems={'center'} display='flex' justifyContent='flex-end'>
+                            <AnimateButton>
+                                <LoadingButton
+                                    disableElevation
+                                    size="large"
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={() => {
+                                        handleOpen()
+                                    }}
+                                >
+                                    {t('create')}
+                                </LoadingButton>
+                            </AnimateButton>
+                        </Box> 
+                      }
                         <Grid container justifyContent={'center'} spacing={5} >
                             {
                                 sports.map(sport => 
@@ -132,53 +156,6 @@ const AllSportsPage = () => {
                                 ) 
                             }
                         </Grid>
-                        {
-                          memberInfo.is_admin_ && (
-                            <>
-                                <br />
-                                <br />
-                                <Divider></Divider>
-                                <br />
-                                <br />
-                                <Grid item style={{ display: 'flex',alignItems: 'center', justifyContent: 'center'}} sx={{maxWidth:'100%'}} >
-                                  <SubCard elevation={4} title={ <Grid><Typography sx={{ fontSize: 22, minWidth: 370 }} color="primary" gutterBottom> {t('all_sports_create_sport')} </Typography> </Grid>}   >
-                                        <Formik
-                                            initialValues={{
-                                                name: '',
-                                            }}
-                                            validationSchema={Yup.object().shape({
-                                                name: Yup.string().required(t('all_sports_name_mandatory')),
-                                            })}
-                                            onSubmit={handleSubmitCreate}
-                                        >
-                                        {formik => (
-                                            <Grid item sx={{ ml: { md: 4, lg: 4 }}} maxWidth={300} >
-                                                <Form  >
-                                                    <InputField name='name' label={t('all_sports_name')} type='text'>
-                                                    </InputField>
-                                                    <AnimateButton>
-                                                        <LoadingButton
-                                                            disableElevation
-                                                            fullWidth
-                                                            size="large"
-                                                            type="submit"
-                                                            variant="contained"
-                                                            color="primary"
-                                                            loading = {loading}
-                                                        >
-                                                            {t('management_submit')}
-                                                        </LoadingButton>
-                                                    </AnimateButton>
-                                                </Form>
-                                            </Grid>
-                                        )}
-                                        </Formik>
-                                    </SubCard>
-                                </Grid>
-                            </>
-                          )
-                        }
-                        
                       </>                   
                 )
             }

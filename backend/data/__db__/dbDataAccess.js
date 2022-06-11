@@ -768,7 +768,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		try {
 			await client.query('begin')
 			const sport = await client.query(queries.QUERY_GET_SPORT_BY_ID, [id_])
-			console.log(sport);
 			const sports = await client.query(query, [id_, is_candidate_])
 			const number_of_sports = await client.query(queries.QUERY_NUMBER_OF_SPORT_USERS, [id_, is_candidate_])
 			await client.query('commit')
@@ -1209,7 +1208,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const getManagementQuotas = async(category_) => {
 		let query = queries.QUERY_GET_MANAGEMENT_QUOTAS
 		if(category_) {
-			query += ` where category_ = ${category_}`
+			query += ` where category_ = '${category_}'`
 		}
 		const client = await pool.connect()
 		try {
@@ -1321,8 +1320,25 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		try {
 			await client.query('begin')
 			const group = await client.query(queries.QUERY_GET_GROUP_BY_ID, [id_])
+			let group_types = null
+			if (group.rows[0].group_type_ == 'member_type') {
+				group_types = await client.query(queries.QUERY_GET_GROUP_BY_ID_MEMBER_TYPES, [id_])
+				group_types = group_types.rows.map(type => type.member_type_)
+			} else {
+				group_types = await client.query(queries.QUERY_GET_GROUP_BY_ID_SPORT_TYPES, [id_])
+				group_types = group_types.rows.map(type => {
+					let obj = {
+						sport_: type.sport_id_,
+						sport_name_: type.name_,
+						type: type.sport_member_type_
+					}
+					return obj
+				})
+			}
 			await client.query('commit')
-			return group.rows[0]
+			let result = group.rows[0]
+			result.types_ = group_types
+			return result
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1346,11 +1362,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const postGroupData = async (name_, description_, group_type_, types_) => {
+	const postGroupData = async (name_, description_, group_type_, types_, sports_) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const group = await client.query(queries.QUERY_POST_GROUP, [name_, description_, types_, group_type_, 0])
+			const group = await client.query(queries.QUERY_POST_GROUP, [name_, description_, types_, group_type_, sports_, 0])
 			await client.query('commit')
 			return group.rows[0].new_id_
 		} catch (e) {

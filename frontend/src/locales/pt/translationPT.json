@@ -270,7 +270,9 @@
     "is_candidate_": "É candidato?",
     "application_sucessfully" : "Candidatura bem sucedida",
     "associate_n_mandatory": "Número de sócio é obrigatório",
-    "associate_number": "Número de sócio"
+    "associate_number": "Número de sócio",
+
+    "sport_create_alert" : "Novo desporto criado com sucesso"
 
 
 }

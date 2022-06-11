@@ -19,7 +19,6 @@ const FileInputField = ({ label, size, ...props}) => {
 
     useEffect(() => {
         if (selectedFile) {
-            console.log(selectedFile);
             setFile((selectedFile))
             setFieldValue(field.name, selectedFile)
         }

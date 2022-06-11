@@ -13,10 +13,10 @@ const groupData = (db) => {
         return group
     }
 
-    const postGroup = async (name_, description_, group_type_, types_) => {
+    const postGroup = async (name_, description_, group_type_, types_, sports_) => {
         const group = await db.getGroupByNameData(name_)
         if (group) throw error(409, 'Group with that name already exists', 'MESSAGE_CODE_43')
-        const groupId = await db.postGroupData(name_, description_, group_type_, types_)
+        const groupId = await db.postGroupData(name_, description_, group_type_, types_, sports_)
         return groupId
     }
 

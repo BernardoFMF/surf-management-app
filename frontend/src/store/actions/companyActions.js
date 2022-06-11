@@ -112,7 +112,6 @@ export const deleteCompany = (id) => async (dispatch) => {
           headers: { "Content-Type": "application/json" },
       })
       const member = await response.json()
-      console.log(member)
       if(response.status !== 200) throw Error(member.message_code)
       dispatch({
         type: MEMBER_VALIDATION_FETCH_SUCCESS,

@@ -11,9 +11,6 @@ const ChipInputField = ({ label, placeholder, options, startingOptions, type, ..
         let years = value
         years[years.length - 1] = parseInt(years[years.length - 1])
         setFieldValue(field.name, years)
-        console.log(years);
-        console.log(field.value);
-        console.log(field.name);
     }
 
     return (

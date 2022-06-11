@@ -19,13 +19,13 @@ const groupServices = (db) => {
         return await data.getGroupById(id)
 	}
 
-    const postGroupServices = async (name, description, group_type, types) => {
+    const postGroupServices = async (name, description, group_type, types, sports) => {
 		if(!name) throw error(400, 'Parameter not found: name', 'MESSAGE_CODE_14')
         if(!description) throw error(400, 'Parameter not found: description', 'MESSAGE_CODE_14')
 		if(!group_type) throw error(400, 'Parameter not found: group_type', 'MESSAGE_CODE_14')
 		if(!types) throw error(400, 'Parameter not found: types', 'MESSAGE_CODE_14')
-
-		return await data.postGroup(name, description, group_type, types)
+		if(!sports) throw error(400, 'Parameter not found: sports', 'MESSAGE_CODE_14')
+		return await data.postGroup(name, description, group_type, types, sports)
 	}
 
     const deleteGroupServices = async (id) => {

@@ -1,11 +1,13 @@
 import { TYPES_FETCH_SUCCESS, TYPES_FETCH_REQUEST, TYPES_FETCH_FAIL, TYPES_UPDATE_REQUEST, TYPES_UPDATE_SUCCESS, TYPES_UPDATE_FAIL, TYPES_CREATE_REQUEST, TYPES_CREATE_SUCCESS, TYPES_CREATE_FAIL } from '../constants/typeConstants'
 
-export const getTypes = () => async (dispatch) => {
+export const getTypes = (category) => async (dispatch) => {
     try {
       dispatch({
         type: TYPES_FETCH_REQUEST,
       })
-      const response = await fetch(`/api/quotas/management`, {
+      let path = `/api/quotas/management`
+      if(category) path = `/api/quotas/management?category=${category}`
+      const response = await fetch(path, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
       })

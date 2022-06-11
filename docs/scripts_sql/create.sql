@@ -40,26 +40,6 @@ create table Member_ (
 	constraint fk_role foreign key(member_type_) references Member_Types_ (type_)
 );
 
-create table Group_ (
-	group_id_ 	 	int generated always as identity,
-	name_			text,
-	description_	text,
-	group_type_		text check (group_type_ in ('member_type', 'member_sport_type')),
-	types_			text[],
-	
-	primary key (group_id_)
-);
-
-create table Group_Member_ (
-	member_id_		int,
-	group_id_		int,
-	
-	primary key (member_id_, group_id_),
-	constraint fk_member foreign key(member_id_) references Member_(id_),
-	constraint fk_group foreign key(group_id_) references Group_(group_id_)
-);
-
-
 create table Event_ (
 	id_ 			int generated always as identity,
 	name_ 			varchar(50),
@@ -137,7 +117,7 @@ create table Member_Img_ (
 );
 
 create table Sport_ (
-	id_ 	 		serial,
+	id_ 	 		int generated always as identity,
 	name_			varchar(30) unique,
 	is_deleted_		bool default false,
 
@@ -157,6 +137,48 @@ create table User_Sport_ (
 
 	primary key (user_id_, sport_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_),
+	constraint fk_sport foreign key(sport_id_) references Sport_(id_)
+);
+
+create table Group_ (
+	group_id_ 	 	int generated always as identity,
+	name_			text,
+	description_	text,
+	group_type_		text check (group_type_ in ('member_type', 'member_sport_type')),
+	
+	primary key (group_id_)
+);
+
+create table Group_Member_ (
+	member_id_		int,
+	group_id_		int,
+	
+	primary key (member_id_, group_id_),
+	constraint fk_member foreign key(member_id_) references Member_(id_),
+	constraint fk_group foreign key(group_id_) references Group_(group_id_)
+);
+
+create table User_Sport_Types_ (
+	type_ 	 		text primary key
+);
+
+create table Group_Member_Types_ (
+	group_id_		int,
+	member_type_	varchar(40),
+	
+	primary key(group_id_, member_type_),
+	constraint fk_member_type foreign key(member_type_) references Member_Types_(type_),
+	constraint fk_group_id foreign key(group_id_) references Group_(group_id_)
+);
+
+create table Group_Sports_ (
+	group_id_		int,
+	sport_id_		int,
+	sport_member_type_	text,
+	
+	primary key(group_id_, sport_member_type_, sport_id_),
+	constraint fk_group_id foreign key(group_id_) references Group_(group_id_),
+	constraint fk_sport_member_type foreign key(sport_member_type_) references User_Sport_Types_(type_),
 	constraint fk_sport foreign key(sport_id_) references Sport_(id_)
 );
 
