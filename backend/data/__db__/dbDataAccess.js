@@ -1320,8 +1320,25 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		try {
 			await client.query('begin')
 			const group = await client.query(queries.QUERY_GET_GROUP_BY_ID, [id_])
+			let group_types = null
+			if (group.rows[0].group_type_ == 'member_type') {
+				group_types = await client.query(queries.QUERY_GET_GROUP_BY_ID_MEMBER_TYPES, [id_])
+				group_types = group_types.rows.map(type => type.member_type_)
+			} else {
+				group_types = await client.query(queries.QUERY_GET_GROUP_BY_ID_SPORT_TYPES, [id_])
+				group_types = group_types.rows.map(type => {
+					let obj = {
+						sport_: type.sport_id_,
+						sport_name_: type.name_,
+						type: type.sport_member_type_
+					}
+					return obj
+				})
+			}
 			await client.query('commit')
-			return group.rows[0]
+			let result = group.rows[0]
+			result.types_ = group_types
+			return result
 		} catch (e) {
 			await client.query('rollback')
 			throw e

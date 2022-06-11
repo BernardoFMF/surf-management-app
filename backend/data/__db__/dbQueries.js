@@ -152,11 +152,15 @@ const QUERY_NUMBER_OF_EVENTS = 'select count(*) from event_'
 
 const QUERY_GET_MEMBER_VALIDATE = 'select has_debt_, full_name_ from Member_ join user_  on id_ = member_id_  where id_ = $1'
 
-const QUERY_GET_GROUPS = 'select group_id_, name_, description_, types_, group_type_ from Group_'
+const QUERY_GET_GROUPS = 'select group_id_, name_, description_, group_type_ from Group_'
 
 const QUERY_NUMBER_OF_GROUPS = 'select count(*) from Group_'
 
 const QUERY_GET_GROUP_BY_ID = 'select group_id_, name_, description_, group_type_ from Group_ where group_id_ = $1'
+
+const QUERY_GET_GROUP_BY_ID_MEMBER_TYPES = 'select group_id_, member_type_ from Group_Member_Types_ gmt where gmt.group_id_ = $1'
+
+const QUERY_GET_GROUP_BY_ID_SPORT_TYPES = 'select group_id_, sport_id_, s.name_, sport_member_type_ from Group_Sports_ gs join Sport_ s on gs.sport_id_ = s.id_ where gs.group_id_ = $1'
 
 const QUERY_GET_GROUP_BY_NAME = 'select group_id_, name_, description_, group_type_ from Group_ where name_ = $1'
 
@@ -164,7 +168,7 @@ const QUERY_POST_GROUP = 'call post_group($1, $2, $3, $4, $5, $6)'
 
 const QUERY_DELETE_GROUP = 'call delete_group($1)'
 
-const QUERY_GET_MEMBER_GROUPS = 'select g.group_id_, name_, description_, types_, group_type_ from Group_ g join Group_Member_ gm on g.group_id_ = gm.group_id_ where gm.member_id_ = $1'
+const QUERY_GET_MEMBER_GROUPS = 'select g.group_id_, name_, description_, group_type_ from Group_ g join Group_Member_ gm on g.group_id_ = gm.group_id_ where gm.member_id_ = $1'
 
 const QUERY_NUMBER_OF_MEMBER_GROUPS = 'select count(*) from Group_Member_ where member_id_ = $1'
 
@@ -177,6 +181,8 @@ const QUERY_GET_GROUP_MEMBERS = 'select id_, username_, member_type_ from Member
 const QUERY_NUMBER_OF_MEMBERS_IN_GROUP = 'select count(*) from Group_Member_ where group_id_ = $1'
 
 export default {
+    QUERY_GET_GROUP_BY_ID_MEMBER_TYPES,
+    QUERY_GET_GROUP_BY_ID_SPORT_TYPES,
     QUERY_GET_GROUP_MEMBERS,
     QUERY_DELETE_USER_SPORT_CANDIDATE,
     QUERY_NUMBER_OF_MEMBERS_IN_GROUP,

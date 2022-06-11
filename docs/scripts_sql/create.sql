@@ -182,15 +182,6 @@ create table Group_Sports_ (
 	constraint fk_sport foreign key(sport_id_) references Sport_(id_)
 );
 
-/*create table Group_Sports_ (
-	group_id_		int,
-	sport_			int,
-	
-	primary key(group_id_, sport_),
-	constraint fk_group_id foreign key(group_id_) references Group_(group_id_),
-	constraint fk_sport foreign key(sport_) references Sport_(id_)
-);*/
-
 create table Membership_card_ (
 	user_id_ 	 	int,
 	qrcode_			text unique,
