@@ -44,7 +44,6 @@ const UploadFilePage = () => {
     const dispatch = useDispatch()
 
     const handleSubmit = (values) => {
-      console.log("ganda fixe");
       const formData = new FormData()
       formData.append("file", values.file)
       dispatch(uploadFile(formData))

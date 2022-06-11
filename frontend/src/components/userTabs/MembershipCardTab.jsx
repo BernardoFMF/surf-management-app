@@ -53,10 +53,11 @@ const MembershipCardTab = () => {
                               <>
                                   <Grid item>
                                           <Avatar variant="rounded" src={memberGet.img_value_} sx={{ ml: 1, mt: 1, width: 150, height: 150 }}/>
-                                          <Stack sx={{ ml: 1, mt: 3 }}>
-                                              <Typography component="span" variant="h2" sx={{ fontWeight: 400, color: 'white' }}>{memberGet.full_name_}</Typography>
-                                              <Typography variant="h4" sx={{ color: 'white' }}>{memberGet.member_type_}</Typography>
-                                              <Typography variant="h4" sx={{ color: 'white' }}>{t("member_since") + memberGet.enrollment_date_.slice(0,10)}</Typography>
+                                          <Stack sx={{ ml: 1, mt: 1.5 }}>
+                                                <Typography component="span" variant="h2" sx={{ fontWeight: 400, color: 'white' }}>{memberGet.full_name_}</Typography>
+                                                <Typography component="span" variant="h4" sx={{ fontWeight: 0, color: 'white' }}>{memberGet.member_type_}</Typography>
+                                                <Typography component="span" variant="h5" sx={{ fontWeight: 0, color: 'white' }}>{t("associate_number")+ ": " + memberGet.member_id_}</Typography>
+                                                <Typography component="span" variant="h5" sx={{ fontWeight: 0, color: 'white' }}>{t("member_since") + memberGet.enrollment_date_.slice(0,10)}</Typography>
                                           </Stack>
                                   </Grid>
                                   <Grid item>
@@ -81,18 +82,19 @@ const MembershipCardTab = () => {
                                   </Grid>
                                   <Grid item>
                                       <Stack sx={{ mt: 3 }}>
-                                          <Typography component="span" variant="h2" sx={{ fontWeight: 400, color: 'white' }}>{memberGet.full_name_}</Typography>
-                                          <Typography variant="h4" sx={{ color: 'white' }}>{memberGet.member_type_}</Typography>
-                                          <Typography variant="h4" sx={{ color: 'white' }}>{t("member_since") + memberGet.enrollment_date_.slice(0,10)}</Typography>
+                                            <Typography component="span" variant="h2" sx={{ fontWeight: 400, color: 'white' }}>{memberGet.full_name_}</Typography>
+                                            <Typography component="span" variant="h4" sx={{ fontWeight: 0, color: 'white' }}>{memberGet.member_type_}</Typography>
+                                            <Typography component="span" variant="h5" sx={{ fontWeight: 0, color: 'white' }}>{t("associate_number")+ ": " + memberGet.member_id_}</Typography>
+                                            <Typography component="span" variant="h5" sx={{ fontWeight: 0, color: 'white' }}>{t("member_since") + memberGet.enrollment_date_.slice(0,10)}</Typography>
                                       </Stack>
                                   </Grid>
-                                  <Grid item sx={{ mt: 5 }}>
+                                  <Grid item sx={{ mt: 4 }}>
                                       <Box>
                                           <Avatar variant="rounded" src={memberGet.qrcode_} sx={{ width: 150, height: 150 }}/>
                                       </Box>
                                   </Grid>
                                       
-                                  <Grid item sx={{ mt: 5 }}>
+                                  <Grid item sx={{ mt: 4 }}>
                                       <Box>  
                                           <img src={Logo} height='80px' alt='logo' onLoad={imageLoaded}/>
                                       </Box>

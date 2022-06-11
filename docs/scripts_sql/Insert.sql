@@ -120,7 +120,7 @@ values (2,1,array['apprentice'],4890, 54,'Federacao Portuguesa de Surf',array[20
 
 insert into Group_(name_, description_, group_type_, types_) values ('grupo para fundadores', 'descricao de grupo', 'member_type', array['founder']);
 insert into Group_(name_, description_, group_type_, types_) values ('grupo para effective e corporate', 'descricao de grupo', 'member_type', array['effective', 'corporate']);
-insert into Group_(name_, description_, group_type_, types_) values ('grupo para coaches', 'descricao de grupo', 'member_sport_type', array['coach'],);
+insert into Group_(name_, description_, group_type_, types_) values ('grupo para coaches', 'descricao de grupo', 'member_sport_type', array['coach']);
 insert into Group_(name_, description_, group_type_, types_) values ('grupo para coaches e para practitioners', 'descricao de grupo', 'member_sport_type', array['coach', 'practitioner']);
 /**/
 insert into Membership_card_ 

@@ -46,7 +46,6 @@ export const signUp = (body) => async (dispatch) => {
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" }
     })
-    console.log("sup" + body);
     const text = await response.json()
     if(response.status !== 201) throw Error(text.message_code)
     dispatch({
@@ -102,7 +101,6 @@ export const getUsers = (username_filter, name_filter, email_filter, offset, lim
         headers: { "Content-Type": "application/json" }
     })
     let users = await response.json()
-    console.log(users);
     if(response.status !== 200) throw Error(users.message_code)
     dispatch({
       type: USERS_FETCH_SUCCESS,
@@ -238,7 +236,6 @@ export const updateUserSports = (id, sid, body) => async (dispatch) => {
         headers: { "Content-Type": "application/json" }
     })
     const userSport = await response.json()
-    console.log(userSport);
     if(response.status !== 200) throw Error(userSport.message_code)
     dispatch({
       type: USER_SPORT_UPDATE_SUCCESS,

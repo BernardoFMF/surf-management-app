@@ -768,7 +768,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		try {
 			await client.query('begin')
 			const sport = await client.query(queries.QUERY_GET_SPORT_BY_ID, [id_])
-			console.log(sport);
 			const sports = await client.query(query, [id_, is_candidate_])
 			const number_of_sports = await client.query(queries.QUERY_NUMBER_OF_SPORT_USERS, [id_, is_candidate_])
 			await client.query('commit')
@@ -1209,7 +1208,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const getManagementQuotas = async(category_) => {
 		let query = queries.QUERY_GET_MANAGEMENT_QUOTAS
 		if(category_) {
-			query += ` where category_ = ${category_}`
+			query += ` where category_ = '${category_}'`
 		}
 		const client = await pool.connect()
 		try {

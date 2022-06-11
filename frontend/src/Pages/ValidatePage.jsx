@@ -42,7 +42,6 @@ const ValidatePage = () => {
 
     useEffect(() => {
         dispatch(getMemberValidation(id))
-        console.log(id)
     },[])
 
     return (
