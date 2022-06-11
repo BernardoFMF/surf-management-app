@@ -95,8 +95,15 @@ begin
 		insert into Group_Member_ (member_id_, group_id_) select id_, new.group_id_ from Member_ where member_type_ = any(new.types_);
 	elsif new.group_type_ = 'member_sport_type' then 
 		foreach txt in array new.types_
-	   	LOOP
-	    	insert into Group_Member_ (member_id_, group_id_) select distinct id_, new.group_id_ from Member_ m join User_Sport_ us on m.id_ = us.user_id_ where txt = any(us.type_);
+	   	loop
+	    	insert into Group_Member_ (member_id_, group_id_) 
+		    	select distinct id_, new.group_id_ 
+		   		from Member_ m join User_Sport_ us on m.id_ = us.user_id_ 
+		   		where txt = any(us.type_) and id_ not in (
+		   			select member_id_ 
+		   			from Group_Member_ gm join Member_ m2 on gm.member_id_ = m2.id_ 
+		   			where gm.group_id_ = new.group_id_
+		   		);
 	   	END LOOP;
 	end if;
 	return new;

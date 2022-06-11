@@ -56,9 +56,11 @@ begin
 	select member_type_ into old_type from Member_ where id_ = p_id_;
 	
 	if old_type != p_type_ then
-		delete from Group_Member_ where member_id_ = p_id_;
+		delete from Group_Member_ gm where gm.member_id_ = p_id_ and gm.group_id_ in (
+			select gm2.group_id_ from Group_Member_ gm2 join Group_ g on gm2.group_id_ = g.group_id_ where g.group_type_ = 'member_type' and old_type = any(g.types_)
+		);
 		
-		insert into Group_Member_ (member_id_, group_id_) select p_id_, id_ from Group_ where group_type_ = 'member_type' and p_type_ = any(types_);
+		insert into Group_Member_ (member_id_, group_id_) select p_id_, group_id_ from Group_ where group_type_ = 'member_type' and p_type_ = any(types_);
 	end if;
 	
 	update Contact_ set location_ = p_location_, address_ = p_address_, postal_code_ = p_postal_code_, phone_number_= p_phone_number_ where member_id_ = p_id_;
@@ -92,13 +94,25 @@ $$;
  * Verifies if this user had already practiced this sport before
  */
 create or replace procedure post_user_sport(id_ int, sid_ int, fed_id_ int, fed_number_ int, fed_name_ varchar(30), type_ text [], years_federated_ int [], is_candidate_ bool)
-LANGUAGE plpgsql  
+LANGUAGE plpgsql
 as
 $$
+declare
+	txt text;
 begin
 	if exists (select * from User_Sport_ where user_id_ = id_ and sport_id_ = sid_ and is_absent_ = true) then
 		update 	User_Sport_ set is_absent_ = false where user_id_ = id_ and sport_id_ = sid_;
 	end if;
+
+	foreach txt in array type_
+   	LOOP
+    	insert into Group_Member_ (member_id_, group_id_) 
+    	select distinct id_, group_id_ 
+    	from Group_ g
+    	where g.group_type_ = 'member_sport_type' and txt = any(g.types_) and g.group_id_ not in (
+    		select gm.group_id_ from Group_Member_ gm join Group_ g2 on gm.group_id_ = g2.group_id_ where txt = any(g2.types_) and gm.member_id_ = id_
+    	);
+   	END LOOP;
 	
 	insert into User_Sport_ (user_id_, sport_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_, is_candidate_)
 	values (id_, sid_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_, is_candidate_);
@@ -112,7 +126,23 @@ create or replace procedure put_user_sport(p_id_ int, p_sid_ int, p_fed_id_ int,
 LANGUAGE plpgsql  
 as
 $$
+declare
+	old_types text[];
+	txt text;
 begin
+	select type_ into old_types from User_Sport_ where user_id_ = p_id_ and sport_id_ = p_sid_;
+
+	if not(old_types <@ p_type_ and p_type_ @> old_types) then
+		delete from Group_Member_ where member_id_ = p_id_ and group_id_ in (
+			select member_id_ from Group_Member_ gm join Group_ g on gm.group_id_ = g.group_id_ where g.group_type_ = 'member_sport_type' and txt = any(g.types_)
+		);
+		foreach txt in array p_type_
+	   	loop
+			insert into Group_Member_ (member_id_, group_id_) select distinct p_id_, group_id_ from Group_ where group_type_ = 'member_sport_type' and txt = any(types_);
+	   	END LOOP;
+
+	end if;
+
 	update User_Sport_ set type_ = p_type_, fed_number_ = p_fed_number_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_, is_candidate_ = p_is_candidate_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 end
 $$;
@@ -140,6 +170,7 @@ $$;
  * delete sport is made by a simple update query (changes the flag in sport)
  * no proc needed
  */
+
 
 -- events
 
@@ -259,7 +290,7 @@ begin
 	INSERT INTO Contact_(member_id_,location_,address_,postal_code_,email_,phone_number_) VALUES (new_id_,location_,address_,postal_code_,email_,phone_number_);
 	INSERT INTO Company_(member_id_,nif_,name_) VALUES (new_id_, nif_, name_);
 
-	insert into Group_Member_ (member_id_, group_id_) select new_id_, id_ from Group_ where group_type_ = 'member_type' and mtype_ = any(types_);
+	insert into Group_Member_ (member_id_, group_id_) select new_id_, group_id_ from Group_ where group_type_ = 'member_type' and mtype_ = any(types_);
 
 	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
 	SELECT extract(YEAR FROM date1) into year1;
@@ -274,7 +305,7 @@ $$;
 /**
  * Updates contact & company
  */
-create or replace procedure put_company(cid_ int, p_nif_ bigint, p_name_ varchar(40), p_phone_number_ int, p_postal_code_ varchar(8), p_address_ text, p_location_ varchar(30), p_img_ text, p_is_deleted_ bool, p_iban_ text)
+create or replace procedure put_company(cid_ int, p_nif_ bigint, p_type_ varchar(40), p_name_ varchar(40), p_phone_number_ int, p_postal_code_ varchar(8), p_address_ text, p_location_ varchar(30), p_img_ text, p_is_deleted_ bool, p_iban_ text)
 LANGUAGE plpgsql  
 as
 $$
@@ -284,9 +315,11 @@ begin
 	select member_type_ into old_type from Member_ where id_ = cid_;
 	
 	if old_type != p_type_ then
-		delete from Group_Member_ where member_id_ = cid_;
+		delete from Group_Member_ gm where gm.member_id_ = cid_ and gm.group_id_ in (
+			select gm2.group_id_ from Group_Member_ gm2 join Group_ g on gm2.group_id_ = g.group_id_ where g.group_type_ = 'member_type' and old_type = any(g.types_)
+		);
 		
-		insert into Group_Member_ select cid_, id_ from Group_ where group_type_ = 'member_type' and p_type_ = any(types_);
+		insert into Group_Member_ (member_id_, group_id_) select cid_, group_id_ from Group_ where group_type_ = 'member_type' and p_type_ = any(types_);	
 	end if;
 	
 	UPDATE Contact_ SET phone_number_ = p_phone_number_, postal_code_ = p_postal_code_,address_ = p_address_, location_ = p_location_ WHERE member_id_ = cid_;
@@ -296,7 +329,6 @@ begin
 	if p_img_ is not null then
 		UPDATE Member_Img_ SET img_value_ = p_img_ WHERE member_id_ = cid_;
 	end if;
-
 end
 $$;
 

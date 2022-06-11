@@ -277,11 +277,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const updateCompanyData = async (cid_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
+	const updateCompanyData = async (cid_, nif_, type_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
-			await company.query(queries.QUERY_UPDATE_COMPANY, [cid_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_])
+			await company.query(queries.QUERY_UPDATE_COMPANY, [cid_, nif_, type_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_])
 			await company.query('Commit')
 			return cid_
 		} catch(e) {
