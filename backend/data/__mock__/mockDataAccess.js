@@ -668,7 +668,6 @@ const getUsersSportsData = async () => {
 
 const getUsersSportData = async (id_) => {
 	let sports_tuples = await getUsersSportsData()
-	console.log(sports_tuples)
 	let res = sports_tuples.users_sports_array.filter(sport => sport.sport_id_ == id_)
 	return {res,number_of_sports:res.length}
 }

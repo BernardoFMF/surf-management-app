@@ -4,7 +4,7 @@ import MainLayout from '../layout/mainLayout'
 import Loadable from '../components/Loadable'
 import RequireAuth from '../components/RequireAuth'
 import RequireAdmin from '../components/RequireAdmin'
-import RequireUser from '../components/RequireUser'
+import RequireMember from '../components/RequireMember'
 import Error from '../Pages/error/Error'
 
 const DashboardDefault = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
@@ -44,7 +44,7 @@ const mainRoutes = {
         },
         {
             path: '/application/members/:id',
-            element: <RequireAdmin><ProfileForker/></RequireAdmin>
+            element: <RequireMember><ProfileForker/></RequireMember>
         },
         {
             path: '/application/sports',
@@ -68,7 +68,7 @@ const mainRoutes = {
         },
         {
             path: '/application/quotas/members/:id',
-            element: <RequireUser><MyQuotasPage/></RequireUser>
+            element: <RequireMember><MyQuotasPage/></RequireMember>
         },
         {
             path: '/application/events',
@@ -76,11 +76,11 @@ const mainRoutes = {
         },
         {
             path: '/application/events/members/:id',
-            element: <RequireUser><MyEventsPage/></RequireUser>
+            element: <RequireMember><MyEventsPage/></RequireMember>
         },
         {
             path: '/application/sports/members/:id',
-            element: <RequireUser><MySportsPage/></RequireUser>
+            element: <RequireMember><MySportsPage/></RequireMember>
         },
         {
             path: '/application/quotas/management',
@@ -92,7 +92,7 @@ const mainRoutes = {
         },
         {
             path: '/uploadfile',
-            element: <UploadFilePage/>
+            element: <RequireAdmin><UploadFilePage/></RequireAdmin>
         }
     ]
 };

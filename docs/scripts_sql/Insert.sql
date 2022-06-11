@@ -1,13 +1,13 @@
 insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_, gender_, iban_) 
 values (154781132, 156784242,'Miguel da Silva Lopes','Portuguese','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com', 967021559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','miguelf', 'Male', 'PT50002700000001234567831'),
-(151444331, 156722241,'João Silva','Portuguese','2001-10-19','Lisboa','Rua do Cobre n22','2001-226','Silva@gmail.com', 933321559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Silva', 'Male', 'PT50002700000001234567832'),
+(151444331, 156722241,'Joï¿½o Silva','Portuguese','2001-10-19','Lisboa','Rua do Cobre n22','2001-226','Silva@gmail.com', 933321559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Silva', 'Male', 'PT50002700000001234567832'),
 (151142332, 151111142,'Roberto Bolha','Portuguese','1999-05-19','Porto','Rua da madeira n15','2075-543','Bolha@gmail.com', 922221559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Bolha', 'Other', 'PT50002700000001234567833'),
 (152242333, 156333243,'Amilcar Dias','Portuguese','2000-09-19','Braga','Rua do Ouro n45','2330-216','Dias@gmail.com', 911121559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Dias', 'Other', 'PT50002700000001234567835'),
-(222783334, 156111244,'Américo Jorge','Portuguese','2000-02-17','Coimbra','Rua da laranja n67','2321-541','Jorge@gmail.com', 937821559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Jorge', 'Male', 'PT50002700000001234567834'),
-(123782333, 159994243,'Roger Dias','Portuguese','1999-01-11','Santarém','Rua da santa n45','2355-216','Roger@gmail.com', 911144559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Roger', 'Other', 'PT50002700000001234567836'),
-(222782133, 155554243,'Tiago Pedro','Portuguese','1987-05-27','Portimão','Rua da mão n11','2220-216','Pedro@gmail.com', 911121999,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Pedro', 'Male', 'PT50002700000001234567838'),
+(222783334, 156111244,'Amï¿½rico Jorge','Portuguese','2000-02-17','Coimbra','Rua da laranja n67','2321-541','Jorge@gmail.com', 937821559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Jorge', 'Male', 'PT50002700000001234567834'),
+(123782333, 159994243,'Roger Dias','Portuguese','1999-01-11','Santarï¿½m','Rua da santa n45','2355-216','Roger@gmail.com', 911144559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Roger', 'Other', 'PT50002700000001234567836'),
+(222782133, 155554243,'Tiago Pedro','Portuguese','1987-05-27','Portimï¿½o','Rua da mï¿½o n11','2220-216','Pedro@gmail.com', 911121999,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Pedro', 'Male', 'PT50002700000001234567838'),
 (221782233, 133384243,'Nuna Dias','Portuguese','1967-04-11','Lisboa','Rua do Bolha n45','2344-216','Nuna@gmail.com', 911224543,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Nuna', 'Female', 'PT50002700000001234567837'),
-(224782433, 156664243,'Rui Frango','Portuguese','1984-02-12','Lisboa','Rua do Calvário n45','2322-216','Frango@gmail.com', 911231469,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Frango', 'Other', 'PT50002700000001234567839');
+(224782433, 156664243,'Rui Frango','Portuguese','1984-02-12','Lisboa','Rua do Calvï¿½rio n45','2322-216','Frango@gmail.com', 911231469,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Frango', 'Other', 'PT50002700000001234567839');
 
 insert into Member_Types_ 
 values ('effective', 15, 'user'),
@@ -26,9 +26,9 @@ insert into Event_(name_, initial_date_, end_date_)
 values ('Assembleia Geral','2022-4-9','2022-4-9'),
 ('Assembleia Particular','2022-4-11','2022-4-12'),
 ('Assembleia','2022-4-13','2022-4-14'),
-('Reunião do conselho','2022-4-15','2022-4-15'),
-('Almoçarada Geral','2022-4-21','2022-4-22'),
-('Almoçarada Particular','2022-4-23','2022-4-23'),
+('Reuniï¿½o do conselho','2022-4-15','2022-4-15'),
+('Almoï¿½arada Geral','2022-4-21','2022-4-22'),
+('Almoï¿½arada Particular','2022-4-23','2022-4-23'),
 ('Jantarada Geral','2022-4-25','2022-4-26'),
 ('Jantarada Particular','2022-4-1','2022-4-2'),
 ('Lanche Geral','2022-4-3','2022-4-4'),
@@ -74,7 +74,7 @@ values (2,null, 15, '2022-01-01'),
 
 
 insert into Contact_ 
-values (1,'Ericeira','Rua do Clérigos n2 3ºesq','2050-032','afonsoribeiro@gmail.com', 962681730),
+values (1,'Ericeira','Rua do Clï¿½rigos n2 3ï¿½esq','2050-032','afonsoribeiro@gmail.com', 962681730),
 (2,'Lisboa','Rua da Bobadela n43', '2000-561', 'jlopes@gmail.com', 925827332),
 (3,'Ericeira','Rua da ericeira','2812-829','ess@gmail.com', 938172388),
 (4,'Billacity','Rua da billa', '2220-829', 'billybonga@gmail.com', 932323238) ;
@@ -85,7 +85,7 @@ values (3,234517789,'Ripcurl shop'),
 
 insert into User_ 
 values (1,250549361,459254851,'Afonso Melo Ribeiro','Portuguese','1997-05-25','2020-03-14',true, true, 'Male'),
-(2,250549381,459254751,'José Elias Lopes','Portuguese','1989-04-27','2021-03-14', true,false, 'Male');
+(2,250549381,459254751,'Josï¿½ Elias Lopes','Portuguese','1989-04-27','2021-03-14', true,false, 'Male');
 
 insert into Member_img_ 
 values (1, null), (2, null), (3, null), (4, null);
