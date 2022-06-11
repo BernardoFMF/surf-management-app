@@ -156,11 +156,11 @@ const QUERY_GET_GROUPS = 'select group_id_, name_, description_, types_, group_t
 
 const QUERY_NUMBER_OF_GROUPS = 'select count(*) from Group_'
 
-const QUERY_GET_GROUP_BY_ID = 'select group_id_, name_, description_, types_, group_type_ from Group_ where group_id_ = $1'
+const QUERY_GET_GROUP_BY_ID = 'select group_id_, name_, description_, group_type_ from Group_ where group_id_ = $1'
 
-const QUERY_GET_GROUP_BY_NAME = 'select group_id_, name_, description_, types_, group_type_ from Group_ where name_ = $1'
+const QUERY_GET_GROUP_BY_NAME = 'select group_id_, name_, description_, group_type_ from Group_ where name_ = $1'
 
-const QUERY_POST_GROUP = 'call post_group($1, $2, $3, $4, $5)'
+const QUERY_POST_GROUP = 'call post_group($1, $2, $3, $4, $5, $6)'
 
 const QUERY_DELETE_GROUP = 'call delete_group($1)'
 

@@ -17,7 +17,7 @@ const groupControllers = (data) => {
 	})
     
     const postGroup = asyncHandler(async (req, res) => {
-        const group = await services.postGroupServices(req.body.name, req.body.description, req.body.group_type, req.body.types)
+        const group = await services.postGroupServices(req.body.name, req.body.description, req.body.group_type, req.body.types, req.body.sports)
         if (group) {
             res.status(201)
             res.json(group)

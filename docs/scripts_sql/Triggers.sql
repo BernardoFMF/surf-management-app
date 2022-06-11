@@ -83,36 +83,41 @@ after update
 on Sport_
 execute procedure deleteSportsForDeletedSport();
 
-create or replace function addGroupMembers()
+create or replace function addGroupMembersByMember()
 returns trigger
 language plpgsql
 as
 $body$
-declare
-	txt text;
-begin 
-	if new.group_type_ = 'member_type' then
-		insert into Group_Member_ (member_id_, group_id_) select id_, new.group_id_ from Member_ where member_type_ = any(new.types_);
-	elsif new.group_type_ = 'member_sport_type' then 
-		foreach txt in array new.types_
-	   	loop
-	    	insert into Group_Member_ (member_id_, group_id_) 
-		    	select distinct id_, new.group_id_ 
-		   		from Member_ m join User_Sport_ us on m.id_ = us.user_id_ 
-		   		where txt = any(us.type_) and id_ not in (
-		   			select member_id_ 
-		   			from Group_Member_ gm join Member_ m2 on gm.member_id_ = m2.id_ 
-		   			where gm.group_id_ = new.group_id_
-		   		);
-	   	END LOOP;
-	end if;
+begin
+	insert into Group_Member_ (member_id_, group_id_) 
+	select distinct id_, new.group_id_ from Member_ 
+	where member_type_ = new.member_type_;
 	return new;
 end
 $body$;
 
-create or replace trigger addGroupMembersTrigger 
+create or replace trigger addGroupMembersByMemberTrigger 
 after insert 
-on Group_
+on Group_Member_Types_
 for each row
-execute procedure addGroupMembers();
+execute procedure addGroupMembersByMember();
+
+create or replace function addGroupMembersBySport()
+returns trigger
+language plpgsql
+as
+$body$
+begin	
+	insert into Group_Member_ (member_id_, group_id_)
+	select distinct user_id_, new.group_id_ from User_Sport_
+	where new.sport_member_type_ = any(type_) and sport_id_ = new.sport_id_;
+	return new;
+end
+$body$;
+
+create or replace trigger addGroupMembersBySportTrigger 
+after insert 
+on Group_Sports_
+for each row
+execute procedure addGroupMembersBySport();
 

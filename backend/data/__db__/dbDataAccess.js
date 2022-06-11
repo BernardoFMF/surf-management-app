@@ -1346,11 +1346,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const postGroupData = async (name_, description_, group_type_, types_) => {
+	const postGroupData = async (name_, description_, group_type_, types_, sports_) => {
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
-			const group = await client.query(queries.QUERY_POST_GROUP, [name_, description_, types_, group_type_, 0])
+			const group = await client.query(queries.QUERY_POST_GROUP, [name_, description_, types_, group_type_, sports_, 0])
 			await client.query('commit')
 			return group.rows[0].new_id_
 		} catch (e) {
