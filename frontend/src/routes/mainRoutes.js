@@ -22,6 +22,7 @@ const MySportsPage = Loadable(lazy(() => import('../Pages/application/MySportsPa
 const QuotasManagementPage = Loadable(lazy(() => import('../Pages/application/QuotasManagementPage')))
 const EventPage = Loadable(lazy(() => import('../Pages/application/EventPage')))
 const MyEventsPage = Loadable(lazy(() => import('../Pages/application/MyEventsPage')))
+const UploadFilePage = Loadable(lazy(() => import('../Pages/UploadFilePage')))
 
 //const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
 
@@ -88,6 +89,10 @@ const mainRoutes = {
         {
             path: '/application/events/:id',
             element: <RequireAdmin><EventPage/></RequireAdmin>
+        },
+        {
+            path: '/uploadfile',
+            element: <UploadFilePage/>
         }
     ]
 };
