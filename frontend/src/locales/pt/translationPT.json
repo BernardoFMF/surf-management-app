@@ -272,7 +272,13 @@
     "associate_n_mandatory": "Número de sócio é obrigatório",
     "associate_number": "Número de sócio",
 
-    "sport_create_alert" : "Novo desporto criado com sucesso"
+    "sport_create_alert" : "Novo desporto criado com sucesso",
 
-
+    "group_type": "Tipo de Grupo",
+    "my_groups": "Os Meus Grupos",
+    "member_sport_type": "Tipo de membro no desporto",
+    "member_groups": "Grupos de membro",
+    "groups": "Grupos",
+    "all_groups": "Todos Os Grupos",
+    "none": "Nenhum"
 }

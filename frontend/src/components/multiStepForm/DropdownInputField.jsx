@@ -8,7 +8,7 @@ import { useFormikContext, useField } from 'formik'
 const DropdownInputField = ({ label, options, ...props}) => {
 
     const [field, meta] = useField(props)
-    const { setFieldValue} = useFormikContext()
+    const { setFieldValue } = useFormikContext()
 
     const handleChange = evt => {
         const { value } = evt.target

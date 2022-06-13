@@ -118,8 +118,8 @@ const columns = [
 
   return (
     <>
-      <MainCard title={t('my_events')} sx={{height: '100%'}}>
-      <Box
+        <MainCard title={t('my_events')} sx={{height: '100%'}}>
+            <Box
                 sx={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(4, 1fr)',
@@ -130,45 +130,45 @@ const columns = [
                 ". . . ."`,
                 }}
             >
-            <Box gridArea={'search'}>
-            <Formik
-                    initialValues={searchState}
-                    enableReinitialize={true}
-                    onSubmit={values => searchHandler(values)}
-                >
-                {formik => (
-                    <Form>
-                        <Grid container spacing={2} direction="row" alignItems={'center'} >
-                            <Grid item>
-                                <InputField name='name_filter' label={t('name')} type='text'></InputField>
+                <Box gridArea={'search'}>
+                    <Formik
+                        initialValues={searchState}
+                        enableReinitialize={true}
+                        onSubmit={values => searchHandler(values)}
+                    >
+                    {formik => (
+                        <Form>
+                            <Grid container spacing={2} direction="row" alignItems={'center'} >
+                                <Grid item>
+                                    <InputField name='name_filter' label={t('name')} type='text'></InputField>
+                                </Grid>
+                                <Grid item>
+                                    <InputField name='state_filter' label={t('event_state')} type='text' ></InputField>
+                                </Grid>
+                                <Grid item>
+                                <DateInputField name='date_filter' label={t('event_initial_date')}></DateInputField>
+                                </Grid>
+                                <Grid item>
+                                    <AnimateButton>
+                                        <LoadingButton
+                                            disableElevation
+                                            size="large"
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            loading = {loading}
+                                            startIcon={<SearchIcon></SearchIcon>}
+                                        >
+                                            {t('search')}
+                                        </LoadingButton>
+                                    </AnimateButton>
+                                </Grid>    
                             </Grid>
-                            <Grid item>
-                                <InputField name='state_filter' label={t('event_state')} type='text' ></InputField>
-                            </Grid>
-                            <Grid item>
-                            <DateInputField name='date_filter' label={t('event_initial_date')}></DateInputField>
-                            </Grid>
-                            <Grid item>
-                                <AnimateButton>
-                                    <LoadingButton
-                                        disableElevation
-                                        size="large"
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        loading = {loading}
-                                        startIcon={<SearchIcon></SearchIcon>}
-                                    >
-                                        {t('search')}
-                                    </LoadingButton>
-                                </AnimateButton>
-                            </Grid>    
-                        </Grid>
-                    </Form>
-                )}
-            </Formik>
-        </Box>
-        </Box>
+                        </Form>
+                    )}
+                    </Formik>
+                </Box>
+            </Box>
       { loading ? 
         <Stack alignItems="center">
             <CircularProgress size='4rem'/>

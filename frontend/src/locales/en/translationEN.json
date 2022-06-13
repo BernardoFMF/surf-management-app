@@ -268,7 +268,13 @@
     "associate_n_mandatory": "Associate number is mandatory",
     "associate_number": "Associate number",
 
-    "sport_create_alert" : "New sport created with success"
+    "sport_create_alert" : "New sport created with success",
 
-
+    "group_type": "Group Type",
+    "my_groups": "My Groups",
+    "member_sport_type": "Member type in sport",
+    "member_groups": "Member groups",
+    "groups": "Groups",
+    "all_groups": "All Groups",
+    "none": "None"
 }

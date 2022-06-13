@@ -12,6 +12,7 @@ import { companyPostReducer, companyDeletionReducer, companiesFetchReducer, comp
 import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
 import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer, memberEventsAttendanceFetchReducer, createEventReducer} from './reducers/eventReducers'
 import { uploadReducer} from './reducers/uploadReducers'
+import { memberGroupsFetchReducer, memberGroupDeleteReducer, groupsFetchReducer, groupDeleteReducer } from './reducers/groupReducers'
 
 const reducer = combineReducers({
   memberLogin: memberLoginReducer,
@@ -55,7 +56,11 @@ const reducer = combineReducers({
   userSportDelete: usersSportDeleteReducer,
   uploadFileFetch: uploadReducer,
   usersSportsCreate: usersSportsCreateReducer,
-  userSportsTypesFetch : userSportsTypesFetchReducer
+  userSportsTypesFetch : userSportsTypesFetchReducer,
+  memberGroupsFetch: memberGroupsFetchReducer,
+  memberGroupDelete: memberGroupDeleteReducer,
+  groupsFetch: groupsFetchReducer,
+  groupDelete: groupDeleteReducer
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')
