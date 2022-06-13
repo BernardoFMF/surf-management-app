@@ -3,6 +3,7 @@ import SurfingIcon from '@mui/icons-material/Surfing'
 import CreditCardIcon from '@mui/icons-material/CreditCard'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import EventIcon from '@mui/icons-material/Event'
+import GroupIcon from '@mui/icons-material/Group';
 
 const pages = {
     id: 'application',
@@ -114,6 +115,29 @@ const pages = {
                     type: 'item',
                     hasParams: false,
                     url: '/application/events'
+                }
+            ]
+        },
+        {
+            id: 'groups',
+            title: 'Groups',
+            type: 'collapse',
+            icon: GroupIcon,
+            hideMenuIfNotAdmin: true,
+            children: [
+                {
+                    id: 'my_groups',
+                    title: 'My Groups',
+                    type: 'item',
+                    hasParams: true,
+                    url: '/application/groups/members/{id}'
+                },
+                {
+                    id: 'all_groups',
+                    title: 'All Groups',
+                    type: 'item',
+                    hasParams: false,
+                    url: '/application/groups'
                 }
             ]
         },

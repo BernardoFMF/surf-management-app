@@ -278,10 +278,13 @@
     "company_created_successfully": "A empresa foi criada com sucesso",
     "event_created_successfully": "O evento foi criado com sucesso",
     "user_created_successfully": "O utilizador foi criado com sucesso",
-    "quota_updated": "Quota atualizada"
+    "quota_updated": "Quota atualizada",
 
-
-
-
-
+    "group_type": "Tipo de Grupo",
+    "my_groups": "Os Meus Grupos",
+    "member_sport_type": "Tipo de membro no desporto",
+    "member_groups": "Grupos de membro",
+    "groups": "Grupos",
+    "all_groups": "Todos Os Grupos",
+    "none": "Nenhum"
 }

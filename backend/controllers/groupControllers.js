@@ -7,7 +7,7 @@ const groupControllers = (data) => {
 	const services = groupServices(data)
 
 	const getGroups = asyncHandler(async (req, res) => {
-        const groups = await services.getGroupsServices(req.query.name, req.query.group_type, req.query.offset, req.query.limit)
+        const groups = await services.getGroupsServices(req.query.name, req.query.type, req.query.offset, req.query.limit)
         res.json(groups)
 	})
 
@@ -30,7 +30,7 @@ const groupControllers = (data) => {
 	})
 
     const getMemberGroups = asyncHandler(async (req, res) => {
-        const groups = await services.getMemberGroupsServices(req.params.id, req.query.offset, req.query.limit)
+        const groups = await services.getMemberGroupsServices(req.params.id, req.query.name, req.query.type, req.query.offset, req.query.limit)
         res.json(groups)
 	})
 

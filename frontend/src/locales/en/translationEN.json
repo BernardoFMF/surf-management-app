@@ -274,8 +274,15 @@
     "company_created_successfully": "Company was created successfully",
     "event_created_successfully": "Event was created successfully",
     "user_created_successfully": "User was created successfully",
-    "quota_updated": "Quota updated"
+    "quota_updated": "Quota updated",
 
 
 
+    "group_type": "Group Type",
+    "my_groups": "My Groups",
+    "member_sport_type": "Member type in sport",
+    "member_groups": "Member groups",
+    "groups": "Groups",
+    "all_groups": "All Groups",
+    "none": "None"
 }

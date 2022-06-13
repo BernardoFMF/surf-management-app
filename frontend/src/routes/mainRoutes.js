@@ -23,7 +23,8 @@ const QuotasManagementPage = Loadable(lazy(() => import('../Pages/application/Qu
 const EventPage = Loadable(lazy(() => import('../Pages/application/EventPage')))
 const MyEventsPage = Loadable(lazy(() => import('../Pages/application/MyEventsPage')))
 const UploadFilePage = Loadable(lazy(() => import('../Pages/UploadFilePage')))
-
+const MyGroupsPage = Loadable(lazy(() => import('../Pages/application/MyGroupsPage')))
+const AllGroupsPage = Loadable(lazy(() => import('../Pages/application/AllGroupsPage')))
 //const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
 
 const mainRoutes = {
@@ -91,9 +92,17 @@ const mainRoutes = {
             element: <RequireAdmin><EventPage/></RequireAdmin>
         },
         {
+            path: '/application/groups/members/:id',
+            element: <RequireAdmin><MyGroupsPage/></RequireAdmin>
+        },
+        {
+            path: '/application/groups',
+            element: <RequireAdmin><AllGroupsPage/></RequireAdmin>
+        },
+        {
             path: '/uploadfile',
             element: <RequireAdmin><UploadFilePage/></RequireAdmin>
-        }
+        },
     ]
 };
 

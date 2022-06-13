@@ -1296,7 +1296,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 		if(group_type_filter){
 			if(count > 0) query = query + " and "
-			query = query + ` group_type_ = ${group_type_filter}`
+			query = query + ` group_type_ = '${group_type_filter}'`
 		}
 		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
@@ -1392,11 +1392,24 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const getMemberGroupsData = async (id_, offset_, limit_) => {
+	const getMemberGroupsData = async (id_, name_filter, type_filter, offset_, limit_) => {
 		let query = queries.QUERY_GET_MEMBER_GROUPS
+		let count = 0
+		if(name_filter || type_filter){
+			query = query + " and "
+		}
+		if(name_filter){
+			count++
+			query = query + ` position('${name_filter}' in name_) > 0`
+		}
+		if(type_filter){
+			if(count > 0) query = query + " and "
+			query = query + ` group_type_ ='${type_filter}'`
+		}
 		query = query + ` offset ${offset_} FETCH FIRST ${limit_} ROWS only`
 		const client = await pool.connect()
 		try {
+			console.log(query);
 			await client.query('begin')
 			const groups = await client.query(query, [id_])
 			const number_of_groups = await client.query(queries.QUERY_NUMBER_OF_MEMBER_GROUPS, [id_])
