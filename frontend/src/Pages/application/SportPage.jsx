@@ -228,7 +228,7 @@ return (
                             )}
                         </Formik>
                     </Box>
-                    <Box gridArea={'create'} alignItems={'center'} display='flex' justifyContent='flex-end'>
+                    <Box gridArea={'create'} alignItems={'center'} display={{md: 'flex', lg: 'flex'}} justifyContent='flex-end' sx={{ mt: { xs: 2, md : 0, lg : 0 }}}>
                         <AnimateButton>
                             <LoadingButton
                                 disableElevation

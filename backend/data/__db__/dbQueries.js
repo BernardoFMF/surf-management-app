@@ -46,7 +46,7 @@ const QUERY_GET_EVENTS = 'select id_, name_, initial_date_, end_date_ from Event
 
 const QUERY_GET_EVENT_BY_ID = 'select id_, name_, initial_date_, end_date_ from Event_ where id_ = $1;'
 
-const QUERY_POST_EVENT = 'insert into Event_ (name_,initial_date_,end_date_) values ($1, $2, $3) returning id_;'
+const QUERY_POST_EVENT = 'call post_event($1, $2, $3, $4, $5)'
 
 const QUERY_UPDATE_EVENT = 'update Event_ set name_ = $1, initial_date_ = $2, end_date_ = $3 where id_ = $4;'
 

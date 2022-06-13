@@ -495,13 +495,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const postEventData = async (name_,initial_date_,end_date_) => {
+	const postEventData = async (name_,initial_date_,end_date_, groups_) => {
 		const events = await pool.connect()
 		try {
 			await events.query('Begin')
-			const eventResult = await events.query(queries.QUERY_POST_EVENT, [name_,initial_date_,end_date_])
+			const eventResult = await events.query(queries.QUERY_POST_EVENT, [name_,initial_date_,end_date_,groups_,0])
 			await events.query('Commit')
-			return eventResult.rows[0].id_
+			return eventResult.rows[0].new_id_
 		} catch(e) {
 			await events.query('Rollback')
 			throw e

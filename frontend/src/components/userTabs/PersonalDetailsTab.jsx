@@ -10,6 +10,7 @@ import Base64InputField from '../multiStepForm/Base64InputField';
 import DropdownInputField from '../multiStepForm/DropdownInputField';
 import DateInputField from '../multiStepForm/DateInputField';
 import { updateUser } from '../../store/actions/userActions';
+import { useState } from 'react';
 
 import { useTheme } from '@mui/material/styles';
 
@@ -23,6 +24,7 @@ const PersonalDetailsTab = () => {
     const theme = useTheme()
 
     const { t } = useTranslation()
+    const [alertSuccess, setAlertSuccess] = useState(false)
 
     const memberFetch = useSelector((state) => state.memberFetch)
     const { memberGet } = memberFetch
@@ -45,12 +47,13 @@ const PersonalDetailsTab = () => {
     const handleSubmit = async (values) => {
         const updatedUser = { ...values, member_id: memberGet.member_id_, type: memberGet.member_type_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, address: memberGet.address_, location: memberGet.location_, paid_enrollment: memberGet.paid_enrollment_, is_admin: memberGet.is_admin_, is_deleted: memberGet.is_deleted_ }
         dispatch(updateUser(updatedUser))
+        setAlertSuccess(true)
     }
 
     return (
         <>
             { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-            { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
+            { updated && alertSuccess && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {setAlertSuccess(false)}}>{t('updated_sucessfully')}</Alert></Box> }
             <Formik
             enableReinitialize={true}
             initialValues={{

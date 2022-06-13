@@ -12,6 +12,7 @@ import DropdownInputField from '../multiStepForm/DropdownInputField';
 import { useTheme } from '@mui/material/styles';
 
 import AnimateButton from '../extended/AnimateButton';
+import { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -19,6 +20,7 @@ const AdminPrivilegesTab = () => {
     const theme = useTheme()
     const category = 'company'
     const { t } = useTranslation()
+    const [alertSuccess, setAlertSuccess] = useState(false)
 
     const memberFetch = useSelector((state) => state.memberFetch)
     const { memberGet } = memberFetch
@@ -39,8 +41,8 @@ const AdminPrivilegesTab = () => {
 
     const handleSubmit = async (values) => {
         const updatedCompany = { ...values, cid: memberGet.member_id_, name: memberGet.name_, nif: memberGet.nif_, address: memberGet.address_, location: memberGet.location_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, iban: memberGet.iban_, img: memberGet.img_value_ }
-        console.log(updatedCompany)
         dispatch(updateCompany(updatedCompany))
+        setAlertSuccess(true)
     }
 
     return (
@@ -54,7 +56,7 @@ const AdminPrivilegesTab = () => {
                     <>
                         { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
                         { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
-                        { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
+                        { updated && alertSuccess && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
                         <Formik
                             initialValues={{
                                 type: memberGet.member_type_, 

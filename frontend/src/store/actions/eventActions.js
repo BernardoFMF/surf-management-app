@@ -73,7 +73,7 @@ export const deleteEvent = (id) => async (dispatch) => {
     }
   }
 
-export const createEvent = (name, initial_date, end_date) => async (dispatch) => {
+export const createEvent = (name, initial_date, end_date, groups) => async (dispatch) => {
     try {
       dispatch({
         type: EVENT_CREATE_REQUEST,
@@ -81,7 +81,7 @@ export const createEvent = (name, initial_date, end_date) => async (dispatch) =>
       const response = await fetch(`/api/events`, {
           method: 'POST',
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({name, initial_date, final_date: end_date}),
+          body: JSON.stringify({name, initial_date, final_date: end_date, groups}),
 
       })
       const text = await response.json()

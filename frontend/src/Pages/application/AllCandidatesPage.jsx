@@ -25,21 +25,27 @@ import DialogContent from '@mui/material/DialogContent';
 import SearchIcon from '@mui/icons-material/Search';
 
 import Button from '@mui/material/Button';
+import CandidateApproveDialog from '../../components/dialogs/CandidateApproveDialog'
 
 const AllCandidatesPage = () => {
     const {t} = useTranslation()
     const dispatch = useDispatch()
 
     const [rows, setRows] = useState([]);
-    const [open, setOpen] = React.useState(false);
     const [id, setId] = React.useState();
-    const handleClose = () => setOpen(false);
+    const [open, setOpen] = useState(false);
+    const handleClose = () => {
+        setOpen(false)
+        dispatch(getCandidates(searchState.username_filter,searchState.name_filter,searchState.email_filter,0,limit))
+    };
+    const handleOpen = (id) => {
+        setId(id)
+        setOpen(true);
+    }
 
     const candidatesFetch = useSelector((state) => state.candidatesFetch)
     const { loading, error, candidatesGet } = candidatesFetch
 
-    const typesFetch = useSelector((state) => state.typesFetch)
-    const { loading: loadingTypes, error: errorTypes, typesGet } = typesFetch
 
     const [ searchState, setSearchState ] = useState({
         username_filter: "",
@@ -50,14 +56,10 @@ const AllCandidatesPage = () => {
     const [page, setPage] = useState(1);
     const limit = 5
 
-    const handleOpen = (id) => {
-        setId(id)
-        setOpen(true);
-    }
 
     useEffect(() => {
         dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, limit))
-        dispatch(getTypes())
+        dispatch(getTypes('user'))
     }, [])
 
     useEffect(() => {
@@ -80,12 +82,6 @@ const AllCandidatesPage = () => {
       },
       [],
     );
-
-    const approveCandidateHandle = async(values) => {
-        dispatch(approveCandidate(id, values.member_type, values.paid_enrollment))
-        setRows((prevRows) => prevRows.filter(row => row.id !== id))
-        handleClose()
-    }
 
     const searchHandler = async(values) => {
         setSearchState(values)
@@ -138,71 +134,13 @@ const AllCandidatesPage = () => {
 
   return (
     <>
-        <Dialog
-            PaperProps={{
-                sx: {
-                    width: 500
-                }
-            }}
+        <CandidateApproveDialog 
             open={open}
-            onClose={handleClose}
-        >
-            <Typography sx={{pl: 5, pt: 5}} id="modal-modal-title" variant="h2" component="h2">
-                {t('candidates_modal_title')}
-            </Typography>
-            <DialogContent>
-                <Box
-                    sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    m: 'auto',
-                    width: 'fit-content',
-                    }}
-                >
-                    <Formik
-                        initialValues={{
-                            member_type: '',
-                            paid_enrollment: false
-                        }}
-                        validationSchema={Yup.object().shape({
-                            member_type: Yup.string().required(t('candidates_modal_member_type_mandatory')),
-                        })}
-                        onSubmit={approveCandidateHandle}
-                    >
-                    {formik => (
-                        <Form>
-                            <Grid item xs={12} sm={6} paddingY={2} sx={{ width: {md: 300, xs: 200}, pb: 2}}>
-                                <DropdownInputField name='member_type' label={t('candidates_modal_member_type')} options={typesGet.map(type => type.type_).reduce((o, key) => Object.assign(o, {[key]: key}), {})}></DropdownInputField>
-                                <FormControlLabel onChange={formik.handleChange} control={<SwitchButton sx={{ m: 1 }} checked={formik.values.paid_enrollment} />}
-                                    label={t('candidates_modal_paid_enrollment')} name='paid_enrollment' labelPlacement='start'
-                                />
-                            </Grid>
-
-                            <AnimateButton>
-                                <LoadingButton
-                                    disableElevation
-                                    fullWidth
-                                    size="large"
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    loading = {loading}
-                                >
-                                    {t('confirm')}
-                                </LoadingButton>
-                            </AnimateButton>
-                        </Form>
-                    )}
-                    </Formik>
-                </Box>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose}>Close</Button>
-            </DialogActions>
-        </Dialog>
+            closeHandler={handleClose}
+            id={id}
+        />
         <MainCard title={t('all_candidates')} sx={{height: '100%'}}>
             { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-            { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
             <Formik
                     initialValues={searchState}
                     enableReinitialize={true}
@@ -239,7 +177,7 @@ const AllCandidatesPage = () => {
                     </Form>
                 )}
             </Formik>
-            { loading || loadingTypes ? 
+            { loading ? 
                 <Stack alignItems="center">
                     <CircularProgress size='4rem'/>
                 </Stack> : (

@@ -96,11 +96,11 @@ const AllGroupsPage = () => {
 
     const columns = [
         { field: 'group_id_', headerName: 'ID', width: 100 },
-        { field: 'name_', headerName: t('name'), width: 180 },
+        { field: 'name_', headerName: t('name'), width: 250 },
         {
             field: "type_",
             headerName: t('group_type'),
-            width: 160,
+            width: 225,
             description: "Types",
             headerAlign: "left",
             renderCell: (params) => {

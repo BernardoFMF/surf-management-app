@@ -257,12 +257,12 @@ DECLARE
  	candidate_img_ text;
  	candidate_gender_ varchar(40);
  	candidate_iban_ text;
- 	curr_date DATE;
+ 	curr_date_ DATE;
 	
 begin
 	select nif_,cc_,full_name_,nationality_,birth_date_,location_, address_, postal_code_, email_, phone_number_,pword_, username_, img_, gender_, iban_ into candidate_nif_, candidate_cc_, candidate_full_name_, candidate_nationality_, candidate_birth_date_, candidate_location_, candidate_address_, candidate_postal_code_, candidate_email_, candidate_phone_number_ , candidate_pword_ , candidate_username_, candidate_img_, candidate_gender_, candidate_iban_ FROM Candidate_ WHERE id_ = cid;
 	
-	select current_date into curr_date;
+	select current_date into curr_date_;
 	
 	call post_user(candidate_cc_, candidate_nif_, type_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_gender_, candidate_iban_,candidate_img_, curr_date_, candidate_id_);
 	
@@ -424,10 +424,30 @@ LANGUAGE plpgsql
 as
 $$
 begin
-	/*delete from Event_Group_ where group_id_ = p_group_id_;*/
+	delete from Group_Event_ where group_id_ = p_group_id_;
 	delete from Group_Member_ where group_id_ = p_group_id_;
 	delete from Group_Sports_ where group_id_ = p_group_id_;
 	delete from Group_Member_Types_ where group_id_ = p_group_id_;
 	delete from Group_ where group_id_ = p_group_id_;
+end
+$$;
+
+create or replace procedure post_event(name_ varchar(50), initial_date_ date, end_date_ date, groups_ int[], out new_id_ int)
+LANGUAGE plpgsql  
+as
+$$
+declare
+	group_ int;
+begin
+	with new_id_table_ as (
+		insert into Event_ (name_,initial_date_,end_date_) values (name_, initial_date_, end_date_) returning id_
+	)
+	select id_ into new_id_ from new_id_table_;
+
+	foreach group_ in array groups_
+   	loop
+		insert into Group_Event_ (event_id_, group_id_) values (new_id_, group_);
+		insert into Attendance_ (member_id_, event_id_, state_) select member_id_, new_id_, null from Group_Member_ where group_id_ = group_;
+	end loop;
 end
 $$;

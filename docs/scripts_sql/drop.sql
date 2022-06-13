@@ -3,6 +3,7 @@ drop table if exists Membership_card_;
 drop table if exists Group_Sports_;
 drop table if exists Group_Member_Types_;
 drop table if exists User_Sport_Types_;
+drop table if exists Group_Event_;
 drop table if exists Group_Member_;
 drop table if exists Group_;
 drop table if exists User_Sport_;
