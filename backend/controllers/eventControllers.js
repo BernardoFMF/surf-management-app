@@ -19,7 +19,7 @@ const eventController = (data) => {
 	})
 	
 	const postEvent = asyncHandler(async (req, res) => {
-		const event = await services.postEventServices(req.body.name, req.body.initial_date, req.body.final_date)
+		const event = await services.postEventServices(req.body.name, req.body.initial_date, req.body.final_date, req.body.groups)
 		if (event) {
 			res.status(201)
 			res.json(event)

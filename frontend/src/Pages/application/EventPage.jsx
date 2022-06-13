@@ -104,7 +104,7 @@ const EventPage = () => {
                             />
                             <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(eventAttendanceGet !==undefined ? eventAttendanceGet.number_of_attendance / limit : 1)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>                            
                         </Grid>
-                        <Grid sx={{ml:{ md: 1}}} item xs>
+                        <Grid sx={{mt: 0.5}} item xs>
                             <h2>{t("event_information")}</h2>
                             <b>{eventGet !==undefined ? t("start_date") + ": " : ""}</b> {eventGet !==undefined ? eventGet.initial_date_ : ""}
                             <Divider orientation="horizontal" flexItem sx={{mb: 1}}/>

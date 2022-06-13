@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState }  from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert, Grid } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -7,17 +7,26 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import AnimateButton from '../extended/AnimateButton';
 import * as Yup from 'yup'
 import { createEvent } from '../../store/actions/eventActions'
-
+import { getGroups } from '../../store/actions/groupActions';
+import ChipSelectorInputField from '../multiStepForm/ChipSelectorInputField'
 import InputField from '../../components/multiStepForm/InputField';
 import DateInputField from '../../components/multiStepForm/DateInputField';
 import { parse, isDate } from "date-fns";
-
+import CheckInputField from '../multiStepForm/CheckInputField'
 const EventCreateDialog = ({open, closeHandler}) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
-
+    const [disable, setDisable] = useState(false)
+    const limit = 100
     const eventPost = useSelector((state) => state.createEvent)
     const { loading, error, createEvent: posted } = eventPost
+
+    const groupsFetch = useSelector((state) => state.groupsFetch)
+    const { loading: loadingGroups, error: errorGroups, groupsGet } = groupsFetch
+
+    useEffect(() => {
+        dispatch(getGroups(undefined, undefined, 0, limit))
+    },[])
 
     function formatDate(date) {
 		var d = new Date(date),
@@ -44,7 +53,9 @@ const EventCreateDialog = ({open, closeHandler}) => {
     const handleSubmitCreate = async (values) => {
         let initial_date = formatDate(values.event_initial_date)
         let end_date = formatDate(values.event_end_date)
-        dispatch(createEvent(values.name, initial_date, end_date))
+        console.log(values.all);
+        const groups = values.groups.map(group => group.group_id_)
+        //dispatch(createEvent(values.name, initial_date, end_date,groups))
     }
 
 
@@ -59,8 +70,9 @@ const EventCreateDialog = ({open, closeHandler}) => {
             </Typography>
             <DialogContent>
                 { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+                { errorGroups && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorGroups)}</Alert></Box> }
                 { posted && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('event_created_successfully')}</Alert></Box> }
-                <Box
+                { !loadingGroups && <Box
                     sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -72,12 +84,15 @@ const EventCreateDialog = ({open, closeHandler}) => {
                         initialValues={{
                             name: '',
                             event_initial_date: '',
-                            event_end_date: ''
+                            event_end_date: '',
+                            groups: [],
+                            all: false
                         }}
                         validationSchema={Yup.object().shape({
                             name: Yup.string().required(t('sign_up_username_mandatory')),
-                            event_initial_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).required(t('initial_date_mandatory')),
-                            event_end_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).required(t('end_date_mandatory')),
+                            event_initial_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).min(new Date(), t('min_date')).required(t('initial_date_mandatory')),
+                            event_end_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).min(new Date(), t('min_date')).required(t('end_date_mandatory')),
+                            groups: Yup.array()
                         })}
                         onSubmit={handleSubmitCreate}
                     >
@@ -93,6 +108,8 @@ const EventCreateDialog = ({open, closeHandler}) => {
                                         <DateInputField name='event_end_date' label={t('event_end_date')}></DateInputField>
                                     </Grid>
                                 </Grid>
+                                <CheckInputField name='all' label={t('all_groups')}/>
+                                <ChipSelectorInputField label={t('groups')} name='groups' options={groupsGet.groups} type='text' disable={disable} />
                                 <AnimateButton>
                                     <LoadingButton
                                         disableElevation
@@ -110,7 +127,7 @@ const EventCreateDialog = ({open, closeHandler}) => {
                         </Form>
                     )}
                     </Formik>
-                </Box>
+                </Box> }
             </DialogContent>
             <DialogActions>
                 <Button onClick={closeHandler}>{t('close')}</Button>

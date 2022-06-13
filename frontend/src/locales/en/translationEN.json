@@ -284,5 +284,7 @@
     "member_groups": "Member groups",
     "groups": "Groups",
     "all_groups": "All Groups",
-    "none": "None"
+    "none": "None",
+
+    "min_date" : "Date must be later than today"
 }

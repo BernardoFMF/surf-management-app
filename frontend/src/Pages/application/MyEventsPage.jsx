@@ -20,6 +20,7 @@ import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SearchIcon from '@mui/icons-material/Search';
 import DateInputField from '../../components/multiStepForm/DateInputField';
+import EditIcon from '@mui/icons-material/Edit';
 
 const MyEventsPage = () => {
     const theme = useTheme();
@@ -89,7 +90,7 @@ const MyEventsPage = () => {
 
 const columns = [
     { field: 'event_id_', headerName: 'ID', width: 100 },
-    { field: 'name_', headerName: t('name'), width: 180 },
+    { field: 'name_', headerName: t('name'), width: 250 },
     {
         field: "state_",
         headerName: t('event_state'),
@@ -105,8 +106,16 @@ const columns = [
     {
         field: 'actions',
         type: 'actions',
+        headerName: t('actions'),
         width: 110,
         getActions: (params) => [
+            <GridActionsCellItem
+                icon={<EditIcon />}
+                label="Edit Event"
+                onClick={() => {
+                    //eventEditHandler(params.row)
+                }}
+            />,
             <GridActionsCellItem
             icon={<EventIcon />}
             label="Show Event"
@@ -146,7 +155,7 @@ const columns = [
                                     <InputField name='state_filter' label={t('event_state')} type='text' ></InputField>
                                 </Grid>
                                 <Grid item>
-                                <DateInputField name='date_filter' label={t('event_initial_date')}></DateInputField>
+                                    <DateInputField name='date_filter' label={t('event_initial_date')}></DateInputField>
                                 </Grid>
                                 <Grid item>
                                     <AnimateButton>
@@ -174,7 +183,6 @@ const columns = [
             <CircularProgress size='4rem'/>
         </Stack> : (
         <>
-        
         <DataGrid
             autoHeight
             rows={rows}

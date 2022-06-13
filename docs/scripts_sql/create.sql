@@ -53,7 +53,7 @@ create table Event_ (
 create table Attendance_ (
 	member_id_ 	 	int,
 	event_id_		int,
-	state_			varchar(20) check (state_ in ('going', 'not going', 'interested')),
+	state_			varchar(20) check (state_ in ('going', 'not going', 'interested', null)),
 	
 	primary key (member_id_, event_id_),
 	constraint fk_member foreign key(member_id_) references Member_(id_),
@@ -155,6 +155,15 @@ create table Group_Member_ (
 	
 	primary key (member_id_, group_id_),
 	constraint fk_member foreign key(member_id_) references Member_(id_),
+	constraint fk_group foreign key(group_id_) references Group_(group_id_)
+);
+
+create table Group_Event_ (
+	event_id_		int,
+	group_id_		int,
+	
+	primary key (event_id_, group_id_),
+	constraint fk_event foreign key(event_id_) references Event_(id_),
 	constraint fk_group foreign key(group_id_) references Group_(group_id_)
 );
 

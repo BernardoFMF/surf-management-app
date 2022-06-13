@@ -286,5 +286,8 @@
     "member_groups": "Grupos de membro",
     "groups": "Grupos",
     "all_groups": "Todos Os Grupos",
-    "none": "Nenhum"
+    "none": "Nenhum",
+
+    "min_date" : "Data deve ser após de a de hoje"
+
 }

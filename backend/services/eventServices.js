@@ -17,11 +17,13 @@ const eventServices = (db) => {
 		return await data.getEventById(event_id)
 	}
 	
-	const postEventServices = async(name, initial_date, final_date) => {
+	const postEventServices = async(name, initial_date, final_date, groups) => {
 		if(!name) throw error(400,'Parameter not found: name', 'MESSAGE_CODE_14')
 		if(!initial_date) throw error(400,'Parameter not found: initial_date', 'MESSAGE_CODE_14')
 		if(!final_date) throw error(400,'Parameter not found: final_date', 'MESSAGE_CODE_14')
-		return await data.postEvent(name, initial_date,final_date)
+		if(!groups) throw error(400,'Parameter not found: groups', 'MESSAGE_CODE_14')
+
+		return await data.postEvent(name, initial_date,final_date, groups)
 	}
 	
 	const updateEventServices = async(event_id, name, initial_date, final_date) => {

@@ -424,10 +424,30 @@ LANGUAGE plpgsql
 as
 $$
 begin
-	/*delete from Event_Group_ where group_id_ = p_group_id_;*/
+	delete from Group_Event_ where group_id_ = p_group_id_;
 	delete from Group_Member_ where group_id_ = p_group_id_;
 	delete from Group_Sports_ where group_id_ = p_group_id_;
 	delete from Group_Member_Types_ where group_id_ = p_group_id_;
 	delete from Group_ where group_id_ = p_group_id_;
+end
+$$;
+
+create or replace procedure post_event(name_ varchar(50), initial_date_ date, end_date_ date, groups_ int[], out new_id_ int)
+LANGUAGE plpgsql  
+as
+$$
+declare
+	group_ int;
+begin
+	with new_id_table_ as (
+		insert into Event_ (name_,initial_date_,end_date_) values (name_, initial_date_, end_date_) returning id_
+	)
+	select id_ into new_id_ from new_id_table_;
+
+	foreach group_ in array groups_
+   	loop
+		insert into Group_Event_ (event_id_, group_id_) values (new_id_, group_);
+		insert into Attendance_ (member_id_, event_id_, state_) select member_id_, new_id_, null from Group_Member_ where group_id_ = group_;
+	end loop;
 end
 $$;

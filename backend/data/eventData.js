@@ -15,10 +15,10 @@ const eventData = (db) => {
 		return event
 	}
 	
-	const postEvent = async (name_, initial_date_, final_date_) => {
+	const postEvent = async (name_, initial_date_, final_date_, groups) => {
 		//let allEmails = await db.getEmails()
 		//await mailSender(allEmails,`Novo Evento: ${name_}`, eventTemplate(name_, initial_date_, final_date_))
-		return await db.postEventData(name_, initial_date_, final_date_)
+		return await db.postEventData(name_, initial_date_, final_date_, groups)
 	}
 	
 	const updateEvent = async (id_, name_, initial_date_, final_date_) => {
