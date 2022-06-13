@@ -137,7 +137,6 @@ export const getUserSportsTypes = () => async (dispatch) => {
         headers: { "Content-Type": "application/json" }
     })
     const types = await response.json()
-    console.log(types);
     if(response.status !== 200) throw Error(types.message_code)
     dispatch({
       type: USER_SPORT_TYPES_FETCH_SUCCESS,

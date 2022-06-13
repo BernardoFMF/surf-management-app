@@ -13,12 +13,12 @@ import {
     GROUPS_FETCH_FAIL
   } from '../constants/groupConstants'
 
-export const getMemberGroups = (id, name_filter, type_filter, offset, limit) => async (dispatch) => {
+export const getMemberGroups = (id, name_filter, group_type_filter, types_filter, offset, limit) => async (dispatch) => {
     try {
         dispatch({
             type: MEMBER_GROUPS_FETCH_REQUEST,
         })
-        const response = await fetch(`/api/groups/members/${id}?offset=${offset}&limit=${limit}${name_filter ? `&name=${name_filter}`:""}${type_filter ? `&type=${type_filter}`:""}`, {
+        const response = await fetch(`/api/groups/members/${id}?offset=${offset}&limit=${limit}${name_filter ? `&name=${name_filter}`:""}${group_type_filter ? `&group_type=${group_type_filter}`:""}${types_filter.length != 0 ? `&types=${types_filter = types_filter.join(',')}` : ""}`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
         })
@@ -91,12 +91,12 @@ export const deleteGroup = (id) => async (dispatch) => {
     }
 }
 
-export const getGroups = (name_filter, type_filter, offset, limit) => async (dispatch) => {
+export const getGroups = (name_filter, group_type_filter, types_filter, offset, limit) => async (dispatch) => {
     try {
         dispatch({
             type: GROUPS_FETCH_REQUEST,
         })
-        const response = await fetch(`/api/groups?offset=${offset}&limit=${limit}${name_filter ? `&name=${name_filter}`:""}${type_filter ? `&type=${type_filter}`:""}`, {
+        const response = await fetch(`/api/groups?offset=${offset}&limit=${limit}${name_filter ? `&name=${name_filter}`:""}${group_type_filter ? `&group_type=${group_type_filter}`:""}${types_filter.length != 0 ? `&types=${types_filter = types_filter.join(',')}` : ""}`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
         })

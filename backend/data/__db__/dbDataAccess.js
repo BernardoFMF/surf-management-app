@@ -1284,21 +1284,33 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const getGroupsData = async (name_filter, group_type_filter, offset, limit) => {
+	const getGroupsData = async (name_filter, group_type_filter, types_filter, offset, limit) => {
 		let query = queries.QUERY_GET_GROUPS
 		let count = 0
+		if (types_filter.length > 0) {
+			query = query + ` join ${group_type_filter == 'member_type' ? 
+				'Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_' : 
+				`Group_Sports_ gs on g.group_id_ = gs.group_id_`
+			}`
+		}
 		if(name_filter || group_type_filter){
 			query = query + " where "
 		}
-		if(name_filter){
-			count++
-			query = query + ` position('${name_filter}' in name_) > 0`
-		}
-		if(group_type_filter){
-			if(count > 0) query = query + " and "
+		if (group_type_filter) {
 			query = query + ` group_type_ = '${group_type_filter}'`
+			if (types_filter.length > 0) {
+				let types = types_filter.map(type => `'${type}'`)
+				types = types.join(',')
+				query = query + ` and ${group_type_filter == 'member_type' ? 'member_type_' : 'sport_member_type_'} = any(array[${types}])`
+			}
+			count++
+		}
+		if(name_filter){
+			if(count > 0) query = query + " and "
+			query = query + `position('${name_filter}' in name_) > 0`
 		}
 		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		console.log(query);
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
@@ -1392,19 +1404,28 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const getMemberGroupsData = async (id_, name_filter, type_filter, offset_, limit_) => {
+	const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_filter, offset_, limit_) => {
 		let query = queries.QUERY_GET_MEMBER_GROUPS
 		let count = 0
-		if(name_filter || type_filter){
-			query = query + " and "
+		if (types_filter.length > 0) {
+			query = query + ` join ${group_type_filter == 'member_type' ? 
+				'Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_' : 
+				`Group_Sports_ gs on g.group_id_ = gs.group_id_`
+			}`
+		}
+		query = query + " where gm.member_id_ = $1"
+		if (group_type_filter) {
+			query = query + ` and group_type_ = '${group_type_filter}'`
+			if (types_filter.length > 0) {
+				let types = types_filter.map(type => `'${type}'`)
+				types = types.join(',')
+				query = query + ` and ${group_type_filter == 'member_type' ? 'member_type_' : 'sport_member_type_'} = any(array[${types}])`
+			}
+			count++
 		}
 		if(name_filter){
-			count++
-			query = query + ` position('${name_filter}' in name_) > 0`
-		}
-		if(type_filter){
 			if(count > 0) query = query + " and "
-			query = query + ` group_type_ ='${type_filter}'`
+			query = query + `position('${name_filter}' in name_) > 0`
 		}
 		query = query + ` offset ${offset_} FETCH FIRST ${limit_} ROWS only`
 		const client = await pool.connect()

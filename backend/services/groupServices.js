@@ -6,11 +6,12 @@ import groupData from '../data/groupData.js'
 const groupServices = (db) => {
 	const data = groupData(db)
 
-    const getGroupsServices = async (name, group_type, offset, limit) => {
+    const getGroupsServices = async (name, group_type, types, offset, limit) => {
         if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
 		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
-		
-        return await data.getGroups(name, group_type, offset, limit)
+		let types_formatted = []
+		if (types) types_formatted = types.split(',')
+        return await data.getGroups(name, group_type, types_formatted, offset, limit)
 	}
 
     const getGroupByIdServices = async (id) => {
@@ -34,12 +35,13 @@ const groupServices = (db) => {
         return await data.deleteGroup(id)
 	}
 
-    const getMemberGroupsServices = async (id, name, type, offset, limit) => {
+    const getMemberGroupsServices = async (id, name, group_type, types, offset, limit) => {
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
 		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
-        
-        return await data.getMemberGroups(id, name, type, offset, limit)
+		let types_formatted = []
+		if (types) types_formatted = types.split(',')
+        return await data.getMemberGroups(id, name, group_type, types_formatted, offset, limit)
 	}
 
     const postMemberInGroupServices = async (id, user_id) => {

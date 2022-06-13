@@ -3,8 +3,8 @@
 import error from '../utils/error.js'
 
 const groupData = (db) => {
-	const getGroups = async (name_, group_type_, offset_, limit_) => {
-		return await db.getGroupsData(name_, group_type_, offset_, limit_)
+	const getGroups = async (name_, group_type_, types_, offset_, limit_) => {
+		return await db.getGroupsData(name_, group_type_, types_, offset_, limit_)
 	}
 
     const getGroupById = async (id_) => {
@@ -25,10 +25,10 @@ const groupData = (db) => {
         return await db.deleteGroupData(id_)
     }
 
-    const getMemberGroups = async (id_, name_, type_, offset_, limit_) => {
+    const getMemberGroups = async (id_, name_, group_type_, types_, offset_, limit_) => {
         const member = db.getMemberByIdData(id_)
         if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_24')
-        return await db.getMemberGroupsData(id_, name_, type_, offset_, limit_)
+        return await db.getMemberGroupsData(id_, name_, group_type_, types_, offset_, limit_)
     }
 
     const postMemberInGroup = async (id_, user_id_) => {

@@ -152,7 +152,7 @@ const QUERY_NUMBER_OF_EVENTS = 'select count(*) from event_'
 
 const QUERY_GET_MEMBER_VALIDATE = 'select has_debt_, full_name_ from Member_ join user_  on id_ = member_id_  where id_ = $1'
 
-const QUERY_GET_GROUPS = 'select group_id_, name_, description_, group_type_ from Group_'
+const QUERY_GET_GROUPS = 'select distinct g.group_id_, name_, description_, group_type_ from Group_ g'
 
 const QUERY_NUMBER_OF_GROUPS = 'select count(*) from Group_'
 
@@ -168,7 +168,7 @@ const QUERY_POST_GROUP = 'call post_group($1, $2, $3, $4, $5, $6)'
 
 const QUERY_DELETE_GROUP = 'call delete_group($1)'
 
-const QUERY_GET_MEMBER_GROUPS = 'select g.group_id_, name_, description_, group_type_ from Group_ g join Group_Member_ gm on g.group_id_ = gm.group_id_ where gm.member_id_ = $1'
+const QUERY_GET_MEMBER_GROUPS = 'select g.group_id_, name_, description_, group_type_ from Group_ g join Group_Member_ gm on g.group_id_ = gm.group_id_'
 
 const QUERY_NUMBER_OF_MEMBER_GROUPS = 'select count(*) from Group_Member_ where member_id_ = $1'
 

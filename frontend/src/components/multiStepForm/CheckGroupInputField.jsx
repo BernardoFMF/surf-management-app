@@ -5,13 +5,11 @@ import { useTranslation } from 'react-i18next'
 
 const CheckGroupInputField = ({ options, ...props}) => {
     const [field, meta, helpers] = useField({ ...props, type: "checkbox" });
-    const {t, i18n} = useTranslation()
-    
-    const { setValue, setTouched } = helpers;
+
     return (
         <FormControl component="fieldset">
             <FormLabel component="legend">{props.label}</FormLabel>
-            <FormGroup>
+            <FormGroup row={true}>
                 <FieldArray name={field.name}>
                     {({ insert, remove, push }) =>
                         options.length > 0 &&
@@ -21,7 +19,7 @@ const CheckGroupInputField = ({ options, ...props}) => {
                                 key={index}
                                 name={field.name}
                                 control={<Checkbox checked={field.value.includes(option.name)}/>}
-                                label={t(option.label)}
+                                label={option.label}
                                 value={option.name}
                                 onChange={(e, checked) => {
                                     if (checked) {

@@ -21,7 +21,7 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
     const { loading, error, updateResult } = userSportUpdate
 
     const userSportsTypesFetch = useSelector((state) => state.userSportsTypesFetch)
-    const { loadingTypes, errorTypes, userSportsTypesGet } = userSportsTypesFetch
+    const { loading: loadingTypes, error: errorTypes, userSportsTypesGet } = userSportsTypesFetch
 
     const editUserSportHandler = (values) => {
         dispatch(updateUserSports(userSport.user_id_, userSport.sport_id_, values))
@@ -83,7 +83,6 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
                                     name="type"
                                     label={t("types")}
                                     options={userSportsTypesGet}
-                                    loading={loadingTypes}
                                 />
                                 <InputField name='fed_number' label={t('fed_number_')} type='text'></InputField>
                                 <InputField name='fed_id' label={t('fed_id_')} type='text'></InputField>
