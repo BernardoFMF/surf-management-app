@@ -257,12 +257,12 @@ DECLARE
  	candidate_img_ text;
  	candidate_gender_ varchar(40);
  	candidate_iban_ text;
- 	curr_date DATE;
+ 	curr_date_ DATE;
 	
 begin
 	select nif_,cc_,full_name_,nationality_,birth_date_,location_, address_, postal_code_, email_, phone_number_,pword_, username_, img_, gender_, iban_ into candidate_nif_, candidate_cc_, candidate_full_name_, candidate_nationality_, candidate_birth_date_, candidate_location_, candidate_address_, candidate_postal_code_, candidate_email_, candidate_phone_number_ , candidate_pword_ , candidate_username_, candidate_img_, candidate_gender_, candidate_iban_ FROM Candidate_ WHERE id_ = cid;
 	
-	select current_date into curr_date;
+	select current_date into curr_date_;
 	
 	call post_user(candidate_cc_, candidate_nif_, type_, candidate_birth_date_, candidate_nationality_, candidate_full_name_, candidate_phone_number_, candidate_email_, candidate_postal_code_, candidate_address_, candidate_location_, candidate_pword_, candidate_username_, paid_enrollment_, candidate_gender_, candidate_iban_,candidate_img_, curr_date_, candidate_id_);
 	

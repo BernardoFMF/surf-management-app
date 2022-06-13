@@ -268,7 +268,14 @@
     "associate_n_mandatory": "Associate number is mandatory",
     "associate_number": "Associate number",
 
-    "sport_create_alert" : "New sport created with success"
+    "sport_create_alert" : "New sport created with success",
+    "close" : "Close",
+
+    "company_created_successfully": "Company was created successfully",
+    "event_created_successfully": "Event was created successfully",
+    "user_created_successfully": "User was created successfully",
+    "quota_updated": "Quota updated"
+
 
 
 }

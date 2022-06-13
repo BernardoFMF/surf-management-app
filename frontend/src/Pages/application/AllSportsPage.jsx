@@ -104,7 +104,7 @@ const AllSportsPage = () => {
                 </Stack> : (
                     <>
                       {
-                        memberInfo.is_admin_ && <Box sx={{mb : 5}} gridArea={'create'} alignItems={'center'} display='flex' justifyContent='flex-end'>
+                        memberInfo.is_admin_ && <Box sx={{mb : 5}} gridArea={'create'} alignItems={'center'} display='flex' justifyContent={{md : 'flex-end', lg : 'flex-end', xs: 'center'}}>
                             <AnimateButton>
                                 <LoadingButton
                                     disableElevation

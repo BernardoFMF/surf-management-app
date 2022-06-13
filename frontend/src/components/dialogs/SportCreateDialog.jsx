@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert, Grid, FormControl } from '@mui/material'
+import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert, Grid} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { Form, Formik } from 'formik'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -79,7 +79,7 @@ const QuotaManagementCreateDialog = ({open, closeHandler}) => {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={closeHandler}>Close</Button>
+                <Button onClick={closeHandler}>{t('close')}</Button>
             </DialogActions>
         </Dialog>
     )

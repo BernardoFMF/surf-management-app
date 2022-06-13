@@ -46,7 +46,6 @@ export const updateQuota = (payment_date,id) => async (dispatch, getState) => {
     dispatch({
       type: QUOTA_UPDATE_REQUEST,
     })
-    const { quotasFetch: { quotasGet } } = getState()
 
     const response = await fetch(`/api/quotas/${id}`, {
         method: 'PUT',
@@ -59,15 +58,7 @@ export const updateQuota = (payment_date,id) => async (dispatch, getState) => {
       type: QUOTA_UPDATE_SUCCESS,
       payload: quotaID
     })
-    dispatch({
-      type: QUOTAS_FETCH_SUCCESS,
-      payload: quotasGet.map(quota => {
-        if(quota.id===id){
-          quota.payment_date_ = payment_date
-        }
-        return quota
-      })
-    })
+
 
   } catch (error) {
     dispatch({

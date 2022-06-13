@@ -199,6 +199,3 @@ create table Member_token_ (
 	constraint fk_user foreign key(member_id_) references Member_(id_)
 );
 
-create table User_Sport_Types_ (
-	type_ 	 		text primary key
-);

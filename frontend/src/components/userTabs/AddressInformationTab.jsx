@@ -9,11 +9,13 @@ import { updateUser } from '../../store/actions/userActions';
 import { useTheme } from '@mui/material/styles';
 import AnimateButton from '../extended/AnimateButton';
 import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 
 const AddressInformationTab = () => {
     const theme = useTheme()
 
     const { t } = useTranslation()
+    const [alertSuccess, setAlertSuccess] = useState(false)
 
     const memberFetch = useSelector((state) => state.memberFetch)
     const { memberGet } = memberFetch
@@ -28,12 +30,13 @@ const AddressInformationTab = () => {
     const handleSubmit = async (values) => {
         const updatedUser = { ...values, member_id: memberGet.member_id_, username: memberGet.username_, email: memberGet.email_, gender: memberGet.gender_, nationality: memberGet.nationality_, full_name: memberGet.full_name_, cc: memberGet.cc_, nif: memberGet.nif_, birth_date: memberGet.birth_date_, type: memberGet.member_type_, paid_enrollment: memberGet.paid_enrollment_, is_admin: memberGet.is_admin_, is_deleted: memberGet.is_deleted_, iban: memberGet.iban_ }
         dispatch(updateUser(updatedUser))
+        setAlertSuccess(true)
     }
 
     return (
         <>
             { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-            { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
+            { updated && alertSuccess && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {setAlertSuccess(false)}}>{t('updated_sucessfully')}</Alert></Box> }
             <Formik
                 initialValues={{
                     location: memberGet.location_, 

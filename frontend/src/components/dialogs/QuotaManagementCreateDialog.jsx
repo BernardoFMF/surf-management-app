@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert, Grid, FormControl } from '@mui/material'
+import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert, Grid } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { Form, Formik } from 'formik'
 import LoadingButton from '@mui/lab/LoadingButton'
 import AnimateButton from '../extended/AnimateButton';
 import * as Yup from 'yup'
 import InputField from '../multiStepForm/InputField'
-import { getTypes, createType } from '../../store/actions/typeActions'
+import { createType } from '../../store/actions/typeActions'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 
 const QuotaManagementCreateDialog = ({open, closeHandler}) => {
@@ -88,7 +88,7 @@ const QuotaManagementCreateDialog = ({open, closeHandler}) => {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={closeHandler}>Close</Button>
+                <Button onClick={closeHandler}>{t('close')}</Button>
             </DialogActions>
         </Dialog>
     )

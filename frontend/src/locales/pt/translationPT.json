@@ -74,7 +74,7 @@
     "MESSAGE_CODE_1": "Nome de utilizador ou senha incorreta",
     "MESSAGE_CODE_2": "Erro de servidor interno",
     "MESSAGE_CODE_3": "Candidato eliminado com sucesso",
-    "MESSAGE_CODE_4": "Candidate aprovado com sucesso",
+    "MESSAGE_CODE_4": "Candidato aprovado com sucesso",
     "MESSAGE_CODE_5": "Não autorizado",
     "MESSAGE_CODE_6": "Empresa eliminada com sucesso",
     "MESSAGE_CODE_7": "Evento eliminado com sucesso",
@@ -272,7 +272,16 @@
     "associate_n_mandatory": "Número de sócio é obrigatório",
     "associate_number": "Número de sócio",
 
-    "sport_create_alert" : "Novo desporto criado com sucesso"
+    "sport_create_alert" : "Novo desporto criado com sucesso",
+    "close" : "Fechar",
+
+    "company_created_successfully": "A empresa foi criada com sucesso",
+    "event_created_successfully": "O evento foi criado com sucesso",
+    "user_created_successfully": "O utilizador foi criado com sucesso",
+    "quota_updated": "Quota atualizada"
+
+
+
 
 
 }
