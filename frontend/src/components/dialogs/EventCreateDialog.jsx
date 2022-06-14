@@ -25,7 +25,7 @@ const EventCreateDialog = ({open, closeHandler}) => {
     const { loading: loadingGroups, error: errorGroups, groupsGet } = groupsFetch
 
     useEffect(() => {
-        dispatch(getGroups(undefined, undefined, 0, limit))
+        dispatch(getGroups(undefined, undefined, [], 0, limit))
     },[])
 
     function formatDate(date) {
@@ -53,12 +53,17 @@ const EventCreateDialog = ({open, closeHandler}) => {
     const handleSubmitCreate = async (values) => {
         let initial_date = formatDate(values.event_initial_date)
         let end_date = formatDate(values.event_end_date)
-        console.log(values.all);
-        const groups = values.groups.map(group => group.group_id_)
-        //dispatch(createEvent(values.name, initial_date, end_date,groups))
+        let groups = []
+        if (values.all)
+            groups = groupsGet.groups.map(group => group.group_id_)
+        else 
+            groups = values.groups.map(group => group.group_id_)
+        dispatch(createEvent(values.name, initial_date, end_date,groups))
     }
 
-
+    const changeState = async (disable) => {
+        setDisable(disable)
+    }
     return (
         <Dialog
             fullWidth={true}
@@ -92,7 +97,8 @@ const EventCreateDialog = ({open, closeHandler}) => {
                             name: Yup.string().required(t('sign_up_username_mandatory')),
                             event_initial_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).min(new Date(), t('min_date')).required(t('initial_date_mandatory')),
                             event_end_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).min(new Date(), t('min_date')).required(t('end_date_mandatory')),
-                            groups: Yup.array()
+                            groups: Yup.array(),
+                            all: Yup.bool()
                         })}
                         onSubmit={handleSubmitCreate}
                     >
@@ -108,7 +114,7 @@ const EventCreateDialog = ({open, closeHandler}) => {
                                         <DateInputField name='event_end_date' label={t('event_end_date')}></DateInputField>
                                     </Grid>
                                 </Grid>
-                                <CheckInputField name='all' label={t('all_groups')}/>
+                                <CheckInputField name='all' label={t('all_groups')} disable={changeState} />
                                 <ChipSelectorInputField label={t('groups')} name='groups' options={groupsGet.groups} type='text' disable={disable} />
                                 <AnimateButton>
                                     <LoadingButton

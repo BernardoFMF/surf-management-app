@@ -16,7 +16,10 @@ import {
     EVENT_ATTENDANCE_FETCH_REQUEST,
     MEMBER_EVENTS_ATTENDANCE_FETCH_REQUEST,
     MEMBER_EVENTS_ATTENDANCE_FETCH_SUCCESS,
-    MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL
+    MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL,
+    MEMBER_EVENT_ATTENDANCE_UPDATE_REQUEST,
+    MEMBER_EVENT_ATTENDANCE_UPDATE_SUCCESS,
+    MEMBER_EVENT_ATTENDANCE_UPDATE_FAIL
   } from '../constants/eventConstants'
   
 export const getEvents = (name_filter, initial_date_filter, end_date_filter, offset, limit) => async (dispatch) => {
@@ -141,13 +144,14 @@ export const createEvent = (name, initial_date, end_date, groups) => async (disp
       let interested = 0
       let not_going = 0
       let going = 0
+      let none = 0
       let text = await response.json()
       const number_of_attendance = text.number_of_attendance
       text = text.attendance.map(attendance => {
-        attendance.state_ === "interested" ? interested++ : attendance.state_ === "not going" ? not_going++ : going++
+        attendance.state_ === "interested" ? interested++ : attendance.state_ === "not going" ? not_going++ : attendance.state_ === "going" ? going++ : none++
         return attendance
       })
-      let attendance = {text, interested, not_going, going, number_of_attendance}
+      let attendance = {text, interested, not_going, going, none, number_of_attendance}
       if(response.status !== 200) throw Error(text.message_code)
       dispatch({
         type: EVENT_ATTENDANCE_FETCH_SUCCESS,
@@ -185,6 +189,35 @@ export const createEvent = (name, initial_date, end_date, groups) => async (disp
     } catch (error) {
       dispatch({
         type: MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+  export const updateMemberAttendance = (event_id, member_id, state) => async (dispatch) => {
+    try {
+      dispatch({
+        type: MEMBER_EVENT_ATTENDANCE_UPDATE_REQUEST,
+      })
+      const response = await fetch(`/api/events/${event_id}/attendance`, {
+        method: 'PUT',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({id: member_id, state}),
+      })
+      const event = await response.json()
+
+      if(response.status !== 200) throw Error(event.message_code)
+      dispatch({
+        type: MEMBER_EVENT_ATTENDANCE_UPDATE_SUCCESS,
+        payload: event,
+      })
+  
+    } catch (error) {
+      dispatch({
+        type: MEMBER_EVENT_ATTENDANCE_UPDATE_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

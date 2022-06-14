@@ -200,6 +200,7 @@
     "event_people_going": "Pessoas que vão: ",
     "event_people_not_going": "Pessoas que não vão: ",
     "event_people_interested": "Pessoas interessadas: ",
+    "event_people_none": "Pessoas por responder: ",
 
     "application": "Aplicação",
     "members": "Membros",
@@ -254,6 +255,11 @@
     "going": "Vou",
     "interested": "Interessado",
     "not going": "Não vou",
+    "state": "Estado",
+    "update_attendance": "Atualizar estado",
+    "state_updated_successfully": "Estado atualizado com sucesso",
+    "state_mandatory":"Estado é obrigatório",
+
 
     "start_date": "Data inicial",
     "end_date": "Data final",

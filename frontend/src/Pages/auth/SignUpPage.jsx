@@ -11,7 +11,6 @@ import AuthWrapper from './AuthWrapper'
 import AuthCardWrapper from './AuthCardWrapper'
 import Logo from '../../components/Logo'
 import AuthRegister from './auth-form/AuthRegister'
-import AuthFooter from '../../components/cards/AuthFooter'
 
 // assets
 

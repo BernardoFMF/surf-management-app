@@ -1475,8 +1475,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}	
 	}
 
-	const getGroupByIdMembersData = async (id_, offset_, limit_) => {
+	const getGroupByIdMembersData = async (id_, username_filter_, offset_, limit_) => {
 		let query = queries.QUERY_GET_GROUP_MEMBERS
+		if (username_filter_) {
+			query = query + ` and position('${username_filter_}' in username_) > 0`
+		}
 		query = query + ` offset ${offset_} FETCH FIRST ${limit_} ROWS only`
 		const client = await pool.connect()
 		try {
@@ -1484,13 +1487,14 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			const members = await client.query(query, [id_])
 			const number_of_members = await client.query(queries.QUERY_NUMBER_OF_MEMBERS_IN_GROUP, [id_])
 			await client.query('commit')
+			console.log(members.rows);
 			return { members: members.rows, number_of_members: parseInt(number_of_members.rows[0].count) }
 		} catch (e) {
 			await client.query('rollback')
 			throw e
 		} finally {
 			client.release()
-		}	
+		}
 	}
 
 	const GetUserSportTypesData = async () => {

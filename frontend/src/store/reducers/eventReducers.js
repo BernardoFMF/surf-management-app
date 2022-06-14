@@ -16,7 +16,10 @@ import {
     EVENT_ATTENDANCE_FETCH_REQUEST,
     MEMBER_EVENTS_ATTENDANCE_FETCH_REQUEST,
     MEMBER_EVENTS_ATTENDANCE_FETCH_SUCCESS,
-    MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL
+    MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL,
+    MEMBER_EVENT_ATTENDANCE_UPDATE_REQUEST,
+    MEMBER_EVENT_ATTENDANCE_UPDATE_SUCCESS,
+    MEMBER_EVENT_ATTENDANCE_UPDATE_FAIL
 } from '../constants/eventConstants'
 
 export const eventsFetchReducer = (state = {eventsGet: {events: [], number_of_events : 0}}, action) => {
@@ -91,6 +94,19 @@ export const memberEventsAttendanceFetchReducer = (state = {memberEventsAttendan
         case MEMBER_EVENTS_ATTENDANCE_FETCH_SUCCESS:
         return { loading: false, memberEventsAttendanceGet: action.payload }
         case MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL:
+        return { loading: false, error: action.payload }
+        default:
+        return state
+    }
+}
+
+export const memberEventAttendanceUpdateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case MEMBER_EVENT_ATTENDANCE_UPDATE_REQUEST:
+        return { loading: true }
+        case MEMBER_EVENT_ATTENDANCE_UPDATE_SUCCESS:
+        return { loading: false, memberEventAttendanceUpdate: action.payload }
+        case MEMBER_EVENT_ATTENDANCE_UPDATE_FAIL:
         return { loading: false, error: action.payload }
         default:
         return state

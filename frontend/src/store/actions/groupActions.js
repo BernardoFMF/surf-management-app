@@ -10,7 +10,13 @@ import {
     GROUP_DELETE_FAIL,
     GROUPS_FETCH_REQUEST,
     GROUPS_FETCH_SUCCESS,
-    GROUPS_FETCH_FAIL
+    GROUPS_FETCH_FAIL,
+    GROUP_FETCH_REQUEST,
+    GROUP_FETCH_SUCCESS,
+    GROUP_FETCH_FAIL,
+    GROUP_MEMBERS_FETCH_REQUEST,
+    GROUP_MEMBERS_FETCH_SUCCESS,
+    GROUP_MEMBERS_FETCH_FAIL
   } from '../constants/groupConstants'
 
 export const getMemberGroups = (id, name_filter, group_type_filter, types_filter, offset, limit) => async (dispatch) => {
@@ -109,6 +115,60 @@ export const getGroups = (name_filter, group_type_filter, types_filter, offset, 
     } catch (error) {
         dispatch({
             type: GROUPS_FETCH_FAIL,
+            payload:
+            error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+        })
+    }
+}
+
+export const getGroupById = (id) => async (dispatch) => {
+    try {
+        dispatch({
+            type: GROUP_FETCH_REQUEST,
+        })
+        const response = await fetch(`/api/groups/${id}`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        })
+        let group = await response.json()
+        if(response.status !== 200) throw Error(group.message_code)
+        dispatch({
+            type: GROUP_FETCH_SUCCESS,
+            payload: group,
+        })
+    } catch (error) {
+        dispatch({
+            type: GROUP_FETCH_FAIL,
+            payload:
+            error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+        })
+    }
+}
+
+export const getGroupByIdMembers = (id, username_filter, offset, limit) => async (dispatch) => {
+    try {
+        dispatch({
+            type: GROUP_MEMBERS_FETCH_REQUEST,
+        })
+        console.log("pediu os membros");
+        const response = await fetch(`/api/groups/${id}/members?offset=${offset}&limit=${limit}${username_filter ? `&username=${username_filter}`:""}`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        })
+        let members = await response.json()
+        console.log(members);
+        if(response.status !== 200) throw Error(members.message_code)
+        dispatch({
+            type: GROUP_MEMBERS_FETCH_SUCCESS,
+            payload: members,
+        })
+    } catch (error) {
+        dispatch({
+            type: GROUP_MEMBERS_FETCH_FAIL,
             payload:
             error.response && error.response.data.message
                 ? error.response.data.message
