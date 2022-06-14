@@ -45,9 +45,9 @@ const groupData = (db) => {
         return await db.deleteMemberInGroupData(id_, user_id_)
     }
 
-    const getGroupByIdMembers = async (id_, offset_, limit_) => {
+    const getGroupByIdMembers = async (id_, username_, offset_, limit_) => {
         await getGroupById(id_)
-        return await db.getGroupByIdMembersData(id_, offset_, limit_)
+        return await db.getGroupByIdMembersData(id_, username_, offset_, limit_)
     }
 
     return { 

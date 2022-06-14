@@ -58,12 +58,12 @@ const groupServices = (db) => {
         return await data.deleteMemberInGroup(id, user_id)
 	}
 
-    const getGroupByIdMembersServices = async (id, offset, limit) => {
+    const getGroupByIdMembersServices = async (id, username, offset, limit) => {
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
 		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
         
-        return await data.getGroupByIdMembers(id, offset, limit)
+        return await data.getGroupByIdMembers(id, username, offset, limit)
 	}
 
 	return {

@@ -10,7 +10,13 @@ import {
     GROUP_DELETE_FAIL,
     GROUPS_FETCH_REQUEST,
     GROUPS_FETCH_SUCCESS,
-    GROUPS_FETCH_FAIL
+    GROUPS_FETCH_FAIL,
+    GROUP_FETCH_REQUEST,
+    GROUP_FETCH_SUCCESS,
+    GROUP_FETCH_FAIL,
+    GROUP_MEMBERS_FETCH_REQUEST,
+    GROUP_MEMBERS_FETCH_SUCCESS,
+    GROUP_MEMBERS_FETCH_FAIL
   } from '../constants/groupConstants'
 
 export const memberGroupsFetchReducer = (state = {memberGroupsGet: {groups: [], number_of_groups: 0}}, action) => {
@@ -59,6 +65,32 @@ export const groupDeleteReducer = (state = {}, action) => {
         case GROUP_DELETE_SUCCESS:
             return { loading: false, groupDelete: action.payload }
         case GROUP_DELETE_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const groupFetchReducer = (state = {groupById: {}}, action) => {
+    switch (action.type) {
+        case GROUP_FETCH_REQUEST:
+            return { loading: true }
+        case GROUP_FETCH_SUCCESS:
+            return { loading: false, groupById: action.payload }
+        case GROUP_FETCH_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const groupMembersFetchReducer = (state = {groupByIdMembers: {members: [], number_of_members: 0}}, action) => {
+    switch (action.type) {
+        case GROUP_MEMBERS_FETCH_REQUEST:
+            return { loading: true }
+        case GROUP_MEMBERS_FETCH_SUCCESS:
+            return { loading: false, groupByIdMembers: action.payload }
+        case GROUP_MEMBERS_FETCH_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state
