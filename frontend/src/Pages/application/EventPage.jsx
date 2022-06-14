@@ -116,6 +116,8 @@ const EventPage = () => {
                             <Divider orientation="horizontal" flexItem sx={{mb: 1}}/>
                             <b>{eventAttendanceGet !==undefined ? t("event_people_interested")  : ""}</b> {eventAttendanceGet !==undefined ? eventAttendanceGet.interested : ""}
                             <Divider orientation="horizontal" flexItem sx={{mb: 1}}/>
+                            <b>{eventAttendanceGet !==undefined ? t("event_people_none")  : ""}</b> {eventAttendanceGet !==undefined ? eventAttendanceGet.none : ""}
+                            <Divider orientation="horizontal" flexItem sx={{mb: 1}}/>
                         </Grid>
                     </Grid> 
                 </>

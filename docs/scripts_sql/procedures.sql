@@ -447,7 +447,10 @@ begin
 	foreach group_ in array groups_
    	loop
 		insert into Group_Event_ (event_id_, group_id_) values (new_id_, group_);
-		insert into Attendance_ (member_id_, event_id_, state_) select member_id_, new_id_, null from Group_Member_ where group_id_ = group_;
+		if not exists (select member_id_  from Attendance_ where member_id_ in (select member_id_ from Group_Member_ where group_id_ = group_) and event_id_ = new_id_)
+		then
+			insert into Attendance_ (member_id_, event_id_, state_) select member_id_, new_id_, null from Group_Member_ where group_id_ = group_;
+		end if;
 	end loop;
 end
 $$;
