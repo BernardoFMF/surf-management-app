@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppBar, MenuItem, Typography, Box, Link,
-     Container, Toolbar, IconButton, Menu } from '@mui/material'
+     Container, Toolbar, IconButton, Menu, ButtonBase } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import Logo from '../../components/Logo'
 import TranslationMenu from '../../components/TranslationMenu'
@@ -9,12 +9,12 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 
 
 
-const HomeHeader = () => {
+const HomeHeader = ({index, changePage}) => {
     const [anchorElNav, setAnchorElNav] = useState(null);
 
     const {t, i18n} = useTranslation()
 
-    const pages = [{title: t('front_page_home'), ref: '/'}, {title: t('front_page_about'), ref: '/about'}, {title: t('front_page_contact_us'), ref: '/contact'}]
+    const pages = [{title: t('front_page_home'), index: 0}, {title: t('front_page_about'), index: 1}, {title: t('front_page_contact_us'), index: 2}]
     const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
     };
@@ -62,11 +62,8 @@ const HomeHeader = () => {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page.title} onClick={handleCloseNavMenu}>
-                    <Link key={page.title} underline= 'none' href={page.ref}>
-                        <Typography textAlign="center">{page.title}</Typography>
-                    </Link>
-                    
+                  <MenuItem key={page.title} onClick={() => {handleCloseNavMenu();changePage(page.index)}}>
+                      <Typography textAlign="center">{page.title}</Typography> 
                   </MenuItem>
                 ))}
               </Menu>
@@ -74,15 +71,17 @@ const HomeHeader = () => {
             <Box justifyContent="flex-end" sx={{flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               
               {pages.map((page) => (
-                <Link
-                  key={page.title}
-                  onClick={handleCloseNavMenu}
-                  underline= 'none'
-                  href= {page.ref}
-                  sx={{ marginRight: { xs: 0, md: 5 }, my: 2, color: '#fff', fontSize: '1.5em', fontWeight: 700, display: 'block' }}
-                >
-                  {page.title}
-                </Link>
+                <ButtonBase disableRipple key={page.title}>
+                    <Typography
+                      key={page.title}
+                      onClick={() => {handleCloseNavMenu();changePage(page.index)}}
+                      underline= 'none'
+                      href='/'
+                      sx={{ marginRight: { xs: 0, md: 5 }, my: 2, color: '#fff', fontSize: '1.5em', fontWeight: 700, display: 'block' }}
+                    >
+                      {page.title}
+                    </Typography>
+                </ButtonBase>
               ))}
             </Box>
             <Box sx={{ marginRight: { xs: 0, md: 2}}}>
