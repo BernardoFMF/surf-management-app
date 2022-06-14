@@ -21,7 +21,7 @@ values ('founder',false,false, 'afonsoribeiro', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0s
 ('effective',true,FALSE, 'joselopes', '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K', 'PT50001234270000000567833'),
 ('corporate',false,FALSE, 'ripcurl','$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',  'PT50001230056742700000833'), 
 ('corporate',false, FALSE,'billabong','$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',  'PT50001211116742700000833');
-
+/*
 insert into Event_(name_, initial_date_, end_date_) 
 values ('Assembleia Geral','2022-4-9','2022-4-9'),
 ('Assembleia Particular','2022-4-11','2022-4-12'),
@@ -54,7 +54,7 @@ values (1,1,'going'),
 (2,9,'going'),
 (2,10,'interested'),
 (2,11,'not going');
-
+*/
 insert into Quota_(member_id_, payment_date_, amount_, date_) 
 values (2,null, 15, '2022-01-01'),
 (2,'2021-06-23', 15, '2021-01-01'),
