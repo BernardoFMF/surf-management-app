@@ -26,7 +26,7 @@ export const quotasFetchReducer = (state = {quotasGet: {quotas:[],number_of_quot
     }
 }
 
-export const quotaUpdateReducer = (state = {quotaPut: {}}, action) => {
+export const quotaUpdateReducer = (state = {}, action) => {
     switch (action.type) {
         case QUOTA_UPDATE_REQUEST:
         return { loading: true }

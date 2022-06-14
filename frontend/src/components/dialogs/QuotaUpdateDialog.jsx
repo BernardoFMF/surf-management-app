@@ -14,6 +14,9 @@ const QuotaUpdateDialog = ({open, closeHandler, id}) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
 
+    let datePlus1 = new Date()
+    datePlus1.setDate(datePlus1.getDate() + 1)
+
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -69,7 +72,7 @@ const QuotaUpdateDialog = ({open, closeHandler, id}) => {
                             payment_date: ''
                         }}
                         validationSchema={Yup.object().shape({
-                            payment_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).required(t('sign_up_birth_date_mandatory')),
+                            payment_date: Yup.date().transform(parseDate).typeError(t('sign_up_valid_date')).max(datePlus1, t('sign_up_max_date')).required(t('sign_up_birth_date_mandatory')),
                         })}
                         onSubmit={updateQuotaHandle}
                     >

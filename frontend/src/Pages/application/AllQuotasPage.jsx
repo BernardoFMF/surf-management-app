@@ -30,7 +30,7 @@ const AllQuotasPage = () => {
 
     const [openUpdate, setOpenUpdate] = React.useState(false);
     const [id, setId] = React.useState();
-    const handleCloseUpdate = () => {setOpenUpdate(false); dispatch(getQuotas(searchState.username_filter,searchState.email_filter,searchState.date_filter,0,limit))};
+    const handleCloseUpdate = () => {setOpenUpdate(false); dispatch(getQuotas(searchState.username_filter,searchState.email_filter,searchState.date_filter,(page-1)*limit,limit))};
     const handleOpenUpdate = (id) => {
         setId(id)
         setOpenUpdate(true);
