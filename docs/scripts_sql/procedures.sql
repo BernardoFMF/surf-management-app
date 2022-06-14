@@ -149,7 +149,9 @@ begin
     		insert into Group_Member_ (member_id_, group_id_) 
     		select distinct p_id_, g.group_id_ 
     		from Group_ g join Group_Sports_ gs on g.group_id_ = gs.group_id_
-    		where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = type_elem_;
+    		where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = type_elem_ and g.group_id_ not in (
+    			select gm.group_id_ from Group_Member_ gm join Group_Sports_ gs on gm.group_id_ = gs.group_id_ where gs.sport_member_type_ = type_elem_ and gm.member_id_ = p_id_
+    		);
     	end if;
    	end loop;
 

@@ -45,7 +45,7 @@ const groupControllers = (data) => {
 	})
 
     const getGroupByIdMembers = asyncHandler(async (req, res) => {
-        const members = await services.getGroupByIdMembersServices(req.params.id, req.query.offset, req.query.limit)
+        const members = await services.getGroupByIdMembersServices(req.params.id, req.query.username, req.query.offset, req.query.limit)
         if (members) res.json(members)
 	})
 

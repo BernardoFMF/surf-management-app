@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router'
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Typography from '@mui/material/Typography';
-import InputField from '../../components/multiStepForm/InputField';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';

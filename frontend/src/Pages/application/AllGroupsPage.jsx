@@ -170,7 +170,7 @@ const AllGroupsPage = () => {
                                                     <Grid item>
                                                         <CheckGroupInputField
                                                             name="types_filter"
-                                                            label={t("types_filter")}
+                                                            label={t("types")}
                                                             options={
                                                                 formik.values.group_type_filter === t('member_type') ? typesGet.map(type => { let obj = {name: type.type_, label: type.type_}; return obj}) : userSportsTypesGet
                                                             }
