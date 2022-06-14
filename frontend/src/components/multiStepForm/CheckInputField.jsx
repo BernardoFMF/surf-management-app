@@ -3,13 +3,14 @@ import { FormControlLabel } from '@mui/material';
 import { useFormikContext, useField } from 'formik'
 import SwitchButton from '../SwitchButton';
 
-const CheckInputField = ({ label, ...props}) => {
+const CheckInputField = ({ label, disable, ...props}) => {
 
     const [field, meta] = useField(props)
     const { setFieldValue } = useFormikContext()
 
     const handleChange = evt => {
         setFieldValue(field.name, !field.value)
+        if(disable) disable(!field.value)
     }
 
     return (

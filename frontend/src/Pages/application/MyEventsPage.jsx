@@ -21,6 +21,8 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import SearchIcon from '@mui/icons-material/Search';
 import DateInputField from '../../components/multiStepForm/DateInputField';
 import EditIcon from '@mui/icons-material/Edit';
+import AttendanceEditDialog from '../../components/dialogs/AttendanceEditDialog';
+import {  Alert} from '@mui/material'
 
 const MyEventsPage = () => {
     const theme = useTheme();
@@ -31,7 +33,12 @@ const MyEventsPage = () => {
     const { loading, error, memberEventsAttendanceGet } = memberEventsAttendanceFetch
     const [rows, setRows] = useState([]);
     let { id } = useParams()
+    const [row, setRow] = useState({});
     
+    const [openSubmit, setOpenSubmit] = React.useState(false);
+    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getMemberEventsAttendance(id,searchState.name_filter,searchState.state_filter,searchState.date_filter,(page-1)*limit,limit));};
+    const handleOpenSubmit = (row) => {setOpenSubmit(true); setRow(row)};
+
     useEffect(() => {
         dispatch(getMemberEventsAttendance(id,searchState.name_filter,searchState.state_filter,searchState.date_filter,0,limit))
     },[dispatch,id])
@@ -62,7 +69,7 @@ const MyEventsPage = () => {
         return {
             label: t(params.row.state_),
             style: {
-                borderColor:params.row.state_ === "interested" ? blue[500] : params.row.state_ === "not going" ? red[500] : green[500]
+                borderColor:params.row.state_ === "interested" ? blue[500] : params.row.state_ === "not going" ? red[500] : params.row.state_ === "going" ? green[500] : undefined
             }
         }
     }
@@ -113,7 +120,7 @@ const columns = [
                 icon={<EditIcon />}
                 label="Edit Event"
                 onClick={() => {
-                    //eventEditHandler(params.row)
+                    handleOpenSubmit(params.row)
                 }}
             />,
             <GridActionsCellItem
@@ -126,8 +133,14 @@ const columns = [
 ];
 
   return (
-    <>
+    <>  
+        <AttendanceEditDialog
+            open={openSubmit}
+            closeHandler={handleCloseSubmit} 
+            row={row}    
+        />
         <MainCard title={t('my_events')} sx={{height: '100%'}}>
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
             <Box
                 sx={{
                 display: 'grid',

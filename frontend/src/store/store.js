@@ -10,7 +10,7 @@ import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer, creat
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyPostReducer, companyDeletionReducer, companiesFetchReducer, companyFetchReducer, companyUpdateReducer, memberValidateFetchReducer } from './reducers/companyReducers'
 import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
-import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer, memberEventsAttendanceFetchReducer, createEventReducer} from './reducers/eventReducers'
+import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer, memberEventsAttendanceFetchReducer, createEventReducer, memberEventAttendanceUpdateReducer} from './reducers/eventReducers'
 import { uploadReducer} from './reducers/uploadReducers'
 import { groupFetchReducer, memberGroupsFetchReducer, memberGroupDeleteReducer, groupsFetchReducer, groupDeleteReducer, groupMembersFetchReducer } from './reducers/groupReducers'
 
@@ -62,7 +62,8 @@ const reducer = combineReducers({
   groupsFetch: groupsFetchReducer,
   groupDelete: groupDeleteReducer,
   groupFetch: groupFetchReducer,
-  groupMembersFetch: groupMembersFetchReducer
+  groupMembersFetch: groupMembersFetchReducer,
+  memberEventAttendanceUpdate: memberEventAttendanceUpdateReducer
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')
