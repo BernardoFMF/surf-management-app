@@ -1,5 +1,16 @@
 # surf-management-app
 
+<div align="center" style="margin-bottom: 30px;">
+    <div style="margin-bottom: 30px">
+        <img src="./frontend/src/assets/data/logo-blue.svg" height="300px" alt="ESC logo" />
+    </div>
+    <div>
+        <a href="/LICENSE">
+            <img src="https://img.shields.io/badge/license-MIT%20license-brightgreen" />
+        </a>
+    </div>
+</div>
+
 ## Instructions
 
 1. Clone the repository
