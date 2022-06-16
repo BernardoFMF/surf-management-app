@@ -165,7 +165,6 @@ export const deleteCompany = (id) => async (dispatch) => {
 
         sessionStorage.setItem('memberInfo', JSON.stringify(memberInfo))
       }
-      console.log(updateResp);
       dispatch({
         type: MEMBER_FETCH_SUCCESS,
         payload: updateResp,
