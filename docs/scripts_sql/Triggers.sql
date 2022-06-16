@@ -109,8 +109,12 @@ as
 $body$
 begin	
 	insert into Group_Member_ (member_id_, group_id_)
-	select distinct user_id_, new.group_id_ from User_Sport_
-	where new.sport_member_type_ = any(type_) and sport_id_ = new.sport_id_;
+	select distinct us.user_id_, new.group_id_ from User_Sport_ us
+	where new.sport_member_type_ = any(us.type_) and us.sport_id_ = new.sport_id_ and us.user_id_ not in (
+		select g.member_id_ 
+		from Group_Member_ g
+		where g.group_id_ = new.group_id_
+	);
 	return new;
 end
 $body$;

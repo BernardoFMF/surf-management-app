@@ -294,6 +294,11 @@
     "none": "None",
 
     "min_date" : "Date must be later than today",
+    
+    "create_group": "Create group",
+    "group_name": "Group name",
+    "group_description": "Group description",
+    "group_created_successfully": "Group was created successfully",
 
     "who_are_we": "Who are we ?",
     "about_text_1": "Ericeira Surf Clube took its first steps in 1992, through an Installation Commission, formalizing its constitution as a non-profit Sports Association, on September 23, 1993.", 

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
-import { FieldArray, useField } from 'formik'
+import { FieldArray, useField, useFormikContext } from 'formik'
 import { useTranslation } from 'react-i18next'
 
 const CheckGroupInputField = ({ options, ...props}) => {
@@ -33,6 +33,11 @@ const CheckGroupInputField = ({ options, ...props}) => {
                     ))}
                 </FieldArray>
             </FormGroup>
+            {meta.touched && meta.error && (
+                <span style={{ color: "red", fontFamily: "sans-serif" }}>
+                    {meta.error}
+                </span>
+            )}
         </FormControl>
     )
 }

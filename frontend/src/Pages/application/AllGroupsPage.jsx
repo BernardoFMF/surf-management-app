@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { CircularProgress, Grid, Chip, Stack, Box, Alert, Pagination } from '@mui/material';
 import GroupIcon from '@mui/icons-material/Group';
@@ -19,7 +18,8 @@ import InputField from '../../components/multiStepForm/InputField';
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import CheckGroupInputField from '../../components/multiStepForm/CheckGroupInputField';
 import { getTypes } from '../../store/actions/typeActions'
-import { getUserSportsTypes } from '../../store/actions/sportActions'
+import { getUserSportsTypes, getSports } from '../../store/actions/sportActions'
+import GroupCreateDialog from '../../components/dialogs/GroupCreateDialog';
 
 const AllGroupsPage = () => {
     const theme = useTheme();
@@ -35,10 +35,17 @@ const AllGroupsPage = () => {
     const userSportsTypesFetch = useSelector((state) => state.userSportsTypesFetch)
     const { loading: loadingSportTypes, error: errorSportTypes, userSportsTypesGet } = userSportsTypesFetch
 
+    const sportsFetch = useSelector((state) => state.sportsFetch)
+    const { loading: loadingSports, error: errorSports, sportsGet } = sportsFetch
+
     const [rows, setRows] = useState([]);
 
     const [page, setPage] = useState(1);
     const limit = 5
+
+    const [open, setOpen] = useState(false);
+    const handleClose = () => {setOpen(false); dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, limit))};
+    const handleOpen = () => setOpen(true);
 
     const [ searchState, setSearchState ] = useState({
         name_filter: "",
@@ -50,6 +57,7 @@ const AllGroupsPage = () => {
         dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, limit))
         dispatch(getTypes())
         dispatch(getUserSportsTypes())
+        dispatch(getSports())
     },[dispatch])
 
     useEffect(() => {
@@ -129,9 +137,13 @@ const AllGroupsPage = () => {
 
     return (
         <>
+            <GroupCreateDialog
+                open={open}
+                closeHandler={handleClose}        
+            />
             <MainCard title={t('all_groups')} sx={{height: '100%'}}>
                 {
-                    loadingMemberTypes || loadingSportTypes ? 
+                    loadingMemberTypes || loadingSportTypes || loadingSports ? 
                         <Stack alignItems="center">
                             <CircularProgress size='4rem'/>
                         </Stack> : (
@@ -139,6 +151,7 @@ const AllGroupsPage = () => {
                             { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
                             { errorMemberTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorMemberTypes)}</Alert></Box> }
                             { errorSportTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorSportTypes)}</Alert></Box> }
+                            { errorSports && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorSports)}</Alert></Box> }
                             <Box
                                 sx={{
                                 display: 'grid',
@@ -197,6 +210,21 @@ const AllGroupsPage = () => {
                                         </Form>
                                     )}
                                     </Formik>
+                                </Box>
+                                <Box gridArea={'create'} alignItems={'center'} display={{md: 'flex', lg: 'flex'}} justifyContent='flex-end' sx={{ mt: { xs: 14, md : 0, lg : 0 }}}>
+                                    <AnimateButton>
+                                        <LoadingButton
+                                            disableElevation
+                                            size="large"
+                                            variant="outlined"
+                                            color="secondary"
+                                            onClick={() => {
+                                                handleOpen()
+                                            }}
+                                        >
+                                            {t('create')}
+                                        </LoadingButton>
+                                    </AnimateButton>
                                 </Box>
                             </Box>
                             { loading ? 

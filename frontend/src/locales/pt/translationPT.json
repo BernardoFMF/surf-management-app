@@ -295,6 +295,12 @@
     "none": "Nenhum",
 
     "min_date" : "Data deve ser após de a de hoje",
+
+    "create_group": "Criar grupo",
+    "group_name": "Nome do grupo",
+    "group_description": "Descrição do grupo",
+    "group_created_successfully": "O grupo foi criado com sucesso",
+    
     "who_are_we": "Quem somos ?",
     "about_text_1": "   O Ericeira Surf Clube deu os primeiros passos em 1992, através de uma Comissão Instaladora, formalizando a sua constituição como uma Associação Desportiva sem fins lucrativos, a 23 de Setembro de 1993.",
     "about_text_2": "Tem como principais objetivos formar, promover, participar, divulgar e organizar eventos de Surfing, designadamente Surf, Bodyboard, Stand Up Paddle, Skimboard, Longboard, Skate, Bodysurf, Kayaksurf, Waveski, Kneeboard, Kitesurf, Tow-In, Windsurf ou Remada.",
