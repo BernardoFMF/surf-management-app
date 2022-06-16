@@ -298,5 +298,9 @@
     "create_group": "Create group",
     "group_name": "Group name",
     "group_description": "Group description",
-    "group_created_successfully": "Group was created successfully"
+    "group_created_successfully": "Group was created successfully",
+
+    "who_are_we": "Who are we ?",
+    "about_text_1": "Ericeira Surf Clube took its first steps in 1992, through an Installation Commission, formalizing its constitution as a non-profit Sports Association, on September 23, 1993.", 
+    "about_text_2": "Its main objectives are to train, promote, participate, publicize and organize Surfing events, namely Surf, Bodyboard, Stand Up Paddle, Skimboard, Longboard, Skate, Bodysurf, Kayaksurf, Waveski, Kneeboard, Kitesurf, Tow-In, Windsurf or Paddle.It develops its activity in accordance with the principles of sustainable development, supporting, executing and sponsoring programs, initiatives and actions in the following areas: Sport; Scientific research and innovation; Education and citizenship; Professional qualification and training; Health and wellness; Entrepreneurship and employment; Social security and assistance; Culture and development of the arts; Environment and sustainability; Natural, historical, architectural and urban heritage; Patronage and philanthropy or Cooperation and internationalization."
 }

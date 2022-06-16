@@ -47,6 +47,7 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
                 </Typography>
                 <DialogContent>
                     { error && <Box sx={{ pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+                    { errorTypes && <Box sx={{ pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
                     { updateResult && <Box sx={{ pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
                     <Box
                         sx={{
