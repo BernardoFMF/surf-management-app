@@ -29,6 +29,10 @@ const MyEventsPage = () => {
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const member = useSelector((state) => state.memberLogin)
+    const { memberInfo } = member
+
     const memberEventsAttendanceFetch = useSelector((state) => state.memberEventsAttendanceFetch)
     const { loading, error, memberEventsAttendanceGet } = memberEventsAttendanceFetch
     const [rows, setRows] = useState([]);
@@ -123,11 +127,11 @@ const columns = [
                     handleOpenSubmit(params.row)
                 }}
             />,
-            <GridActionsCellItem
-            icon={<EventIcon />}
-            label="Show Event"
-            onClick={() => navigate(`/application/events/${params.id}`)}
-            />
+            memberInfo.is_admin ? <GridActionsCellItem
+                icon={<EventIcon />}
+                label="Show Event"
+                onClick={() => navigate(`/application/events/${params.id}`)}
+            /> : <></>
         ],
     },
 ];

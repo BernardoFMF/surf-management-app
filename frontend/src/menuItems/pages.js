@@ -114,6 +114,7 @@ const pages = {
                     title: 'All Events',
                     type: 'item',
                     hasParams: false,
+                    hideIfNotAdmin: true,
                     url: '/application/events'
                 }
             ]

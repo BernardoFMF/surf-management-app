@@ -78,7 +78,7 @@ const mainRoutes = {
         },
         {
             path: '/application/events',
-            element: <AllEventsPage/>
+            element: <RequireAdmin><AllEventsPage/></RequireAdmin>
         },
         {
             path: '/application/events/members/:id',
