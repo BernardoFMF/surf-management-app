@@ -20,6 +20,8 @@ export const login = (username, password) => async (dispatch) => {
           headers: { "Content-Type": "application/json" }
       })
       const memberLogin = await response.json()
+      console.log(memberLogin);
+
       if(response.status !== 200) throw Error(memberLogin.message_code)
   
       const memberInfo = {
@@ -35,6 +37,8 @@ export const login = (username, password) => async (dispatch) => {
       })
 
       const member = await response1.json()
+      console.log(member);
+
       if(response1.status !== 200) throw Error(member.message_code)
       memberInfo.is_admin_ = member.is_admin_
       memberInfo.img_value_ = member.img_value_

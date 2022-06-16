@@ -175,7 +175,7 @@ const AllGroupsPage = () => {
                                                 <Grid item>
                                                     <InputField name='name_filter' label={t('name')} type='text'></InputField>
                                                 </Grid>
-                                                <Grid sx={{ width: { md: 200 }}} item>
+                                                <Grid sx={{ width: 200}} item>
                                                     <DropdownInputField name='group_type_filter' label={t('group_type')} options={{ member_type: t('member_type'), member_sport_type: t('member_sport_type'), none: t('none') }}></DropdownInputField>
                                                 </Grid>
                                                 {
