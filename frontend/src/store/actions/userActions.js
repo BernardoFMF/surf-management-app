@@ -175,18 +175,16 @@ export const updateUser = (body) => async (dispatch, getState) => {
         img_value_: updateResp.img_value_
       }
       dispatch({
-        type: MEMBER_FETCH_SUCCESS,
-        payload: updateResp,
-      })
-      dispatch({
         type: MEMBER_LOGIN_SUCCESS,
         payload: newMemberInfo,
       })
-      
-
       sessionStorage.setItem('memberInfo', JSON.stringify(newMemberInfo))
     }
-
+    console.log(updateResp);
+    dispatch({
+      type: MEMBER_FETCH_SUCCESS,
+      payload: updateResp,
+    })
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAIL,

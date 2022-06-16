@@ -21,6 +21,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Home from '../components/home/Home'
 import About from '../components/home/About'
+import AnimatedPage from '../components/AnimatedText'
 
 const HomePage = () => {
   const theme = useTheme();

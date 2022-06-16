@@ -36,7 +36,8 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
             <Dialog
                 PaperProps={{
                     sx: {
-                        width: 500
+                        width: 500,
+                        height: 'fit-content'
                     }
                 }}
                 open={open}

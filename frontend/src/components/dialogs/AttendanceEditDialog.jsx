@@ -26,7 +26,7 @@ const AttendanceEditDialog = ({open, closeHandler, row}) => {
         <Dialog
             PaperProps={{
                 sx: {
-                    width: 400
+                    width: 350
                 }
             }}
             open={open}
@@ -43,7 +43,7 @@ const AttendanceEditDialog = ({open, closeHandler, row}) => {
                     display: 'flex',
                     flexDirection: 'column',
                     m: 'auto',
-                    width: 250,
+                    width: 200,
                     }}
                 >
                     <Formik
@@ -57,7 +57,6 @@ const AttendanceEditDialog = ({open, closeHandler, row}) => {
                         onSubmit={handleSubmitUpdate}
                     >
                     {Formik => (
-                        <Grid item sx={{ ml: { md: 2, lg: 1 }}} >
                             <Form  >
                             <DropdownInputField name='state' label={t('state')} options={[t('going'), t('not going'), t('interested')]} type='text'/>
                                 <AnimateButton>
@@ -74,7 +73,6 @@ const AttendanceEditDialog = ({open, closeHandler, row}) => {
                                     </LoadingButton>
                                 </AnimateButton>
                             </Form>
-                        </Grid>
                     )}
                     </Formik>
                 </Box>

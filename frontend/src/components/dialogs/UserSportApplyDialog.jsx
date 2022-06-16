@@ -52,14 +52,15 @@ const UserSportApplyDialog = ({open, closeHandler, sid, byAdmin}) => {
             <Dialog
                 PaperProps={{
                     sx: {
-                        width: 500
+                        width: 500,
+                        height: 'fit-content'
                     }
                 }}
                 open={open}
                 onClose={closeHandler}
             >
                 <Typography sx={{pl: 5, pt: 5}} id="modal-modal-title" variant="h2" component="h2">
-                    {t('apply')}
+                    {t('associate')}
                 </Typography>
                 <DialogContent>
                     { error && <Box sx={{ pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
