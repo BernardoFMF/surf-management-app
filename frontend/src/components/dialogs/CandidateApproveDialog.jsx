@@ -29,7 +29,7 @@ const CandidateApproveDialog = ({open, closeHandler, id}) => {
         <Dialog
             PaperProps={{
                 sx: {
-                    width: 500
+                    width: 400
                 }
             }}
             open={open}

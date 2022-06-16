@@ -76,7 +76,7 @@ const UserCreateDialog = ({open, closeHandler}) => {
                 PaperProps={{
                     sx: {
                       width: 500,
-                      height: 600
+                      height: 'fit-content'
                     }
                 }}
                 open={open}

@@ -34,7 +34,14 @@ const About = () => {
         >
         <source src = {default_video} type = "video/mp4" />
         </video>
-        <Box sx={{ justifyContent:'center', marginLeft: { xs: 4, md: 120}, marginTop: { xs: 25, md: 30}, marginRight: { xs: 0, md: 200},flexGrow: 1, display: 'absolute', width: { xs: 250, md: 800}}}>
+        <Box  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginTop: { xs: 25, md: 30, lg:30},
+                    flexDirection: 'column',
+                    m: 'auto',
+                    width: { xs: 250, md: 800},
+                    }}>
           <Typography sx={{ fontSize: { xs: '2.5em', md: '4em'}, fontWeight: 700, color: 'white' }}>
             {t('who_are_we')}
           </Typography>
@@ -43,6 +50,9 @@ const About = () => {
           </Typography>
           <Typography sx={{ fontSize: { xs: '1.5em', md: '1.2em'}, color: 'white', marginTop: 0, marginBottom: 2 }}>
             {t('about_text_2')}
+          </Typography>
+          <Typography sx={{ fontSize: { xs: '1.5em', md: '1.2em'}, color: 'white', marginTop: 0, marginBottom: 2 }}>
+            {t('about_text_3')}
           </Typography>
         </Box>
         
