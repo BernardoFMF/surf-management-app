@@ -27,7 +27,7 @@ export const getMemberGroups = (id, name_filter, group_type_filter, types_filter
         dispatch({
             type: MEMBER_GROUPS_FETCH_REQUEST,
         })
-        const response = await fetch(`/api/groups/members/${id}?offset=${offset}&limit=${limit}${name_filter ? `&name=${name_filter}`:""}${group_type_filter ? `&group_type=${group_type_filter}`:""}${types_filter.length != 0 ? `&types=${types_filter = types_filter.join(',')}` : ""}`, {
+        const response = await fetch(`/api/groups/members/${id}?offset=${offset}&limit=${limit}${name_filter ? `&name=${name_filter}`:""}${group_type_filter ? `&group_type=${group_type_filter}`:""}${types_filter.length !== 0 ? `&types=${types_filter = types_filter.join(',')}` : ""}`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
         })
@@ -105,7 +105,7 @@ export const getGroups = (name_filter, group_type_filter, types_filter, offset, 
         dispatch({
             type: GROUPS_FETCH_REQUEST,
         })
-        const response = await fetch(`/api/groups?offset=${offset}&limit=${limit}${name_filter ? `&name=${name_filter}`:""}${group_type_filter ? `&group_type=${group_type_filter}`:""}${types_filter.length != 0 ? `&types=${types_filter = types_filter.join(',')}` : ""}`, {
+        const response = await fetch(`/api/groups?offset=${offset}&limit=${limit}${name_filter ? `&name=${name_filter}`:""}${group_type_filter ? `&group_type=${group_type_filter}`:""}${types_filter.length !== 0 ? `&types=${types_filter = types_filter.join(',')}` : ""}`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
         })
