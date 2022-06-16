@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getGroupById, getGroupByIdMembers, deleteGroupMember } from  '../../store/actions/groupActions'
+import { getGroupById, getGroupByIdMembers } from  '../../store/actions/groupActions'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import MainCard from '../../components/cards/MainCard'
-import { Grid, Stack, CircularProgress, Box, Alert, Pagination, Chip, Dialog, Typography, DialogContent, DialogActions, } from '@mui/material'
+import { Grid, Stack, CircularProgress, Box, Alert, Pagination, Chip, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router'
 import { Form, Formik } from 'formik';
@@ -43,7 +43,6 @@ const GroupPage = () => {
     }, [dispatch,id])
 
     useEffect(() => {
-        console.log(groupByIdMembers);
         if(groupByIdMembers){
             setRows(groupByIdMembers.members.map(member => {
                 let x = {
@@ -65,13 +64,6 @@ const GroupPage = () => {
         setRows([])
         
         dispatch(getGroupByIdMembers(id, values.username_filter, 0, limit))
-    }
-
-    const deleteHandler = (uid) => {
-        dispatch(deleteGroupMember(uid, id))
-        setPage(1)
-        setRows([])
-        dispatch(getGroupByIdMembers(id, searchState.username_filter, 0, limit))
     }
 
     function getChipProps(params) {
@@ -106,15 +98,40 @@ const GroupPage = () => {
                 icon={<AccountCircleIcon />}
                 label="View Member"
                 onClick={() => navigate(`/application/members/${params.id}`)}
-                />,
-                <GridActionsCellItem
-                icon={<DeleteIcon />}
-                label="Delete Group"
-                onClick={() => deleteHandler(params.id)}
                 />
             ],
         },
     ];
+
+    function extractTypes(types) {
+        let extractedTypes = []
+        for (let idx in types) {
+            let elem = types[idx]
+            let indexType = extractedTypes.findIndex(entry => entry === elem.type)
+            if (indexType === -1) {
+                extractedTypes.push(elem.type)
+            }
+        }
+        console.log(extractedTypes);
+        return extractedTypes
+    }
+
+    function extractSports(types) {
+        let extractedSports = []
+        for (let idx in types) {
+            let elem = types[idx]
+            let indexSport = extractedSports.findIndex(entry => entry.sport_ === elem.sport_)
+            if (indexSport === -1) {
+                let obj = {
+                    sport_name_: elem.sport_name_,
+                    sport_: elem.sport_
+                }
+                extractedSports.push(obj)
+            }
+        }
+        console.log(extractedSports);
+        return extractedSports
+    }
 
     return (
         <>
@@ -124,9 +141,44 @@ const GroupPage = () => {
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                 <>
-                    <MainCard title={groupById ? groupById.name_ : ''} sx={{height: '100%'}}>
+                    <MainCard title={groupById ? groupById.name_ : ''} secondaryText={groupById.description_} sx={{height: '100%'}}>
                         { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
                         { errorMembers && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorMembers)}</Alert></Box> }
+                        {
+                            groupById && groupById.types_ && (
+                            <Box marginTop={2}>
+                                <Typography variant={"h2"}>{t("types")}</Typography>
+                                <Stack direction="row" spacing={1} marginTop={2}>
+                                    {
+                                        groupById.group_type_ === 'member_type' ?  
+                                        groupById.types_.map(type => (
+                                            <Chip label={type} key={type} color="secondary" variant="outlined" />
+                                        ))
+                                        :
+                                        extractTypes(groupById.types_).map(entry => (
+                                            <Chip label={entry} key={entry} color="secondary" variant="outlined" />
+                                        ))
+                                    }
+                                </Stack>
+                            </Box>
+                            )
+                        }
+                        {
+                            groupById && groupById.types_ && groupById.group_type_ === 'member_sport_type' && (
+                            <Box marginTop={2}>
+                                <Typography variant={"h2"}>{t("sports")}</Typography>
+                                <Stack direction="row" spacing={1} marginTop={2}>
+                                    {
+                                        extractSports(groupById.types_).map(entry => (
+                                            <Chip clickable label={entry.sport_name_} key={entry.sport_} color="primary" component="a"
+                                            href={`/application/sports/${entry.sport_}`} />
+                                        ))
+                                    }
+                                </Stack>
+                            </Box>
+                            )
+                        }
+                        
                         <Box
                             sx={{
                             display: 'grid',

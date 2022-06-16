@@ -6,7 +6,9 @@ import { useTranslation } from 'react-i18next'
 import PersonalDetailsTab from '../../components/companyTabs/PersonalDetailsTab'
 import AddressInformationTab from '../../components/companyTabs/AddressInformationTab'
 import AdminPrivilegesTab from '../../components/companyTabs/AdminPrivilegesTab'
+import LinksTab from '../../components/companyTabs/LinksTab'
 
+import LinkIcon from '@mui/icons-material/Link';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import HomeIcon from '@mui/icons-material/Home';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
@@ -41,14 +43,18 @@ const CompanyProfile = () => {
 
               <Tab icon={<HomeIcon/>} label={t('address_information')} {...{id: `vertical-tab-${1}`, 'aria-controls': `vertical-tabpanel-${1}`}} />
 
-              <Tab icon={<AdminPanelSettingsIcon/>} disabled={memberInfo.is_admin_ === false} label={t('admin_privileges')} {...{id: `vertical-tab-${2}`, 'aria-controls': `vertical-tabpanel-${2}`}} />
+              <Tab icon={<LinkIcon/>} disabled={memberInfo.is_admin_ === false} label={t('links')} {...{id: `vertical-tab-${2}`, 'aria-controls': `vertical-tabpanel-${3}`}} />
+
+              <Tab icon={<AdminPanelSettingsIcon/>} disabled={memberInfo.is_admin_ === false} label={t('admin_privileges')} {...{id: `vertical-tab-${3}`, 'aria-controls': `vertical-tabpanel-${3}`}} />
           </Tabs>
 
           <TabPanel value={value} index={0}><PersonalDetailsTab/></TabPanel>
 
           <TabPanel value={value} index={1}><AddressInformationTab/></TabPanel>
 
-          <TabPanel value={value} index={2}><AdminPrivilegesTab/></TabPanel>
+          <TabPanel value={value} index={2}><LinksTab/></TabPanel>
+
+          <TabPanel value={value} index={3}><AdminPrivilegesTab/></TabPanel>
       </Grid>
   )
 }

@@ -157,13 +157,11 @@ export const getGroupByIdMembers = (id, username_filter, offset, limit) => async
         dispatch({
             type: GROUP_MEMBERS_FETCH_REQUEST,
         })
-        console.log("pediu os membros");
         const response = await fetch(`/api/groups/${id}/members?offset=${offset}&limit=${limit}${username_filter ? `&username=${username_filter}`:""}`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
         })
         let members = await response.json()
-        console.log(members);
         if(response.status !== 200) throw Error(members.message_code)
         dispatch({
             type: GROUP_MEMBERS_FETCH_SUCCESS,
