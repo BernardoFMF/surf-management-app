@@ -11,7 +11,7 @@
         <a href="../../graphs/contributors">
             <img src="https://img.shields.io/github/contributors/BernardoFMF/surf-management-app" />
         </a>
-        <a>
+        <a href="https://github.com/BernardoFMF/surf-management-app/commits/main">
             <img src="[https://img.shields.io/github/stars/i-on-project/codegarten](https://img.shields.io/github/last-commit/BernardoFMF/surf-management-app)" />
         </a>
     </div>
