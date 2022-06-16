@@ -66,7 +66,12 @@ const EventCreateDialog = ({open, closeHandler}) => {
     }
     return (
         <Dialog
-            fullWidth={true}
+            PaperProps={{
+                sx: {
+                width: 450,
+                height: 'fit-content'
+                }
+            }}
             open={open}
             onClose={closeHandler}
         >
@@ -104,32 +109,30 @@ const EventCreateDialog = ({open, closeHandler}) => {
                     >
                     {Formik => (
                         <Form>
-                            <Grid sx={{ml: {md : 1.5, lg : 3}}}>
-                                <InputField name='name' label={t('name')} type='text'></InputField>
-                                <Grid container spacing={1}>
-                                    <Grid item xs>
-                                        <DateInputField name='event_initial_date' label={t('event_initial_date')}></DateInputField>
-                                    </Grid>
-                                    <Grid item xs>
-                                        <DateInputField name='event_end_date' label={t('event_end_date')}></DateInputField>
-                                    </Grid>
+                            <InputField name='name' label={t('name')} type='text'></InputField>
+                            <Grid container spacing={1} >
+                                <Grid item xs>
+                                    <DateInputField name='event_initial_date' label={t('event_initial_date')}></DateInputField>
                                 </Grid>
-                                <CheckInputField name='all' label={t('all_groups')} disable={changeState} />
-                                <ChipSelectorInputField label={t('groups')} name='groups' options={groupsGet.groups} type='text' disable={disable} />
-                                <AnimateButton>
-                                    <LoadingButton
-                                        disableElevation
-                                        fullWidth
-                                        size="large"
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        loading = {loading}
-                                    >
-                                        {t('confirm')}
-                                    </LoadingButton>
-                                </AnimateButton>
+                                <Grid item xs>
+                                    <DateInputField name='event_end_date' label={t('event_end_date')}></DateInputField>
+                                </Grid>
                             </Grid>
+                            <CheckInputField name='all' label={t('all_groups')} disable={changeState} />
+                            <ChipSelectorInputField label={t('groups')} name='groups' options={groupsGet.groups} type='text' disable={disable} />
+                            <AnimateButton>
+                                <LoadingButton
+                                    disableElevation
+                                    fullWidth
+                                    size="large"
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    loading = {loading}
+                                >
+                                    {t('confirm')}
+                                </LoadingButton>
+                            </AnimateButton>
                         </Form>
                     )}
                     </Formik>

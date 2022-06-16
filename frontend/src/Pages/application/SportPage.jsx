@@ -239,7 +239,7 @@ return (
                                     handleOpen()
                                 }}
                             >
-                                {t('apply')}
+                                {t('associate')}
                             </LoadingButton>
                         </AnimateButton>
                     </Box> 

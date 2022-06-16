@@ -295,7 +295,15 @@
     "none": "Nenhum",
 
     "min_date" : "Data deve ser após de a de hoje",
+
+    "create_group": "Criar grupo",
+    "group_name": "Nome do grupo",
+    "group_description": "Descrição do grupo",
+    "group_created_successfully": "O grupo foi criado com sucesso",
+    
     "who_are_we": "Quem somos ?",
-    "about_text_1": "   O Ericeira Surf Clube deu os primeiros passos em 1992, através de uma Comissão Instaladora, formalizando a sua constituição como uma Associação Desportiva sem fins lucrativos, a 23 de Setembro de 1993.",
-    "about_text_2": "Tem como principais objetivos formar, promover, participar, divulgar e organizar eventos de Surfing, designadamente Surf, Bodyboard, Stand Up Paddle, Skimboard, Longboard, Skate, Bodysurf, Kayaksurf, Waveski, Kneeboard, Kitesurf, Tow-In, Windsurf ou Remada.Desenvolve a sua actividade de acordo com os princípios do desenvolvimento sustentável, apoiando, executando e patrocinando programas, iniciativas e acções nos seguintes domínios: Desporto; Investigação científica e inovação; Educação e cidadania; Qualificação e formação profissional; Saúde e bem-estar; Empreendorismo e emprego; Segurança e assistência social; Cultura e desenvolvimento das artes; Ambiente e sustentabilidade; Património natural, histórico, arquitetónico e urbanístico; Mecenato e filantropia ou Cooperação e internacionalização."
+    "about_text_1": "\tO Ericeira Surf Clube deu os primeiros passos em 1992, através de uma Comissão Instaladora, formalizando a sua constituição como uma Associação Desportiva sem fins lucrativos, a 23 de Setembro de 1993.",
+    "about_text_2": "    Tem como principais objetivos formar, promover, participar, divulgar e organizar eventos de Surfing, designadamente Surf, Bodyboard, Stand Up Paddle, Skimboard, Longboard, Skate, Bodysurf, Kayaksurf, Waveski, Kneeboard, Kitesurf, Tow-In, Windsurf ou Remada.",
+    "about_text_3": "    Desenvolve a sua actividade de acordo com os princípios do desenvolvimento sustentável, apoiando, executando e patrocinando programas, iniciativas e acções nos seguintes domínios: Desporto; Investigação científica e inovação; Educação e cidadania; Qualificação e formação profissional; Saúde e bem-estar; Empreendorismo e emprego; Segurança e assistência social; Cultura e desenvolvimento das artes; Ambiente e sustentabilidade; Património natural, histórico, arquitetónico e urbanístico; Mecenato e filantropia ou Cooperação e internacionalização.",
+    "associate": "Associar"
 }

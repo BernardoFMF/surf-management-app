@@ -16,7 +16,10 @@ import {
     GROUP_FETCH_FAIL,
     GROUP_MEMBERS_FETCH_REQUEST,
     GROUP_MEMBERS_FETCH_SUCCESS,
-    GROUP_MEMBERS_FETCH_FAIL
+    GROUP_MEMBERS_FETCH_FAIL,
+    GROUP_POST_FAIL,
+    GROUP_POST_REQUEST,
+    GROUP_POST_SUCCESS
   } from '../constants/groupConstants'
 
 export const memberGroupsFetchReducer = (state = {memberGroupsGet: {groups: [], number_of_groups: 0}}, action) => {
@@ -91,6 +94,19 @@ export const groupMembersFetchReducer = (state = {groupByIdMembers: {members: []
         case GROUP_MEMBERS_FETCH_SUCCESS:
             return { loading: false, groupByIdMembers: action.payload }
         case GROUP_MEMBERS_FETCH_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const groupPostReducer = (state = {}, action) => {
+    switch (action.type) {
+        case GROUP_POST_REQUEST:
+            return { loading: true }
+        case GROUP_POST_SUCCESS:
+            return { loading: false, posted: true, createdGroup: action.payload }
+        case GROUP_POST_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state

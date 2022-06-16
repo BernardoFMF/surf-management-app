@@ -6,6 +6,8 @@ import RequireAuth from '../components/RequireAuth'
 import RequireAdmin from '../components/RequireAdmin'
 import RequireMember from '../components/RequireMember'
 import Error from '../Pages/error/Error'
+import AnimatedVideo from '../components/AnimatedVideo';
+import AnimatedCard from '../components/AnimatedCard';
 
 const DashboardDefault = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
 const DashboardAnalytics = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
@@ -28,9 +30,11 @@ const AllGroupsPage = Loadable(lazy(() => import('../Pages/application/AllGroups
 const GroupPage = Loadable(lazy(() => import('../Pages/application/GroupPage')))
 //const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
 
+
+
 const mainRoutes = {
     path: '/',
-    element: <Error><RequireAuth><MainLayout/></RequireAuth></Error>,
+    element: <Error><RequireAuth><AnimatedVideo><MainLayout/></AnimatedVideo> </RequireAuth></Error>,
     children: [
         {
             path: '/dashboard/analytics',

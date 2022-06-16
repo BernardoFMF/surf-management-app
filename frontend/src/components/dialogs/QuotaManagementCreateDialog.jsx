@@ -25,7 +25,8 @@ const QuotaManagementCreateDialog = ({open, closeHandler}) => {
         <Dialog
         PaperProps={{
             sx: {
-                width: 500
+            width: 400,
+            height: 'fit-content'
             }
         }}
         open={open}
@@ -60,29 +61,27 @@ const QuotaManagementCreateDialog = ({open, closeHandler}) => {
                         onSubmit={handleSubmitCreate}
                         >
                         {formik => (
-                            <Grid item sx={{ ml: { md: 2, lg: 1 }}} maxWidth={300} >
-                                <Form  >
-                                    <InputField name='type' label={t('management_quota_type')} type='text'>
-                                    </InputField>
-                                    <InputField name='quota_value' label={t('management_quota_value')} type='text'>
-                                    </InputField>
-                                    <DropdownInputField name='category' label={t('category')} options={['user', 'company']}></DropdownInputField>
-                                    <br/>
-                                    <AnimateButton>
-                                        <LoadingButton
-                                            disableElevation
-                                            fullWidth
-                                            size="large"
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            loading = {loading}
-                                        >
-                                            {t('management_submit')}
-                                        </LoadingButton>
-                                    </AnimateButton>
-                                </Form>
-                            </Grid>
+                            <Form  >
+                                <InputField name='type' label={t('management_quota_type')} type='text'>
+                                </InputField>
+                                <InputField name='quota_value' label={t('management_quota_value')} type='text'>
+                                </InputField>
+                                <DropdownInputField name='category' label={t('category')} options={['user', 'company']}></DropdownInputField>
+                                <br/>
+                                <AnimateButton>
+                                    <LoadingButton
+                                        disableElevation
+                                        fullWidth
+                                        size="large"
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        loading = {loading}
+                                    >
+                                        {t('management_submit')}
+                                    </LoadingButton>
+                                </AnimateButton>
+                            </Form>
                         )}
                     </Formik>
                 </Box>

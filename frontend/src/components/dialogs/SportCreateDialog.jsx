@@ -22,11 +22,12 @@ const QuotaManagementCreateDialog = ({open, closeHandler}) => {
 
     return (
         <Dialog
-        PaperProps={{
-            sx: {
-                width: 500
-            }
-        }}
+            PaperProps={{
+                sx: {
+                    width: 300,
+                    height: 'fit-content'
+                }
+            }}
         open={open}
         onClose={closeHandler}
         >
@@ -55,25 +56,23 @@ const QuotaManagementCreateDialog = ({open, closeHandler}) => {
                         onSubmit={handleSubmitCreate}
                     >
                     {formik => (
-                        <Grid item sx={{ ml: { md: 2, lg: 2 }}} maxWidth={300} >
-                            <Form  >
-                                <InputField name='name' label={t('all_sports_name')} type='text'>
-                                </InputField>
-                                <AnimateButton>
-                                    <LoadingButton
-                                        disableElevation
-                                        fullWidth
-                                        size="large"
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        loading = {loading}
-                                    >
-                                        {t('management_submit')}
-                                    </LoadingButton>
-                                </AnimateButton>
-                            </Form>
-                        </Grid>
+                        <Form  >
+                            <InputField name='name' label={t('all_sports_name')} type='text'>
+                            </InputField>
+                            <AnimateButton>
+                                <LoadingButton
+                                    disableElevation
+                                    fullWidth
+                                    size="large"
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    loading = {loading}
+                                >
+                                    {t('management_submit')}
+                                </LoadingButton>
+                            </AnimateButton>
+                        </Form>
                     )}
                     </Formik>
                 </Box>

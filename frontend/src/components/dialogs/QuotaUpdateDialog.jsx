@@ -49,7 +49,12 @@ const QuotaUpdateDialog = ({open, closeHandler, id}) => {
 
     return (
         <Dialog
-            fullWidth={true}
+            PaperProps={{
+                sx: {
+                width: 350,
+                height: 'fit-content'
+                }
+            }}
             open={open}
             onClose={closeHandler}
         >

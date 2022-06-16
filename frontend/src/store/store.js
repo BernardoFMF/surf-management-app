@@ -12,7 +12,7 @@ import { companyPostReducer, companyDeletionReducer, companiesFetchReducer, comp
 import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
 import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer, memberEventsAttendanceFetchReducer, createEventReducer, memberEventAttendanceUpdateReducer} from './reducers/eventReducers'
 import { uploadReducer} from './reducers/uploadReducers'
-import { groupFetchReducer, memberGroupsFetchReducer, memberGroupDeleteReducer, groupsFetchReducer, groupDeleteReducer, groupMembersFetchReducer } from './reducers/groupReducers'
+import { groupFetchReducer, memberGroupsFetchReducer, memberGroupDeleteReducer, groupsFetchReducer, groupDeleteReducer, groupMembersFetchReducer, groupPostReducer } from './reducers/groupReducers'
 
 const reducer = combineReducers({
   memberLogin: memberLoginReducer,
@@ -63,7 +63,8 @@ const reducer = combineReducers({
   groupDelete: groupDeleteReducer,
   groupFetch: groupFetchReducer,
   groupMembersFetch: groupMembersFetchReducer,
-  memberEventAttendanceUpdate: memberEventAttendanceUpdateReducer
+  memberEventAttendanceUpdate: memberEventAttendanceUpdateReducer,
+  groupPost: groupPostReducer
 })
 
 const memberInfoFromStorage = sessionStorage.getItem('memberInfo')

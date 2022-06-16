@@ -51,7 +51,7 @@ const router = (app, data) => {
 			if(!member) {
 				done(null, false)
 			} else {
-				if (member.member_type_ != 'corporate') {
+				if (member.category_ != 'company') {
 					const user = await data.getUserByIdData(member.id_)
 					member.is_admin_ = user.is_admin_
 				}

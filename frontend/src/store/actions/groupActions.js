@@ -16,7 +16,10 @@ import {
     GROUP_FETCH_FAIL,
     GROUP_MEMBERS_FETCH_REQUEST,
     GROUP_MEMBERS_FETCH_SUCCESS,
-    GROUP_MEMBERS_FETCH_FAIL
+    GROUP_MEMBERS_FETCH_FAIL,
+    GROUP_POST_REQUEST,
+    GROUP_POST_SUCCESS,
+    GROUP_POST_FAIL
   } from '../constants/groupConstants'
 
 export const getMemberGroups = (id, name_filter, group_type_filter, types_filter, offset, limit) => async (dispatch) => {
@@ -174,5 +177,34 @@ export const getGroupByIdMembers = (id, username_filter, offset, limit) => async
                 ? error.response.data.message
                 : error.message,
         })
+    }
+}
+
+export const postGroup = (body) => async (dispatch) => {
+    try {
+      dispatch({
+        type: GROUP_POST_REQUEST,
+      })
+  
+      const response = await fetch(`/api/groups`, {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: { "Content-Type": "application/json" }
+      })
+  
+      const postResp = await response.json()
+      if(response.status !== 201) throw Error(postResp.message_code)
+      dispatch({
+        type: GROUP_POST_SUCCESS,
+        payload: postResp,
+      })
+    } catch (error) {
+      dispatch({
+        type: GROUP_POST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
     }
 }

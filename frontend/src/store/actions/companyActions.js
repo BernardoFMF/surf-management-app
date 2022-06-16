@@ -19,7 +19,7 @@ import {
     MEMBER_VALIDATION_FETCH_FAIL
   } from '../constants/companyConstants'
 
-import { MEMBER_LOGIN_SUCCESS } from '../constants/memberConstants'
+import { MEMBER_LOGIN_SUCCESS, MEMBER_FETCH_SUCCESS } from '../constants/memberConstants'
 
 export const deleteCompany = (id) => async (dispatch) => {
     try {
@@ -158,12 +158,6 @@ export const deleteCompany = (id) => async (dispatch) => {
           is_admin_: updateResp.is_admin_,
           img_value_: updateResp.img_value_
         }
-
-        dispatch({
-          type: COMPANY_FETCH_SUCCESS,
-          payload: updateResp,
-        })
-
         dispatch({
           type: MEMBER_LOGIN_SUCCESS,
           payload: userInfo,
@@ -171,7 +165,11 @@ export const deleteCompany = (id) => async (dispatch) => {
 
         sessionStorage.setItem('memberInfo', JSON.stringify(memberInfo))
       }
-  
+      console.log(updateResp);
+      dispatch({
+        type: MEMBER_FETCH_SUCCESS,
+        payload: updateResp,
+      })
     } catch (error) {
       dispatch({
         type: COMPANY_UPDATE_FAIL,

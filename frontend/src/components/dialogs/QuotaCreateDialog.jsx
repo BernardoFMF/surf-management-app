@@ -47,7 +47,12 @@ const QuotaCreateDialog = ({open, closeHandler}) => {
 
     return (
         <Dialog
-            fullWidth={true}
+        PaperProps={{
+            sx: {
+            width: 350,
+            height: 'fit-content'
+            }
+        }}
             open={open}
             onClose={closeHandler}
         >
