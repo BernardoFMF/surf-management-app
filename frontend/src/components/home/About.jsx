@@ -1,23 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import default_video from './../../../src/assets/data/aboutPageVideo.mp4'
 import './../../../src/assets/scss/homePage.scss'
 import {
-    Box,
     Typography,
-    Grid,
     useMediaQuery,
-    Button,
-    Link,
-    Divider
 } from '@mui/material'
-import AnimateButton from '../../components/extended/AnimateButton'
+import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const About = () => {
     const theme = useTheme();
@@ -45,7 +35,6 @@ const About = () => {
             {t('about_text_2')}
           </Typography>
         </Box>
-        
     </>
 )}
 
