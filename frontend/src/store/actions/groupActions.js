@@ -163,7 +163,6 @@ export const getGroupByIdMembers = (id, username_filter, offset, limit) => async
             headers: { "Content-Type": "application/json" }
         })
         let members = await response.json()
-        console.log(members);
         if(response.status !== 200) throw Error(members.message_code)
         dispatch({
             type: GROUP_MEMBERS_FETCH_SUCCESS,
