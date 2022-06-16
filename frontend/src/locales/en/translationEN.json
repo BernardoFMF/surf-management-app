@@ -293,5 +293,10 @@
     "all_groups": "All Groups",
     "none": "None",
 
-    "min_date" : "Date must be later than today"
+    "min_date" : "Date must be later than today",
+    
+    "create_group": "Create group",
+    "group_name": "Group name",
+    "group_description": "Group description",
+    "group_created_successfully": "Group was created successfully"
 }

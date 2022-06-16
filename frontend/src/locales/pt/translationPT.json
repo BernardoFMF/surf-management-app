@@ -294,6 +294,10 @@
     "all_groups": "Todos Os Grupos",
     "none": "Nenhum",
 
-    "min_date" : "Data deve ser após de a de hoje"
+    "min_date" : "Data deve ser após de a de hoje",
 
+    "create_group": "Criar grupo",
+    "group_name": "Nome do grupo",
+    "group_description": "Descrição do grupo",
+    "group_created_successfully": "O grupo foi criado com sucesso"
 }
