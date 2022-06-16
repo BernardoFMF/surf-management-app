@@ -151,7 +151,7 @@ export const updateUser = (body) => async (dispatch, getState) => {
     })
 
     const { memberLogin: { memberInfo } } = getState()
-
+    console.log(memberInfo);
     const response = await fetch(`/api/users/${body.member_id}`, {
         method: 'PUT',
         body: JSON.stringify(body),
@@ -172,7 +172,9 @@ export const updateUser = (body) => async (dispatch, getState) => {
         member_type_: updateResp.member_type_,
         username_: updateResp.username_,
         is_admin_: updateResp.is_admin_,
-        img_value_: updateResp.img_value_
+        img_value_: updateResp.img_value_,
+        category_ : memberInfo.category_,
+        quota_value_ : memberInfo.quota_value_
       }
       dispatch({
         type: MEMBER_LOGIN_SUCCESS,
@@ -181,6 +183,10 @@ export const updateUser = (body) => async (dispatch, getState) => {
       sessionStorage.setItem('memberInfo', JSON.stringify(newMemberInfo))
     }
     console.log(updateResp);
+    /*const { memberFetch: { memberGet } } = getState()
+    updateResp.category_ = memberGet.category_
+    updateResp.quota_value_ = memberGet.quota_value_*/
+
     dispatch({
       type: MEMBER_FETCH_SUCCESS,
       payload: updateResp,
