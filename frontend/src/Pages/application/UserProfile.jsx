@@ -7,10 +7,12 @@ import PersonalDetailsTab from '../../components/userTabs/PersonalDetailsTab'
 import AddressInformationTab from '../../components/userTabs/AddressInformationTab'
 import MembershipCardTab from '../../components/userTabs/MembershipCardTab'
 import AdminPrivilegesTab from '../../components/userTabs/AdminPrivilegesTab'
+import LinksTab from '../../components/userTabs/LinksTab'
 
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import HomeIcon from '@mui/icons-material/Home';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
+import LinkIcon from '@mui/icons-material/Link';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 import TabPanel from '../../components/TabPanel'
@@ -45,7 +47,9 @@ const UserProfile = () => {
 
                 <Tab icon={<CreditCardIcon/>} label={t('membership_card')} {...{id: `vertical-tab-${2}`, 'aria-controls': `vertical-tabpanel-${2}`}} />
 
-                <Tab icon={<AdminPanelSettingsIcon/>} disabled={memberInfo.is_admin_ === false} label={t('admin_privileges')} {...{id: `vertical-tab-${3}`, 'aria-controls': `vertical-tabpanel-${3}`}} />
+                <Tab icon={<LinkIcon/>} disabled={memberInfo.is_admin_ === false} label={t('links')} {...{id: `vertical-tab-${3}`, 'aria-controls': `vertical-tabpanel-${3}`}} />
+
+                <Tab icon={<AdminPanelSettingsIcon/>} disabled={memberInfo.is_admin_ === false} label={t('admin_privileges')} {...{id: `vertical-tab-${4}`, 'aria-controls': `vertical-tabpanel-${4}`}} />
             </Tabs>
 
             <TabPanel value={value} index={0}><PersonalDetailsTab/></TabPanel>
@@ -54,7 +58,9 @@ const UserProfile = () => {
 
             <TabPanel value={value} index={2}><MembershipCardTab/></TabPanel>
 
-            <TabPanel value={value} index={3}><AdminPrivilegesTab/></TabPanel>
+            <TabPanel value={value} index={3}><LinksTab/></TabPanel>
+
+            <TabPanel value={value} index={4}><AdminPrivilegesTab/></TabPanel>
         </Grid>
     )
 }
