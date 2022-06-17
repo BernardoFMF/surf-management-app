@@ -37,7 +37,7 @@ const router = (app, data) => {
 	app.use(express.urlencoded({ extended: true, limit: "50mb" }))
 	app.use(express.static('public'))
 	app.use(cookieParser())
-	app.use(expressSession({ secret: 'keyboard cat', resave: true, saveUninitialized: true }))
+	app.use(expressSession({ secret: 'keyboard cat', resave: true, saveUninitialized: true, cookie: { maxAge: 4 * 60 * 60 * 1000 } }))
 	app.use(passport.initialize())
 	app.use(passport.session())
 	

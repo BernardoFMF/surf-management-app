@@ -180,7 +180,8 @@ export const updateUser = (body) => async (dispatch, getState) => {
         type: MEMBER_LOGIN_SUCCESS,
         payload: newMemberInfo,
       })
-      sessionStorage.setItem('memberInfo', JSON.stringify(newMemberInfo))
+      const expirationDate = JSON.parse(localStorage.getItem('memberInfo')).expires
+      localStorage.setItem('memberInfo', JSON.stringify({...newMemberInfo, expires: expirationDate}))
     }
     console.log(updateResp);
     /*const { memberFetch: { memberGet } } = getState()
