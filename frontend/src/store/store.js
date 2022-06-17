@@ -12,7 +12,7 @@ import { companyPostReducer, companyDeletionReducer, companiesFetchReducer, comp
 import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
 import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer, memberEventsAttendanceFetchReducer, createEventReducer, memberEventAttendanceUpdateReducer} from './reducers/eventReducers'
 import { uploadReducer} from './reducers/uploadReducers'
-import { groupFetchReducer, memberGroupsFetchReducer, memberGroupDeleteReducer, groupsFetchReducer, groupDeleteReducer, groupMembersFetchReducer, groupPostReducer } from './reducers/groupReducers'
+import { groupFetchReducer, memberGroupsFetchReducer, groupsFetchReducer, groupDeleteReducer, groupMembersFetchReducer, groupPostReducer } from './reducers/groupReducers'
 
 const reducer = combineReducers({
   memberLogin: memberLoginReducer,
@@ -58,7 +58,6 @@ const reducer = combineReducers({
   usersSportsCreate: usersSportsCreateReducer,
   userSportsTypesFetch : userSportsTypesFetchReducer,
   memberGroupsFetch: memberGroupsFetchReducer,
-  memberGroupDelete: memberGroupDeleteReducer,
   groupsFetch: groupsFetchReducer,
   groupDelete: groupDeleteReducer,
   groupFetch: groupFetchReducer,
@@ -67,8 +66,8 @@ const reducer = combineReducers({
   groupPost: groupPostReducer
 })
 
-const memberInfoFromStorage = sessionStorage.getItem('memberInfo')
-  ? JSON.parse(sessionStorage.getItem('memberInfo'))
+const memberInfoFromStorage = localStorage.getItem('memberInfo')
+  ? JSON.parse(localStorage.getItem('memberInfo'))
   : null
 
 const initialState = {

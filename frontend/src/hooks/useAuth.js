@@ -6,7 +6,7 @@ function useAuth() {
   const [authed, setAuthed] = React.useState(false);
 
   React.useEffect(() => {
-      const auth = sessionStorage.getItem('authed')
+      const auth = localStorage.getItem('authed')
       if(auth) {
         setAuthed(auth)
       }
@@ -16,11 +16,11 @@ function useAuth() {
     authed,
     loginHook() {
       setAuthed(true);
-      sessionStorage.setItem('authed', true)
+      localStorage.setItem('authed', true)
     },
     logoutHook() {
       setAuthed(false);
-      sessionStorage.removeItem('authed')
+      localStorage.removeItem('authed')
     },
   };
 }

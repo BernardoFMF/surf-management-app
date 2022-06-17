@@ -48,7 +48,7 @@ export const login = (username, password) => async (dispatch) => {
         payload: memberInfo,
       })
   
-      sessionStorage.setItem('memberInfo', JSON.stringify(memberInfo))
+      localStorage.setItem('memberInfo', JSON.stringify({...memberInfo, expires: memberLogin.expires}))
     } catch (error) {
       dispatch({
         type: MEMBER_LOGIN_FAIL,
@@ -62,7 +62,7 @@ export const login = (username, password) => async (dispatch) => {
   
   export const logout = () => async (dispatch) => {
     await fetch('/api/auth/logout', { method: 'POST' })
-    sessionStorage.removeItem('memberInfo')
+    localStorage.removeItem('memberInfo')
     dispatch({ type: MEMBER_LOGOUT })
   }
 

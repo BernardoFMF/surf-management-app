@@ -9,7 +9,6 @@ import { CircularProgress, Grid, Chip, Stack, Box, Alert, Pagination } from '@mu
 import GroupIcon from '@mui/icons-material/Group';
 import MainCard from '../../components/cards/MainCard';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteGroupMember } from '../../store/actions/groupActions';
 import { blue , green } from "@mui/material/colors";
 import { useNavigate } from 'react-router';
 import { Formik, Form } from 'formik';
@@ -81,13 +80,6 @@ const MyGroupsPage = () => {
         dispatch(getMemberGroups(id, values.name_filter, type ? 'member_type' : type2 ? 'member_sport_type' : '', values.types_filter, 0, limit))
     }
 
-    const deleteHandler = (gid) => {
-        dispatch(deleteGroupMember(id, gid))
-        setPage(1)
-        setRows([])
-        dispatch(getMemberGroups(id, searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, limit))
-    }
-
     function getChipProps(params) {
         return {
             label: t(params.row.group_type_),
@@ -120,11 +112,6 @@ const MyGroupsPage = () => {
                 icon={<GroupIcon />}
                 label="View Group"
                 onClick={() => navigate(`/application/groups/${params.id}`)}
-                />,
-                <GridActionsCellItem
-                icon={<DeleteIcon />}
-                label="Delete Group"
-                onClick={() => deleteHandler(params.id)}
                 />
             ],
         },

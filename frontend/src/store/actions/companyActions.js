@@ -162,8 +162,8 @@ export const deleteCompany = (id) => async (dispatch) => {
           type: MEMBER_LOGIN_SUCCESS,
           payload: userInfo,
         })
-
-        sessionStorage.setItem('memberInfo', JSON.stringify(memberInfo))
+        const expirationDate = JSON.parse(localStorage.getItem('memberInfo')).expires
+        localStorage.setItem('memberInfo', JSON.stringify({...memberInfo, expires: expirationDate}))
       }
       dispatch({
         type: MEMBER_FETCH_SUCCESS,
