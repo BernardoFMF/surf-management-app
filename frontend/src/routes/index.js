@@ -8,5 +8,5 @@ import homeRoutes from "./homeRoutes";
 
 
 export default function ThemeRoutes() {
-    return useRoutes([homeRoutes, mainRoutes, authRoutes, errorRoutes]);
+    return useRoutes([homeRoutes, authRoutes, mainRoutes, errorRoutes]);
 }

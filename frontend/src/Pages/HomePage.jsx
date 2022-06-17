@@ -1,27 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import default_video from './../../src/assets/data/homePageVideo.mp4'
 import './../../src/assets/scss/homePage.scss'
 import HomeHeader from '../layout/homeHeader'
 import {
-    Box,
-    Typography,
-    Grid,
     useMediaQuery,
-    Button,
-    Link,
-    Divider
 } from '@mui/material'
-import AnimateButton from '../components/extended/AnimateButton'
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Home from '../components/home/Home'
 import About from '../components/home/About'
-import AnimatedPage from '../components/AnimatedText'
+import AuthWrapper from './auth/AuthWrapper'
+import Box from '@mui/material/Box';
+import ClockLoader from 'react-spinners/ClockLoader'
 
 const HomePage = () => {
   const theme = useTheme();
@@ -31,17 +20,36 @@ const HomePage = () => {
   const changePage = (index) => {
     setPage(index)
   }
+  const [loading, setLoading] = useState(false)
 
   useEffect(()=> {
-    console.log(page);
-  },[page])
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000)
+  },[])
+
 
   const {t, i18n} = useTranslation()
 
   return (
     <>
-        <HomeHeader index={page} changePage={changePage}></HomeHeader>
-        {page === 0 ? <Home/> : page === 1 ? <About/> : ""}  
+        {loading ?  
+          <AuthWrapper>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                minHeight="100vh"
+              >
+                <ClockLoader  size={200} loading={loading} color={'#36D7B7'}></ClockLoader>
+              </Box>
+            </AuthWrapper>
+        : <>
+            <HomeHeader index={page} changePage={changePage}></HomeHeader>
+            {page === 0 ? <Home/> : page === 1 ? <About/> : ""}  
+          </>
+        }
     </>
   )
 }

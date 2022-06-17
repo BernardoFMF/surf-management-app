@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import TranslationMenu from '../../components/TranslationMenu'
+import React, { useState, useEffect } from 'react'
 
 // material-ui
 import { useTheme } from '@mui/material/styles'
@@ -12,13 +13,23 @@ import AuthCardWrapper from './AuthCardWrapper'
 import AuthLogin from './auth-form/AuthLogin'
 import Logo from '../../components/Logo'
 import AnimatedCard from '../../components/AnimatedCard';
+import Box from '@mui/material/Box';
+import ClockLoader from 'react-spinners/ClockLoader'
 // assets
 
 const SignInPage = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const {t, i18n} = useTranslation()
+    const [loading, setLoading] = useState(false)
 
+    useEffect(()=> {
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+      }, 1000)
+    },[])
+  
     return (
         <AuthWrapper>
             <AnimatedCard>

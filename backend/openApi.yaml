@@ -775,6 +775,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+  /api/sports/types:
+    get:
+      summary: fetches a list of sports' types
+      operationId: getSportsTypesApi
+      responses:
+        '200':
+          description: response body should be a sport type object array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/sport_type'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /api/validate/{id}:
     get:
       summary: validates a member
@@ -2036,7 +2067,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-                
+  /api/members/{id}:
+    get:
+      summary: fetches a specific member
+      operationId: getMemberByIdApi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a member object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member_object'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
 components:
   schemas:
     validated_user:
@@ -2049,6 +2122,60 @@ components:
           type: boolean
         member_type_:
           type: string
+    member_object:
+      type: object
+      properties:
+        member_id_:
+          type: integer
+        cc_:
+          type: integer
+        nif_:
+          type: integer
+        birth_date_:
+          type: string
+          format: date
+        nationality_:
+          type: string
+        full_name_:
+          type: string
+        enrollment_date_:
+          type: string
+          format: date
+        paid_enrollment_:
+          type: boolean
+        is_admin_:
+          type: boolean
+        gender_:
+          type: string
+        member_type_:
+          type: string
+        has_debt_:
+          type: boolean
+        username_:
+          type: string
+        location_:
+          type: string
+        address_:
+          type: string
+        postal_code_:
+          type: string
+          format: ^\d{4}-\d{3}$
+        email_:
+          type: string
+        phone_number_:
+          type: integer
+        img_value_:
+          type: string
+        is_deleted_:
+          type: boolean
+        iban_:
+          type: string
+        qrcode_:
+          type: string
+        category_:
+          type: string
+        quota_value_:
+          type: integer
     users:
       type: object
       required:
@@ -2159,6 +2286,8 @@ components:
           type: string
         iban_:
           type: string
+        category_:
+          type: string
     api_user_body:
       type: object
       properties:
@@ -2199,6 +2328,9 @@ components:
           type: string
         img:
           type: string
+        enrollmnet_date:
+          type: string
+          format: date
     api_user_id_body:
       type: object
       properties:
@@ -2377,9 +2509,9 @@ components:
     put_sports_body:
       type: object
       properties:
-        name_:
+        name:
           type: string
-        is_deleted_:
+        is_deleted:
           type: boolean
     quota:
       type: object
@@ -2503,6 +2635,8 @@ components:
           type: string
         iban_:
           type: string
+        category_:
+          type: string
     company_body:
       type: object
       properties:
@@ -2553,6 +2687,8 @@ components:
         is_deleted:
           type: boolean
         iban:
+          type: string
+        type:
           type: string
     company_cid:
       type: object
@@ -2828,12 +2964,22 @@ components:
           type: string 
         iban_:
           type: string 
+        expires:
+          type: string
+          format: date
     login_body:
       type: object
       properties:
         username:
           type: string
         password:
+          type: string
+    sport_type:
+      type: object
+      properties:
+        name:
+          type: string
+        label: 
           type: string
     
   parameters:
