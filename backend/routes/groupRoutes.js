@@ -22,12 +22,6 @@ const groupRoutes = (data) => {
 
 	app.get('/members/:id', authentication.authMember, controller.getMemberGroups)
 
-	app.post('/:id/members', authentication.authAdmin, controller.postMemberInGroup)
-
-	app.delete('/:id/members/:uid', authentication.authAdmin, controller.deleteMemberInGroup)
-
-	
-
 	return app
 }
 

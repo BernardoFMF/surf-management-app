@@ -15,10 +15,7 @@ const About = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const {t, i18n} = useTranslation()
-
-    return (
-        <>    
-        <AnimatedVideo>
+/*<AnimatedVideo>
           <video
           id = 'homeVideo'
           autoPlay
@@ -27,7 +24,10 @@ const About = () => {
           >
           <source src = {default_video} type = "video/mp4" />
           </video>
-        </AnimatedVideo>
+        </AnimatedVideo>*/
+    return (
+        <>    
+        
         <AnimatedPage>
           <Box  sx={{
                       display: 'flex',

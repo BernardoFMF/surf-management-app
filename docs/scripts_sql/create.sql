@@ -207,4 +207,3 @@ create table Member_token_ (
 	primary key(member_id_),
 	constraint fk_user foreign key(member_id_) references Member_(id_)
 );
-
