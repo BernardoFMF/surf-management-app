@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import TranslationMenu from '../../components/TranslationMenu'
+import React, { useState, useEffect } from 'react'
 
 
 // material-ui
@@ -12,12 +13,22 @@ import AuthCardWrapper from './AuthCardWrapper'
 import Logo from '../../components/Logo'
 import AuthRegister from './auth-form/AuthRegister'
 import AnimatedCard from '../../components/AnimatedCard';
+import Box from '@mui/material/Box';
+import ClockLoader from 'react-spinners/ClockLoader'
 // assets
 
 const SignUp = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const {t, i18n} = useTranslation()
+    const [loading, setLoading] = useState(false)
+
+    useEffect(()=> {
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+      }, 1000)
+    },[])
 
     return (
         <AuthWrapper>
@@ -43,7 +54,6 @@ const SignUp = () => {
                     </Grid>
                 </Grid> 
             </AnimatedCard>
-            
         </AuthWrapper>
     );
 };
