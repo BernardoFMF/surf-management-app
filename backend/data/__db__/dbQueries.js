@@ -82,7 +82,7 @@ const QUERY_DELETE_USER_SPORT = 'update User_sport_ set is_absent_ = true where 
 
 const QUERY_DELETE_USER_SPORT_CANDIDATE = 'delete from User_sport_ where user_id_ = $1 and sport_id_ = $2'
 
-const QUERY_GET_QUOTAS = 'select q.id_, q.member_id_, username_, payment_date_, date_, email_, phone_number_, iban_ from Quota_ q join Member_ m on q.member_id_ = m.id_ join Contact_ c on m.id_ = c.member_id_'
+const QUERY_GET_QUOTAS = 'select q.id_, q.member_id_, username_, payment_date_, date_, email_, phone_number_, iban_, quota_value_  from Quota_ q join Member_ m on q.member_id_ = m.id_ join Contact_ c on m.id_ = c.member_id_ join member_types_ mt on mt.type_ = m.member_type_ '
 
 const QUERY_NUMBER_OF_QUOTAS = 'select count(*) from quota_'
 
@@ -92,7 +92,7 @@ const QUERY_GET_COMPANIES_QUOTAS = 'select q.id_, member_id_, username_, payment
 
 const QUERY_GET_USERS_QUOTAS = 'select q.id_, member_id_, username_, payment_date_, date_, iban_ from Quota_ q join Member_ m on q.member_id_ = m.id_ where m.is_deleted_ = false and m.member_type_ != \'corporate\''
 
-const QUERY_GET_MEMBERS_QUOTAS_BY_ID = 'select q.id_, member_id_, username_, payment_date_, date_, iban_ from Quota_ q join Member_ m on q.member_id_ = m.id_ where m.is_deleted_ = false and m.id_ = $1'
+const QUERY_GET_MEMBERS_QUOTAS_BY_ID = 'select q.id_, member_id_, username_, payment_date_, date_, iban_,quota_value_ from Quota_ q join Member_ m on q.member_id_ = m.id_ join member_types_ mt on mt.type_  = m.member_type_ where m.is_deleted_ = false and m.id_ = $1'
 
 const QUERY_POST_QUOTA = 'call post_quotas($1, $2)'
 

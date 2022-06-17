@@ -89,13 +89,14 @@ const AllQuotasPage = () => {
     }
 
 const columns = [
-    { field: 'member_id_', headerName: t('member_id'), width: 120 },
-    { field: 'username_', headerName: t('username'), width: 140 },
-    { field: 'email_', headerName: "Email", width: 170 },
-    { field: 'iban_', headerName: 'IBAN', width: 220},
-    { field: 'phone_number_', headerName: t('candidates_phone_number'), width: 150 },
-    { field: 'date_', headerName: t('date'), width: 170 },
-    { field: 'payment_date_', headerName: t('payment_date'), width: 170 },
+    { field: 'member_id_', headerAlign: "center", headerName: t('member_id'),align:'center', width: 120 },
+    { field: 'username_', headerAlign: "center",headerName: t('username'),align:'center', width: 140 },
+    { field: 'email_',headerAlign: "center", headerName: "Email",align:'center', width: 170 },
+    { field: 'iban_', headerAlign: "center",headerName: 'IBAN',align:'center', width: 220},
+    { field: 'phone_number_',headerAlign: "center", headerName: t('candidates_phone_number'), align:'center',width: 150 },
+    { field: 'date_',headerAlign: "center", headerName: t('date'), align:'center',width: 170 },
+    { field: 'payment_date_',headerAlign: "center", headerName: t('payment_date'), align:'center',width: 170 },
+    { field: 'quota_value_',headerAlign: "center", headerName: t('quota_value'), align:'center',width: 170 },
     {
         field: 'actions',
         headerName: t('actions'),

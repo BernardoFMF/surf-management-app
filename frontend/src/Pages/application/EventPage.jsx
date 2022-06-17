@@ -57,10 +57,10 @@ const EventPage = () => {
     }
 
     const columns = [
-        { field: 'member_id_', headerName: t('member_id'), width: 120 },
-        { field: 'username_', headerName: t("username"), headerAlign: "left", width: 150 },
-        { field: 'email_', headerName: "Email", width: 200 },
-        { field: 'phone_number_', headerName: t('candidates_phone_number'), width: 150 },
+        { field: 'member_id_', headerName: t('member_id'), width: 120 ,headerAlign: "center",align:'center'},
+        { field: 'username_', headerName: t("username"), headerAlign: "left", width: 150 ,headerAlign: "center",align:'center'},
+        { field: 'email_', headerName: "Email", width: 200 ,headerAlign: "center",align:'center'},
+        { field: 'phone_number_', headerName: t('candidates_phone_number'), width: 150 ,headerAlign: "center",align:'center'},
         {
             field: "state_",
             headerName: t('event_state'),
