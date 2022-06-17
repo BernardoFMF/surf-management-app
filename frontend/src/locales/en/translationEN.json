@@ -309,6 +309,8 @@
     "see_all_groups": "See all member groups",
     "see_all_quotas": "See all member quotas",
     "see_all_sports": "See all member sports",
-    "see_all_events": "See all member events"
+    "see_all_events": "See all member events",
+
+    "quota_value": "Quota Value"
 
 }

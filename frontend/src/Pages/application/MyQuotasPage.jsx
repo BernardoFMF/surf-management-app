@@ -44,8 +44,9 @@ const MyQuotasPage = () => {
     }
 
     const columns = [
-        { field: 'date_', headerName: t('date'), width: 120 },
-        { field: 'payment_date_', headerName: t('payment_date'), width: 140 },
+        { field: 'date_', headerAlign: "center", headerName: t('date'), align:'center', width: 120 },
+        { field: 'payment_date_', headerAlign: "center",headerName: t('payment_date'),align:'center', width: 170 },
+        { field: 'quota_value_', headerAlign: "center",headerName: t('quota_value'),align:'center', width: 170 }
     ];
 
   return (

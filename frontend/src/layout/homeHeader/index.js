@@ -7,9 +7,13 @@ import TranslationMenu from '../../components/TranslationMenu'
 import { useTranslation } from 'react-i18next'
 import FacebookIcon from '@mui/icons-material/Facebook';
 import AnimatedPage from '../../components/AnimatedText'
-import default_video from './../../../src/assets/data/homePageVideo.mp4'
+import first_video from './../../../src/assets/data/homePageVideo.mp4'
+import second_video from './../../../src/assets/data/aboutPageVideo.mp4'
+import third_video from './../../../src/assets/data/3rdvideo.mp4'
+
 import AnimatedVideo from '../../components/AnimatedVideo'
 
+const videos = {"1": third_video, "2": second_video, "3": first_video}
 const HomeHeader = ({index, changePage}) => {
     const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -24,18 +28,24 @@ const HomeHeader = ({index, changePage}) => {
       setAnchorElNav(null)
     }
 
+    function generateRandomInteger(max) {
+      const value = Math.floor(Math.random() * max) + 1
+      console.log(value)
+      return Math.floor(value) ;
+    }
+
     return (
       <>
         <AnimatedVideo>
-              <video
-              id = 'homeVideo'
-              autoPlay
-              muted
-              loop
-              >
-              <source src = {default_video} type = "video/mp4" />
-              </video>
-          </AnimatedVideo>
+          <video
+          id = 'homeVideo'
+          autoPlay
+          muted
+          loop
+          >
+          <source src = {videos[generateRandomInteger(3)]} type = "video/mp4" />
+          </video>
+      </AnimatedVideo>
         <AppBar position="absolute" style={{ display: 'flex', background: 'transparent', boxShadow: 'none'}}>
           <Container maxWidth="x1">
             <AnimatedPage>
