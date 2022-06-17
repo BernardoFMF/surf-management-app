@@ -1056,7 +1056,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/quotas'
+                $ref: '#/components/schemas/quotas_member'
         '400':
           description: response body should be an error object
           content:
@@ -1085,6 +1085,13 @@ paths:
     get:
       summary: fetches all quotas from a specific member
       operationId: getManagementQuotasApi
+      parameters:
+        - name: category
+          in: query
+          required: false
+          explode: false
+          schema:
+            type: string
       responses:
         '200':
           description: response body should be a quota management array
@@ -2531,6 +2538,32 @@ components:
           format: date
         iban_:
           type: string
+        email_:
+          type: string
+        phone_number_:
+          type: integer
+        quota_value_:
+          type: integer
+    quota_member:
+      type: object
+      properties:
+        id_:
+          type: integer
+        member_id_:
+          type: integer
+        username_:
+          type: string
+        payment_date_:
+          type: string
+          format: date
+          nullable: true
+        date_:
+          type: string
+          format: date
+        iban_:
+          type: string
+        quota_value_:
+          type: integer
     quotas:
       type: object
       properties:
@@ -2540,6 +2573,15 @@ components:
             $ref: '#/components/schemas/quota'
         number_of_quotas:
           type: integer
+    quotas_member:
+      type: object
+      properties:
+        quotas:
+          type: array
+          items:                   
+            $ref: '#/components/schemas/quota_member'
+        number_of_quotas:
+          type: integer
     quotas_management:
       type: object
       properties:
@@ -2547,6 +2589,8 @@ components:
           type: string
         quota_value_:
           type: integer
+        category_:
+          type: string
     quotas_management_body:
       type: object
       properties:
@@ -2554,6 +2598,8 @@ components:
           type: string
         quota_value:
           type: integer
+        category:
+          type: string
     put_quotas_management_body:
       type: object
       properties:
@@ -2981,6 +3027,8 @@ components:
           type: string
         label: 
           type: string
+    category:
+      type: string
     
   parameters:
     qidParameter:
