@@ -76,8 +76,8 @@ const GroupPage = () => {
     }
 
     const columns = [
-        { field: 'id_', headerName: 'ID', width: 100 },
-        { field: 'username_', headerName: t('username'), width: 250 },
+        { field: 'id_', headerName: 'ID', width: 100 ,headerAlign: "center",align:'center'},
+        { field: 'username_', headerName: t('username'), width: 250 ,headerAlign: "center",align:'center'},
         {
             field: "member_type_",
             headerName: t('member_type'),

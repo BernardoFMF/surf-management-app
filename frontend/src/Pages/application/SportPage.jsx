@@ -122,14 +122,14 @@ const SportPage = () => {
     }
 
     const columns = [
-        { field: 'username_', headerName: t('username'), width: 150 },
-        { field: 'type_', headerName: t('type'), width: 170 },
-        { field: 'fed_number_', headerName: t('fed_number_'), width: 150 },
-        { field: 'fed_id_', headerName: t('fed_id_'), width: 130 },
-        { field: 'fed_name_', headerName: t('fed_name_'), width: 300 },
-        { field: 'years_federated_', headerName: t('years_federated_'), width: 150 },
-        { field: 'is_absent_', headerName: t('is_absent_'), type: 'boolean',  width: 130 },
-        { field: 'is_candidate_', headerName: t('is_candidate_'), type: 'boolean',  width: 130 },
+        { field: 'username_', headerName: t('username'), width: 150 ,headerAlign: "center",align:'center'},
+        { field: 'type_', headerName: t('type'), width: 170 ,headerAlign: "center",align:'center'},
+        { field: 'fed_number_', headerName: t('fed_number_'), width: 150 ,headerAlign: "center",align:'center'},
+        { field: 'fed_id_', headerName: t('fed_id_'), width: 130 ,headerAlign: "center",align:'center'},
+        { field: 'fed_name_', headerName: t('fed_name_'), width: 300 ,headerAlign: "center",align:'center'},
+        { field: 'years_federated_', headerName: t('years_federated_'), width: 150 ,headerAlign: "center",align:'center'},
+        { field: 'is_absent_', headerName: t('is_absent_'), type: 'boolean',  width: 130 ,headerAlign: "center",align:'center'},
+        { field: 'is_candidate_', headerName: t('is_candidate_'), type: 'boolean',  width: 130 ,headerAlign: "center",align:'center'},
         {
             field: 'actions',
             type: 'actions',

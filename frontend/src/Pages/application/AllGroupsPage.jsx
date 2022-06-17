@@ -103,8 +103,8 @@ const AllGroupsPage = () => {
     }
 
     const columns = [
-        { field: 'group_id_', headerName: 'ID', width: 100 },
-        { field: 'name_', headerName: t('name'), width: 250 },
+        { field: 'group_id_', headerName: 'ID', width: 100 ,headerAlign: "center",align:'center'},
+        { field: 'name_', headerName: t('name'), width: 250 ,headerAlign: "center",align:'center'},
         {
             field: "type_",
             headerName: t('group_type'),

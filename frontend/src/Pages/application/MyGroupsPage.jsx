@@ -98,14 +98,15 @@ const MyGroupsPage = () => {
     }
 
     const columns = [
-        { field: 'group_id_', headerName: 'ID', width: 100 },
-        { field: 'name_', headerName: t('name'), width: 250 },
+        { field: 'group_id_', headerName: 'ID', width: 100 ,headerAlign: "center",align:'center'},
+        { field: 'name_', headerName: t('name'), width: 250 ,headerAlign: "center",align:'center'},
         {
             field: "type_",
             headerName: t('group_type'),
             width: 225,
             description: "Types",
-            headerAlign: "left",
+            headerAlign: "center",
+            align: 'center',
             renderCell: (params) => {
               return <Chip variant="outlined" size="small" {...getChipProps(params)} />;
             }

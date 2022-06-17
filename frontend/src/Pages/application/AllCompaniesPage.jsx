@@ -102,17 +102,18 @@ const AllCompaniesPage = () => {
     }
 
 const columns = [
-    { field: 'member_id_', headerName: 'ID', width: 40 },
-    { field: 'username_', headerName: t('username'), width: 140 },
-    { field: 'name_', headerName: t('name'), width: 150 },
-    { field: 'email_', headerName: 'Email', width: 170 },  
-    { field: 'iban_', headerName: 'IBAN', width: 220},  
-    { field: 'nif_', headerName: 'NIF', width: 110 },
-    { field: 'has_debt_', headerName: t('has_debt_'), type: 'boolean', width: 130 },
-    { field: 'is_deleted_', headerName: t('is_deleted_'), type: 'boolean', width: 130 },
+    { field: 'member_id_', headerName: 'ID', width: 40 ,headerAlign: "center",align:'center'},
+    { field: 'username_', headerName: t('username'), width: 140 ,headerAlign: "center",align:'center'},
+    { field: 'name_', headerName: t('name'), width: 150,headerAlign: "center",align:'center' },
+    { field: 'email_', headerName: 'Email', width: 170 ,headerAlign: "center",align:'center'},  
+    { field: 'iban_', headerName: 'IBAN', width: 220,headerAlign: "center",align:'center'},  
+    { field: 'nif_', headerName: 'NIF', width: 110 ,headerAlign: "center",align:'center'},
+    { field: 'has_debt_', headerName: t('has_debt_'), type: 'boolean', width: 130 ,headerAlign: "center",align:'center'},
+    { field: 'is_deleted_', headerName: t('is_deleted_'), type: 'boolean', width: 130 ,headerAlign: "center",align:'center'},
     {
         field: 'actions',
         type: 'actions',
+        headerName: t('actions'),
         width: 110,
         getActions: (params) => [
           <GridActionsCellItem

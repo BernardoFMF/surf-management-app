@@ -310,5 +310,7 @@
     "see_all_groups": "Ver todos os grupos do membro",
     "see_all_quotas": "Ver todas as quotas do membro",
     "see_all_sports": "Ver todos os desportos do membro",
-    "see_all_events": "Ver todos os eventos do membro"
+    "see_all_events": "Ver todos os eventos do membro",
+
+    "quota_value": "Valor da Quota"
 }

@@ -109,16 +109,17 @@ const AllEventsPage = () => {
     }
 
 const columns = [
-    { field: 'id_', headerName: "ID", headerAlign: "left", width: 100 },
-    { field: 'name_', headerName: t('name'), headerAlign: "left", width: 180 },
-    { field: 'initial_date_', headerName: t('event_initial_date'), headerAlign: "left", width: 130 },
-    { field: 'end_date_', headerName: t('event_end_date'), headerAlign: "left", width: 170 },
+    { field: 'id_', headerName: "ID",  width: 100 ,headerAlign: "center",align:'center'},
+    { field: 'name_', headerName: t('name'), width: 180 ,headerAlign: "center",align:'center'},
+    { field: 'initial_date_', headerName: t('event_initial_date'),  width: 130,headerAlign: "center",align:'center' },
+    { field: 'end_date_', headerName: t('event_end_date'),  width: 170 ,headerAlign: "center",align:'center'},
     {
         field: "status",
         headerName: t("event_state"),
         width: 160,
         description: "Status",
-        headerAlign: "left",
+        headerAlign: "center",
+        align:'center',
         renderCell: (params) => {
           return <Chip variant="outlined" size="small" {...getChipProps(params)} />;
         }
