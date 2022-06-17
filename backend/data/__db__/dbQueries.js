@@ -136,7 +136,7 @@ const QUERY_GET_MEMBER_TOKEN = 'select member_id_, token_, createdAt_ from Membe
 
 const QUERY_DELETE_MEMBER_TOKEN = 'delete from Member_token_ where member_id_ = $1'
 
-const QUERY_UPDATE_MEMBER_TOKEN = 'update Member_token_ set token_ = $2, createdAt_ = SELECT CURRENT_DATE where member_id_ = $1'
+const QUERY_UPDATE_MEMBER_TOKEN = 'update Member_token_ set token_ = $2, createdAt_ = CURRENT_DATE where member_id_ = $1'
 
 const QUERY_POST_NEW_TOKEN = 'call post_token($1,$2)'
 

@@ -28,16 +28,7 @@ const Home = () => {
 
     return (
         <>
-        <AnimatedVideo>
-            <video
-            id = 'homeVideo'
-            autoPlay
-            muted
-            loop
-            >
-            <source src = {default_video} type = "video/mp4" />
-            </video>
-        </AnimatedVideo>
+        
         <AnimatedPage>
             <Box sx={{ marginLeft: { xs: 4, md: 25}, marginTop: { xs: 25, md: 30}, flexGrow: 1, display: 'absolute', width: { xs: 200, md: 500}}}>
             <Typography sx={{ fontSize: { xs: '2.5em', md: '4em'}, fontWeight: 700, color: 'white' }}>

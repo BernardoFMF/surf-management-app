@@ -181,13 +181,14 @@ const GroupPage = () => {
                         
                         <Box
                             sx={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(4, 1fr)',
-                            gap: 1,
-                            gridTemplateRows: 'auto',
-                            gridTemplateAreas: `". . . ."
-                            "search search search create"
-                            ". . . ."`,
+                                pt: 4,
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(4, 1fr)',
+                                gap: 1,
+                                gridTemplateRows: 'auto',
+                                gridTemplateAreas: `". . . ."
+                                "search search search create"
+                                ". . . ."`,
                             }}
                         >
                             <Box gridArea={'search'}>

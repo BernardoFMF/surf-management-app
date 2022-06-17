@@ -14,6 +14,9 @@ import candidate from '../data/candidateData.js'
 import company from '../data/companyData.js'
 import user from '../data/userData.js'
 import quota from '../data/quotaData.js'
+import group from '../data/groupData'
+import member from '../data/memberData'
+
 
 const dbSport = sport(data)
 const dbEvent = event(data)
@@ -21,6 +24,8 @@ const dbCandidate = candidate(data)
 const dbCompany = company(data)
 const dbUser = user(data)
 const dbQuota = quota(data)
+const dbGroup = group(data)
+const dbMember = member(data)
 
 
 async function insertSportDummies() {
@@ -31,8 +36,8 @@ async function insertSportDummies() {
 }
 
 async function insertEventDummies() {
-	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022')
-	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022')
+	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1])
+	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2])
 }
 
 async function insertCandidateDummies() {
@@ -46,32 +51,34 @@ async function insertCompanyDummies() {
 }
 
 async function insertUserDummies() {
-	await dbUser.postUser(383128318, 764291145, 'founder', '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe', 'PT50011110000001234567831', '\\xEAABDFFA',)
-	await dbUser.postUser(383123818, 763371741, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe', 'PT50002700000011134567831', '\\xEAABDFFA',)
+	await dbUser.postUser(383128318, 764291145, 'founder', '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe', 'PT50011110000001234567831', '\\xEAABDFFA', '09-03-2022')
+	await dbUser.postUser(383123818, 763371741, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe', 'PT50002700000011134567831', '\\xEAABDFFA', '09-03-2022')
 }
 
 async function insertSportsforUsersDummies() {
-	await dbUser.postUserSport(1, 2, 54, 1890547, 'Fereracao de Surf', ['coach'], [2017,2018,2019,2020,2021])
-	await dbUser.postUserSport(2, 1, 54, 1890548, 'Federacao de Surf', ['practitioner'], [2018])
-	await dbUser.postUserSport(1, 3, 55, 1895731, 'Fereracao de SkySurf', ['practitioner'], [2021])
-	await dbUser.postUserSport(2, 3, 55, 1890780, 'Federacao de SkySurf', ['practitioner'], [2022])
-}
-
-async function insertAttendanceDummies() {
-	await dbEvent.postMemberAttendance(1,2,'going')
+	await dbUser.postUserSport(1, 2, 54, 1890547, 'Fereracao de Surf', ['coach'], [2017,2018,2019,2020,2021], false)
+	await dbUser.postUserSport(2, 1, 54, 1890548, 'Federacao de Surf', ['practitioner'], [2018], false)
+	await dbUser.postUserSport(1, 3, 55, 1895731, 'Fereracao de SkySurf', ['practitioner'], [2021], false)
+	await dbUser.postUserSport(2, 3, 55, 1890780, 'Federacao de SkySurf', ['practitioner'], [2022], false)
 }
 
 async function insertQuotaPricesDummies() {
-	await dbQuota.postManagementQuota('effective', 15)
-	await dbQuota.postManagementQuota('founder', 0)
-	await dbQuota.postManagementQuota('merit', 0)
-	await dbQuota.postManagementQuota('corporate', 50)
+	await dbQuota.postManagementQuota('effective', 15, 'user')
+	await dbQuota.postManagementQuota('founder', 0, 'user')
+	await dbQuota.postManagementQuota('merit', 0, 'user')
+	await dbQuota.postManagementQuota('corporate', 50, 'company')
+}
+
+async function insertGroupsDummies() {
+	await dbGroup.postGroup('ganda grupo de tudo', 'tudo', 'member_type', [ "effective", "corporate", "merit", "founder" ], [])
+	await dbGroup.postGroup('ganda grupo de desporto', 'desporto', 'member_sport_type', [ "coach", "practitioner" ], [1, 3, 2])
 }
 
 let drop = fs.readFileSync('./docs/scripts_sql/drop.sql', 'utf8');
 let create = fs.readFileSync('./docs/scripts_sql/create.sql', 'utf8');
 let trigger = fs.readFileSync('./docs/scripts_sql/Triggers.sql', 'utf8');
 let procedures = fs.readFileSync('./docs/scripts_sql/procedures.sql', 'utf8');
+let insert = fs.readFileSync('./docs/scripts_sql/insert-test.sql', 'utf8');
 
 const offset = 0
 const limit = 100
@@ -82,14 +89,67 @@ beforeAll( async () => {
 	await con.query(create)
 	await con.query(trigger)
 	await con.query(procedures)  
+	await con.query(insert)
 	await insertQuotaPricesDummies()
 	await insertUserDummies()
 	await insertSportDummies()
 	await insertCandidateDummies()
 	await insertCompanyDummies()
-	await insertEventDummies()
 	await insertSportsforUsersDummies()
-	return await insertAttendanceDummies()
+	await insertGroupsDummies()
+	return await insertEventDummies()
+})
+
+//Members 
+
+test('Get specific member', async () => {
+	expect.assertions(1)
+	const member = await dbMember.getMemberById(1)
+	expect(member.full_name_).toBe('Mohamed Jahal Bali horad')
+})
+
+test('Get specific member', async () => {
+	expect.assertions(1)
+	const member = await dbMember.getMemberById(3)
+	expect(member.name_).toBe('Ericeira surf shop')
+})
+
+// Groups 
+
+test('Get all groups', async () => {
+	expect.assertions(1)
+	const groups = await dbGroup.getGroups(undefined, undefined, [], 0, 100)
+	expect(groups.groups.length).toBe(2)
+})
+
+test('Get specific group', async () => {
+	expect.assertions(1)
+	const groups = await dbGroup.getGroupById(1)
+	expect(groups.name_).toBe('ganda grupo de tudo')
+})
+
+test('Get member of specific group', async () => {
+	expect.assertions(1)
+	const groups = await dbGroup.getGroupByIdMembers(1, undefined, 0, 100)
+	expect(groups.members[0].username_).toBe('mohamed87')
+})
+
+test('Get groups of member', async () => {
+	expect.assertions(1)
+	const groups = await dbGroup.getMemberGroups(1, undefined, undefined, [], 0, 100)
+	expect(groups.groups[0].name_).toBe('ganda grupo de tudo')
+})
+
+test('Create a group', async () => {
+	expect.assertions(1)
+	const group = await dbGroup.postGroup('ganda grupo de quase tudo', 'tudo', 'member_type', [ "effective", "merit", "founder" ], [])
+	expect(group).toBe(3)
+})
+
+test('Delete a group', async () => {
+	expect.assertions(1)
+	const group = await dbGroup.deleteGroup(3)
+	expect(group).toBe(3)
 })
 
 //Sports - verified 26/04/2022
@@ -138,6 +198,12 @@ test('Get all events', async () => {
 	expect(events.events[1].name_).toBe('Entrega de prémios.')
 })
 
+test('Get all events', async () => {
+	expect.assertions(1)
+	const events = await dbEvent.getEvents('Assembleia geral.', '15-04-2022', '16-04-2022', offset, limit)
+	expect(events.events[0].name_).toBe('Assembleia geral.')
+})
+
 test('Get specific event', async () => {
 	expect.assertions(1)
 	const event = await dbEvent.getEventById(1)
@@ -156,7 +222,7 @@ test('Delete specific event', async () => {
 
 test('Create a event', async () => {
 	expect.assertions(1)
-	const event = await dbEvent.postEvent('Entrega de troféus.', '12-07-2022', '12-07-2022')
+	const event = await dbEvent.postEvent('Entrega de troféus.', '12-07-2022', '12-07-2022', [1,2])
 	expect(event).toBe(3)
 })
 
@@ -169,27 +235,27 @@ test('Update a event', async () => {
 
 //Attendance - verified 26/04/2022 (missing get attendance by user)
 
-test('Create a attendance', async () => {
-	expect.assertions(1)
-	const attendance = await dbEvent.postMemberAttendance(1,1,'going')
-	expect(attendance.id_).toBe(1)
-})
-
-test('Get specific attendance', async () => {
-	expect.assertions(1)
-	const attendance = await dbEvent.getEventByIdAttendance(1, offset, limit)
-	expect(attendance.attendance[0].state_).toBe('going')
-})
-
 test('Update specific attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.updateMemberAttendance(1, 1, 'not going')
 	expect(attendance.id_).toBe(1)
 })
 
+test('Get specific attendance', async () => {
+	expect.assertions(1)
+	const attendance = await dbEvent.getEventByIdAttendance(1, offset, limit)
+	expect(attendance.attendance[0].state_).toBe('not going')
+})
+
 test('Get specific member attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventMemberByIdAttendance(1, undefined, undefined, undefined, offset, limit)
+	expect(attendance.events[0].member_id_).toBe(1)
+})
+
+test('Get specific member attendance', async () => {
+	expect.assertions(1)
+	const attendance = await dbEvent.getEventMemberByIdAttendance(1, 'Assembleia geral.', 'not going', '2022-08-12', offset, limit)
 	expect(attendance.events[0].member_id_).toBe(1)
 })
 
@@ -201,6 +267,12 @@ test('Get all candidates', async () => {
 	const candidates = await dbCandidate.getCandidates(undefined, undefined, undefined, offset, limit)
 	expect(candidates.candidates[0].nationality_).toBe('Angolana')
 	expect(candidates.candidates[1].nationality_).toBe('Portuguesa')
+})
+
+test('Get all candidates', async () => {
+	expect.assertions(1)
+	const candidates = await dbCandidate.getCandidates('jobileu', 'Jobileu Santos', 'jobi@clix.pt', offset, limit)
+	expect(candidates.candidates[0].nationality_).toBe('Angolana')
 })
 
 test('Get specific candidate', async () => {
@@ -240,6 +312,12 @@ test('Get all companies', async () => {
 	expect(companies.companies[1].name_).toBe('Billabong')
 })
 
+test('Get all companies', async () => {
+	expect.assertions(1)
+	const companies = await dbCompany.getCompanies('eric', 'Ericeira surf shop', 'ess@gmail.com', offset, limit)
+	expect(companies.companies[0].name_).toBe('Ericeira surf shop')
+})
+
 test('Get specific company', async () => {
 	expect.assertions(1)
 	const company = await dbCompany.getCompanyById(3)
@@ -254,7 +332,7 @@ test('Create a company', async () => {
 
 test('Update a company', async () => {
 	expect.assertions(1)
-	const company = await dbCompany.updateCompany(3, 354876321, 'Ericeira Surf shop', 918923180, '2812-829', 'Rua da ericeira', 'Ericeira', '\\xEAABDFFA', false, 'PT50111700000111134544441')
+	const company = await dbCompany.updateCompany(3, 354876321, 'corporate', 'Ericeira Surf shop', 918923180, '2812-829', 'Rua da ericeira', 'Ericeira', '\\xEAABDFFA', false, 'PT50111700000111134544441')
 	expect(company.name_).toBe('Ericeira Surf shop')
 })
 
@@ -273,6 +351,19 @@ test('Create a quota', async () => {
 	const quotas = await dbQuota.postQuota('01-01-2022')
 	expect(quotas).toBe(4)
 })
+
+test('Get all quotas', async () => {
+	expect.assertions(1)
+	const quotas = await dbQuota.getQuotas(undefined, undefined, undefined, 0, 100)
+	console.log(quotas);
+	expect(quotas.number_of_quotas).toBe(4)
+})	
+
+test('Get all quotas', async () => {
+	expect.assertions(1)
+	const quotas = await dbQuota.getQuotas('jobileu', 'jobi@clix.pt', '2022-01-01', 0, 100)
+	expect(quotas.number_of_quotas).toBe(1)
+})	
 
 test('Get all users quotas', async () => {
 	expect.assertions(1)
@@ -301,8 +392,9 @@ test('Update a company quota', async () => {
 
 test('Get all management quotas', async () => {
 	expect.assertions(1)
-	const quotas = await dbQuota.getManagementQuotas()
-	expect(quotas.length).toBe(4)
+	const quotas = await dbQuota.getManagementQuotas('user')
+	console.log(quotas);
+	expect(quotas.length).toBe(3)
 })	
 
 test('Update specific management quota', async () => {
@@ -324,6 +416,12 @@ test('Get all users', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsers(undefined, undefined, undefined, offset, limit)
 	expect(users.users.length).toBe(3)
+})
+
+test('Get all users', async () => {
+	expect.assertions(1)
+	const users = await dbUser.getUsers('jobileu', 'Jobileu Santos', 'jobi@clix.pt', offset, limit)
+	expect(users.users.length).toBe(1)
 })
 
 test('Get a specific user', async () => {
@@ -362,14 +460,26 @@ test('Get all sports for users', async () => {
 
 test('Get users that practice a given sport ', async () => {
 	expect.assertions(1)
-	const users = await dbUser.getUsersSport(2, offset, limit)
-	expect(users.sports.length).toBe(0) 
+	const users = await dbUser.getUsersSport(2, offset, limit, false, undefined)
+	expect(users.users.length).toBe(0) 
+})	
+
+test('Get users that practice a given sport ', async () => {
+	expect.assertions(1)
+	const users = await dbUser.getUsersSport(2, offset, limit, false, 'jobileu')
+	expect(users.users.length).toBe(0) 
 })	
 
 test('Get sports that a given user practice', async () => {
 	expect.assertions(1)
 	const sports = await dbUser.getUserSportsById(2, offset, limit)
 	expect(sports.sports.length).toBe(1)
+})
+
+test('Get sports that a given user practice', async () => {
+	expect.assertions(1)
+	const sports = await dbUser.getUsersSports()
+	expect(sports.length).toBe(1)
 })
 
 test('Create a sport for a user', async () => {
@@ -388,4 +498,48 @@ test('Delete a sport for a user', async () => {
 	expect.assertions(1)
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
+})
+
+// extra
+
+test('Get emails', async () => {
+	expect.assertions(1)
+	const emails = await data.getEmails()
+	expect(emails.length).toBe(7)
+})
+
+test('Get specific member email', async () => {
+	expect.assertions(1)
+	const emails = await data.getUserEmailByIdData(1)
+	expect(emails.email_).toBe('mohamedlgh@gmail.com')
+})
+
+test('Create token', async () => {
+	expect.assertions(1)
+	const token = await data.postNewTokenData(1, 'token')
+	expect(token).toBe(1)
+})
+
+test('Get token by id', async () => {
+	expect.assertions(1)
+	const token = await data.getMemberTokenByIdData(1)
+	expect(token.token_).toBe('token')
+})
+
+test('Update token', async () => {
+	expect.assertions(1)
+	const token = await data.updateMemberTokenData(1, 'new')
+	expect(token).toBe(1)
+})
+
+test('Delete token', async () => {
+	expect.assertions(1)
+	const token = await data.deleteMemberTokenData(1)
+	expect(token).toBe(1)
+})
+
+test('Get member groups', async () => {
+	expect.assertions(1)
+	const group = await data.getMemberGroupsData(1, 'ganda grupo de tudo', 'member_type', [], 0, 100)
+	expect(group.groups[0].group_id_).toBe(1)
 })

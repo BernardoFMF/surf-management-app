@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { login } from '../../../store/actions/memberActions'
+import { login, logout } from '../../../store/actions/memberActions'
 import useAuth from '../../../hooks/useAuth'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
+import { isAfter } from "date-fns";
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -52,11 +53,24 @@ const AuthLogin = ({ ...others }) => {
     const { loading, error, memberInfo } = memberLogin
     const {authed, loginHook} = useAuth()
 
+    const checkExpiration = (date) => {
+        const curr = new Date()
+        const expirationDate = new Date(date)
+        console.log("LOGIN");
+        console.log(curr);
+        console.log(expirationDate);
+        return isAfter(curr, expirationDate)
+    }
+
     useEffect(() => {
         async function logIn() {
             if (memberInfo) {
-                loginHook()
-                navigate((state && state.from) || '/dashboard/overview')
+                const isExpired = checkExpiration(memberInfo.expires)
+                if (isExpired) {
+                    dispatch(logout())
+                } else {
+                    navigate((state && state.from) || '/dashboard/overview')
+                }
             }
         }
         logIn()

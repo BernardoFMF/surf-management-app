@@ -344,7 +344,6 @@ test('Create a sport for a user', async () => {
 test('Get all sports for users', async () => {
 	expect.assertions(1)
 	const userSports = await dbUser.getUsersSports()
-	console.log(userSports)
 	expect(userSports.users_sports_array.length).toBe(5)
 })
 
@@ -357,7 +356,6 @@ test('Get users that practice a given sport ', async () => {
 test('Get sports that a given user practice', async () => {
 	expect.assertions(1)
 	const sports = await dbUser.getUserSportsById(2)
-	console.log(sports)
 	expect(sports.number_of_sports).toBe(3)
 })
 

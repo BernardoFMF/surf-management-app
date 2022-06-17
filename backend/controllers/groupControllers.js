@@ -34,16 +34,6 @@ const groupControllers = (data) => {
         res.json(groups)
 	})
 
-    const postMemberInGroup = asyncHandler(async (req, res) => {
-        const member = await services.postMemberInGroupServices(req.params.id, req.body.user_id)
-        if (member) res.json({ message: 'Member added sucessfully', message_code: 'MESSAGE_CODE_40' })
-	})
-
-    const deleteMemberInGroup = asyncHandler(async (req, res) => {
-        const member = await services.deleteMemberInGroupServices(req.params.id, req.params.uid)
-        if (member) res.json({ message: 'Member deleted sucessfully', message_code: 'MESSAGE_CODE_41' })
-	})
-
     const getGroupByIdMembers = asyncHandler(async (req, res) => {
         const members = await services.getGroupByIdMembersServices(req.params.id, req.query.username, req.query.offset, req.query.limit)
         if (members) res.json(members)
@@ -55,8 +45,6 @@ const groupControllers = (data) => {
         postGroup,
         deleteGroup,
         getMemberGroups,
-        postMemberInGroup,
-        deleteMemberInGroup,
         getGroupByIdMembers
 	}
 }

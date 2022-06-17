@@ -44,20 +44,6 @@ const groupServices = (db) => {
         return await data.getMemberGroups(id, name, group_type, types_formatted, offset, limit)
 	}
 
-    const postMemberInGroupServices = async (id, user_id) => {
-		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
-		if(!user_id) throw error(400, 'Parameter not found: user_id', 'MESSAGE_CODE_14')
-        
-        return await data.postMemberInGroup(id, user_id)
-	}
-
-    const deleteMemberInGroupServices = async (id, user_id) => {
-		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
-		if(!user_id) throw error(400, 'Parameter not found: user_id', 'MESSAGE_CODE_14')
-		
-        return await data.deleteMemberInGroup(id, user_id)
-	}
-
     const getGroupByIdMembersServices = async (id, username, offset, limit) => {
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
@@ -72,8 +58,6 @@ const groupServices = (db) => {
         postGroupServices,
         deleteGroupServices,
         getMemberGroupsServices,
-        postMemberInGroupServices,
-        deleteMemberInGroupServices,
         getGroupByIdMembersServices
 	}
 }

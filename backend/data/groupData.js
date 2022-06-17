@@ -31,20 +31,6 @@ const groupData = (db) => {
         return await db.getMemberGroupsData(id_, name_, group_type_, types_, offset_, limit_)
     }
 
-    const postMemberInGroup = async (id_, user_id_) => {
-        const member = db.getMemberByIdData(user_id_)
-        if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_24')
-        await getGroupById(id_)
-        return await db.postMemberInGroupData(id_, user_id_)
-    }
-
-    const deleteMemberInGroup = async (id_, user_id_) => {
-        const member = db.getMemberByIdData(user_id_)
-        if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_24')
-        await getGroupById(id_)
-        return await db.deleteMemberInGroupData(id_, user_id_)
-    }
-
     const getGroupByIdMembers = async (id_, username_, offset_, limit_) => {
         await getGroupById(id_)
         return await db.getGroupByIdMembersData(id_, username_, offset_, limit_)
@@ -56,8 +42,6 @@ const groupData = (db) => {
         postGroup,
         deleteGroup,
         getMemberGroups,
-        postMemberInGroup,
-        deleteMemberInGroup,
         getGroupByIdMembers
 	}
 }

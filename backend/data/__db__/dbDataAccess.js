@@ -540,21 +540,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const postMemberAttendanceData = async (eid_, id_, state_ ) => {
-		const client = await pool.connect()
-		try {
-			await client.query('Begin')
-			await client.query(queries.QUERY_POST_ATTENDANCE,[id_, eid_, state_ ])
-			await client.query('Commit')
-			return {eid_, id_}
-		} catch(e) {
-			await client.query('Rollback')
-			throw e
-		} finally {
-			client.release()
-		}
-	}
-
 	const updateMemberAttendanceData = async (eid_, id_, state_) => {
 		const client = await pool.connect()
 		try {
@@ -793,21 +778,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('commit')
 			const result = { sports: sports.rows, number_of_sports: parseInt(number_of_sports.rows[0].count) }
 			return result
-		} catch (e) {
-			await client.query('rollback')
-			throw e
-		} finally {
-			client.release()
-		}
-	}
-
-	const getAllUserSportsByIdData = async (id) => {
-		const client = await pool.connect()
-		try {
-			await client.query('begin')
-			const sports = await pool.query(queries.QUERY_GET_USER_SPORTS_BY_ID, [id_])
-			await client.query('commit')
-			return sports.rows
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1121,7 +1091,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('begin')
 			const email = await client.query(queries.QUERY_GET_USER_EMAIL,[id_])
 			await client.query('commit')
-			return email
+			return email.rows[0]
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1166,7 +1136,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('begin')
 			const result = await client.query(queries.QUERY_GET_MEMBER_TOKEN, [id_])
 			await client.query('commit')
-			return result
+			return result.rows[0]
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1448,37 +1418,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
-	const postMemberInGroupData = async (id_, user_id_) => {
-		const client = await pool.connect()
-		try {
-			await client.query('begin')
-			await client.query(queries.QUERY_POST_MEMBER_GROUP, [id_, user_id_])
-			await client.query('commit')
-			return { id_, user_id_ }
-		} catch (e) {
-			await client.query('rollback')
-			console.log(e);
-			throw e
-		} finally {
-			client.release()
-		}
-	}
-
-	const deleteMemberInGroupData = async (id_, user_id_) => {
-		const client = await pool.connect()
-		try {
-			await client.query('begin')
-			await client.query(queries.QUERY_DELETE_MEMBER_GROUP, [id_, user_id_])
-			await client.query('commit')
-			return { id_, user_id_ }
-		} catch (e) {
-			await client.query('rollback')
-			throw e
-		} finally {
-			client.release()
-		}	
-	}
-
 	const getGroupByIdMembersData = async (id_, username_filter_, offset_, limit_) => {
 		let query = queries.QUERY_GET_GROUP_MEMBERS
 		if (username_filter_) {
@@ -1530,12 +1469,9 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		postGroupData,
 		deleteGroupData,
 		getMemberGroupsData,
-		postMemberInGroupData,
-		deleteMemberInGroupData,
 		getGroupByIdMembersData,
 		getCandidateByIbanData,
 		getMemberByIbanData, 
-		getAllUserSportsByIdData,
 		getManagementQuotas, 
 		getManagementQuotaByType, 
 		updateManagementQuotaByType,
@@ -1557,7 +1493,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		postEventData,
 		updateEventData,
 		deleteEventData,
-		postMemberAttendanceData,
 		updateMemberAttendanceData,
 		getEventByIdAttendanceData,
 		getSportsData,
@@ -1600,6 +1535,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getCandidateByEmailData, 
 		getMemberValidationData,
 		GetUserSportTypesData, 
+		getEmails,
+		getUserEmailByIdData,
+		postNewTokenData,
+		getMemberTokenByIdData,
+		deleteMemberTokenData,
+		updateMemberTokenData,
 		pool 
 	}
 

@@ -94,20 +94,11 @@ const userData = (db) => {
 		const user = await getUserById(id_)
 		const sport = await db.getSportByIdData(sid_)
 		if (!sport) throw error(404, 'Sport does not exist', 'MESSAGE_CODE_30')
-		//We should make the get user sports request to verify if  already exists 
-		/*let user_sport = await db.getUserSportsByIdData(id_, 0, limit_)
-		user_sport = user_sport.filter(tuple => tuple.sport_id_ == sid_)[0]
-		if (user_sport)
-			throw error(409, 'User is already related to this Sport', 'MESSAGE_CODE_31')
-		*/
 		return await db.postUserSportData(user.member_id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_candidate_)
 	}
 	
 	const updateUserSport = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_) => {
 		await getUserById(id_)
-		/*const sports = await db.getAllUserSportsByIdData(id_)
-		const sport = sports.filter(s => s.sport_id_ == sid_)[0]
-		if (!sport) throw error(404, 'User is not related to this Sport', 'MESSAGE_CODE_32')*/
 		return await db.updateUserSportData(id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_)
 	}
 	

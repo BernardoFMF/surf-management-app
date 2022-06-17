@@ -207,6 +207,7 @@ LANGUAGE plpgsql
 as
 $$
 begin
+	delete from GROUP_EVENT_ where event_id_ = eid_;
 	DELETE FROM Attendance_ WHERE event_id_ = eid_;
 	DELETE FROM Event_ WHERE id_ = eid_;
 end

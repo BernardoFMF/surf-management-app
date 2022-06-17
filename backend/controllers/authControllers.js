@@ -7,7 +7,8 @@ import AuthServices from '../services/authServices.js'
 const authController = (data) => {
 
 	const postLogin = asyncHandler(async (req, res) => {
-		res.json(req.user)
+		console.log();
+		res.json({...req.user, expires: req.session.cookie.expires})
 	})
 
 	const postLogout = asyncHandler(async (req, res) => {

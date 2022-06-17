@@ -2,9 +2,6 @@ import {
     MEMBER_GROUPS_FETCH_REQUEST,
     MEMBER_GROUPS_FETCH_SUCCESS,
     MEMBER_GROUPS_FETCH_FAIL,
-    MEMBER_GROUP_DELETE_REQUEST,
-    MEMBER_GROUP_DELETE_SUCCESS,
-    MEMBER_GROUP_DELETE_FAIL,
     GROUP_DELETE_REQUEST,
     GROUP_DELETE_SUCCESS,
     GROUP_DELETE_FAIL,
@@ -29,19 +26,6 @@ export const memberGroupsFetchReducer = (state = {memberGroupsGet: {groups: [], 
         case MEMBER_GROUPS_FETCH_SUCCESS:
             return { loading: false, memberGroupsGet: action.payload }
         case MEMBER_GROUPS_FETCH_FAIL:
-            return { loading: false, error: action.payload }
-        default:
-            return state
-    }
-}
-
-export const memberGroupDeleteReducer = (state = {}, action) => {
-    switch (action.type) {
-        case MEMBER_GROUP_DELETE_REQUEST:
-            return { loading: true }
-        case MEMBER_GROUP_DELETE_SUCCESS:
-            return { loading: false, memberGroupDelete: action.payload }
-        case MEMBER_GROUP_DELETE_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state

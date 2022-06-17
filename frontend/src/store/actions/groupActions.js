@@ -2,9 +2,6 @@ import {
     MEMBER_GROUPS_FETCH_REQUEST,
     MEMBER_GROUPS_FETCH_SUCCESS,
     MEMBER_GROUPS_FETCH_FAIL,
-    MEMBER_GROUP_DELETE_REQUEST,
-    MEMBER_GROUP_DELETE_SUCCESS,
-    MEMBER_GROUP_DELETE_FAIL,
     GROUP_DELETE_REQUEST,
     GROUP_DELETE_SUCCESS,
     GROUP_DELETE_FAIL,
@@ -40,32 +37,6 @@ export const getMemberGroups = (id, name_filter, group_type_filter, types_filter
     } catch (error) {
         dispatch({
             type: MEMBER_GROUPS_FETCH_FAIL,
-            payload:
-            error.response && error.response.data.message
-                ? error.response.data.message
-                : error.message,
-        })
-    }
-}
-
-export const deleteGroupMember = (id, gid) => async (dispatch) => {
-    try {
-        dispatch({
-            type: MEMBER_GROUP_DELETE_REQUEST,
-        })
-        const response = await fetch(`/api/groups/${gid}/members/${id}`, {
-            method: 'DELETE',
-            headers: { "Content-Type": "application/json" }
-        })
-        let group = await response.json()
-        if(response.status !== 200) throw Error(group.message_code)
-        dispatch({
-            type: MEMBER_GROUP_DELETE_SUCCESS,
-            payload: group,
-        })
-    } catch (error) {
-        dispatch({
-            type: MEMBER_GROUP_DELETE_FAIL,
             payload:
             error.response && error.response.data.message
                 ? error.response.data.message
