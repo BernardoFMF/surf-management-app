@@ -88,7 +88,10 @@ const AllCompaniesPage = () => {
       (id) => () => {
         setTimeout(() => {
             dispatch(deleteCompany(id))
-            setRows((prevRows) => prevRows.filter(row => row.id !== id))
+            setRows((prevRows) => prevRows.filter(row => {
+                if(row.id === id) row.is_deleted_ = true
+                return row
+            }))
         });
       },
       [],
