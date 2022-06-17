@@ -253,6 +253,12 @@ test('Get specific member attendance', async () => {
 	expect(attendance.events[0].member_id_).toBe(1)
 })
 
+test('Get specific member attendance', async () => {
+	expect.assertions(1)
+	const attendance = await dbEvent.getEventMemberByIdAttendance(1, 'Assembleia geral.', 'not going', '2022-08-12', offset, limit)
+	expect(attendance.events[0].member_id_).toBe(1)
+})
+
 
 //Candidate - verified 26/04/2022
 
@@ -349,7 +355,14 @@ test('Create a quota', async () => {
 test('Get all quotas', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getQuotas(undefined, undefined, undefined, 0, 100)
+	console.log(quotas);
 	expect(quotas.number_of_quotas).toBe(4)
+})	
+
+test('Get all quotas', async () => {
+	expect.assertions(1)
+	const quotas = await dbQuota.getQuotas('jobileu', 'jobi@clix.pt', '2022-01-01', 0, 100)
+	expect(quotas.number_of_quotas).toBe(1)
 })	
 
 test('Get all users quotas', async () => {
@@ -405,6 +418,12 @@ test('Get all users', async () => {
 	expect(users.users.length).toBe(3)
 })
 
+test('Get all users', async () => {
+	expect.assertions(1)
+	const users = await dbUser.getUsers('jobileu', 'Jobileu Santos', 'jobi@clix.pt', offset, limit)
+	expect(users.users.length).toBe(1)
+})
+
 test('Get a specific user', async () => {
 	expect.assertions(1)
 	const user = await dbUser.getUserById(1)
@@ -442,6 +461,12 @@ test('Get all sports for users', async () => {
 test('Get users that practice a given sport ', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsersSport(2, offset, limit, false, undefined)
+	expect(users.users.length).toBe(0) 
+})	
+
+test('Get users that practice a given sport ', async () => {
+	expect.assertions(1)
+	const users = await dbUser.getUsersSport(2, offset, limit, false, 'jobileu')
 	expect(users.users.length).toBe(0) 
 })	
 
@@ -511,4 +536,10 @@ test('Delete token', async () => {
 	expect.assertions(1)
 	const token = await data.deleteMemberTokenData(1)
 	expect(token).toBe(1)
+})
+
+test('Get member groups', async () => {
+	expect.assertions(1)
+	const group = await data.getMemberGroupsData(1, 'ganda grupo de tudo', 'member_type', [], 0, 100)
+	expect(group.groups[0].group_id_).toBe(1)
 })
