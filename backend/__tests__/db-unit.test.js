@@ -198,6 +198,12 @@ test('Get all events', async () => {
 	expect(events.events[1].name_).toBe('Entrega de prémios.')
 })
 
+test('Get all events', async () => {
+	expect.assertions(1)
+	const events = await dbEvent.getEvents('Assembleia geral.', '15-04-2022', '16-04-2022', offset, limit)
+	expect(events.events[0].name_).toBe('Assembleia geral.')
+})
+
 test('Get specific event', async () => {
 	expect.assertions(1)
 	const event = await dbEvent.getEventById(1)
@@ -257,6 +263,12 @@ test('Get all candidates', async () => {
 	expect(candidates.candidates[1].nationality_).toBe('Portuguesa')
 })
 
+test('Get all candidates', async () => {
+	expect.assertions(1)
+	const candidates = await dbCandidate.getCandidates('jobileu', 'Jobileu Santos', 'jobi@clix.pt', offset, limit)
+	expect(candidates.candidates[0].nationality_).toBe('Angolana')
+})
+
 test('Get specific candidate', async () => {
 	expect.assertions(1)
 	const candidate = await dbCandidate.getCandidateById(1)
@@ -292,6 +304,12 @@ test('Get all companies', async () => {
 	const companies = await dbCompany.getCompanies(undefined, undefined, undefined, offset, limit)
 	expect(companies.companies[0].name_).toBe('Ericeira surf shop')
 	expect(companies.companies[1].name_).toBe('Billabong')
+})
+
+test('Get all companies', async () => {
+	expect.assertions(1)
+	const companies = await dbCompany.getCompanies('eric', 'Ericeira surf shop', 'ess@gmail.com', offset, limit)
+	expect(companies.companies[0].name_).toBe('Ericeira surf shop')
 })
 
 test('Get specific company', async () => {
@@ -431,6 +449,12 @@ test('Get sports that a given user practice', async () => {
 	expect.assertions(1)
 	const sports = await dbUser.getUserSportsById(2, offset, limit)
 	expect(sports.sports.length).toBe(1)
+})
+
+test('Get sports that a given user practice', async () => {
+	expect.assertions(1)
+	const sports = await dbUser.getUsersSports()
+	expect(sports.length).toBe(1)
 })
 
 test('Create a sport for a user', async () => {
