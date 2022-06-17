@@ -54,10 +54,12 @@ as
 $$
 declare
 	old_type varchar(40);
+	old_deleted bool;
 begin
 	select member_type_ into old_type from Member_ where id_ = p_id_;
+	select is_deleted_ into old_deleted from Member_ where id_ = p_id_;
 
-	if old_type != p_type_ then
+	if old_type != p_type_ or (old_deleted = true and p_is_deleted_ = false) then
 		delete from Group_Member_ gm where gm.member_id_ = p_id_ and gm.group_id_ in (
 			select gm2.group_id_ 
 			from Group_Member_ gm2 join Group_ g on gm2.group_id_ = g.group_id_ join Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_
@@ -92,6 +94,7 @@ $$
 begin
 	update Member_ set is_deleted_ = true where id_ = p_id_; 
 	update User_Sport_ set is_absent_ = true where user_id_ = p_id_;
+	delete from Group_Member_ gm where gm.member_id_ = p_id_;
 end
 $$;
 
@@ -134,37 +137,47 @@ as
 $$
 declare
 	old_types text[];
+	old_absent bool;
 	type_elem_ text;
 begin
 	select type_ into old_types from User_Sport_ where user_id_ = p_id_ and sport_id_ = p_sid_;
+	select is_absent_ into old_absent from User_Sport_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 
-	foreach type_elem_ in array old_types
-   	loop
-    	if not(type_elem_ = any(p_type_)) then
-    		delete from Group_Member_ where member_id_ = p_id_ and group_id_ in (
-				select g.group_id_ from Group_Member_ gm join Group_ g on gm.group_id_ = g.group_id_ join Group_Sports_ gs on g.group_id_ = gs.group_id_
-				where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = type_elem_
-			);
-    	else
-    		insert into Group_Member_ (member_id_, group_id_) 
-    		select distinct p_id_, g.group_id_ 
-    		from Group_ g join Group_Sports_ gs on g.group_id_ = gs.group_id_
-    		where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = type_elem_ and g.group_id_ not in (
-    			select gm.group_id_ from Group_Member_ gm join Group_Sports_ gs on gm.group_id_ = gs.group_id_ where gs.sport_member_type_ = type_elem_ and gm.member_id_ = p_id_
-    		);
-    	end if;
-   	end loop;
+	delete from Group_Member_ where member_id_ = p_id_ and group_id_ in (
+		select g.group_id_ 
+		from Group_Member_ gm join Group_ g on gm.group_id_ = g.group_id_ join Group_Sports_ gs on g.group_id_ = gs.group_id_
+		where g.group_type_ = 'member_sport_type' and gs.sport_id_ = p_sid_
+	);
+
+	if (old_absent = false and (old_absent = p_is_absent_)) or (old_absent = true and p_is_absent_ = false) then
+		insert into Group_Member_ (member_id_, group_id_) 
+	    	select distinct p_id_, g.group_id_ 
+	    	from Group_ g join Group_Sports_ gs on g.group_id_ = gs.group_id_
+	    	where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = any(p_type_) and gs.sport_id_ = p_sid_;
+	end if;
+	
 
 	update User_Sport_ set type_ = p_type_, fed_number_ = p_fed_number_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_, is_candidate_ = p_is_candidate_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 end
 $$;
-/*call put_user_sport(1,1,54,56814,'Federacao de Surf Portuguesa',array['practicioner'],array[2022], false, false);
- * */
 
 /**
- * delete user_sport association is made by a simple update query (changes the isAbsent attribute)
- * no proc needed
+ * Delete a user sport
  */
+
+create or replace procedure delete_user_sport(p_uid_ int, p_sid_ int)
+LANGUAGE plpgsql  
+as
+$$
+begin
+	update User_sport_ set is_absent_ = true where user_id_ = p_uid_ and sport_id_ = p_sid_;
+	delete from Group_Member_ gm where gm.member_id_ = p_uid_ and gm.group_id_ in (
+		select gm.group_id_ 
+		from Group_Member_ gm join Group_Sports_ gs on gm.group_id_ = gs.group_id_ 
+		where gm.member_id_ = p_uid_ and gs.sport_id_ = p_sid_
+	);
+end
+$$;
 
 -- sports
 
@@ -328,10 +341,12 @@ as
 $$
 declare
 	old_type varchar(40);
+	old_deleted bool;
 begin
 	select member_type_ into old_type from Member_ where id_ = cid_;
+	select is_deleted_ into old_deleted from Member_ where id_ = cid_;
 
-	if old_type != p_type_ then
+	if old_type != p_type_ or (old_deleted = true and old_deleted != p_is_deleted_) then
 		delete from Group_Member_ gm where gm.member_id_ = cid_ and gm.group_id_ in (
 			select gm2.group_id_ 
 			from Group_Member_ gm2 join Group_ g on gm2.group_id_ = g.group_id_ join Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_
@@ -354,9 +369,17 @@ end
 $$;
 
 /**
- * delete company is made by a simple update query (changes the member table)
- * no proc needed
+ * delete company
  */
+create or replace procedure delete_company(p_id_ int)
+LANGUAGE plpgsql  
+as
+$$
+begin
+	update Member_ set is_deleted_ = true where id_ = p_id_; 
+	delete from Group_Member_ gm where gm.member_id_ = p_id_;
+end
+$$;
 
 -- quotas
 

@@ -11,6 +11,7 @@ import About from '../components/home/About'
 import AuthWrapper from './auth/AuthWrapper'
 import Box from '@mui/material/Box';
 import ClockLoader from 'react-spinners/ClockLoader'
+import AnimatedPage from '../components/AnimatedPage'
 
 const HomePage = () => {
   const theme = useTheme();
@@ -35,7 +36,8 @@ const HomePage = () => {
   return (
     <>
         {loading ?  
-          <AuthWrapper>
+          <AnimatedPage>
+            <AuthWrapper>
               <Box
                 display="flex"
                 justifyContent="center"
@@ -45,9 +47,13 @@ const HomePage = () => {
                 <ClockLoader  size={200} loading={loading} color={'#36D7B7'}></ClockLoader>
               </Box>
             </AuthWrapper>
+          </AnimatedPage>
         : <>
-            <HomeHeader index={page} changePage={changePage}></HomeHeader>
-            {page === 0 ? <Home/> : page === 1 ? <About/> : ""}  
+          <AnimatedPage>
+              <HomeHeader index={page} changePage={changePage}></HomeHeader>
+              {page === 0 ? <Home/> : page === 1 ? <About/> : ""}  
+          </AnimatedPage>
+            
           </>
         }
     </>

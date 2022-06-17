@@ -14,7 +14,7 @@ import third_video from './../../../src/assets/data/3rdvideo.mp4'
 import AnimatedVideo from '../../components/AnimatedVideo'
 
 const videos = {"1": third_video, "2": second_video, "3": first_video}
-const HomeHeader = ({index, changePage}) => {
+const HomeHeader = ({changePage}) => {
     const [anchorElNav, setAnchorElNav] = useState(null);
 
     const {t, i18n} = useTranslation()

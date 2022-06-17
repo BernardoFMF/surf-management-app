@@ -100,7 +100,11 @@ const userController = (data) => {
 				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
-		const userSport = await services.deleteUserSportServices(req.params.id,req.params.sid, req.body.is_candidate)
+		let is_candidate = false
+		if (req.body.is_candidate === undefined)
+			is_candidate = false
+		else is_candidate = req.body.is_candidate
+		const userSport = await services.deleteUserSportServices(req.params.id,req.params.sid, is_candidate)
 		if(userSport) {
 			res.json({ message: 'Sport deleted sucessfully from user', message_code: 'MESSAGE_CODE_11' })
 		}
