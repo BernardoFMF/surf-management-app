@@ -51,14 +51,10 @@ const AuthLogin = ({ ...others }) => {
     const dispatch = useDispatch()
     const memberLogin = useSelector((state) => state.memberLogin)
     const { loading, error, memberInfo } = memberLogin
-    const {authed, loginHook} = useAuth()
 
     const checkExpiration = (date) => {
         const curr = new Date()
         const expirationDate = new Date(date)
-        console.log("LOGIN");
-        console.log(curr);
-        console.log(expirationDate);
         return isAfter(curr, expirationDate)
     }
 
@@ -68,6 +64,7 @@ const AuthLogin = ({ ...others }) => {
                 const isExpired = checkExpiration(memberInfo.expires)
                 if (isExpired) {
                     dispatch(logout())
+                    console.log("deu logout no login");
                 } else {
                     navigate((state && state.from) || '/dashboard/overview')
                 }

@@ -30,11 +30,9 @@ const AllGroupsPage = Loadable(lazy(() => import('../Pages/application/AllGroups
 const GroupPage = Loadable(lazy(() => import('../Pages/application/GroupPage')))
 //const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
 
-
-
 const mainRoutes = {
     path: '/',
-    element: <Error><RequireAuth><AnimatedVideo><MainLayout/></AnimatedVideo> </RequireAuth></Error>,
+    element: <Error><RequireAuth><AnimatedVideo><MainLayout/></AnimatedVideo></RequireAuth></Error>,
     children: [
         {
             path: '/dashboard/analytics',
