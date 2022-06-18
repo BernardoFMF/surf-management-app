@@ -1,4 +1,3 @@
-import InfoIcon from '@mui/icons-material/Info'
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 const other = {
@@ -6,13 +5,6 @@ const other = {
     title: 'Other',
     type: 'group',
     children: [
-        {
-            id: 'about',
-            title: 'About Us',
-            type: 'item',
-            url: '/about',
-            icon: InfoIcon,
-        },
         {
             id: 'uploadFile',
             title: 'Upload File',
