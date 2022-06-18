@@ -64,7 +64,6 @@ const AuthLogin = ({ ...others }) => {
                 const isExpired = checkExpiration(memberInfo.expires)
                 if (isExpired) {
                     dispatch(logout())
-                    console.log("deu logout no login");
                 } else {
                     navigate((state && state.from) || '/dashboard/overview')
                 }

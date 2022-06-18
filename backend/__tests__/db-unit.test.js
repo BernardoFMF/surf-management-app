@@ -90,6 +90,7 @@ beforeAll( async () => {
 	await con.query(trigger)
 	await con.query(procedures)  
 	await con.query(insert)
+	con.release()
 	await insertQuotaPricesDummies()
 	await insertUserDummies()
 	await insertSportDummies()
@@ -143,7 +144,6 @@ test('Get groups of member', async () => {
 test('Get member groups', async () => {
 	expect.assertions(1)
 	const group = await data.getMemberGroupsData(1, 'ganda grupo de tudo', 'member_type', [], 0, 100)
-	
 	expect(group.groups[0].group_id_).toBe(1)
 })
 
@@ -362,7 +362,6 @@ test('Create a quota', async () => {
 test('Get all quotas', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getQuotas(undefined, undefined, undefined, 0, 100)
-	console.log(quotas);
 	expect(quotas.number_of_quotas).toBe(4)
 })	
 
@@ -400,7 +399,6 @@ test('Update a company quota', async () => {
 test('Get all management quotas', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getManagementQuotas('user')
-	console.log(quotas);
 	expect(quotas.length).toBe(3)
 })	
 

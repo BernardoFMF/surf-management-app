@@ -30,7 +30,6 @@ const HomeHeader = ({changePage}) => {
 
     function generateRandomInteger(max) {
       const value = Math.floor(Math.random() * max) + 1
-      console.log(value)
       return Math.floor(value) ;
     }
 

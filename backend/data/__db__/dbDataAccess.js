@@ -46,7 +46,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` position('${email_filter}' in email_) > 0`
 			count++
 		}
-		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		query = query + ` order by id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
@@ -230,7 +230,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` position('${email_filter}' in email_) > 0`
 			count++
 		}
-		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		query = query + ` order by c.member_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
@@ -286,7 +286,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			return cid_
 		} catch(e) {
 			await company.query('Rollback')
-			console.log(e);
 			throw e
 		} finally {
 			company.release()
@@ -415,7 +414,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` end_date_ ='${endDate_filter}'`
 			count++
 		}
-		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		query = query + ` order by id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const events = await pool.connect()
 		try {
 			await events.query('Begin')
@@ -594,7 +593,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` initial_date_ ='${date_filter}'`
 			count++
 		}
-		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		query = query + ` order by a.event_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
@@ -639,7 +638,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` position('${email_filter}' in email_) > 0`
 			count++
 		}
-		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		query = query + ` order by u.member_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 
 		const client = await pool.connect()
 		try {
@@ -707,7 +706,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			return id_
 		} catch (e) {
 			await client.query('rollback')
-			console.log(e);
 			throw e
 		} finally {
 			client.release()
@@ -748,7 +746,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		let query = queries.QUERY_GET_USERS_SPORT
 		if (username_)
 			query += ` and username_ = '${username_}'`
-		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		query = query + ` order by sport_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
@@ -760,7 +758,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			return result
 		} catch (e) {
 			await client.query('rollback')
-			console.log(e);
 			throw e
 		} finally {
 			client.release()
@@ -810,7 +807,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			return {id_, sid_}
 		} catch (e) {
 			await client.query('rollback')
-			console.log(e)
 			throw e
 		} finally {
 			client.release()
@@ -1280,7 +1276,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + `position('${name_filter}' in name_) > 0`
 		}
 		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
-		console.log(query);
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
@@ -1403,7 +1398,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		query = query + ` offset ${offset_} FETCH FIRST ${limit_} ROWS only`
 		const client = await pool.connect()
 		try {
-			console.log(query);
 			await client.query('begin')
 			const groups = await client.query(query, [id_])
 			const number_of_groups = await client.query(queries.QUERY_NUMBER_OF_MEMBER_GROUPS, [id_])
@@ -1431,7 +1425,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			const members = await client.query(query, [id_])
 			const number_of_members = await client.query(queries.QUERY_NUMBER_OF_MEMBERS_IN_GROUP, [id_])
 			await client.query('commit')
-			console.log(members.rows);
 			return { members: members.rows, number_of_members: parseInt(number_of_members.rows[0].count) }
 		} catch (e) {
 			await client.query('rollback')

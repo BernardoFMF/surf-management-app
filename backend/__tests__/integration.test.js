@@ -22,7 +22,7 @@ let create = fs.readFileSync('./docs/scripts_sql/create.sql', 'utf8');
 let trigger = fs.readFileSync('./docs/scripts_sql/Triggers.sql', 'utf8');
 let procedures = fs.readFileSync('./docs/scripts_sql/procedures.sql', 'utf8');
 let insert_types = fs.readFileSync('./docs/scripts_sql/insert-test.sql', 'utf8');
-let insert = fs.readFileSync('./docs/scripts_sql/insert-dummie-integration.sql', 'utf8');
+let insert = fs.readFileSync('./docs/scripts_sql/insert-dummy-integration.sql', 'utf8');
 
 const offset = 0
 const limit = 100
@@ -34,7 +34,8 @@ beforeAll( async () => {
 	await con.query(trigger)
 	await con.query(procedures)
 	await con.query(insert_types)  
-	return await con.query(insert)
+	await con.query(insert)
+	return con.release()
 })
 
 beforeEach(async () => {
