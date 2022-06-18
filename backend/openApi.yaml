@@ -301,7 +301,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/usersSports'
+                  $ref: '#/components/schemas/post_user_sport'
         '401':
           description: response body should be an error object 
           content:
@@ -458,7 +458,7 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/user_sport_ids'
+                  $ref: '#/components/schemas/post_user_sport_ids'
         '400':
           description: response body should be an error object
           content:
@@ -519,7 +519,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user_sport_ids'
+                $ref: '#/components/schemas/put_user_sport_ids'
         '400':
           description: response body should be an error object
           content:
@@ -2690,6 +2690,10 @@ components:
           type: boolean
         is_candidate_:
           type: boolean
+    post_user_sport:
+      type: array
+      items:
+        $ref: '#/components/schemas/usersSport'
     api_user_sport_post_body:
       type: object
       properties:
@@ -2749,7 +2753,7 @@ components:
           type: string
     id:
       type: integer
-    user_sport_ids:
+    post_user_sport_ids:
       required:
         - id_
         - sid_
@@ -2759,6 +2763,16 @@ components:
           type: integer
         sid_:
           type: integer
+    put_user_sport_ids:
+      required:
+        - id_
+        - sid_
+      type: object
+      properties:
+        id_:
+          type: string
+        sid_:
+          type: string
     sport:
       type: object
       properties:

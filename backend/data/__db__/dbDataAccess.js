@@ -500,6 +500,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await events.query('Begin')
 			const eventResult = await events.query(queries.QUERY_POST_EVENT, [name_,initial_date_,end_date_,groups_,0])
 			await events.query('Commit')
+			console.log(eventResult.rows[0]);
 			return eventResult.rows[0].new_id_
 		} catch(e) {
 			await events.query('Rollback')

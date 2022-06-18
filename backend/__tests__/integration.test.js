@@ -58,8 +58,8 @@ test('Post, Gets, Put & Delete user', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
         .send({
-            "cc": 23456824,
-            "nif": 29067459,
+            "cc": 23456765,
+            "nif": 29067978,
             "type": "effective",
             "birth_date": "09-05-2000",
             "nationality": "Portuguesa",
@@ -334,7 +334,7 @@ test('Post, Gets, Put quotas', async () => {
     expect(putManagementQuotas).toSatisfyApiSpec()
     expect(putManagementQuotas.body).toSatisfySchemaInApiSpec("quota_type")
 })
-/*
+
 //User Sports
 
 test('Post, Gets, Put & Delete user sport', async () => {
@@ -344,8 +344,8 @@ test('Post, Gets, Put & Delete user sport', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
         .send({
-            "cc": 23456058,
-            "nif": 29067435,
+            "cc": 234111242,
+            "nif": 201114592,
             "type": "effective",
             "birth_date": "11-05-1999",
             "nationality": "Portuguesa",
@@ -359,9 +359,9 @@ test('Post, Gets, Put & Delete user sport', async () => {
             "username": "joselopes",
             "paid_enrollment": true,
             "gender": "Male",
-			"iban" : "PT501231010101085672",
+			"iban" : "PT50112700041441231267832",
 			"img" : "imagem5",
-			"paid_enrollment": "01-01-2019"
+			"enrollment_date": "10-06-2022"
         })
         .expect('Content-Type', /json/)
         .expect(201)
@@ -391,22 +391,23 @@ test('Post, Gets, Put & Delete user sport', async () => {
             "fed_number": 12333318,
             "fed_name": "Federeção de surf",
             "type": ["coach"],
-            "years_federated": [2018, 2019, 2020, 2021]
+            "years_federated": [2018, 2019, 2020, 2021],
+			"is_candidate": true 
         })
         .expect('Content-Type', /json/)
         .expect(201)
     expect(uSportsRes).toSatisfyApiSpec()
-	expect(uSportsRes.body).toSatisfySchemaInApiSpec("user_sport_ids")
+	expect(uSportsRes.body).toSatisfySchemaInApiSpec("post_user_sport_ids")
 
 	const getRes = await supertest(app)
         .get('/api/users/sports')
         .set('Accept', 'application/json')
         .set('Cookie', session)
     expect(getRes).toSatisfyApiSpec()
-    expect(getRes.body).toSatisfySchemaInApiSpec("usersSports")
+    expect(getRes.body).toSatisfySchemaInApiSpec("post_user_sport")
 
 	const getSidRes = await supertest(app)
-		.get(`/api/users/sports/${sportRes.body}?offset=0&limit=10`)
+		.get(`/api/users/sports/${sportRes.body}?offset=0&limit=10&is_candidate=true`)
         .set('Accept', 'application/json')
         .set('Cookie', session)
     expect(getSidRes).toSatisfyApiSpec()
@@ -429,12 +430,14 @@ test('Post, Gets, Put & Delete user sport', async () => {
             "fed_name": "Federeção de surf",
             "type": ["coach"],
             "years_federated": [2018, 2019, 2020, 2021],
-			"is_absent": false
+			"is_absent": false,
+			"is_candidate": false
 		})
 		.expect('Content-Type', /json/)
 		.expect(200)
+		console.log(putRes)
 	expect(putRes).toSatisfyApiSpec()
-	expect(putRes.body).toSatisfySchemaInApiSpec("user_sport_ids")
+	expect(putRes.body).toSatisfySchemaInApiSpec("put_user_sport_ids")
 
 	const deleteRes = await supertest(app)
 		.delete(`/api/users/${userRes.body}/sports/${sportRes.body}`)
@@ -446,6 +449,25 @@ test('Post, Gets, Put & Delete user sport', async () => {
     expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
 })
 
+//groups
+test('Post, Put & Get a group', async () => {
+	const groupRes = await supertest(app)
+        .post('/api/groups')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+        .send({
+			"name": "grupo effectives",
+			"description": "grupo fixoles",
+			"group_type": "member_type",
+			"types": [ "effective"],
+			"sports":[]
+        })
+        .expect('Content-Type', /json/)
+        .expect(201)
+    expect(groupRes).toSatisfyApiSpec()
+	expect(groupRes.body).toSatisfySchemaInApiSpec("id")
+})
+
 //Events
 
 test('Post, Put, Gets & Delete event', async () => {
@@ -454,9 +476,10 @@ test('Post, Put, Gets & Delete event', async () => {
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.send({
-			'name': 'assembleia geral',
-			'initial_date': '08-08-2022',
-			'final_date': '10-08-2022',
+			"name": "assembleia",
+			"initial_date": "08-08-2022",
+			"final_date": "10-08-2022",
+			"groups": [ 1 ]
 		})
 		.expect('Content-Type', /json/)
 		.expect(201)
@@ -517,8 +540,8 @@ test('Post, Put & Get an attendance', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
         .send({
-            "cc": 23456823,
-            "nif": 29067458,
+            "cc": 234111245,
+            "nif": 201114593,
             "type": "effective",
             "birth_date": "09-05-2001",
             "nationality": "Portuguesa",
@@ -534,41 +557,15 @@ test('Post, Put & Get an attendance', async () => {
             "gender": "Male",
 			"iban" : "PT501231010101010857",
 			"img" : "imagem2",
-			"paid_enrollment": "01-01-2019"
+			"enrollment_date": "11-07-2019"
         })
         .expect('Content-Type', /json/)
         .expect(201)
     expect(userRes).toSatisfyApiSpec()
 	expect(userRes.body).toSatisfySchemaInApiSpec("id")
 
-	const createRes = await supertest(app)
-		.post('/api/events')
-		.set('Accept', 'application/json')
-		.set('Cookie', session)
-		.send({
-			'name': 'assembleia geral',
-			'initial_date': '08-08-2022',
-			'final_date': '10-08-2022',
-		})
-		.expect('Content-Type', /json/)
-		.expect(201)
-	expect(createRes).toSatisfyApiSpec()
-	expect(createRes.body).toSatisfySchemaInApiSpec('id')
-	const createAttRes = await supertest(app)
-		.post(`/api/events/${createRes.body}/attendance`)
-		.set('Accept', 'application/json')
-		.set('Cookie', session)
-		.send({
-			'id': userRes.body,
-			'state': 'going',
-		})
-		.expect('Content-Type', /json/)
-		.expect(201)
-	expect(createAttRes).toSatisfyApiSpec()
-	expect(createAttRes.body).toSatisfySchemaInApiSpec('id_pair')
-
 	const putRes = await supertest(app)
-		.put(`/api/events/${createRes.body}/attendance`)
+		.put(`/api/events/1/attendance`)
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.send({
@@ -581,7 +578,7 @@ test('Post, Put & Get an attendance', async () => {
 	expect(putRes.body).toSatisfySchemaInApiSpec('id_pair')
 
 	const getRes = await supertest(app)
-		.get(`/api/events/${createRes.body}/attendance`)
+		.get(`/api/events/1/attendance?limit=5&offset=0`)
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.expect('Content-Type', /json/)
@@ -595,11 +592,10 @@ test('Post, Put & Get an attendance', async () => {
 		.set('Cookie', session)
 		.expect('Content-Type', /json/)
 		.expect(200)
-		console.log(userRes.body)
 	expect(getMemberRes).toSatisfyApiSpec()
 	expect(getMemberRes.body).toSatisfySchemaInApiSpec('attendances_event_member')
 })
-*/
+
 //Candidate
 
 test('Create, Get & Delete candidate', async () => {
