@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import AnimatedVideo from '../AnimatedVideo'
-import AnimatedPage from '../AnimatedText'
+import AnimatedText from '../AnimatedText'
 
 const About = () => {
     const theme = useTheme();
@@ -28,7 +28,7 @@ const About = () => {
     return (
         <>    
         
-        <AnimatedPage>
+        <AnimatedText>
           <Box  sx={{
                       display: 'flex',
                       justifyContent: 'flex-end',
@@ -50,7 +50,7 @@ const About = () => {
               {t('about_text_3')}
             </Typography>
           </Box>
-        </AnimatedPage>
+        </AnimatedText>
     </>
 )}
 

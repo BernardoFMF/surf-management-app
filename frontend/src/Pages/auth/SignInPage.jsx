@@ -21,14 +21,6 @@ const SignInPage = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const {t, i18n} = useTranslation()
-    const [loading, setLoading] = useState(false)
-
-    useEffect(()=> {
-      setLoading(true)
-      setTimeout(() => {
-        setLoading(false)
-      }, 1000)
-    },[])
   
     return (
         <AuthWrapper>

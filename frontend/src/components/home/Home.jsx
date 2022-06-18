@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import AnimatedPage from '../AnimatedText'
+import AnimatedText from '../AnimatedText'
 import AnimatedVideo from '../AnimatedVideo'
 
 const Home = () => {
@@ -29,7 +29,7 @@ const Home = () => {
     return (
         <>
         
-        <AnimatedPage>
+        <AnimatedText>
             <Box sx={{ marginLeft: { xs: 4, md: 25}, marginTop: { xs: 25, md: 30}, flexGrow: 1, display: 'absolute', width: { xs: 200, md: 500}}}>
             <Typography sx={{ fontSize: { xs: '2.5em', md: '4em'}, fontWeight: 700, color: 'white' }}>
                 {t('front_page_welcome')}
@@ -85,7 +85,7 @@ const Home = () => {
                     </Grid>
                 </Grid>
             </Box>
-        </AnimatedPage>
+        </AnimatedText>
     </> 
 )}
 

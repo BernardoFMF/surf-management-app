@@ -6,7 +6,7 @@ import Logo from '../../components/Logo'
 import TranslationMenu from '../../components/TranslationMenu'
 import { useTranslation } from 'react-i18next'
 import FacebookIcon from '@mui/icons-material/Facebook';
-import AnimatedPage from '../../components/AnimatedText'
+import AnimatedText from '../../components/AnimatedText'
 import first_video from './../../../src/assets/data/homePageVideo.mp4'
 import second_video from './../../../src/assets/data/aboutPageVideo.mp4'
 import third_video from './../../../src/assets/data/3rdvideo.mp4'
@@ -48,7 +48,7 @@ const HomeHeader = ({changePage}) => {
       </AnimatedVideo>
         <AppBar position="absolute" style={{ display: 'flex', background: 'transparent', boxShadow: 'none'}}>
           <Container maxWidth="x1">
-            <AnimatedPage>
+            <AnimatedText>
               <Toolbar disableGutters>
                 <Logo variant='default' path='/' sx={{
                     marginLeft: { xs: 0, md: 20 },
@@ -111,7 +111,7 @@ const HomeHeader = ({changePage}) => {
                   <TranslationMenu></TranslationMenu>
                 </Box>            
               </Toolbar>
-            </AnimatedPage>
+            </AnimatedText>
           </Container>
         </AppBar>
       </>

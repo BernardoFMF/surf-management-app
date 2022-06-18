@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 
 const animations = {
-  initial: { opacity: 1 },
+  initial: { opacity: 0 },
   animate: { opacity: 1 },
   exit: { opacity: 0 },
 };
