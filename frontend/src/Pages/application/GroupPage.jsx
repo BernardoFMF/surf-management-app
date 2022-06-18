@@ -112,7 +112,6 @@ const GroupPage = () => {
                 extractedTypes.push(elem.type)
             }
         }
-        console.log(extractedTypes);
         return extractedTypes
     }
 

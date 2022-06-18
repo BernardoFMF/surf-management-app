@@ -23,7 +23,6 @@ const RadioGroupInputField = ({ label, options, dependent, ...props}) => {
     const [field, meta] = useField(props)
 
     useEffect(() => {
-      console.log(field.value);
       if (dependent) setFieldValue(dependent, [])
     }, [field.value])
   

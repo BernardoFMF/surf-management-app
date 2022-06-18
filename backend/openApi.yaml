@@ -70,6 +70,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'  
+                
   /api/users:
     get:
       summary: fetches list of users
@@ -289,6 +290,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
   /api/users/sports:
     get:
       summary: fetches all sports associated with the users
@@ -336,13 +338,25 @@ paths:
           schema:
             type: integer
           description: The numbers of items to return
+        - in: query
+          name: is_candidate
+          required: false
+          schema:
+            type: boolean
+          description: The value of the flag is_candidate that is to be filtered
+        - in: query
+          name: username
+          required: false
+          schema:
+            type: string
+          description: The name to be filtered
       responses:
         '200':
           description: response body should be a sport object joined with user object array
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/usersSports'
+                $ref: '#/components/schemas/usersSportsById'
         '400':
           description: response body should be an error object
           content:
@@ -585,6 +599,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
   /api/sports:
     get:
       summary: fetches a list of sports
@@ -806,6 +821,280 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
+  /api/groups:
+    get:
+      summary: fetches list of groups
+      operationId: getGroupsApi
+      parameters:
+        - in: query
+          name: offset
+          required: true
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          required: true
+          schema:
+            type: integer
+          description: The numbers of items to return
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: string
+          description: The username to be filtered
+        - in: query
+          name: group_type
+          required: false
+          schema:
+            type: string
+          description: The type of the group to be filtered
+        - in: query
+          name: types
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          description: The specific types of the group to be filtered
+      responses:
+        '200':
+          description: response body should be a set of groups
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/groups'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      summary: creates a group
+      operationId: postGroupApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api_group_post_body'
+      responses:
+        '201':
+          description: response body should be a pair of ids
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/id'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/groups/{id}:
+    get:
+      summary: fetches a single group
+      operationId: getGroupByIdApi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a user object
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/groupById'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      summary: deletes a group
+      operationId: deleteGroupApi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/groups/members/{id}:
+    get:
+      summary: fetches a members groups
+      operationId: getMemberGroupsApi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a list of groups
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/groups'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/groups/{id}/members:
+    get:
+      summary: fetches a groups members
+      operationId: getGroupMembersApi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a list of members
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/groupMembers'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+                
   /api/quotas:
     get:
       summary: fetches all quotas
@@ -1044,6 +1333,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
   /api/quotas/management:
     get:
       summary: fetches all quotas from a specific member
@@ -1169,6 +1459,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
   /api/companies:
     get:
       summary: fetches all companies
@@ -1385,6 +1676,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
   /api/companies/validate/{id}:
     get:
       summary: validates a member
@@ -1422,6 +1714,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
   /api/events:
     get:
       summary: fetches all the events
@@ -1461,7 +1754,7 @@ paths:
           description: Filtering by end date
       responses:
         '200':
-          description: response body should be a object with an array and a integer
+          description: response body should be a object with a list of events
           content:
             application/json:
               schema:
@@ -1497,7 +1790,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api_events_body'
+              $ref: '#/components/schemas/api_events_post_body'
       responses:
         '201':
           description: response body should be a event id
@@ -1587,7 +1880,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api_events_body'
+              $ref: '#/components/schemas/api_events_put_body'
       responses:
         '200':
           description: response body should be an id
@@ -1649,6 +1942,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
   /api/events/members/{id}/attendance:
     get: 
       summary: fetches a specific member attendances
@@ -1778,47 +2072,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    post:
-      summary: updates a event
-      operationId: postEventAttendanceApi
-      parameters:
-        - name: eid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/api_attendance_body'
-      responses:
-        '201':
-          description: response body should be an id
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/id_pair'
-        '400':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '401':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '500':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
     put:
       summary: updates a event
       operationId: putEventAttendanceApi
@@ -1860,6 +2113,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+              
   /api/candidates:
     get:
       summary: fetches list of candidates
@@ -2074,6 +2328,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
   /api/members/{id}:
     get:
       summary: fetches a specific member
@@ -2117,6 +2372,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+                
 components:
   schemas:
     validated_user:
@@ -2378,6 +2634,24 @@ components:
           type: boolean
         iban:
           type: string
+    usersSportsById:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/usersSport'
+        number_of_users:
+          type: integer
+        sport:
+          type: object
+          properties:
+            id_:
+              type: integer
+            name_:
+              type: string
+            is_deleted_:
+              type: boolean
     usersSports:
       type: object
       properties:
@@ -2414,11 +2688,11 @@ components:
             type: integer
         is_absent_:
           type: boolean
+        is_candidate_:
+          type: boolean
     api_user_sport_post_body:
       type: object
       properties:
-        id:
-          type: integer
         sid:
           type: integer
         fed_id:
@@ -2435,13 +2709,11 @@ components:
           type: array
           items:
             type: integer
+        is_candidate:
+          type: boolean
     api_user_sport_put_body:
       type: object
       properties:
-        id:
-          type: integer
-        sid:
-          type: integer
         fed_id:
           type: integer
         fed_number:
@@ -2457,6 +2729,8 @@ components:
           items:
             type: integer
         is_absent:
+          type: boolean
+        is_candidate:
           type: boolean
     message:
       required:
@@ -2857,7 +3131,22 @@ components:
         end_date_:
           type: string
           format: date
-    api_events_body:
+    api_events_post_body:
+      type: object
+      properties:
+        name:
+          type: string
+        initial_date:
+          type: string
+          format: date
+        final_date:
+          type: string
+          format: date
+        groups:
+          type: array
+          items:
+            type: integer
+    api_events_put_body:
       type: object
       properties:
         name:
@@ -3037,8 +3326,93 @@ components:
           type: string
         label: 
           type: string
-    category:
-      type: string
+    groups:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/group'
+        number_of_groups:
+          type: integer      
+    group:
+      type: object
+      properties:
+        group_id_:
+          type: integer
+        name_:
+          type: string
+        description_:
+          type: string
+        group_type__:
+          type: string
+    groupById:
+      type: object
+      properties:
+        group_id_:
+          type: integer
+        name_:
+          type: string
+        description_:
+          type: string
+        group_type__:
+          type: string
+        types_:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/groupTypes1'
+              - $ref: '#/components/schemas/groupTypes2'
+    groupTypes1:
+      type: object
+      items:
+        type: string
+    groupTypes2:
+      type: array
+      items:
+        type: object
+        properties:
+          sport_:
+            type: integer
+          sport_name_:
+            type: string
+          type:
+            type: string
+    groupMembers:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/groupMember'
+        number_of_members:
+          type: integer
+    groupMember:
+      type: object
+      properties:
+        id_:
+          type: integer
+        username_:
+          type: string
+        member_type_:
+          type: string
+    api_group_post_body:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        group_type:
+          type: string
+        types:
+          type: array
+          items:
+            type: string
+        sports:
+          type: array
+          items:
+            type: integer
     
   parameters:
     qidParameter:

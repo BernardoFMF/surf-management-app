@@ -13,8 +13,6 @@ function RequireAuth({ children }) {
         if (!date) return true
         const curr = new Date()
         const expirationDate = new Date(date)
-        console.log("date: " + date);
-        console.log("valor booleano: " + isAfter(curr, expirationDate));
         return isAfter(curr, expirationDate)
     }
 
@@ -25,7 +23,6 @@ function RequireAuth({ children }) {
     if (expirationDate && isExpired) {
         localStorage.removeItem('memberInfo')
         dispatch(logout())
-        console.log("deu logout no require auth");
     }
 
     return expirationDate !== null && !isExpired ? children : <Navigate to='/sign-in' replace state={{ from: location.pathname }}/>

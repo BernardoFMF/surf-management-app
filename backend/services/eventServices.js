@@ -55,6 +55,8 @@ const eventServices = (db) => {
 	
 	const getEventByIdAttendanceServices = async(event_id, offset, limit) => {
 		if(!event_id) throw error(400,'Parameter not found: event_id', 'MESSAGE_CODE_14')
+		if(!offset) throw error(400, 'Parameter not found: offset', 'MESSAGE_CODE_14')
+		if(!limit) throw error(400, 'Parameter not found: limit', 'MESSAGE_CODE_14')
 		return await data.getEventByIdAttendance(event_id, offset, limit)
 	}
 
