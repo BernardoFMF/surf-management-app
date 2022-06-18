@@ -1,42 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteCandidate, getCandidates, approveCandidate } from '../../store/actions/candidateActions'
+import { deleteCandidate, getCandidates } from '../../store/actions/candidateActions'
 import { getTypes } from '../../store/actions/typeActions'
 import InputField from '../../components/multiStepForm/InputField';
 
 import * as Yup from 'yup';
 
-import { Grid,Stack, CircularProgress, FormControlLabel, Alert, Pagination} from '@mui/material'
+import { Grid,Stack, CircularProgress, Alert, Pagination} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import MainCard from '../../components/cards/MainCard';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Form, Formik } from 'formik';
-import SwitchButton from '../../components/SwitchButton';
-import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import SearchIcon from '@mui/icons-material/Search';
 
-import Button from '@mui/material/Button';
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import CandidateApproveDialog from '../../components/dialogs/CandidateApproveDialog'
 
 const AllCandidatesPage = () => {
     const {t} = useTranslation()
     const dispatch = useDispatch()
-
+    const [ searchState, setSearchState ] = useState({
+        username_filter: "",
+        name_filter: "",
+        email_filter: "",
+        limit: 10
+    })
     const [rows, setRows] = useState([]);
     const [id, setId] = React.useState();
     const [open, setOpen] = useState(false);
     const handleClose = () => {
         setOpen(false)
-        dispatch(getCandidates(searchState.username_filter,searchState.name_filter,searchState.email_filter,0,limit))
+        dispatch(getCandidates(searchState.username_filter,searchState.name_filter,searchState.email_filter,0,searchState.limit))
     };
     const handleOpen = (id) => {
         setId(id)
@@ -46,19 +45,10 @@ const AllCandidatesPage = () => {
     const candidatesFetch = useSelector((state) => state.candidatesFetch)
     const { loading, error, candidatesGet } = candidatesFetch
 
-
-    const [ searchState, setSearchState ] = useState({
-        username_filter: "",
-        name_filter: "",
-        email_filter: ""
-    })
-
     const [page, setPage] = useState(1);
-    const limit = 5
-
 
     useEffect(() => {
-        dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, limit))
+        dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit))
         dispatch(getTypes('user'))
     }, [])
 
@@ -87,7 +77,7 @@ const AllCandidatesPage = () => {
         setSearchState(values)
         setPage(1)
         setRows([])
-        dispatch(getCandidates(values.username_filter,values.name_filter,values.email_filter,0,limit))
+        dispatch(getCandidates(values.username_filter,values.name_filter,values.email_filter,0,values.limit))
     }
 
     const columns = [
@@ -128,7 +118,7 @@ const AllCandidatesPage = () => {
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, (value-1)*limit, limit))
+        dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, (value-1)*searchState.limit, searchState.limit))
     }
 
 
@@ -159,6 +149,9 @@ const AllCandidatesPage = () => {
                                 <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
                             </Grid>
                             <Grid item>
+                                <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                            </Grid>
+                            <Grid item>
                                 <AnimateButton>
                                     <LoadingButton
                                         disableElevation
@@ -186,7 +179,7 @@ const AllCandidatesPage = () => {
                         autoHeight
                         rows={rows}
                         columns={columns}
-                        pageSize={limit}
+                        pageSize={searchState.limit}
                         hideFooter={true}
                         onPageChange={changePageHandler}
                         sx={{
@@ -195,7 +188,7 @@ const AllCandidatesPage = () => {
                             }
                         }}
                     />
-                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(candidatesGet.number_of_candidates / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(candidatesGet.number_of_candidates / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
                 </>
             )}
         </MainCard> 

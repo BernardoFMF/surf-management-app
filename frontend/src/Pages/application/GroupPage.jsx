@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import MainCard from '../../components/cards/MainCard'
 import { Grid, Stack, CircularProgress, Box, Alert, Pagination, Chip, Typography } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete';
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField'
 import { useNavigate } from 'react-router'
 import { Form, Formik } from 'formik';
 import SearchIcon from '@mui/icons-material/Search';
@@ -31,15 +31,15 @@ const GroupPage = () => {
     const [rows, setRows] = useState([]);
 
     const [page, setPage] = useState(1);
-    const limit = 5
 
     const [ searchState, setSearchState ] = useState({
-        username_filter: ""
+        username_filter: "",
+        limit: 10
     })
 
     useEffect(() => {
         dispatch(getGroupById(id))
-        dispatch(getGroupByIdMembers(id, searchState.username_filter, 0, limit))
+        dispatch(getGroupByIdMembers(id, searchState.username_filter, 0, searchState.limit))
     }, [dispatch,id])
 
     useEffect(() => {
@@ -55,7 +55,7 @@ const GroupPage = () => {
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getGroupByIdMembers(id, searchState.username_filter, (value-1)*limit, limit))
+        dispatch(getGroupByIdMembers(id, searchState.username_filter, (value-1)*searchState.limit, searchState.limit))
     }
 
     const searchHandler = async(values) => {
@@ -63,7 +63,7 @@ const GroupPage = () => {
         setPage(1)
         setRows([])
         
-        dispatch(getGroupByIdMembers(id, values.username_filter, 0, limit))
+        dispatch(getGroupByIdMembers(id, values.username_filter, 0, values.limit))
     }
 
     function getChipProps(params) {
@@ -129,7 +129,6 @@ const GroupPage = () => {
                 extractedSports.push(obj)
             }
         }
-        console.log(extractedSports);
         return extractedSports
     }
 
@@ -204,6 +203,9 @@ const GroupPage = () => {
                                                     <InputField name='username_filter' label={t('sign_up_username')} type='text'></InputField>
                                                 </Grid>
                                                 <Grid item>
+                                                    <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                                                </Grid>
+                                                <Grid item>
                                                     <AnimateButton>
                                                         <LoadingButton
                                                             disableElevation
@@ -233,7 +235,7 @@ const GroupPage = () => {
                                     autoHeight
                                     rows={rows}
                                     columns={columns}
-                                    pageSize={limit}
+                                    pageSize={searchState.limit}
                                     hideFooter={true}
                                     onPageChange={changePageHandler}
                                     sx={{
@@ -242,7 +244,7 @@ const GroupPage = () => {
                                         }
                                     }}
                                 />
-                                <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(groupByIdMembers.number_of_members / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                                <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(groupByIdMembers.number_of_members / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
                             </>
                             )
                         }

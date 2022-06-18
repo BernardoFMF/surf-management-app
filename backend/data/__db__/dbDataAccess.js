@@ -576,7 +576,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,date_filter,offset,limit) => {
 		let query = queries.QUERY_GET_MEMBER_ATTENDANCE
-		query = query +  ` where member_id_ = ${id_}`
 		let count = 0
 		if(name_filter || state_filter || date_filter){
 			query = query + " and "
@@ -599,7 +598,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
-			const events = await client.query(query)
+			const events = await client.query(query, [id_])
 			const number_of_events = await client.query(queries.QUERY_MY_NUMBER_OF_EVENTS,[id_])
 			await client.query('Commit')
 			events.rows = events.rows.map(event => {
@@ -1424,6 +1423,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		if (username_filter_) {
 			query = query + ` and position('${username_filter_}' in username_) > 0`
 		}
+		query = query + ' order by id_'
 		query = query + ` offset ${offset_} FETCH FIRST ${limit_} ROWS only`
 		const client = await pool.connect()
 		try {

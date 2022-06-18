@@ -140,6 +140,13 @@ test('Get groups of member', async () => {
 	expect(groups.groups[0].name_).toBe('ganda grupo de tudo')
 })
 
+test('Get member groups', async () => {
+	expect.assertions(1)
+	const group = await data.getMemberGroupsData(1, 'ganda grupo de tudo', 'member_type', [], 0, 100)
+	
+	expect(group.groups[0].group_id_).toBe(1)
+})
+
 test('Create a group', async () => {
 	expect.assertions(1)
 	const group = await dbGroup.postGroup('ganda grupo de quase tudo', 'tudo', 'member_type', [ "effective", "merit", "founder" ], [])
@@ -538,8 +545,3 @@ test('Delete token', async () => {
 	expect(token).toBe(1)
 })
 
-test('Get member groups', async () => {
-	expect.assertions(1)
-	const group = await data.getMemberGroupsData(1, 'ganda grupo de tudo', 'member_type', [], 0, 100)
-	expect(group.groups[0].group_id_).toBe(1)
-})

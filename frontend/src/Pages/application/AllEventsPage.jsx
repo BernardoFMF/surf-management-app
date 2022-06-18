@@ -22,6 +22,7 @@ import { Formik, Form } from 'formik';
 import SearchIcon from '@mui/icons-material/Search';
 import { Pagination } from '@mui/material';
 import EventCreateDialog from '../../components/dialogs/EventCreateDialog';
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 
 const AllEventsPage = () => {
     const {t} = useTranslation()
@@ -30,22 +31,22 @@ const AllEventsPage = () => {
     const eventsFetch = useSelector((state) => state.eventsFetch)
     const { loading, error, eventsGet } = eventsFetch
     const [rows, setRows] = useState([]);
-    
+     const [ searchState, setSearchState ] = useState({
+        name_filter: '',
+        event_initial_date_filter: '',
+        event_end_date_filter: '',
+        limit : 10
+    })
+
     const [openSubmit, setOpenSubmit] = React.useState(false);
-    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter, 0, limit))};
+    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter, 0, searchState.limit))};
     const handleOpenSubmit = () => setOpenSubmit(true);
 
     const [page, setPage] = useState(1);
-    const limit = 5
 
-    const [ searchState, setSearchState ] = useState({
-        name_filter: '',
-        event_initial_date_filter: '',
-        event_end_date_filter: ''
-    })
-
+   
     useEffect(() => {
-        dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter, 0, limit))
+        dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter, 0, searchState.limit))
     },[])
 
     useEffect(() => {
@@ -100,12 +101,12 @@ const AllEventsPage = () => {
         setSearchState(new_values)
         setPage(1)
         setRows([])
-        dispatch(getEvents(new_values.name_filter, new_values.event_initial_date_filter, new_values.event_end_date_filter, 0, limit))
+        dispatch(getEvents(new_values.name_filter, new_values.event_initial_date_filter, new_values.event_end_date_filter, 0, new_values.limit))
     }
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter,  (value-1)*limit, limit))
+        dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter,  (value-1)*searchState.limit, searchState.limit))
     }
 
 const columns = [
@@ -184,6 +185,9 @@ const columns = [
                                 <DateInputField name='event_end_date_filter' label={t('event_end_date')}></DateInputField>
                             </Grid>
                             <Grid item>
+                                <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                            </Grid>
+                            <Grid item>
                                 <AnimateButton>
                                     <LoadingButton
                                         disableElevation
@@ -229,7 +233,7 @@ const columns = [
                         autoHeight
                         rows={rows}
                         columns={columns}
-                        pageSize={limit}
+                        pageSize={searchState.limit}
                         hideFooter={true}
                         onPageChange={changePageHandler}
                         sx={{
@@ -238,7 +242,7 @@ const columns = [
                             }
                         }}
                     /> 
-                <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(eventsGet.number_of_events / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(eventsGet.number_of_events / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
                 </>
             )}
       </MainCard> 

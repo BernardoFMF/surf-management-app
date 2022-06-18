@@ -1,4 +1,4 @@
-const QUERY_GET_CANDIDATES = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_, gender_, iban_ from candidate_'
+const QUERY_GET_CANDIDATES = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_, gender_, iban_ from candidate_ order by id_'
 
 const QUERY_NUMBER_OF_CANDIDATES = 'select count(*)  from Candidate_'
 
@@ -20,7 +20,7 @@ const QUERY_GET_CANDIDATE_BY_EMAIL = 'select id_, nif_, cc_, full_name_, nationa
 
 const QUERY_GET_CANDIDATE_BY_IBAN = 'select id_, nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, username_, iban_ from candidate_ where iban_ = $1;'
 
-const QUERY_GET_COMPANIES = 'select c.member_id_, nif_, name_, username_, has_debt_, member_type_, is_deleted_, email_, iban_ from company_ c join member_ m on c.member_id_ = m.id_ join contact_ co on c.member_id_ = co.member_id_'
+const QUERY_GET_COMPANIES = 'select c.member_id_, nif_, name_, username_, has_debt_, member_type_, is_deleted_, email_, iban_ from company_ c join member_ m on c.member_id_ = m.id_ join contact_ co on c.member_id_ = co.member_id_ order by c.member_id_'
 
 const QUERY_NUMBER_OF_COMPANIES = 'select count(*)  from Company_'
 
@@ -32,7 +32,7 @@ const QUERY_UPDATE_COMPANY = 'call put_company($1, $2, $3, $4, $5, $6, $7, $8, $
 
 const QUERY_DELETE_COMPANY = 'call delete_company($1)'
 
-const QUERY_GET_SPORTS = 'select id_, name_, is_deleted_ , (select count(*) as practitioners_ from user_sport_ us where sport_id_ = id_ and is_candidate_ = false) from sport_ s2 ;'
+const QUERY_GET_SPORTS = 'select id_, name_, is_deleted_ , (select count(*) as practitioners_ from user_sport_ us where sport_id_ = id_ and is_candidate_ = false) from sport_ s2 order by id_;'
 
 const QUERY_GET_SPORT_BY_ID = 'select id_, name_, is_deleted_ from Sport_ where id_ = $1;'
 
@@ -42,7 +42,7 @@ const QUERY_UPDATE_SPORT = 'update Sport_ set is_deleted_ = $2, name_ = $3 where
 
 const QUERY_DELETE_SPORT = 'update Sport_ set is_deleted_ = true where id_ = $1;'
 
-const QUERY_GET_EVENTS = 'select id_, name_, initial_date_, end_date_ from Event_'
+const QUERY_GET_EVENTS = 'select id_, name_, initial_date_, end_date_ from Event_ order by id_'
 
 const QUERY_GET_EVENT_BY_ID = 'select id_, name_, initial_date_, end_date_ from Event_ where id_ = $1;'
 
@@ -52,7 +52,7 @@ const QUERY_UPDATE_EVENT = 'update Event_ set name_ = $1, initial_date_ = $2, en
 
 const QUERY_DELETE_EVENT = 'call delete_event($1);'
 
-const QUERY_GET_USERS = 'select u.member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, is_admin_, member_type_, has_debt_, username_, location_, address_, postal_code_, email_, phone_number_, gender_, img_value_, is_deleted_, iban_ from User_ u join Member_ m on u.member_id_ = m.id_ join Contact_ c on m.id_ = c.member_id_ join Member_Img_ ui on m.id_ = ui.member_id_ '
+const QUERY_GET_USERS = 'select u.member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, is_admin_, member_type_, has_debt_, username_, location_, address_, postal_code_, email_, phone_number_, gender_, img_value_, is_deleted_, iban_ from User_ u join Member_ m on u.member_id_ = m.id_ join Contact_ c on m.id_ = c.member_id_ join Member_Img_ ui on m.id_ = ui.member_id_ order by u.member_id_'
 
 const QUERY_NUMBER_OF_USERS = 'select count(*) from user_'
 
@@ -66,9 +66,9 @@ const QUERY_DELETE_USER = 'call delete_user($1);'
 
 const QUERY_GET_USERS_SPORTS = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_, is_candidate_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false'
 
-const QUERY_GET_USERS_SPORT = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_, is_candidate_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false and sport_id_ = $1 and is_candidate_ = $2'
+const QUERY_GET_USERS_SPORT = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_, is_candidate_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false and sport_id_ = $1 and is_candidate_ = $2 order by sport_id_'
 
-const QUERY_GET_USER_SPORTS_BY_ID = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_, is_candidate_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false and user_id_ = $1'
+const QUERY_GET_USER_SPORTS_BY_ID = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_, is_candidate_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false and user_id_ = $1 order by user_id_'
 
 const QUERY_NUMBER_OF_USER_SPORTS = 'select count(*) from User_sport_ where user_id_ = $1'
 
@@ -88,11 +88,11 @@ const QUERY_NUMBER_OF_QUOTAS = 'select count(*) from quota_'
 
 const QUERY_NUMBER_OF_MEMBER_QUOTAS = 'select count(*) from quota_ where member_id_ = $1'
 
-const QUERY_GET_COMPANIES_QUOTAS = 'select q.id_, member_id_, username_, payment_date_, date_, iban_ from Quota_ q join Member_ m on q.member_id_ = m.id_ where m.is_deleted_ = false and m.member_type_ = \'corporate\''
+const QUERY_GET_COMPANIES_QUOTAS = 'select q.id_, member_id_, username_, payment_date_, date_, iban_ from Quota_ q join Member_ m on q.member_id_ = m.id_ where m.is_deleted_ = false and m.member_type_ = \'corporate\' order by member_id_'
 
-const QUERY_GET_USERS_QUOTAS = 'select q.id_, member_id_, username_, payment_date_, date_, iban_ from Quota_ q join Member_ m on q.member_id_ = m.id_ where m.is_deleted_ = false and m.member_type_ != \'corporate\''
+const QUERY_GET_USERS_QUOTAS = 'select q.id_, member_id_, username_, payment_date_, date_, iban_ from Quota_ q join Member_ m on q.member_id_ = m.id_ where m.is_deleted_ = false and m.member_type_ != \'corporate\' order by member_id_'
 
-const QUERY_GET_MEMBERS_QUOTAS_BY_ID = 'select q.id_, member_id_, username_, payment_date_, date_, iban_,quota_value_ from Quota_ q join Member_ m on q.member_id_ = m.id_ join member_types_ mt on mt.type_  = m.member_type_ where m.is_deleted_ = false and m.id_ = $1'
+const QUERY_GET_MEMBERS_QUOTAS_BY_ID = 'select q.id_, member_id_, username_, payment_date_, date_, iban_,quota_value_ from Quota_ q join Member_ m on q.member_id_ = m.id_ join member_types_ mt on mt.type_  = m.member_type_ where m.is_deleted_ = false and m.id_ = $1 order by q.id_'
 
 const QUERY_POST_QUOTA = 'call post_quotas($1, $2)'
 
@@ -124,11 +124,11 @@ const QUERY_POST_ATTENDANCE = 'insert into Attendance_(member_id_, event_id_, st
 
 const QUERY_UPDATE_ATTENDANCE = 'update Attendance_ set state_ = $3 where event_id_ = $1 and member_id_ = $2'
 
-const QUERY_GET_ATTENDANCE = 'select a.member_id_, username_, event_id_, name_, state_, email_, phone_number_ from Attendance_ a join Member_ m on a.member_id_ = m.id_ join Event_ e on a.event_id_ = e.id_ join Contact_ c on a.member_id_ = c.member_id_ where event_id_ = $1'
+const QUERY_GET_ATTENDANCE = 'select a.member_id_, username_, event_id_, name_, state_, email_, phone_number_ from Attendance_ a join Member_ m on a.member_id_ = m.id_ join Event_ e on a.event_id_ = e.id_ join Contact_ c on a.member_id_ = c.member_id_ where event_id_ = $1 order by a.member_id_'
 
 const QUERY_NUMBER_OF_ATTENDANCE = 'select COUNT(*) from Attendance_ a join Member_ m on a.member_id_ = m.id_ join Event_ e on a.event_id_ = e.id_ where event_id_ = $1'
 
-const QUERY_GET_MEMBER_ATTENDANCE = 'select a.member_id_, a.event_id_, e.name_, a.state_, e.initial_date_, e.end_date_ from Attendance_ a join Event_ e on a.event_id_ = e.id_ '
+const QUERY_GET_MEMBER_ATTENDANCE = 'select a.member_id_, a.event_id_, e.name_, a.state_, e.initial_date_, e.end_date_ from Attendance_ a join Event_ e on a.event_id_ = e.id_ where member_id_ = $1 order by a.event_id_'
 
 const QUERY_MY_NUMBER_OF_EVENTS = 'select count(*)  from attendance_ where member_id_ = $1'
 
@@ -152,7 +152,7 @@ const QUERY_NUMBER_OF_EVENTS = 'select count(*) from event_'
 
 const QUERY_GET_MEMBER_VALIDATE = 'select has_debt_, full_name_ from Member_ join user_  on id_ = member_id_  where id_ = $1'
 
-const QUERY_GET_GROUPS = 'select distinct g.group_id_, name_, description_, group_type_ from Group_ g'
+const QUERY_GET_GROUPS = 'select distinct g.group_id_, name_, description_, group_type_ from Group_ g order by g.group_id_'
 
 const QUERY_NUMBER_OF_GROUPS = 'select count(*) from Group_'
 
@@ -168,7 +168,7 @@ const QUERY_POST_GROUP = 'call post_group($1, $2, $3, $4, $5, $6)'
 
 const QUERY_DELETE_GROUP = 'call delete_group($1)'
 
-const QUERY_GET_MEMBER_GROUPS = 'select g.group_id_, name_, description_, group_type_ from Group_ g join Group_Member_ gm on g.group_id_ = gm.group_id_'
+const QUERY_GET_MEMBER_GROUPS = 'select g.group_id_, name_, description_, group_type_ from Group_ g join Group_Member_ gm on g.group_id_ = gm.group_id_ '
 
 const QUERY_NUMBER_OF_MEMBER_GROUPS = 'select count(*) from Group_Member_ where member_id_ = $1'
 

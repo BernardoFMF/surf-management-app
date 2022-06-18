@@ -23,6 +23,7 @@ import DateInputField from '../../components/multiStepForm/DateInputField';
 import EditIcon from '@mui/icons-material/Edit';
 import AttendanceEditDialog from '../../components/dialogs/AttendanceEditDialog';
 import {  Alert} from '@mui/material'
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 
 const MyEventsPage = () => {
     const theme = useTheme();
@@ -40,20 +41,20 @@ const MyEventsPage = () => {
     const [row, setRow] = useState({});
     
     const [openSubmit, setOpenSubmit] = React.useState(false);
-    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getMemberEventsAttendance(id,searchState.name_filter,searchState.state_filter,searchState.date_filter,(page-1)*limit,limit));};
+    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getMemberEventsAttendance(id,searchState.name_filter,searchState.state_filter,searchState.date_filter,(page-1)*searchState.limit,searchState.limit));};
     const handleOpenSubmit = (row) => {setOpenSubmit(true); setRow(row)};
 
     useEffect(() => {
-        dispatch(getMemberEventsAttendance(id,searchState.name_filter,searchState.state_filter,searchState.date_filter,0,limit))
+        dispatch(getMemberEventsAttendance(id,searchState.name_filter,searchState.state_filter,searchState.date_filter,0,searchState.limit))
     },[dispatch,id])
 
     const [page, setPage] = useState(1);
-    const limit = 5
 
     const [ searchState, setSearchState ] = useState({
         name_filter: "",
         state_filter: "",
-        date_filter: ""
+        date_filter: "",
+        limit: 10
     })
 
     useEffect(() => {
@@ -80,7 +81,7 @@ const MyEventsPage = () => {
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getMemberEventsAttendance(id,searchState.name_filter, searchState.state_filter, searchState.date_filter, (value-1)*limit, limit))
+        dispatch(getMemberEventsAttendance(id,searchState.name_filter, searchState.state_filter, searchState.date_filter, (value-1)*searchState.limit, searchState.limit))
     }
 
     const searchHandler = async(values) => {
@@ -96,7 +97,7 @@ const MyEventsPage = () => {
         setPage(1)
         setRows([])
         
-        dispatch(getMemberEventsAttendance(id,new_values.name_filter,new_values.state_filter,new_values.date_filter,0,limit))
+        dispatch(getMemberEventsAttendance(id,new_values.name_filter,new_values.state_filter,new_values.date_filter,0,new_values.limit))
     }
 
 const columns = [
@@ -177,6 +178,9 @@ const columns = [
                                     <DateInputField name='date_filter' label={t('event_initial_date')}></DateInputField>
                                 </Grid>
                                 <Grid item>
+                                    <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                                </Grid>
+                                <Grid item>
                                     <AnimateButton>
                                         <LoadingButton
                                             disableElevation
@@ -206,7 +210,7 @@ const columns = [
             autoHeight
             rows={rows}
             columns={columns}
-            pageSize={limit}
+            pageSize={searchState.limit}
             hideFooter={true}
             onPageChange={changePageHandler}
             sx={{
@@ -215,7 +219,7 @@ const columns = [
                 }
             }}
         />
-        <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(memberEventsAttendanceGet.number_of_events / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+        <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(memberEventsAttendanceGet.number_of_events / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
         </>
       )}
       </MainCard> 

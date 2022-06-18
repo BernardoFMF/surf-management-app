@@ -8,7 +8,7 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { CircularProgress, Grid, Chip, Stack, Box, Alert, Pagination } from '@mui/material';
 import GroupIcon from '@mui/icons-material/Group';
 import MainCard from '../../components/cards/MainCard';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import { blue , green } from "@mui/material/colors";
 import { useNavigate } from 'react-router';
 import { Formik, Form } from 'formik';
@@ -16,7 +16,6 @@ import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SearchIcon from '@mui/icons-material/Search';
 import InputField from '../../components/multiStepForm/InputField';
-import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import { getTypes } from '../../store/actions/typeActions'
 import { getUserSportsTypes } from '../../store/actions/sportActions'
 import CheckGroupInputField from '../../components/multiStepForm/CheckGroupInputField';
@@ -40,16 +39,16 @@ const MyGroupsPage = () => {
     let { id } = useParams()
 
     const [page, setPage] = useState(1);
-    const limit = 5
 
     const [ searchState, setSearchState ] = useState({
         name_filter: "",
         group_type_filter: "",
-        types_filter: []
+        types_filter: [],
+        limit: 10
     })
 
     useEffect(() => {
-        dispatch(getMemberGroups(id, searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, limit))
+        dispatch(getMemberGroups(id, searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))
         dispatch(getTypes())
         dispatch(getUserSportsTypes())
     },[dispatch,id])
@@ -67,7 +66,7 @@ const MyGroupsPage = () => {
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getMemberGroups(id,searchState.name_filter, searchState.group_type_filter, searchState.types_filter, (value-1)*limit, limit))
+        dispatch(getMemberGroups(id,searchState.name_filter, searchState.group_type_filter, searchState.types_filter, (value-1)*searchState.limit, searchState.limit))
     }
 
     const searchHandler = async(values) => {
@@ -77,7 +76,7 @@ const MyGroupsPage = () => {
         setPage(1)
         setRows([])
         
-        dispatch(getMemberGroups(id, values.name_filter, type ? 'member_type' : type2 ? 'member_sport_type' : '', values.types_filter, 0, limit))
+        dispatch(getMemberGroups(id, values.name_filter, type ? 'member_type' : type2 ? 'member_sport_type' : '', values.types_filter, 0, values.limit))
     }
 
     function getChipProps(params) {
@@ -167,6 +166,9 @@ const MyGroupsPage = () => {
                                                     </Grid>
                                                 }
                                                 <Grid item>
+                                                    <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                                                </Grid>
+                                                <Grid item>
                                                     <AnimateButton>
                                                         <LoadingButton
                                                             disableElevation
@@ -196,7 +198,7 @@ const MyGroupsPage = () => {
                                         autoHeight
                                         rows={rows}
                                         columns={columns}
-                                        pageSize={limit}
+                                        pageSize={searchState.limit}
                                         hideFooter={true}
                                         onPageChange={changePageHandler}
                                         sx={{
@@ -205,7 +207,7 @@ const MyGroupsPage = () => {
                                             }
                                         }}
                                     />
-                                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(memberGroupsGet.number_of_groups / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(memberGroupsGet.number_of_groups / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
                                 </>
                             )}
                         </>

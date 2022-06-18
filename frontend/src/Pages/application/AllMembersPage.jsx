@@ -15,7 +15,7 @@ import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import UserCreateDialog from '../../components/dialogs/UserCreateDialog';
 import { getTypes } from '../../store/actions/typeActions'
-
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 
 const AllMembersPage = () => {
     const navigate = useNavigate()
@@ -32,32 +32,34 @@ const AllMembersPage = () => {
 
     const [rows, setRows] = useState([]);
 
+    const [ searchState, setSearchState ] = useState({
+        username_filter: "",
+        name_filter: "",
+        email_filter: "",
+        limit: 10
+    })
+
     const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, limit)};
+    const handleClose = () => {setOpen(false); getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit)};
     const handleOpen = () => setOpen(true);
 
 
-    const [ searchState, setSearchState ] = useState({
-      username_filter: "",
-      name_filter: "",
-      email_filter: ""
-    })
-
+   
     const [page, setPage] = useState(1);
-    const limit = 5
 
     useEffect(() => {
         if (posted) {
             setSearchState({
                 username_filter: "",
                 name_filter: "",
-                email_filter: ""
+                email_filter: "",
+                limit: 10
             })
         }
     }, [posted])
     
     useEffect(() => {
-        dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, limit))
+        dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit))
         dispatch(getTypes('user'))
     }, [])
 
@@ -89,12 +91,12 @@ const AllMembersPage = () => {
         setSearchState(values)
         setPage(1)
         setRows([])
-        dispatch(getUsers(values.username_filter,values.name_filter,values.email_filter,0,limit))
+        dispatch(getUsers(values.username_filter,values.name_filter,values.email_filter,0,values.limit))
     }
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, (value-1)*limit, limit))
+        dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, (value-1)*searchState.limit, searchState.limit))
     }
 
 
@@ -174,6 +176,9 @@ const AllMembersPage = () => {
                                             <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
                                         </Grid>
                                         <Grid item>
+                                            <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                                        </Grid>
+                                        <Grid item>
                                             <AnimateButton>
                                                 <LoadingButton
                                                     disableElevation
@@ -218,7 +223,7 @@ const AllMembersPage = () => {
                             autoHeight
                             rows={rows}
                             columns={columns}
-                            pageSize={limit}
+                            pageSize={searchState.limit}
                             hideFooter={true}
                             onPageChange={changePageHandler}
                             scrollbarSize={20}
@@ -228,7 +233,7 @@ const AllMembersPage = () => {
                                 }
                             }}
                         />
-                        <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(usersGet.number_of_users / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                        <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(usersGet.number_of_users / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
                     </>
                 )}
             </MainCard> 

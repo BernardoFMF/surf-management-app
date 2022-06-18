@@ -5,7 +5,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0-oas3
+  version: 1.0.0
 paths:
   /api/auth/login:
     post:
@@ -51,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/message'
+                $ref: '#/components/schemas/message_logout'
         '400':
           description: response body should be an error object
           content:
@@ -806,43 +806,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  /api/validate/{id}:
-    get:
-      summary: validates a member
-      operationId: validateApi
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: response body should be a user information on validation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/validated_user'
-        '401':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '404':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '500':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
   /api/quotas:
     get:
       summary: fetches all quotas
@@ -1056,7 +1019,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/quotas'
+                $ref: '#/components/schemas/quotas_member'
         '400':
           description: response body should be an error object
           content:
@@ -1085,6 +1048,13 @@ paths:
     get:
       summary: fetches all quotas from a specific member
       operationId: getManagementQuotasApi
+      parameters:
+        - name: category
+          in: query
+          required: false
+          explode: false
+          schema:
+            type: string
       responses:
         '200':
           description: response body should be a quota management array
@@ -1410,6 +1380,43 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
         '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/companies/validate/{id}:
+    get:
+      summary: validates a member
+      operationId: validateApi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a user information on validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validated_user'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
           description: response body should be an error object
           content:
             application/json:
@@ -2166,6 +2173,7 @@ components:
           type: integer
         img_value_:
           type: string
+          nullable: true
         is_deleted_:
           type: boolean
         iban_:
@@ -2232,6 +2240,7 @@ components:
           type: integer
         img_value_:
           type: string
+          nullable: true
         is_deleted_:
           type: boolean
         iban_:
@@ -2280,6 +2289,7 @@ components:
           type: integer
         img_value_:
           type: string
+          nullable: true
         is_deleted_:
           type: boolean
         qrcode_:
@@ -2458,6 +2468,11 @@ components:
           type: string
         message_code:
           type: string
+    message_logout:
+      type: object
+      properties:
+        message:
+          type: string
     id:
       type: integer
     user_sport_ids:
@@ -2531,6 +2546,32 @@ components:
           format: date
         iban_:
           type: string
+        email_:
+          type: string
+        phone_number_:
+          type: integer
+        quota_value_:
+          type: integer
+    quota_member:
+      type: object
+      properties:
+        id_:
+          type: integer
+        member_id_:
+          type: integer
+        username_:
+          type: string
+        payment_date_:
+          type: string
+          format: date
+          nullable: true
+        date_:
+          type: string
+          format: date
+        iban_:
+          type: string
+        quota_value_:
+          type: integer
     quotas:
       type: object
       properties:
@@ -2540,6 +2581,15 @@ components:
             $ref: '#/components/schemas/quota'
         number_of_quotas:
           type: integer
+    quotas_member:
+      type: object
+      properties:
+        quotas:
+          type: array
+          items:                   
+            $ref: '#/components/schemas/quota_member'
+        number_of_quotas:
+          type: integer
     quotas_management:
       type: object
       properties:
@@ -2547,6 +2597,8 @@ components:
           type: string
         quota_value_:
           type: integer
+        category_:
+          type: string
     quotas_management_body:
       type: object
       properties:
@@ -2554,6 +2606,8 @@ components:
           type: string
         quota_value:
           type: integer
+        category:
+          type: string
     put_quotas_management_body:
       type: object
       properties:
@@ -2631,6 +2685,7 @@ components:
           type: boolean
         img_value_:
           type: string
+          nullable: true
         member_type_:
           type: string
         iban_:
@@ -2718,6 +2773,7 @@ components:
           type: boolean
         img_value_:
           type: string
+          nullable: true
         member_type_:
           type: string
         iban_:
@@ -2981,6 +3037,8 @@ components:
           type: string
         label: 
           type: string
+    category:
+      type: string
     
   parameters:
     qidParameter:

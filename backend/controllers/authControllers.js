@@ -13,7 +13,7 @@ const authController = (data) => {
 
 	const postLogout = asyncHandler(async (req, res) => {
 		req.logout()
-		res.json({ message: 'User is logged out' })
+		res.json({ message: 'User is logged out'})
 	})
 
 	const resetPasswordRequest = asyncHandler(async (req, res) => {
