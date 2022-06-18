@@ -53,6 +53,8 @@ const router = (app, data) => {
 			} else {
 				if (member.category_ != 'company') {
 					const user = await data.getUserByIdData(member.id_)
+					console.log(member);
+					console.log(user);
 					member.is_admin_ = user.is_admin_
 				}
 				done(null, member)

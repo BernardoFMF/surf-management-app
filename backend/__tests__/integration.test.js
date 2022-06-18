@@ -1,8 +1,12 @@
 import supertest from 'supertest'
 import express, { request } from 'express'
 import jestOpenAPI from 'jest-openapi'
-import data from '../data/__mock__/mockDataAccess.js'
-
+import fs from 'fs'
+import dotenv from 'dotenv'
+dotenv.config()
+//import data from '../data/__mock__/mockDataAccess.js'
+import db from '../data/__db__/dbDataAccess.js'
+const data = db(process.env.PG_USER, process.env.PG_PASSWORD, process.env.PG_HOST, process.env.PG_PORT, process.env.PG_DB_TEST, process.env.NODE_MODE)
 jestOpenAPI(process.cwd() +  "/backend/openApi.yaml")
 
 const app = express()
@@ -12,18 +16,40 @@ import server from '../server.js'
 server(app, data)
 
 let session = null
-/*
+
+let drop = fs.readFileSync('./docs/scripts_sql/drop.sql', 'utf8');
+let create = fs.readFileSync('./docs/scripts_sql/create.sql', 'utf8');
+let trigger = fs.readFileSync('./docs/scripts_sql/Triggers.sql', 'utf8');
+let procedures = fs.readFileSync('./docs/scripts_sql/procedures.sql', 'utf8');
+let insert_types = fs.readFileSync('./docs/scripts_sql/insert-test.sql', 'utf8');
+let insert = fs.readFileSync('./docs/scripts_sql/insert-dummie-integration.sql', 'utf8');
+
+const offset = 0
+const limit = 100
+
+beforeAll( async () => {
+	const con = await data.pool.connect()
+	await con.query(drop)
+	await con.query(create)
+	await con.query(trigger)
+	await con.query(procedures)
+	await con.query(insert_types)  
+	return await con.query(insert)
+})
+
 beforeEach(async () => {
     const res = await supertest(app)
         .post('/api/auth/login')
         .send({
-         'username': 'senhorJoel',
+         'username': 'afonsoribeiro',
          'password': '123'
         })
         .expect(200)
     session = res
         .headers['set-cookie'][0]
 });
+
+// users
 
 test('Post, Gets, Put & Delete user', async () => {
     const userRes = await supertest(app)
@@ -48,7 +74,7 @@ test('Post, Gets, Put & Delete user', async () => {
             "gender": "Male",
 			"iban" : "PT501231010101010101",
 			"img" : "imagem",
-			"paid_enrollment": "01-01-2019"
+			"enrollment_date": "01-01-2019"
         })
         .expect('Content-Type', /json/)
         .expect(201)
@@ -106,6 +132,8 @@ test('Post, Gets, Put & Delete user', async () => {
 	expect(putRes.body).toSatisfySchemaInApiSpec("userById")
 
 })
+
+// sports 
 
 test('Post, Put, Gets & Delete sport', async () => {
 	const createRes = await supertest(app)
@@ -219,7 +247,8 @@ test('Post, Gets, Put & Delete company', async () => {
 			"email": "flocker@gmail.com",
 			"is_deleted": false,
 			"iban": "PT501111123431233412",
-			"img": "image"
+			"img": "image",
+			"type": "corporate"
 		})
 		.expect('Content-Type', /json/)
 		.expect(200)
@@ -280,8 +309,9 @@ test('Post, Gets, Put quotas', async () => {
         .set('Accept', 'application/json')
         .set('Cookie', session)
 		.send({
-			"type": "effective",
-			"quota_value": 15
+			"type": "effective-pre",
+			"quota_value": 111,
+			"category": "user"
 		})
     expect(postManagementQuotas).toSatisfyApiSpec()
     expect(postManagementQuotas.body).toSatisfySchemaInApiSpec("message")
@@ -303,7 +333,7 @@ test('Post, Gets, Put quotas', async () => {
     expect(putManagementQuotas).toSatisfyApiSpec()
     expect(putManagementQuotas.body).toSatisfySchemaInApiSpec("quota_type")
 })
-
+/*
 //User Sports
 
 test('Post, Gets, Put & Delete user sport', async () => {
@@ -414,6 +444,7 @@ test('Post, Gets, Put & Delete user sport', async () => {
 	expect(deleteRes).toSatisfyApiSpec()
     expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
 })
+
 //Events
 
 test('Post, Put, Gets & Delete event', async () => {
@@ -567,7 +598,7 @@ test('Post, Put & Get an attendance', async () => {
 	expect(getMemberRes).toSatisfyApiSpec()
 	expect(getMemberRes.body).toSatisfySchemaInApiSpec('attendances_event_member')
 })
-
+*/
 //Candidate
 
 test('Create, Get & Delete candidate', async () => {
@@ -590,7 +621,7 @@ test('Create, Get & Delete candidate', async () => {
 			"password": "123",
 			"gender": "Male",
 			"img": "imgfixe",
-			"iban": "pt50159595959595959595959"
+			"iban": "PT50159595959595959595959"
 		})
 		.expect('Content-Type', /json/)
 		.expect(201)
@@ -646,7 +677,7 @@ test('Approve candidate', async () => {
 			"password": "123",
 			"gender": "Male",
 			"img": "imgfixe",
-			"iban": "pt50159595959595959595959"
+			"iban": "PT50159595959595959595959"
 		})
 		.expect('Content-Type', /json/)
 		.expect(201)
@@ -665,4 +696,40 @@ test('Approve candidate', async () => {
 	expect(approveRes).toSatisfyApiSpec()
 	expect(approveRes.body).toSatisfySchemaInApiSpec("message")
 })
-*/
+
+// Validate
+
+test('Validate member', async () => {
+	const res = await supertest(app)
+		.post('/api/auth/logout')
+		expect(res).toSatisfyApiSpec()
+		expect(res.body).toSatisfySchemaInApiSpec("message_logout")
+	
+	const res1 = await supertest(app)
+		.post('/api/auth/login')
+		.send({
+		'username': 'flocker',
+		'password': '123'
+		})
+		.expect(200)
+	session = res1
+	.headers['set-cookie'][0]
+
+	const getRes = await supertest(app)
+		.get(`/api/companies/validate/${1}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		expect(getRes).toSatisfyApiSpec()
+		expect(getRes.body).toSatisfySchemaInApiSpec("validated_user")
+})
+
+// members
+
+test('Get member', async () => {
+	const getRes = await supertest(app)
+		.get(`/api/members/${1}`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		expect(getRes).toSatisfyApiSpec()
+		expect(getRes.body).toSatisfySchemaInApiSpec("member_object")
+})

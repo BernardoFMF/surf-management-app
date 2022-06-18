@@ -5,7 +5,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0-oas3
+  version: 1.0.0
 paths:
   /api/auth/login:
     post:
@@ -51,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/message'
+                $ref: '#/components/schemas/message_logout'
         '400':
           description: response body should be an error object
           content:
@@ -806,43 +806,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-  /api/validate/{id}:
-    get:
-      summary: validates a member
-      operationId: validateApi
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: response body should be a user information on validation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/validated_user'
-        '401':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '404':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-        '500':
-          description: response body should be an error object
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
   /api/quotas:
     get:
       summary: fetches all quotas
@@ -1417,6 +1380,43 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
         '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/companies/validate/{id}:
+    get:
+      summary: validates a member
+      operationId: validateApi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response body should be a user information on validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validated_user'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
           description: response body should be an error object
           content:
             application/json:
@@ -2173,6 +2173,7 @@ components:
           type: integer
         img_value_:
           type: string
+          nullable: true
         is_deleted_:
           type: boolean
         iban_:
@@ -2239,6 +2240,7 @@ components:
           type: integer
         img_value_:
           type: string
+          nullable: true
         is_deleted_:
           type: boolean
         iban_:
@@ -2287,6 +2289,7 @@ components:
           type: integer
         img_value_:
           type: string
+          nullable: true
         is_deleted_:
           type: boolean
         qrcode_:
@@ -2464,6 +2467,11 @@ components:
         message:
           type: string
         message_code:
+          type: string
+    message_logout:
+      type: object
+      properties:
+        message:
           type: string
     id:
       type: integer
@@ -2677,6 +2685,7 @@ components:
           type: boolean
         img_value_:
           type: string
+          nullable: true
         member_type_:
           type: string
         iban_:
@@ -2764,6 +2773,7 @@ components:
           type: boolean
         img_value_:
           type: string
+          nullable: true
         member_type_:
           type: string
         iban_:
