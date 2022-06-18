@@ -516,7 +516,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await events.query('Begin')
 			await events.query(queries.QUERY_UPDATE_EVENT, [name_,initial_date_,end_date_, id_])
 			await events.query('Commit')
-			return id_
+			return parseInt(id_)
 		} catch(e) {
 			await events.query('Rollback')
 			throw e
@@ -546,7 +546,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('Begin')
 			await client.query(queries.QUERY_UPDATE_ATTENDANCE,[eid_, id_, state_ ])
 			await client.query('Commit')
-			return {eid_, id_}
+			return {eid_: parseInt(eid_), id_}
 		} catch(e) {
 			await client.query('Rollback')
 			throw e
