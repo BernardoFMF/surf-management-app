@@ -35,25 +35,29 @@ const NavGroup = ({ item }) => {
 
     return (
         <>
-            <List
-                subheader={
-                    item.title && (
-                        <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
-                            {t(item.id)}
-                            {item.caption && (
-                                <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-                                    {item.caption}
-                                </Typography>
-                            )}
-                        </Typography>
-                    )
-                }
-            >
-                {items}
-            </List>
-
-            {/* group divider */}
-            <Divider sx={{ mt: 0.25, mb: 1.25 }} />
+            {
+                (item.hideIfNotAdmin === false || (item.hideIfNotAdmin === true && memberInfo.is_admin_ === true)) && (
+                    <>
+                        <List
+                            subheader={
+                                item.title && (
+                                    <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
+                                        {t(item.id)}
+                                        {item.caption && (
+                                            <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
+                                                {item.caption}
+                                            </Typography>
+                                        )}
+                                    </Typography>
+                                )
+                            }
+                        >
+                            {items}
+                        </List>
+                        <Divider sx={{ mt: 0.25, mb: 1.25 }} />
+                    </>
+                )
+            }
         </>
     );
 };

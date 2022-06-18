@@ -54,10 +54,7 @@ const userController = (data) => {
 	
 	const getUsersSport = asyncHandler(async (req,res) => {
 		let is_candidate = false
-		if (req.query.is_candidate === undefined)
-			is_candidate = false
-		else is_candidate = req.body.is_candidate
-		const usersWithsport = await services.getUsersSportServices(req.params.sid, req.query.offset, req.query.limit, is_candidate, req.query.username)
+		const usersWithsport = await services.getUsersSportServices(req.params.sid, req.query.offset, req.query.limit, req.query.is_candidate, req.query.username)
 		if (usersWithsport) res.json(usersWithsport)
 	})
 	

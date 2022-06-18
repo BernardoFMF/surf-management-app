@@ -9,6 +9,7 @@ const pages = {
     id: 'application',
     title: 'Application',
     type: 'group',
+    hideIfNotAdmin: false,
     children: [
         {
             id: 'members',

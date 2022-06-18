@@ -783,6 +783,21 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
+	const getUserSportByIdAndUserData = async (id_, sid_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await pool.query(queries.QUERY_GET_USER_SPORT_SPECIFIC, [id_, sid_])
+			await client.query('commit')
+			return result.rows[0]
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
 	const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_candidate_) => {
 		const client = await pool.connect()
 		try {
@@ -1457,6 +1472,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	}
 
 	return { 
+		getUserSportByIdAndUserData,
 		getGroupsData, 
 		getGroupByIdData, 
 		getGroupByNameData,

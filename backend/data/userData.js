@@ -94,6 +94,8 @@ const userData = (db) => {
 		const user = await getUserById(id_)
 		const sport = await db.getSportByIdData(sid_)
 		if (!sport) throw error(404, 'Sport does not exist', 'MESSAGE_CODE_30')
+		const userSport = await db.getUserSportByIdAndUserData(id_, sid_)
+		if (userSport) throw error(409, 'User already has that sport', 'MESSAGE_CODE_31')
 		return await db.postUserSportData(user.member_id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_candidate_)
 	}
 	

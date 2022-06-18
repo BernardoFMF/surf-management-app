@@ -182,7 +182,10 @@ const QUERY_NUMBER_OF_MEMBERS_IN_GROUP = 'select count(*) from Group_Member_ whe
 
 const QUERY_GET_USER_SPORT_TYPES = 'select * from User_Sport_Types_'
 
+const QUERY_GET_USER_SPORT_SPECIFIC = 'select username_, name_, user_id_, sport_id_, type_, fed_number_, fed_id_, fed_name_, years_federated_, is_absent_, is_candidate_ from Member_ m join User_sport_ us on m.id_ = us.user_id_ join Sport_ s on us.sport_id_ = s.id_ where m.is_deleted_ = false and s.is_deleted_ = false and user_id_ = $1 and sport_id_ = $2'
+
 export default {
+    QUERY_GET_USER_SPORT_SPECIFIC,
     QUERY_GET_GROUP_BY_ID_MEMBER_TYPES,
     QUERY_GET_GROUP_BY_ID_SPORT_TYPES,
     QUERY_GET_GROUP_MEMBERS,
