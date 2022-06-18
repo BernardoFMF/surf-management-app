@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router';
 import { Pagination } from '@mui/material';
 import CompanyCreateDialog from '../../components/dialogs/CompanyCreateDialog';
 import { useTheme } from '@mui/material/styles';
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 
 const AllCompaniesPage = () => {
     const theme = useTheme()
@@ -34,7 +35,8 @@ const AllCompaniesPage = () => {
     const [ searchState, setSearchState ] = useState({
       username_filter: "",
       name_filter: "",
-      email_filter: ""
+      email_filter: "",
+      limit: 10
     })
 
     const typesFetch = useSelector((state) => state.typesFetch)
@@ -44,11 +46,9 @@ const AllCompaniesPage = () => {
     const { posted } = companyPost
     
     const [page, setPage] = useState(1);
-    const limit = 5
-
 
     const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, limit))};
+    const handleClose = () => {setOpen(false); dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit))};
     const handleOpen = () => setOpen(true);
 
 
@@ -63,13 +63,13 @@ const AllCompaniesPage = () => {
     }, [posted])
 
     useEffect(() => {
-        dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, limit))
+        dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit))
         dispatch(getTypes('company'))
     }, [])
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, (value-1)*limit, limit))
+        dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, (value-1)*searchState.limit, searchState.limit))
     }
 
     useEffect(() => {
@@ -101,7 +101,7 @@ const AllCompaniesPage = () => {
         setSearchState(values)
         setPage(1)
         setRows([])
-        dispatch(getCompanies(values.username_filter,values.name_filter,values.email_filter,0,limit))
+        dispatch(getCompanies(values.username_filter,values.name_filter,values.email_filter,0,values.limit))
     }
 
 const columns = [
@@ -174,6 +174,9 @@ const columns = [
                                         <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
                                     </Grid>
                                     <Grid item>
+                                        <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                                    </Grid>
+                                    <Grid item>
                                         <AnimateButton>
                                             <LoadingButton
                                                 disableElevation
@@ -218,7 +221,7 @@ const columns = [
                         autoHeight
                         rows={rows}
                         columns={columns}
-                        pageSize={limit}
+                        pageSize={searchState.limit}
                         hideFooter={true}
                         onPageChange={changePageHandler}
                         sx={{
@@ -227,7 +230,7 @@ const columns = [
                             }
                         }}
                     />
-                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(companiesGet.number_of_companies / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(companiesGet.number_of_companies / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
                 </>
             )}
         </MainCard> 

@@ -41,20 +41,20 @@ const AllGroupsPage = () => {
     const [rows, setRows] = useState([]);
 
     const [page, setPage] = useState(1);
-    const limit = 5
-
-    const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, limit))};
-    const handleOpen = () => setOpen(true);
-
     const [ searchState, setSearchState ] = useState({
         name_filter: "",
         group_type_filter: "",
-        types_filter: []
+        types_filter: [],
+        limit: 10
     })
+    const [open, setOpen] = useState(false);
+    const handleClose = () => {setOpen(false); dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))};
+    const handleOpen = () => setOpen(true);
+
+    
 
     useEffect(() => {
-        dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, limit))
+        dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))
         dispatch(getTypes())
         dispatch(getUserSportsTypes())
         dispatch(getSports())
@@ -73,7 +73,7 @@ const AllGroupsPage = () => {
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, (value-1)*limit, limit))
+        dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, (value-1)*searchState.limit, searchState.limit))
     }
 
     const searchHandler = async(values) => {
@@ -83,14 +83,14 @@ const AllGroupsPage = () => {
         setPage(1)
         setRows([])
 
-        dispatch(getGroups(values.name_filter, type ? 'member_type' : type2 ? 'member_sport_type' : '', values.types_filter, 0, limit))
+        dispatch(getGroups(values.name_filter, type ? 'member_type' : type2 ? 'member_sport_type' : '', values.types_filter, 0, values.limit))
     }
 
     const deleteHandler = (id) => {
         dispatch(deleteGroup(id))
         setPage(1)
         setRows([])
-        dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, limit))
+        dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))
     }
 
     function getChipProps(params) {
@@ -190,7 +190,9 @@ const AllGroupsPage = () => {
                                                         />
                                                     </Grid>
                                                 }
-                                                
+                                                <Grid item>
+                                                    <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                                                </Grid>
                                                 <Grid item>
                                                     <AnimateButton>
                                                         <LoadingButton
@@ -236,7 +238,7 @@ const AllGroupsPage = () => {
                                         autoHeight
                                         rows={rows}
                                         columns={columns}
-                                        pageSize={limit}
+                                        pageSize={searchState.limit}
                                         hideFooter={true}
                                         onPageChange={changePageHandler}
                                         sx={{
@@ -245,7 +247,7 @@ const AllGroupsPage = () => {
                                             }
                                         }}
                                     />
-                                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(groupsGet.number_of_groups / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(groupsGet.number_of_groups / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
                                 </>
                             )}
                         </>

@@ -5,12 +5,17 @@ import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
-import { CircularProgress, Button, Typography, Stack, Box, Alert, Pagination } from '@mui/material';
+import { CircularProgress, Button, Typography, Stack, Box, Alert, Pagination, Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import MainCard from '../../components/cards/MainCard';
 import UserSportEditDialog from '../../components/dialogs/UserSportEditDialog';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteUserSport } from '../../store/actions/userActions';
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField'
+import { Form, Formik } from 'formik';
+import AnimateButton from '../../components/extended/AnimateButton'
+import LoadingButton from '@mui/lab/LoadingButton'
+import SearchIcon from '@mui/icons-material/Search';
 
 const MySportsPage = () => {
     const theme = useTheme();
@@ -25,8 +30,9 @@ const MySportsPage = () => {
     let { id } = useParams()
 
     const [page, setPage] = useState(1);
-    const limit = 5
-
+    const [ searchState, setSearchState ] = useState({
+        limit: 10
+    })
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const closeDialogHandler = useCallback(function _handleClose() {
         setOpenEditDialog(false);
@@ -39,7 +45,7 @@ const MySportsPage = () => {
             is_absent_: false
         })
         setPage(1)
-        dispatch(getUserSports(id, 0, limit))
+        dispatch(getUserSports(id, 0, searchState.limit))
     }, []);
 
     const [selectedUserSport, setselectedUserSport] = useState({
@@ -57,7 +63,7 @@ const MySportsPage = () => {
     }
 
     useEffect(() => {
-        dispatch(getUserSports(id, 0, limit))
+        dispatch(getUserSports(id, 0, searchState.limit))
     },[dispatch,id])
 
     useEffect(() => {
@@ -73,12 +79,12 @@ const MySportsPage = () => {
 
     const changePageHandler = (event, value) => {
       setPage(value)
-      dispatch(getUserSports(id, (value-1)*limit, limit))
+      dispatch(getUserSports(id, (value-1)*searchState.limit, searchState.limit))
     }
 
     const deleteUserSportHandle = (id, sid) => {
         dispatch(deleteUserSport(id, sid))
-        dispatch(getUserSports(id, 0, limit))
+        dispatch(getUserSports(id, 0, searchState.limit))
     }
 
     const columns = [
@@ -112,6 +118,12 @@ const MySportsPage = () => {
       },
     ];
 
+    const searchHandler = async(values) => {
+        setSearchState(values)
+        setPage(1)
+        setRows([])
+        dispatch(getUserSports(id, 0, values.limit))
+    }
     return (
         <>
             <UserSportEditDialog
@@ -131,7 +143,7 @@ const MySportsPage = () => {
                         autoHeight
                         rows={rows}
                         columns={columns}
-                        pageSize={limit}
+                        pageSize={searchState.limit}
                         hideFooter={true}
                         onPageChange={changePageHandler}
                         sx={{
@@ -140,7 +152,43 @@ const MySportsPage = () => {
                             }
                         }}
                     />
-                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(userSportsGet.number_of_sports / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/> 
+                    <Grid container>
+                        <Grid item>
+                            <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(userSportsGet.number_of_sports / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/> 
+                        </Grid>
+                        <Grid item>
+                            <Formik
+                                initialValues={searchState}
+                                enableReinitialize={true}
+                                onSubmit={values => searchHandler(values)}
+                            >
+                                {formik => (
+                                    <Form>
+                                        <Grid container spacing={2} direction="row" alignItems={'center'} sx={{ml : 0.5}}>
+                                            <Grid item>
+                                                <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                                            </Grid>
+                                            <Grid item>
+                                                <AnimateButton>
+                                                    <LoadingButton
+                                                        disableElevation
+                                                        size="large"
+                                                        type="submit"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        loading = {loading}
+                                                        startIcon={<SearchIcon></SearchIcon>}
+                                                    >
+                                                        {t('search')}
+                                                    </LoadingButton>
+                                                </AnimateButton>
+                                            </Grid>    
+                                        </Grid>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </Grid>
+                    </Grid>
                 </>
                 )}
             </MainCard> 

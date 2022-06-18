@@ -17,40 +17,41 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Pagination } from '@mui/material'
 import QuotaCreateDialog from '../../components/dialogs/QuotaCreateDialog';
 import QuotaUpdateDialog from '../../components/dialogs/QuotaUpdateDialog';
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 
 const AllQuotasPage = () => {
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
 
     const [page, setPage] = useState(1);
-    const limit = 10
     const quotasFetch = useSelector((state) => state.quotasFetch)
     const { loading, error, quotasGet } = quotasFetch
     const [rows, setRows] = useState([]);
-
+    const [ searchState, setSearchState ] = useState({
+        username_filter: "",
+        email_filter: "",
+        date_filter: "",
+        limit: 10
+    })
     const [openUpdate, setOpenUpdate] = React.useState(false);
     const [id, setId] = React.useState();
-    const handleCloseUpdate = () => {setOpenUpdate(false); dispatch(getQuotas(searchState.username_filter,searchState.email_filter,searchState.date_filter,(page-1)*limit,limit))};
+    const handleCloseUpdate = () => {setOpenUpdate(false); dispatch(getQuotas(searchState.username_filter,searchState.email_filter,searchState.date_filter,(page-1)*searchState.limit,searchState.limit))};
     const handleOpenUpdate = (id) => {
         setId(id)
         setOpenUpdate(true);
     }
 
     const [openSubmit, setOpenSubmit] = React.useState(false);
-    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, limit))};
+    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit))};
     const handleOpenSubmit = () => setOpenSubmit(true);
 
     const typesFetch = useSelector((state) => state.typesFetch)
     const { loading: loadingTypes, error: errorTypes } = typesFetch
 
-    const [ searchState, setSearchState ] = useState({
-        username_filter: "",
-        email_filter: "",
-        date_filter: ""
-    })
+    
     
     useEffect(() => {
-        dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, limit))
+        dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit))
     }, [])
 
     useEffect(() => {
@@ -80,12 +81,12 @@ const AllQuotasPage = () => {
         setPage(1)
         setRows([])
         
-        dispatch(getQuotas(new_values.username_filter,new_values.email_filter,new_values.date_filter,0,limit))
+        dispatch(getQuotas(new_values.username_filter,new_values.email_filter,new_values.date_filter,0,new_values.limit))
     }
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, (value-1)*limit, limit))
+        dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, (value-1)*searchState.limit, searchState.limit))
     }
 
 const columns = [
@@ -155,7 +156,10 @@ const columns = [
                                 <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
                             </Grid>
                             <Grid item>
-                            <DateInputField name='date_filter' label={t('date')}></DateInputField>
+                                <DateInputField name='date_filter' label={t('date')}></DateInputField>
+                            </Grid>
+                            <Grid item>
+                                <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
                             </Grid>
                             <Grid item>
                                 <AnimateButton>
@@ -202,7 +206,7 @@ const columns = [
             autoHeight
             rows={rows}
             columns={columns}
-            pageSize={limit}
+            pageSize={searchState.limit}
             hideFooter={true}
             onPageChange={changePageHandler}
             sx={{
@@ -211,7 +215,7 @@ const columns = [
                 }
             }}
         />
-        <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(quotasGet.number_of_quotas / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+        <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(quotasGet.number_of_quotas / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
         </>
       )}
       </MainCard> 

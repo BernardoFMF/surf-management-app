@@ -19,7 +19,7 @@ import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import CheckInputField from '../../components/multiStepForm/CheckInputField'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
-
+import DropdownInputField from '../../components/multiStepForm/DropdownInputField'
 
 const SportPage = () => {
     const {t} = useTranslation()
@@ -31,13 +31,14 @@ const SportPage = () => {
 
     const [ searchState, setSearchState ] = useState({
         username_filter: "",
-        toggle_filter: false
+        toggle_filter: false,
+        limit: 10
     })
 
     const [open, setOpen] = useState(false);
     const handleClose = () => {
         setOpen(false)
-        dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
+        dispatch(getUsersSport(id, 0, searchState.limit, searchState.toggle_filter))
     };
     const handleOpen = () => setOpen(true);
 
@@ -53,7 +54,7 @@ const SportPage = () => {
             is_absent_: false
         })
         setPage(1)
-        dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
+        dispatch(getUsersSport(id, 0, searchState.limit, searchState.toggle_filter))
     }, []);
 
 
@@ -72,12 +73,11 @@ const SportPage = () => {
     }
 
     useEffect(() => { 
-        dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
+        dispatch(getUsersSport(id, 0, searchState.limit, searchState.toggle_filter))
     },[])
 
 
     const [page, setPage] = useState(1);
-    const limit = 5
 
     useEffect(() => {
         if(usersSportGet){
@@ -92,12 +92,12 @@ const SportPage = () => {
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getUsersSport(id, (value-1)*limit, limit, searchState.toggle_filter))
+        dispatch(getUsersSport(id, (value-1)*searchState.limit, searchState.limit, searchState.toggle_filter))
     }
 
     const deleteUserSportHandle = (id, sid) => {
         dispatch(deleteUserSport(id, sid, searchState.toggle_filter))
-        dispatch(getUsersSport(sid, 0, limit, searchState.toggle_filter))
+        dispatch(getUsersSport(sid, 0, searchState.limit, searchState.toggle_filter))
     }
 
     const approveUserSportHandle = (userSport) => {
@@ -111,14 +111,14 @@ const SportPage = () => {
             is_candidate: false
         }
         dispatch(updateUserSports(userSport.user_id_, userSport.sport_id_, body))
-        dispatch(getUsersSport(id, 0, limit, searchState.toggle_filter))
+        dispatch(getUsersSport(id, 0, searchState.limit, searchState.toggle_filter))
     }
 
     const searchHandler = async(values) => {
         setSearchState(values)
         setPage(1)
         setRows([])
-        dispatch(getUsersSport(id, 0, limit, values.toggle_filter, values.username_filter))
+        dispatch(getUsersSport(id, 0, values.limit, values.toggle_filter, values.username_filter))
     }
 
     const columns = [
@@ -209,6 +209,9 @@ return (
                                             <CheckInputField name='toggle_filter' label={t('is_candidate_')} type='boolean'></CheckInputField>
                                         </Grid>
                                         <Grid item>
+                                            <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                                        </Grid>
+                                        <Grid item>
                                             <AnimateButton>
                                                 <LoadingButton
                                                     disableElevation
@@ -248,7 +251,7 @@ return (
                     autoHeight
                     rows={rows}
                     columns={columns}
-                    pageSize={limit}
+                    pageSize={searchState.limit}
                     hideFooter={true}
                     onPageChange={changePageHandler}
                     sx={{
@@ -257,7 +260,7 @@ return (
                         }
                     }}
                 />
-                <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(usersSportGet.number_of_users / limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(usersSportGet.number_of_users / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
             </>
             )
         }
