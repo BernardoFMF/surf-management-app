@@ -451,7 +451,7 @@ test('Post, Gets, Put & Delete user sport', async () => {
 
 //groups
 test('Post, Put & Get a group', async () => {
-	const groupRes = await supertest(app)
+	const groupsRes = await supertest(app)
         .post('/api/groups')
         .set('Accept', 'application/json')
         .set('Cookie', session)
@@ -464,8 +464,44 @@ test('Post, Put & Get a group', async () => {
         })
         .expect('Content-Type', /json/)
         .expect(201)
+    expect(groupsRes).toSatisfyApiSpec()
+	expect(groupsRes.body).toSatisfySchemaInApiSpec("id")
+
+	const groups = await supertest(app)
+	.get('/api/groups?offset=0&limit=3')
+	.set('Accept', 'application/json')
+	.set('Cookie', session)
+	.expect('Content-Type', /json/)
+	.expect(200)
+	expect(groups).toSatisfyApiSpec()
+	expect(groups.body).toSatisfySchemaInApiSpec("groups")
+
+	const groupRes = await supertest(app)
+        .get('/api/groups/1')
+        .set('Accept', 'application/json')
+        .set('Cookie', session)
+        .expect('Content-Type', /json/)
+        .expect(200)
     expect(groupRes).toSatisfyApiSpec()
-	expect(groupRes.body).toSatisfySchemaInApiSpec("id")
+	expect(groupRes.body).toSatisfySchemaInApiSpec("groupById")
+
+	const groupByIdRes = await supertest(app)
+	.get('/api/groups/members/1?offset=0&limit=5')
+	.set('Accept', 'application/json')
+	.set('Cookie', session)
+	.expect('Content-Type', /json/)
+	.expect(200)
+	expect(groupByIdRes).toSatisfyApiSpec()
+	expect(groupByIdRes.body).toSatisfySchemaInApiSpec("groups")
+
+	const groupById = await supertest(app)
+	.get('/api/groups/1/members?offset=0&limit=4')
+	.set('Accept', 'application/json')
+	.set('Cookie', session)
+	.expect('Content-Type', /json/)
+	.expect(200)
+	expect(groupById).toSatisfyApiSpec()
+	expect(groupById.body).toSatisfySchemaInApiSpec("groupMembers")
 })
 
 //Events

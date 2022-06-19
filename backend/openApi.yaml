@@ -3369,7 +3369,7 @@ components:
           type: string
         description_:
           type: string
-        group_type__:
+        group_type_:
           type: string
         types_:
           type: array
@@ -3378,14 +3378,10 @@ components:
               - $ref: '#/components/schemas/groupTypes1'
               - $ref: '#/components/schemas/groupTypes2'
     groupTypes1:
-      type: object
-      items:
-        type: string
+      type: string
     groupTypes2:
-      type: array
-      items:
-        type: object
-        properties:
+      type: object
+      properties:
           sport_:
             type: integer
           sport_name_:

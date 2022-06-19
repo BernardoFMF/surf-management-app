@@ -103,7 +103,7 @@ beforeAll( async () => {
 
 //Members 
 
-/*
+
 test('Get specific member', async () => {
 	expect.assertions(1)
 	const member = await dbMember.getMemberById(1)
@@ -543,4 +543,4 @@ test('Delete token', async () => {
 	const token = await data.deleteMemberTokenData(1)
 	expect(token).toBe(1)
 })
-*/
+
