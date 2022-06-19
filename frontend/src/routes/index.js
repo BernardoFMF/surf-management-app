@@ -3,10 +3,9 @@ import authRoutes from "./authRoutes"
 import mainRoutes from "./mainRoutes"
 import errorRoutes from "./errorRoutes"
 
-import config from '../config';
 import homeRoutes from "./homeRoutes";
 
 
-export default function ThemeRoutes() {
+export default function Routes() {
     return useRoutes([homeRoutes, authRoutes, mainRoutes, errorRoutes]);
 }
