@@ -54,6 +54,7 @@ const pages = {
                     title: 'My Sports',
                     type: 'item',
                     hasParams: true,
+                    hideIfNotAdmin: false,
                     url: '/application/sports/members/{id}'
                 },
                 {
@@ -61,6 +62,7 @@ const pages = {
                     title: 'All Sports',
                     type: 'item',
                     hasParams: false,
+                    hideIfNotAdmin: false,
                     url: '/application/sports'
                 }
             ]
@@ -70,6 +72,7 @@ const pages = {
             title: 'Quotas',
             type: 'collapse',
             icon: CreditCardIcon,
+            hideIfNotAdmin: false,
             children: [
                 {
                     id: 'my_quotas',
@@ -77,6 +80,7 @@ const pages = {
                     type: 'item',
                     hasParams: true,
                     hideIfZeroValue: true,
+                    hideIfNotAdmin: false,
                     url: '/application/quotas/members/{id}'
                 },
                 {
@@ -102,12 +106,14 @@ const pages = {
             title: 'Events',
             type: 'collapse',
             icon: EventIcon,
+            hideIfNotAdmin: false,
             children: [
                 {
                     id: 'my_events',
                     title: 'My Events',
                     type: 'item',
                     hasParams: true,
+                    hideIfNotAdmin: false,
                     url: '/application/events/members/{id}'
                 },
                 {
@@ -132,6 +138,7 @@ const pages = {
                     title: 'My Groups',
                     type: 'item',
                     hasParams: true,
+                    hideIfNotAdmin: false,
                     url: '/application/groups/members/{id}'
                 },
                 {
@@ -139,6 +146,7 @@ const pages = {
                     title: 'All Groups',
                     type: 'item',
                     hasParams: false,
+                    hideIfNotAdmin: false,
                     url: '/application/groups'
                 }
             ]
@@ -155,6 +163,7 @@ const pages = {
                     title: 'All Candidates',
                     type: 'item',
                     hasParams: false,
+                    hideIfNotAdmin: true,
                     url: '/application/candidates'
                 }
             ]

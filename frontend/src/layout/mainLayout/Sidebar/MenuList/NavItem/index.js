@@ -64,45 +64,51 @@ const NavItem = ({ item, level }) => {
     }, []);
 
     return (
-        <ListItemButton
-            {...listItemProps}
-            disabled={item.disabled}
-            sx={{
-                borderRadius: `${customization.borderRadius}px`,
-                mb: 0.5,
-                alignItems: 'flex-start',
-                backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
-                py: level > 1 ? 1 : 1.25,
-                pl: `${level * 24}px`
-            }}
-            selected={customization.isOpen.findIndex((id) => id === item.id) > -1}
-            onClick={() => itemHandler(item.id)}
-        >
-            <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
-            <ListItemText
-                primary={
-                    <Typography variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'} color="inherit">
-                        {t(item.id)}
-                    </Typography>
-                }
-                secondary={
-                    item.caption && (
-                        <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-                            {item.caption}
-                        </Typography>
-                    )
-                }
-            />
-            {item.chip && (
-                <Chip
-                    color={item.chip.color}
-                    variant={item.chip.variant}
-                    size={item.chip.size}
-                    label={item.chip.label}
-                    avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
-                />
-            )}
-        </ListItemButton>
+        <>
+            {
+                (item.hideIfNotAdmin === false || (item.hideIfNotAdmin === true && memberInfo.is_admin_ === true)) && (
+                <ListItemButton
+                    {...listItemProps}
+                    disabled={item.disabled}
+                    sx={{
+                        borderRadius: `${customization.borderRadius}px`,
+                        mb: 0.5,
+                        alignItems: 'flex-start',
+                        backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
+                        py: level > 1 ? 1 : 1.25,
+                        pl: `${level * 24}px`
+                    }}
+                    selected={customization.isOpen.findIndex((id) => id === item.id) > -1}
+                    onClick={() => itemHandler(item.id)}
+                >
+                    <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
+                    <ListItemText
+                        primary={
+                            <Typography variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'} color="inherit">
+                                {t(item.id)}
+                            </Typography>
+                        }
+                        secondary={
+                            item.caption && (
+                                <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
+                                    {item.caption}
+                                </Typography>
+                            )
+                        }
+                    />
+                    {item.chip && (
+                        <Chip
+                            color={item.chip.color}
+                            variant={item.chip.variant}
+                            size={item.chip.size}
+                            label={item.chip.label}
+                            avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
+                        />
+                    )}
+                </ListItemButton>
+                )
+            }
+        </>
     );
 };
 

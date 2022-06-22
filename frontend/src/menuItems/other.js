@@ -12,6 +12,7 @@ const other = {
             type: 'item',
             url: '/uploadfile',
             icon: UploadFileIcon,
+            hideIfNotAdmin: true
         }
     ]
 }

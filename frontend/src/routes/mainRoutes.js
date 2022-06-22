@@ -35,7 +35,7 @@ const mainRoutes = {
     children: [
         {
             path: '/dashboard/analytics',
-            element: <DashboardAnalytics/>
+            element: <RequireAdmin><DashboardAnalytics/></RequireAdmin>
         },
         {
             path: '/dashboard/overview',

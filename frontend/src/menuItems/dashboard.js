@@ -1,5 +1,5 @@
 import { IconDashboard } from '@tabler/icons'
-
+import AssessmentIcon from '@mui/icons-material/Assessment';
 const icons = { IconDashboard }
 
 const dashboard = {
@@ -14,6 +14,16 @@ const dashboard = {
             type: 'item',
             url: '/dashboard/overview',
             icon: icons.IconDashboard,
+            hideIfNotAdmin: false,
+            breadcrumbs: false
+        },
+        {
+            id: 'analytics',
+            title: 'Dashboard',
+            type: 'item',
+            url: '/dashboard/analytics',
+            icon: AssessmentIcon,
+            hideIfNotAdmin: true,
             breadcrumbs: false
         }
     ]

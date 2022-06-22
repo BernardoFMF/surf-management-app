@@ -3,9 +3,10 @@ import React from 'react'
 import { useParams } from 'react-router-dom';
 import MainCard from '../../components/cards/MainCard';
 import QuotasChart from '../../components/charts/QuotasChart'
+import SportsChart from '../../components/charts/SportsChart';
 
 const DashboardAnalyticsPage = () => {
-    const data = {
+    const quotaData = {
         series: [{
             name: 'PRODUCT A',
             data: [44, 55, 41, 67, 22, 43]
@@ -29,11 +30,26 @@ const DashboardAnalyticsPage = () => {
         ]
     }
 
+    const sportData = {
+        series: [44, 55, 41, 17, 15]
+    }
+
     return (
         <>
-            <MainCard>
-                <QuotasChart data={data}/>
-            </MainCard>
+            <Grid container spacing={2}>
+                <Grid item xs="auto">
+                    <MainCard title={'Quotas'}>
+                        <QuotasChart data={quotaData}/>
+                    </MainCard> 
+                </Grid>
+                <Grid item xs="auto">
+                    <MainCard title={'Sports'}>
+                        <SportsChart data={sportData}/>
+                    </MainCard>   
+                </Grid>
+                
+            </Grid>
+           
         </>
     )
 }
