@@ -1,4 +1,4 @@
-# surf-management-app
+# Surf Club Management Application
 
 <div align="center" style="margin-bottom: 30px;">
     <div style="margin-bottom: 30px">
