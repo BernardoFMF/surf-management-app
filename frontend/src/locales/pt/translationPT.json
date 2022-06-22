@@ -315,5 +315,8 @@
     "quota_value": "Valor da Quota",
 
     "rows": "Linhas",
-    "analytics": "Estatísticas"
+    "analytics": "Estatísticas",
+    "total_users" : "Total de utilizadores",
+    "total_companies": "Total de empresas parceiras",
+    "total_candidates": "Total de candidatos"
 }

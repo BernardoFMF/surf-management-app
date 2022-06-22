@@ -22,6 +22,7 @@ const pages = {
                     title: 'My Profile',
                     type: 'item',
                     hasParams: true,
+                    hideIfNotAdmin: false,
                     url: '/application/members/{id}',
                 },
                 {
