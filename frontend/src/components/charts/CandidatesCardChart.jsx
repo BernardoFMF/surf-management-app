@@ -160,7 +160,7 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
                                                 sx={{
                                                     ...theme.typography.commonAvatar,
                                                     ...theme.typography.largeAvatar,
-                                                    backgroundColor: theme.palette.secondary[800],
+                                                    backgroundColor: theme.palette.primary[800],
                                                     mt: 1
                                                 }}
                                                 onClick={() => {setValueGender(''); setValueNationality('')}}
