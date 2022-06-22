@@ -1,9 +1,9 @@
 insert into candidate_(nif_, cc_, full_name_, nationality_, birth_date_, location_, address_, postal_code_, email_, phone_number_, pword_, username_, gender_, iban_) 
 values (154781132, 156784242,'Miguel da Silva Lopes','Portuguese','2000-05-19','Lisboa','Rua do Ouro n45','2000-546','miguelgf@gmail.com', 967021559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','miguelf', 'Male', 'PT50002700000001234567831'),
-(151444331, 156722241,'Jo�o Silva','Portuguese','2001-10-19','Lisboa','Rua do Cobre n22','2001-226','Silva@gmail.com', 933321559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Silva', 'Male', 'PT50002700000001234567832'),
+(151444331, 156722241,'Joao Silva','Portuguese','2001-10-19','Lisboa','Rua do Cobre n22','2001-226','Silva@gmail.com', 933321559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Silva', 'Male', 'PT50002700000001234567832'),
 (151142332, 151111142,'Roberto Bolha','Portuguese','1999-05-19','Porto','Rua da madeira n15','2075-543','Bolha@gmail.com', 922221559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Bolha', 'Other', 'PT50002700000001234567833'),
 (152242333, 156333243,'Amilcar Dias','Portuguese','2000-09-19','Braga','Rua do Ouro n45','2330-216','Dias@gmail.com', 911121559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Dias', 'Other', 'PT50002700000001234567835'),
-(222783334, 156111244,'Am�rico Jorge','Portuguese','2000-02-17','Coimbra','Rua da laranja n67','2321-541','Jorge@gmail.com', 937821559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Jorge', 'Male', 'PT50002700000001234567834'),
+(222783334, 156111244,'Americo Jorge','Portuguese','2000-02-17','Coimbra','Rua da laranja n67','2321-541','Jorge@gmail.com', 937821559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Jorge', 'Male', 'PT50002700000001234567834'),
 (123782333, 159994243,'Roger Dias','Portuguese','1999-01-11','Santar�m','Rua da santa n45','2355-216','Roger@gmail.com', 911144559,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Roger', 'Other', 'PT50002700000001234567836'),
 (222782133, 155554243,'Tiago Pedro','Portuguese','1987-05-27','Portim�o','Rua da m�o n11','2220-216','Pedro@gmail.com', 911121999,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Pedro', 'Male', 'PT50002700000001234567838'),
 (221782233, 133384243,'Nuna Dias','Portuguese','1967-04-11','Lisboa','Rua do Bolha n45','2344-216','Nuna@gmail.com', 911224543,'$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K','Nuna', 'Female', 'PT50002700000001234567837'),
@@ -74,7 +74,7 @@ values (2,null, 15, '2022-01-01'),
 
 
 insert into Contact_ 
-values (1,'Ericeira','Rua do Cl�rigos n2 3�esq','2050-032','afonsoribeiro@gmail.com', 962681730),
+values (1,'Ericeira','Rua do Clerigos n2','2050-032','afonsoribeiro@gmail.com', 962681730),
 (2,'Lisboa','Rua da Bobadela n43', '2000-561', 'jlopes@gmail.com', 925827332),
 (3,'Ericeira','Rua da ericeira','2812-829','ess@gmail.com', 938172388),
 (4,'Billacity','Rua da billa', '2220-829', 'billybonga@gmail.com', 932323238);
@@ -85,7 +85,7 @@ values (3,234517789,'Ripcurl shop'),
 
 insert into User_ 
 values (1,250549361,459254851,'Afonso Melo Ribeiro','Portuguese','1997-05-25','2020-03-14',true, true, 'Male'),
-(2,250549381,459254751,'Jos� Elias Lopes','Portuguese','1989-04-27','2021-03-14', true,false, 'Male');
+(2,250549381,459254751,'Jose Elias Lopes','Portuguese','1989-04-27','2021-03-14', true,false, 'Male');
 
 insert into Member_img_ 
 values (1, null), (2, null), (3, null), (4, null);
@@ -128,6 +128,8 @@ call post_group('grupo para fundadores', 'descricao de grupo', array['founder'],
 call post_group('grupo para effective e corporate', 'descricao de grupo',array['effective', 'corporate'], 'member_type', array[]::integer[], 0);
 call post_group('grupo para coaches', 'descricao de grupo', array['coach'], 'member_sport_type', array[1], 0);
 call post_group('grupo para coaches do desporto 2', 'descricao de grupo', array['coach'], 'member_sport_type', array[2], 0);
+
+call post_event('assembleia geral', '2022-06-22', '2022-06-25', array[1, 2, 3, 4], 0);
 
 insert into Membership_card_ 
 values (1,'data:image/png;base64,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'),

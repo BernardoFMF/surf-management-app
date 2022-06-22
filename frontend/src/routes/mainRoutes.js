@@ -28,7 +28,6 @@ const UploadFilePage = Loadable(lazy(() => import('../Pages/UploadFilePage')))
 const MyGroupsPage = Loadable(lazy(() => import('../Pages/application/MyGroupsPage')))
 const AllGroupsPage = Loadable(lazy(() => import('../Pages/application/AllGroupsPage')))
 const GroupPage = Loadable(lazy(() => import('../Pages/application/GroupPage')))
-//const DashboardStatistics = Loadable(lazy(() => import('Pages/dashboard/DashboardStatisticsPage')))
 
 const mainRoutes = {
     path: '/',
