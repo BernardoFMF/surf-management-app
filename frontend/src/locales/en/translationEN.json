@@ -252,6 +252,7 @@
     "going": "Going",
     "interested": "Interested",
     "not going": "Not going",
+    "unanswered": "Unanswered",
     "state": "State",
     "update_attendance": "Update state",
     "state_updated_successfully": "State updated successfully",

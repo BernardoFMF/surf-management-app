@@ -19,7 +19,7 @@ const SportsChart = ({ data }) => {
                 }
               }
             }]
-          }
+        }
     }
 
 

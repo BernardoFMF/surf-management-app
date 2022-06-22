@@ -1,56 +1,135 @@
-import { Grid } from '@mui/material';
-import React from 'react'
-import { useParams } from 'react-router-dom';
-import MainCard from '../../components/cards/MainCard';
-import QuotasChart from '../../components/charts/QuotasChart'
-import SportsChart from '../../components/charts/SportsChart';
+import React, { useEffect, useState } from 'react'
+import QuotasChartWrapper from '../../components/chartWrappers/QuotasChartWrapper'
+import UpcomingEventsChartWrapper from '../../components/chartWrappers/UpcomingEventsChartWrapper'
+import NewUsersChartWrapper from '../../components/chartWrappers/NewUsersChartWrapper'
+import { gridSpacing } from '../../store/constants/themeConstants'
+import { Grid } from '@mui/material'
 
 const DashboardAnalyticsPage = () => {
-    const quotaData = {
-        series: [{
-            name: 'PRODUCT A',
-            data: [44, 55, 41, 67, 22, 43]
-        }, {
-            name: 'PRODUCT B',
-            data: [13, 23, 20, 8, 13, 27]
-        }, {
-            name: 'PRODUCT C',
-            data: [11, 17, 15, 15, 21, 14]
-        }, {
-            name: 'PRODUCT D',
-            data: [21, 7, 25, 13, 22, 8]
-        }],
-        categories: [
-            '01/01/2011 GMT', 
-            '01/02/2011 GMT', 
-            '01/03/2011 GMT', 
-            '01/04/2011 GMT',
-            '01/05/2011 GMT', 
-            '01/06/2011 GMT'
-        ]
+    const [loading, setLoading] = useState(true)
+    const unformattedData = {
+        "quotas": {
+            "years": [ 2022, 2001 ],
+            "amounts": [3000, 5000],
+            "total_amount": [12000, 20000],
+            "data": [
+                {
+                    "id": 2022,
+                    "series": [
+                        {
+                            "name": "paid",
+                            "data": [ 50, 100, 200, 400, 50, 100, 200, 400, 50, 100, 200, 400 ]
+                        },
+                        {
+                            "name": "not_paid",
+                            "data": [ 50, 100, 200, 0, 50, 100, 200, 400, 50, 100, 200, 400 ]
+                        }
+                    ]
+                },
+                {
+                    "id": 2001,
+                    "series": [
+                        {
+                            "name": "paid",
+                            "data": [ 50, 1000, 200, 400, 50, 100, 200, 400, 50, 1006, 200, 400 ]
+                        },
+                        {
+                            "name": "not_paid",
+                            "data": [ 500, 100, 200, 400, 504, 1004, 200, 400, 50, 100, 200, 400 ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "users": {
+            "years": [ 2022, 2001 ],
+            "member_growth": [-11, 0.2],
+            "data": [
+                {
+                    "id": 2022,
+                    "series": [
+                        {
+                            "name": "new_users",
+                            "data": [ 10, 15, 2, 4, 50, 12, 15, 47, 20, 0, 6, 10 ]
+                        }
+                    ]
+                },
+                {
+                    "id": 2001,
+                    "series": [
+                        {
+                            "name": "new_users",
+                            "data": [ 15, 10, 12, 24, 5, 21, 1, 7, 0, 4, 10, 6 ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "upcoming_events": {
+            "describers": [
+                {
+                    "id": 1,
+                    "name": "Evento 1",
+                    "attendance": {
+                        "going": 55,
+                        "not_going": 30,
+                        "interested": 20,
+                        "unanswered": 5
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "Evento 2",
+                    "attendance": {
+                        "going": 10,
+                        "not_going": 10,
+                        "interested": 50,
+                        "unanswered": 0
+                    }
+                }
+            ]
+        }
     }
 
-    const sportData = {
-        series: [44, 55, 41, 17, 15]
-    }
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 2000)
+    }, [])
 
     return (
-        <>
-            <Grid container spacing={2}>
-                <Grid item xs="auto">
-                    <MainCard title={'Quotas'}>
-                        <QuotasChart data={quotaData}/>
-                    </MainCard> 
+        <Grid container spacing={gridSpacing}>
+            <Grid item xs={12}>
+                <Grid container spacing={gridSpacing}>
+                    <Grid item xs={12} md={8}>
+                        <QuotasChartWrapper 
+                            loading={loading} 
+                            dropdownOptions={unformattedData.quotas.years} 
+                            totalAmount={unformattedData.quotas.total_amount} 
+                            amounts={unformattedData.quotas.amounts} 
+                            data={unformattedData.quotas.data} 
+                        />                        
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <UpcomingEventsChartWrapper 
+                            loading={loading}
+                            dropdownOptions={unformattedData.upcoming_events.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
+                            data={unformattedData.upcoming_events.describers.map(obj => { let newObj = { id: obj.id, attendance: obj.attendance}; return newObj })} 
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs="auto">
-                    <MainCard title={'Sports'}>
-                        <SportsChart data={sportData}/>
-                    </MainCard>   
-                </Grid>
-                
             </Grid>
-           
-        </>
+            <Grid item xs={12}>
+                <Grid item xs={12} md={8}>
+                    <NewUsersChartWrapper 
+                        loading={loading}
+                        dropdownOptions={unformattedData.users.years} 
+                        growth={unformattedData.users.member_growth} 
+                        data={unformattedData.users.data} 
+                    />                        
+                </Grid>
+            </Grid>
+        </Grid>
     )
 }
 

@@ -255,6 +255,7 @@
     "going": "Vou",
     "interested": "Interessado",
     "not going": "Não vou",
+    "unanswered": "Sem resposta",
     "state": "Estado",
     "update_attendance": "Atualizar estado",
     "state_updated_successfully": "Estado atualizado com sucesso",
