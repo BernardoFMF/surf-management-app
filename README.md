@@ -1,4 +1,4 @@
-# surf-management-app
+# Surf Club Management Application
 
 <div align="center" style="margin-bottom: 30px;">
     <div style="margin-bottom: 30px">
@@ -72,3 +72,7 @@ This command will boot up the server and the react development server, which wil
 - **Company member**:
     - **username**: ripcurl
     - **password**: 123
+
+***
+
+You can also try it online, using the same dummy accounts, in here -> https://surf-management-app.herokuapp.com/
