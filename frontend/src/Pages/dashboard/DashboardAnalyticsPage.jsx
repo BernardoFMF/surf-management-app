@@ -173,6 +173,60 @@ const DashboardAnalyticsPage = () => {
                     }
                 }
             ]
+        },
+        "sportsV2": {
+            "describers": [
+                {
+                    "id": 1,
+                    "name": "Sport 1",
+                    "total_males": 50,
+                    "total_females": 20,
+                    "total_other": 3,
+                    "gender_distribution": [
+                        {
+                            "type": "Coach",
+                            "gender_distribution": {
+                                "male": 5,
+                                "female": 10,
+                                "other": 2
+                            }
+                        },
+                        {
+                            "type": "Jury",
+                            "gender_distribution": {
+                                "male": 2,
+                                "female": 14,
+                                "other": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 1,
+                    "name": "Sport 2",
+                    "total_males": 10,
+                    "total_females": 30,
+                    "total_other": 1,
+                    "gender_distribution": [
+                        {
+                            "type": "Coach",
+                            "gender_distribution": {
+                                "male": 1,
+                                "female": 12,
+                                "other": 3
+                            }
+                        },
+                        {
+                            "type": "Jury",
+                            "gender_distribution": {
+                                "male": 2,
+                                "female": 14,
+                                "other": 1
+                            }
+                        }
+                    ]
+                },
+            ]
         }
     }
 

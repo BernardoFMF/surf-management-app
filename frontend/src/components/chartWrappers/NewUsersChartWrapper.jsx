@@ -38,7 +38,7 @@ const NewUsersChartWrapper = ({ loading, dropdownOptions, growth, data }) => {
                                 <Grid item>
                                     <Grid container direction="column" spacing={1}>
                                         <Grid item>
-                                            <Typography variant="subtitle2">{`Total member growth in ${value}`}</Typography>
+                                            <Typography variant="subtitle2">{`Total user growth in ${value}`}</Typography>
                                         </Grid>
                                         <Grid item>
                                             <Typography variant="h3" color={yearGrowth < 0 ? 'secondary' : 'primary'}>{yearGrowth}%</Typography>
