@@ -68,6 +68,9 @@
     "male": "Male",
     "female": "Female",
     "other": "Other",
+    "male_for_donut": "Male",
+    "female_for_donut": "Female",
+    "other_for_donut": "Other",
 
     "update_discard": "Descartar",
 

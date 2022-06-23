@@ -10,7 +10,7 @@ import { Avatar, Box, Button, Grid, Menu, MenuItem, Typography, Select,InputLabe
 
 // project imports
 import MainCard from '../cards/MainCard';
-import SkeletonChartCard from '../cards/SkeletonChartCard';
+import SkeletonChartCard from '../skeletons/ChartCardSkeleton';
 
 // assets
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
@@ -73,29 +73,34 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
         setValueGender(e.target.value)
     }
 
-    let usersCount = total
+    let usersCount = 0
+    if(!valueGender && !valueNationality) usersCount = total
+    else {
 
-    if(valueGender === t('male')) usersCount = total_males
-    if(valueGender === t('female')) usersCount = total_females
-    if(valueGender === t('other')) usersCount = total_other
-    if(valueNationality) {
-        distribution.forEach(element => {
-            if(element.nationality === valueNationality) {
-                if(valueGender === t('male')) usersCount = element.gender_distribution.male
-                else if(valueGender === t('female')) usersCount = element.gender_distribution.female
-                else if(valueGender === t('other')) usersCount = element.gender_distribution.other
-                else usersCount = element.gender_distribution.male + element.gender_distribution.female + element.gender_distribution.other
-            } 
-        });
+        if(valueNationality) {
+            distribution.forEach(element => {
+                if(element.nationality === valueNationality) {
+                    if(valueGender === t('male')) usersCount = element.gender_distribution.male
+                    else if(valueGender === t('female')) usersCount = element.gender_distribution.female
+                    else if(valueGender === t('other')) usersCount = element.gender_distribution.other
+                    else usersCount = element.gender_distribution.male + element.gender_distribution.female + element.gender_distribution.other
+                } 
+            });
+        } else {
+            if(valueGender === t('male')) usersCount = total_males
+            if(valueGender === t('female')) usersCount = total_females
+            if(valueGender === t('other')) usersCount = total_other
+        }
     }
+    
     return (
         <>
             {isLoading ? (
                 <SkeletonChartCard />
             ) : (
                 <AnimatedCard>
-                    <CardWrapper border={false} content={false}>
-                        <Box sx={{ p: 2.25 }} height={'auto'}>
+                    <CardWrapper border={false} content={false} >
+                        <Box sx={{ p: 2.25 }} height={'100%'}>
                             <Grid container direction="column">
                                 <Grid item>
                                     <Grid container spacing={2}>
@@ -137,7 +142,7 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
                                             </FormControl>
                                         </Grid> 
                                         <Grid item sx={{ml: {lg:1 ,md: 7.5, sm: 7.5, xs: 7.5}}}>
-                                            <FormControl variant="standard" sx={{ minWidth: 120 }}>
+                                            <FormControl variant="standard" sx={{  minWidth: 120 }}>
                                                 <InputLabel id="nationality-label" sx={{color: 'white'}}>{t('sign_up_nationality')}</InputLabel>
                                                 <Select
                                                     labelId="nationality-label"
@@ -147,25 +152,25 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
                                                     label="nationality"
                                                 >
                                                     {countries.map((option) => (
-                                                        <MenuItem key={option} value={option}>
+                                                        <MenuItem key={option} value={option} >
                                                             {option}
                                                         </MenuItem>
                                                     ))}
                                                 </Select>
                                             </FormControl>
                                         </Grid> 
-                                        <Grid item >
+                                        <Grid item sx={{ml: {lg:1 ,md: 7.5, sm: 7.5, xs: 7.5}}} zIndex={100}>
                                             <Avatar
                                                 variant="rounded"
                                                 sx={{
                                                     ...theme.typography.commonAvatar,
                                                     ...theme.typography.largeAvatar,
-                                                    backgroundColor: theme.palette.primary[800],
+                                                    backgroundColor: theme.palette.secondary.light,
                                                     mt: 1
                                                 }}
                                                 onClick={() => {setValueGender(''); setValueNationality('')}}
                                             >
-                                                <RestartAltIcon></RestartAltIcon>
+                                                <RestartAltIcon sx={{color: theme.palette.primary.main}} ></RestartAltIcon>
                                             </Avatar>
                                         </Grid>         
                                     </Grid>

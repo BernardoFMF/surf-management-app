@@ -9,7 +9,7 @@ import { Avatar, Box, Button, Grid, Menu, MenuItem, Typography, Select,InputLabe
 
 // project imports
 import MainCard from '../cards/MainCard';
-import SkeletonChartCard from '../cards/SkeletonChartCard';
+import SkeletonChartCard from '../skeletons/ChartCardSkeleton';
 
 // assets
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
@@ -73,19 +73,24 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
         setValueGender(e.target.value)
     }
 
-    let candidatesCount = total
-    if(valueGender === t('male')) candidatesCount = total_males
-    if(valueGender === t('female')) candidatesCount = total_females
-    if(valueGender === t('other')) candidatesCount = total_other
-    if(valueNationality) {
-        distribution.forEach(element => {
-            if(element.nationality === valueNationality) {
-                if(valueGender === t('male')) candidatesCount = element.gender_distribution.male
-                else if(valueGender === t('female')) candidatesCount = element.gender_distribution.female
-                else if(valueGender === t('other')) candidatesCount = element.gender_distribution.other
-                else candidatesCount = element.gender_distribution.male + element.gender_distribution.female + element.gender_distribution.other
-            } 
-        });
+    
+    let candidatesCount = 0
+    if(!valueGender && !valueNationality) candidatesCount = total
+    else {
+        if(valueNationality) {
+            distribution.forEach(element => {
+                if(element.nationality === valueNationality) {
+                    if(valueGender === t('male')) candidatesCount = element.gender_distribution.male
+                    else if(valueGender === t('female')) candidatesCount = element.gender_distribution.female
+                    else if(valueGender === t('other')) candidatesCount = element.gender_distribution.other
+                    else candidatesCount = element.gender_distribution.male + element.gender_distribution.female + element.gender_distribution.other
+                } 
+            });
+        } else {
+            if(valueGender === t('male') ) candidatesCount = total_males
+            if(valueGender === t('female')) candidatesCount = total_females
+            if(valueGender === t('other')) candidatesCount = total_other
+        }
     }
 
     return (
@@ -95,7 +100,7 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
             ) : (
                 <AnimatedCard>
                     <CardWrapper border={false} content={false}>
-                        <Box sx={{ p: 2.25 }} height={'auto'}>
+                        <Box sx={{ p: 2.25 }} height={'100%'}>
                             <Grid container direction="column">
                                 <Grid item>
                                     <Grid container spacing={2}>
@@ -154,20 +159,20 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
                                                 </Select>
                                             </FormControl>
                                         </Grid>     
-                                        <Grid item >
+                                        <Grid item sx={{ml: {lg:1 ,md: 7.5, sm: 7.5, xs: 7.5}}} zIndex={100}>
                                             <Avatar
                                                 variant="rounded"
                                                 sx={{
                                                     ...theme.typography.commonAvatar,
                                                     ...theme.typography.largeAvatar,
-                                                    backgroundColor: theme.palette.primary[800],
+                                                    backgroundColor: theme.palette.secondary.light,
                                                     mt: 1
                                                 }}
                                                 onClick={() => {setValueGender(''); setValueNationality('')}}
                                             >
-                                                <RestartAltIcon></RestartAltIcon>
+                                                <RestartAltIcon sx={{color: theme.palette.primary.main}} ></RestartAltIcon>
                                             </Avatar>
-                                        </Grid>     
+                                        </Grid>    
                                     </Grid>
                                 </Grid>
                                 <Grid item>

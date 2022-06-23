@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import QuotasChartWrapper from '../../components/chartWrappers/QuotasChartWrapper'
 import UpcomingEventsChartWrapper from '../../components/chartWrappers/UpcomingEventsChartWrapper'
 import NewUsersChartWrapper from '../../components/chartWrappers/NewUsersChartWrapper'
+import SportsWrapper from '../../components/chartWrappers/SportsWrapper'
 import { gridSpacing } from '../../store/constants/themeConstants'
 import { Grid } from '@mui/material'
 
@@ -52,7 +53,7 @@ const DashboardAnalyticsPage = () => {
                 }
             ]
         },
-        "users": {
+        "members": {
             "years": [ 2022, 2001 ],
             "member_growth": [-11, 0.2],
             "data": [
@@ -99,75 +100,80 @@ const DashboardAnalyticsPage = () => {
                     }
                 }
             ]
+        },
+        "sports": {
+            "describers": [
+                {
+                    "id": 1,
+                    "name": "Sport 1",
+                    "gender": {
+                        "male": 55,
+                        "female": 30,
+                        "other": 20
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "Sport 2",
+                    "gender": {
+                        "male": 26,
+                        "female": 14,
+                        "other": 8
+                    }
+                }
+            ]
+        },
+        "users": {
+            "total": 2500,
+            "total_males": 50,
+            "total_females": 20,
+            "total_other": 3,
+            "distribution": [
+                {
+                    "nationality": "Portuguese",
+                    "gender_distribution": {
+                        "male": 5,
+                        "female": 10,
+                        "other": 2
+                    }
+                },
+                {
+                    "nationality": "Brazilian",
+                    "gender_distribution": {
+                        "male": 2,
+                        "female": 11,
+                        "other": 5
+                    }
+                }
+            ]
+        },
+        "companies": {
+            "total": 20,
+        },
+        "candidates": {
+            "total": 2500,
+            "total_males": 50,
+            "total_females": 20,
+            "total_other": 3,
+            "distribution": [
+                {
+                    "nationality": "Portuguese",
+                    "gender_distribution": {
+                        "male": 5,
+                        "female": 10,
+                        "other": 2
+                    }
+                },
+                {
+                    "nationality": "Brazilian",
+                    "gender_distribution": {
+                        "male": 2,
+                        "female": 11,
+                        "other": 5
+                    }
+                }
+            ]
         }
-    }
-
-    useEffect(() => {
-        setTimeout(() => {
-            setLoading(false)
-        }, 2000)
-    }, [])
-
-    const userData = {
-        series:
-            {
-                "users": {
-                    "total": 2500,
-                    "total_males": 50,
-                    "total_females": 20,
-                    "total_other": 3,
-                    "distribution": [
-                        {
-                            "nationality": "Portuguese",
-                            "gender_distribution": {
-                                "male": 5,
-                                "female": 10,
-                                "other": 2
-                            }
-                        },
-                        {
-                            "nationality": "Brazilian",
-                            "gender_distribution": {
-                                "male": 2,
-                                "female": 11,
-                                "other": 5
-                            }
-                        }
-                    ]
-                }
-            }
-        
-    }
-
-    const candidateData = {
-        series:
-            {
-                "candidates": {
-                    "total": 2500,
-                    "total_males": 50,
-                    "total_females": 20,
-                    "total_other": 3,
-                    "distribution": [
-                        {
-                            "nationality": "Portuguese",
-                            "gender_distribution": {
-                                "male": 5,
-                                "female": 10,
-                                "other": 2
-                            }
-                        },
-                        {
-                            "nationality": "Brazilian",
-                            "gender_distribution": {
-                                "male": 2,
-                                "female": 11,
-                                "other": 5
-                            }
-                        }
-                    ]
-                }
-            }
-        
     }
 
     useEffect(() => {
@@ -238,25 +244,34 @@ const DashboardAnalyticsPage = () => {
             </Grid>
             <Grid item xs={12}>
                 <Grid container justifyContent={'center'} direction={ { xs: "column", md: "row"} } spacing={2}>
-                    <Grid item xs={4} >
-                        <UsersCardChart isLoading={loading} total={userData.series.users.total} total_males={userData.series.users.total_males} total_females={userData.series.users.total_females} total_other={userData.series.users.total_other} distribution={userData.series.users.distribution} />
+                    <Grid item xs={4} md={4}>
+                        <UsersCardChart isLoading={loading} total={unformattedData.users.total} total_males={unformattedData.users.total_males} total_females={unformattedData.users.total_females} total_other={unformattedData.users.total_other} distribution={unformattedData.users.distribution} />
                     </Grid>
-                    <Grid item xs={3.5} >
-                        <CompaniesCardChart isLoading={loading} data={userData} />
+                    <Grid item xs={4} md={4}>
+                        <CompaniesCardChart isLoading={loading} total={unformattedData.companies.total} />
                     </Grid>
-                    <Grid item xs={4} >
-                        <CandidatesCardChart isLoading={loading} total={candidateData.series.candidates.total} total_males={candidateData.series.candidates.total_males} total_females={candidateData.series.candidates.total_females} total_other={candidateData.series.candidates.total_other} distribution={candidateData.series.candidates.distribution} />
+                    <Grid item xs={4} md={4}>
+                        <CandidatesCardChart isLoading={loading} total={unformattedData.candidates.total} total_males={unformattedData.candidates.total_males} total_females={unformattedData.candidates.total_females} total_other={unformattedData.candidates.total_other} distribution={unformattedData.candidates.distribution} />
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12}>
-                <Grid item xs={12} md={8}>
-                    <NewUsersChartWrapper 
-                        loading={loading}
-                        dropdownOptions={unformattedData.users.years} 
-                        growth={unformattedData.users.member_growth} 
-                        data={unformattedData.users.data} 
-                    />                        
+                <Grid container spacing={gridSpacing}>
+                    <Grid item xs={12} md={4}>
+                        <SportsWrapper
+                            loading={loading}
+                            dropdownOptions={unformattedData.sports.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
+                            data={unformattedData.sports.describers.map(obj => { let newObj = { id: obj.id, gender: obj.gender}; return newObj })} 
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={8}>
+                        <NewUsersChartWrapper 
+                            loading={loading}
+                            dropdownOptions={unformattedData.members.years} 
+                            growth={unformattedData.members.member_growth} 
+                            data={unformattedData.members.data} 
+                        />                        
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

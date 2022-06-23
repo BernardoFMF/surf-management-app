@@ -12,7 +12,7 @@ import Chart from 'react-apexcharts';
 
 // project imports
 import MainCard from '../cards/MainCard';
-import SkeletonChartCard from '../cards/SkeletonChartCard';
+import SkeletonChartCard from '../skeletons/ChartCardSkeleton';
 
 // assets
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -57,7 +57,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
-const CompaniesCardChart = ({ isLoading, data }) => {
+const CompaniesCardChart = ({ isLoading, total }) => {
     const theme = useTheme();
     const {t, i18n} = useTranslation()
     const navigate = useNavigate()
@@ -69,7 +69,7 @@ const CompaniesCardChart = ({ isLoading, data }) => {
             ) : (
                 <AnimatedCard>
                     <CardWrapper border={false} content={false} >
-                        <Box sx={{ p: 2.25 }} height={'auto'}>
+                        <Box sx={{ p: 2.25 }} height={'100%'}>
                             <Grid container direction="column">
                                 <Grid item>
                                     <Grid container justifyContent="space-between">
@@ -94,7 +94,7 @@ const CompaniesCardChart = ({ isLoading, data }) => {
                                     <Grid container alignItems="center">
                                         <Grid item>
                                             <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                43
+                                                {total}
                                             </Typography>
                                         </Grid>
                                     </Grid>
