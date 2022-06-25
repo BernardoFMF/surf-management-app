@@ -32,9 +32,10 @@ const FileInputField = ({ label, size, ...props}) => {
                 type="file"
                 id="select-file"
                 style={{ display: 'none' }}
+                align="left"
                 onChange={e => {if(e.target.files[0])setSelectedFile(e.target.files[0])}}
             />
-            <Box mt={2} textAlign="center">
+            <Box mt={2} textAlign="left">
                 <label htmlFor="select-file">
                     <AnimateButton>
                         <Button 
@@ -44,7 +45,7 @@ const FileInputField = ({ label, size, ...props}) => {
                             variant="contained"
                             color="primary"
                             component="span">
-                            {t('file')}
+                            {props.name}
                         </Button>
                     </AnimateButton>
                 </label>

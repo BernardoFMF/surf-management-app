@@ -314,6 +314,8 @@
     "quota_value": "Quota Value",
 
     "rows": "Rows",
-    "analytics": "Analytics"
+    "analytics": "Analytics",
+
+    "fileUpload": "File Upload"
 
 }

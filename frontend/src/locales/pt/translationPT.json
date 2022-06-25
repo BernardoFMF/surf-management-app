@@ -315,5 +315,7 @@
     "quota_value": "Valor da Quota",
 
     "rows": "Linhas",
-    "analytics": "Estatísticas"
+    "analytics": "Estatísticas",
+
+    "fileUpload": "Upload do ficheiro"
 }

@@ -7,7 +7,7 @@ const other = {
     hideIfNotAdmin: true,
     children: [
         {
-            id: 'uploadFile',
+            id: 'fileUpload',
             title: 'Upload File',
             type: 'item',
             url: '/uploadfile',

@@ -1,0 +1,4 @@
+company/User,username,tipo de membro,iban,nif,cc,nome completo,nacionalidade,date de nascimento,date de entrada no clube,joia paga,‚ admin ,g‚nero,localiza‡?o,morada,c¢digo postal,email,n£mero de telefone
+U,afonsoribeiro,founder,PT50001100000001234567833,250549361,459254851,Afonso Melo Ribeiro,Portuguese,5/25/1997,3/14/2020,t,t,Male,Ericeira,Rua do Cl‚rigos n2 3esq,2050-032,afonsoribeiro@gmail.com,962681730
+U,joselopes,effective,PT50001234270000000567833,250549381,459254751,Jos‚ Elias Lopes,Portuguese,4/27/1989,3/14/2021,t,f,Male,Lisboa,Rua da Bobadela n43,2000-561,jlopes@gmail.com,925827332
+C,ripcurl,corporate,PT50001230056742700000833,234517789,,Ripcurl shop,,,,,,,Ericeira,Rua da ericeira,2812-829,ess@gmail.com,938172388

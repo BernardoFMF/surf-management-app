@@ -6,6 +6,10 @@ import { Link } from 'react-router-dom';
 import TranslationMenu from '../components/TranslationMenu'
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { useTheme } from '@mui/material/styles';
 import {
@@ -35,6 +39,10 @@ import AnimateButton from '../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '../components/multiStepForm/InputField';
 import FileInputField from '../components/multiStepForm/FileInputField';
+import User_Company_example from '../assets/data/User_CompanyExample.csv'
+import quotas_example from '../assets/data/User_CompanyExample.csv'
+import member_types_example from '../assets/data/User_CompanyExample.csv'
+import sports_example from '../assets/data/User_CompanyExample.csv'
 
 const UploadFilePage = () => {
 
@@ -43,10 +51,44 @@ const UploadFilePage = () => {
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
 
+    const [expanded, setExpanded] = useState(false);
+
+    const handleChange = (panel) => (event, isExpanded) => {
+      setExpanded(isExpanded ? panel : false);
+    };
+
     const handleSubmit = (values) => {
       const formData = new FormData()
       formData.append("file", values.file)
       dispatch(uploadFile(formData))
+    }
+
+    const onUser_CompanyDownload = () => {
+        const link = document.createElement("a");
+        link.download = `User_CompanyExample.csv`;
+        link.href = User_Company_example
+        link.click();
+    }
+
+    const onQuotaDownload = () => {
+        const link = document.createElement("a");
+        link.download = `QuotaExample.csv`;
+        link.href = quotas_example
+        link.click();
+    }
+
+    const onMemberTypeDownload = () => {
+        const link = document.createElement("a");
+        link.download = `MemberTypeExample.csv`;
+        link.href = member_types_example
+        link.click();
+    }
+
+    const onSportDownload = () => {
+        const link = document.createElement("a");
+        link.download = `SportExample.csv`;
+        link.href = sports_example
+        link.click();
     }
 
     const uploadFileFetch = useSelector((state) => state.uploadFileFetch)
@@ -55,6 +97,44 @@ const UploadFilePage = () => {
     return (
         <>
         <MainCard title={t('Upload csv File')} sx={{height: '100%'}}>
+            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+            <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+            >
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                General settings
+            </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Instructions on how to do it</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <Typography>
+            To import your data from the csv files to the application database, will be needed 5 different csv files
+            </Typography>
+            <Typography>
+            <strong>IMPORTANT:</strong> All the users will have a password equal to their username, remember them to change it the quickest that they can
+            </Typography>
+            </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+            <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2bh-content"
+            id="panel2bh-header"
+            >
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>Users/Companies</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
+                Upload all the users and companies
+            </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <Typography>
+            Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+            </Typography>
+            <Button onClick={onUser_CompanyDownload} variant="contained" color="primary">
+                User/Company example
+            </Button>
             <Formik
             initialValues={{ file: null }}
             onSubmit={handleSubmit} 
@@ -64,7 +144,8 @@ const UploadFilePage = () => {
             >
             {formik => (
                 <Form>
-                <FileInputField name = 'file' label = 'file'/>
+                <FileInputField name = 'Users/Companies File' label = 'file'/>
+                <br></br>
                 <AnimateButton>
                 <LoadingButton
                     disableElevation
@@ -79,8 +160,148 @@ const UploadFilePage = () => {
                 </Form>
             )}
         </Formik>
+            </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+            <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel3bh-content"
+            id="panel3bh-header"
+            >
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                Quotas
+            </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
+                Upload all of the previous quotas
+            </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <Typography>
+            Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+            </Typography>
+            <Button onClick={onQuotaDownload} variant="contained" color="primary">
+                Quotas example
+            </Button>
+            <Formik
+            initialValues={{ file: null }}
+            onSubmit={handleSubmit} 
+            validationSchema={Yup.object().shape({
+              file: Yup.mixed(),
+            })}
+            >
+            {formik => (
+                <Form>
+                <FileInputField name = 'Quotas File' label = 'file'/>
+                <br></br>
+                <AnimateButton>
+                <LoadingButton
+                    disableElevation
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                >
+                    {t('upload')}
+                </LoadingButton>
+                </AnimateButton>
+                </Form>
+            )}
+        </Formik>
+            </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+            <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel4bh-content"
+            id="panel4bh-header"
+            >
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>Member Types</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
+                Define the different member types
+            </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <Typography>
+            Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+            </Typography>
+            <Button onClick={onMemberTypeDownload} variant="contained" color="primary">
+                Member Types example
+            </Button>
+            <Formik
+            initialValues={{ file: null }}
+            onSubmit={handleSubmit} 
+            validationSchema={Yup.object().shape({
+              file: Yup.mixed(),
+            })}
+            >
+            {formik => (
+                <Form>
+                <FileInputField name = 'MemberTypes File' label = 'file'/>
+                <br></br>
+                <AnimateButton>
+                <LoadingButton
+                    disableElevation
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                >
+                    {t('upload')}
+                </LoadingButton>
+                </AnimateButton>
+                </Form>
+            )}
+        </Formik>
+            </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
+            <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel5bh-content"
+            id="panel5bh-header"
+            >
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>Sports</Typography>
+            <Typography>
+                Define all the sports that exists in the club
+            </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <Typography>
+                Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+            </Typography>
+            <Button onClick={onSportDownload} variant="contained" color="primary">
+                Sports example
+            </Button>
+            <Formik
+            initialValues={{ file: null }}
+            onSubmit={handleSubmit} 
+            validationSchema={Yup.object().shape({
+              file: Yup.mixed(),
+            })}
+            >
+            {formik => (
+                <Form>
+                <FileInputField name = 'Sports File' label = 'file'/>
+                <br></br>
+                <AnimateButton>
+                <LoadingButton
+                    disableElevation
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                >
+                    {t('upload')}
+                </LoadingButton>
+                </AnimateButton>
+                </Form>
+            )}
+        </Formik>
+            </AccordionDetails>
+        </Accordion>
         </MainCard>
-        </>)
+
+</>)
 }
 
 export default UploadFilePage
