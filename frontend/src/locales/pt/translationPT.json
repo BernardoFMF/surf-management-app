@@ -68,6 +68,9 @@
     "male": "Male",
     "female": "Female",
     "other": "Other",
+    "male_for_donut": "Male",
+    "female_for_donut": "Female",
+    "other_for_donut": "Other",
 
     "update_discard": "Descartar",
 
@@ -255,6 +258,7 @@
     "going": "Vou",
     "interested": "Interessado",
     "not going": "Não vou",
+    "unanswered": "Sem resposta",
     "state": "Estado",
     "update_attendance": "Atualizar estado",
     "state_updated_successfully": "Estado atualizado com sucesso",
@@ -317,5 +321,8 @@
     "rows": "Linhas",
     "analytics": "Estatísticas",
 
-    "fileUpload": "Upload do ficheiro"
+    "fileUpload": "Upload do ficheiro",
+    "total_users" : "Total de utilizadores",
+    "total_companies": "Total de empresas parceiras",
+    "total_candidates": "Total de candidatos"
 }

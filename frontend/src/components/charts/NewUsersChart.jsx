@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactApexChart from 'react-apexcharts'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
 
-const QuotasChart = ({ data }) => {
+const NewUsersChart = ({ data }) => {
     const { t } = useTranslation()
     const theme = useTheme();
 
-    const primary = theme.palette.primary.main
+    const secondary = theme.palette.secondary.main
 
     const state = {
         series: data,
@@ -67,7 +67,7 @@ const QuotasChart = ({ data }) => {
             },
             fill: {
                 type: 'solid',
-                colors: primary
+                colors: secondary
             },
             dataLabels: {
                 enabled: false
@@ -86,4 +86,4 @@ const QuotasChart = ({ data }) => {
     )
 }
 
-export default QuotasChart
+export default NewUsersChart
