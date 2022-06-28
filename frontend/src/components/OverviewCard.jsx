@@ -13,7 +13,7 @@ import MainCard from './cards/MainCard';
 
 // assets
 
-import AnimatedCard from './AnimatedPage'
+import AnimatedPage from './AnimatedPage'
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.dark,
@@ -60,7 +60,7 @@ const OverviewCard = ({ label, icon, path }) => {
     
     return (
         <>
-            <AnimatedCard>
+            <AnimatedPage>
                 <CardWrapper border={false} content={false} >
                     <Box sx={{ p: 2.25 }} height={'100%'}>
                         <Grid container direction={'row'} spacing={2}>
@@ -87,7 +87,7 @@ const OverviewCard = ({ label, icon, path }) => {
                         </Grid>
                     </Box>
                 </CardWrapper>
-            </AnimatedCard>
+            </AnimatedPage>
         </>
     );
 };

@@ -5,7 +5,7 @@ import default_image from './../../src/assets/data/blank-profile-picture.png'
 import { Button, Grid, Box, Avatar,Typography } from '@mui/material';
 import AnimateButton from './extended/AnimateButton'
 import { useTranslation } from 'react-i18next'
-
+import AnimatedPage from './AnimatedPage';
 import { styled, useTheme } from '@mui/material/styles';
 
 const AvatarBase64 = ({ label, size, memberInfo}) => {
@@ -25,6 +25,7 @@ const AvatarBase64 = ({ label, size, memberInfo}) => {
                 style={{ display: 'none' }}
                 onChange={e => {if(e.target.files[0])setSelectedImage(e.target.files[0])}}
             />
+            <AnimatedPage>
             <Grid container  direction={ { xs: "column", md: "column"} } justifyContent={'center'}>
                 <Grid item>
                 {
@@ -79,7 +80,9 @@ const AvatarBase64 = ({ label, size, memberInfo}) => {
                             </Grid>
                         </Grid>
                     }
-            </Grid>           
+            </Grid>
+            </AnimatedPage>
+           
         </>
     );
 };
