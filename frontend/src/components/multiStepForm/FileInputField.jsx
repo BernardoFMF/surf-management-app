@@ -35,11 +35,12 @@ const FileInputField = ({ label, size, ...props}) => {
                 align="left"
                 onChange={e => {if(e.target.files[0])setSelectedFile(e.target.files[0])}}
             />
-            <Box mt={2} textAlign="left">
+            <Box mt={2} textAlign="left" width={'fit-content'}>
                 <label htmlFor="select-file">
                     <AnimateButton>
                         <Button 
                             disableElevation
+                            fullWidth
                             size="normal"
                             type="button"
                             variant="contained"
