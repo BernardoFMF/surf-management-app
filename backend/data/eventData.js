@@ -1,7 +1,7 @@
 'use strict'
 
 import error from '../utils/error.js'
-import mailSender from '../utils/email/mailSender.js'
+import { mailSender } from '../utils/email/mailSender.js'
 import { eventTemplate } from  '../utils/email/mailTemplates.js'
 
 const eventData = (db) => {

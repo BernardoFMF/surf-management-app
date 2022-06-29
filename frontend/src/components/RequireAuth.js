@@ -20,6 +20,8 @@ function RequireAuth({ children }) {
 
     const isExpired = checkExpiration(expirationDate)
 
+    console.log(JSON.parse(localStorage.getItem('memberInfo')));
+
     if (expirationDate && isExpired) {
         localStorage.removeItem('memberInfo')
         dispatch(logout())

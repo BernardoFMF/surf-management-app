@@ -2,7 +2,7 @@
 
 import {createTransport, getTestMessageUrl } from 'nodemailer'
 
-const mailSender = async(receivers, subject, content) => {
+export const mailSender = async(receivers, subject, content) => {
 
 	let transporter = createTransport({
 		host: 'smtp-mail.outlook.com', // hostname
@@ -26,4 +26,25 @@ const mailSender = async(receivers, subject, content) => {
 	})
 }
 
-export default mailSender
+export const contact = async(from, name, topic, content) => {
+	let transporter = createTransport({
+		service: 'gmail',
+		auth: {
+			user: '', 
+			pass: '', 
+		},
+	})
+
+	try {
+		let info = await transporter.sendMail({
+			from: from,
+			to: '',
+			subject: topic, 
+			text: content, 
+			html: content
+		})
+		console.log("info -> " + info);
+	} catch (e) {
+		console.log("error -> " + e);
+	}
+}

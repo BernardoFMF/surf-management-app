@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 
 import { styled, useTheme } from '@mui/material/styles'
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material'
-
+import ContactFloatMenu from '../contactFloatMenu/ContactFloatMenu';
 import Breadcrumbs from '../../components/extended/Breadcrumbs'
 import Header from './Header'
 import Sidebar from './Sidebar'
@@ -95,6 +95,7 @@ const MainLayout = () => {
                 <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
                 <Outlet />
             </Main>
+            <ContactFloatMenu />
         </Box>
     );
 };
