@@ -65,6 +65,7 @@ const AuthLogin = ({ ...others }) => {
                 if (isExpired) {
                     dispatch(logout())
                 } else {
+                    console.log("vai para o dashboard");
                     navigate((state && state.from) || '/dashboard/overview')
                 }
             }

@@ -2,7 +2,7 @@
 
 import cryptoUtil from '../utils/crypto.js'
 import crypto from 'crypto'
-import mailSender from '../utils/email/mailSender.js'
+import { mailSender } from '../utils/email/mailSender.js'
 import { passwordChangeTemplate, passwordChangedTemplate } from  '../utils/email/mailTemplates.js'
 import error from '../utils/error.js'
 

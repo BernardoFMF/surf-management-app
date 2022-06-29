@@ -5,12 +5,11 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Logo from '../../components/Logo'
 import TranslationMenu from '../../components/TranslationMenu'
 import { useTranslation } from 'react-i18next'
-import FacebookIcon from '@mui/icons-material/Facebook';
 import AnimatedText from '../../components/AnimatedText'
 import first_video from './../../../src/assets/data/homePageVideo.mp4'
 import second_video from './../../../src/assets/data/aboutPageVideo.mp4'
 import third_video from './../../../src/assets/data/3rdvideo.mp4'
-
+import ContactFloatMenu from '../contactFloatMenu/ContactFloatMenu';
 import AnimatedVideo from '../../components/AnimatedVideo'
 
 const videos = {"1": third_video, "2": second_video, "3": first_video}
@@ -19,7 +18,7 @@ const HomeHeader = ({changePage}) => {
 
     const {t, i18n} = useTranslation()
 
-    const pages = [{title: t('front_page_home'), index: 0}, {title: t('front_page_about'), index: 1}, {title: t('front_page_contact_us'), index: 2}]
+    const pages = [{title: t('front_page_home'), index: 0}, {title: t('front_page_about'), index: 1}]
     const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
     };
@@ -113,6 +112,7 @@ const HomeHeader = ({changePage}) => {
             </AnimatedText>
           </Container>
         </AppBar>
+        <ContactFloatMenu />
       </>
     );
   };

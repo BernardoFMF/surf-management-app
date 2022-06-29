@@ -13,6 +13,7 @@ import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducer
 import { EventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer, memberEventsAttendanceFetchReducer, createEventReducer, memberEventAttendanceUpdateReducer} from './reducers/eventReducers'
 import { uploadReducer} from './reducers/uploadReducers'
 import { groupFetchReducer, memberGroupsFetchReducer, groupsFetchReducer, groupDeleteReducer, groupMembersFetchReducer, groupPostReducer } from './reducers/groupReducers'
+import { sendEmailReducer } from './reducers/emailReducers'
 
 const reducer = combineReducers({
   memberLogin: memberLoginReducer,
@@ -63,7 +64,8 @@ const reducer = combineReducers({
   groupFetch: groupFetchReducer,
   groupMembersFetch: groupMembersFetchReducer,
   memberEventAttendanceUpdate: memberEventAttendanceUpdateReducer,
-  groupPost: groupPostReducer
+  groupPost: groupPostReducer,
+  sendEmail: sendEmailReducer
 })
 
 const memberInfoFromStorage = localStorage.getItem('memberInfo')

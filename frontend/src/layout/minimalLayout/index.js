@@ -1,13 +1,15 @@
 import { Outlet } from 'react-router-dom';
-
-// project imports
+import ContactFloatMenu from '../contactFloatMenu/ContactFloatMenu';
 
 // ==============================|| MINIMAL LAYOUT ||============================== //
 
-const MinimalLayout = () => (
-    <>
-        <Outlet />
-    </>
-);
+const MinimalLayout = () => {
+    return (
+        <>
+            <Outlet />
+            <ContactFloatMenu />
+        </>
+    );
+};
 
 export default MinimalLayout;

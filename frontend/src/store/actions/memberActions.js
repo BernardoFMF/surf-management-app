@@ -43,12 +43,13 @@ export const login = (username, password) => async (dispatch) => {
       memberInfo.category_ = member.category_
       memberInfo.quota_value_ = member.quota_value_
 
+      localStorage.setItem('memberInfo', JSON.stringify({...memberInfo, expires: memberLogin.expires}))
+
       dispatch({
         type: MEMBER_LOGIN_SUCCESS,
         payload: memberInfo,
       })
-  
-      localStorage.setItem('memberInfo', JSON.stringify({...memberInfo, expires: memberLogin.expires}))
+      
     } catch (error) {
       dispatch({
         type: MEMBER_LOGIN_FAIL,
