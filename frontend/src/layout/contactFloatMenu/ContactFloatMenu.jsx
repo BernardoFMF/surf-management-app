@@ -20,7 +20,7 @@ import InputField from '../../components/multiStepForm/InputField';
 import { useTranslation } from 'react-i18next'
 import AnimateButton from '../../components/extended/AnimateButton';
 import LoadingButton from '@mui/lab/LoadingButton';
-import sendEmailContact from '../../store/actions/emailActions'
+import {sendEmailContact} from '../../store/actions/emailActions'
 
 const ContactFloatMenu = () => {
     const {t} = useTranslation()

@@ -13,8 +13,8 @@ export const mailSender = async(receivers, subject, content) => {
 			rejectUnauthorized: false
 		},
 		auth: {
-			user: 'ericeirasurfclub@outlook.com', 
-			pass: 'Miguelbernardogoncalo2022', 
+			user: '', 
+			pass: '', 
 		},
 	})
 	let info = await transporter.sendMail({

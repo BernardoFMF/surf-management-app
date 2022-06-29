@@ -9,7 +9,7 @@ export const sendEmailContact = (values) => async (dispatch) => {
         dispatch({
             type: SEND_EMAIL_REQUEST
         })
-        const response = await fetch(`/api/email/contact`, {
+        const response = await fetch(`/api/emails/contact`, {
             method: 'POST',
             body: JSON.stringify(values),
             headers: { "Content-Type": "application/json" }

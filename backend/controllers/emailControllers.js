@@ -8,7 +8,7 @@ const emailController = () => {
     const services = emailServices()
 
 	const sendContactEmail = asyncHandler(async (req, res) => {
-		const emailResp = await services.sendContactEmailServices(req.body.from, req.body.name, req.body.topic, req.body.text)
+		const emailResp = await services.sendContactEmailServices(req.body.from_email, req.body.from_name, req.body.topic, req.body.text)
 		res.sendStatus(201)
 		res.json(emailResp)
 	})
