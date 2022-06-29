@@ -64,7 +64,7 @@ const PersonalDetailsTab = () => {
                             <Grid item>
                                 <Box mt={2} sx={{ pr: 2}}>
                                     <Stack direction="column" alignItems="center">
-                                        <Base64InputField size={100} name='img' label={t('sign_up_image')}></Base64InputField>
+                                        <Base64InputField size={150} name='img' label={t('sign_up_image')}></Base64InputField>
                                         <Typography variant="subtitle2">{memberGet.member_type_}</Typography>
                                         <Typography variant="subtitle2">{t("associate_number") + ": " + memberGet.member_id_}</Typography>
                                     </Stack>

@@ -62,7 +62,7 @@ const OverviewCard = ({ label, icon, path }) => {
         <>
             <AnimatedPage>
                 <CardWrapper border={false} content={false} >
-                    <Box sx={{ p: 2.25 }} height={'100%'}>
+                    <Box sx={{ p: 1 }} >
                         <Grid container direction={'row'} spacing={2}>
                             <Grid item >
                             <Avatar
@@ -72,8 +72,8 @@ const OverviewCard = ({ label, icon, path }) => {
                                     ...theme.typography.largeAvatar,
                                     backgroundColor: theme.palette.secondary[800],
                                     mt: 1,
-                                    width:100,
-                                    height:100
+                                    width:50,
+                                    height:50
 
                                 }}
                                 onClick={() => navigate(path)}
@@ -82,7 +82,7 @@ const OverviewCard = ({ label, icon, path }) => {
                             </Avatar>
                             </Grid>
                             <Grid item zIndex={100} justifyContent={'center'} >
-                                <Typography  sx={{ mt:1, fontSize: '1.5rem', fontWeight: 500}} color={theme.palette.primary.contrastText}>{label}</Typography>  
+                                <Typography  sx={{ mt:2, fontSize: '1.2rem' , fontWeight: 500}} color={theme.palette.primary.contrastText}>{label}</Typography>  
                             </Grid>
                         </Grid>
                     </Box>
