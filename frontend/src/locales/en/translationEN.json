@@ -68,9 +68,10 @@
     "male": "Male",
     "female": "Female",
     "other": "Other",
-    "male_for_donut": "Masculino",
-    "female_for_donut": "Feminino",
-    "other_for_donut": "Outro",
+    "male_for_donut": "Male",
+    "female_for_donut": "Female",
+    "other_for_donut": "Other",
+    
 
     "update_discard": "Discard",
 
@@ -323,6 +324,12 @@
     "fileUpload": "File Upload",
     "total_users" : "Total users",
     "total_companies": "Total partner companies",
-    "total_candidates": "Total candidates"
+    "total_candidates": "Total candidates",
 
+    "Upcoming events attendance": "Upcoming events attendance",
+    "Paid Quotas" : "Paid Quotas",
+    "Unpaid Quotas" : "Unpaid Quotas",
+    "Total amount left to be paid in": "Total amount left to be paid in",
+    "Total amount paid in": "Total amount paid in",
+    "Total user growth in": "Total user growth in"
 }

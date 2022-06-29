@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import MainCard from '../cards/MainCard'
 import { Grid, Typography, TextField, MenuItem, Button } from '@mui/material'
 import { gridSpacing } from '../../store/constants/themeConstants'
 import NewUsersChart from '../charts/NewUsersChart'
 import ColumnChartSkeleton from '../skeletons/ColumnChartSkeleton'
-
+import AnimatedPage from '../AnimatedPage'
 const NewUsersChartWrapper = ({ loading, dropdownOptions, growth, data }) => {
+    const {t, i18n} = useTranslation()
+
     const extractData = (year) => {
         const yearData = data.filter(obj => obj.id === year)[0]
         return yearData
@@ -32,13 +36,14 @@ const NewUsersChartWrapper = ({ loading, dropdownOptions, growth, data }) => {
                 <ColumnChartSkeleton />
             ) : (
                 <MainCard>
+                    <AnimatedPage>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
                             <Grid container alignItems="center" justifyContent="space-between">
                                 <Grid item>
                                     <Grid container direction="column" spacing={1}>
                                         <Grid item>
-                                            <Typography variant="subtitle2">{`Total user growth in ${value}`}</Typography>
+                                            <Typography variant="subtitle2">{`${t('Total user growth in')} ${value}`}</Typography>
                                         </Grid>
                                         <Grid item>
                                             <Typography variant="h3" color={yearGrowth < 0 ? 'secondary' : 'primary'}>{yearGrowth}%</Typography>
@@ -67,6 +72,7 @@ const NewUsersChartWrapper = ({ loading, dropdownOptions, growth, data }) => {
                             <NewUsersChart data={chartValues.series} />
                         </Grid>
                     </Grid>
+                    </AnimatedPage>
                 </MainCard>
             )}
         </>

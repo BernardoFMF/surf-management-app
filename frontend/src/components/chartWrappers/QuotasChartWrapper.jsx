@@ -4,8 +4,13 @@ import MainCard from '../cards/MainCard'
 import { Grid, Typography, TextField, MenuItem, Button } from '@mui/material'
 import { gridSpacing } from '../../store/constants/themeConstants'
 import ColumnChartSkeleton from '../skeletons/ColumnChartSkeleton'
+import AnimatedPage from '../AnimatedPage'
+import { useTranslation } from 'react-i18next'
 
 const QuotasChartWrapper = ({ loading, dropdownOptions, totalAmount, amounts, data }) => {
+    const {t, i18n} = useTranslation()
+
+
     const extractAmounts = (year) => {
         const idx = dropdownOptions.findIndex(obj => obj === year)
         const newData = {
@@ -41,13 +46,14 @@ const QuotasChartWrapper = ({ loading, dropdownOptions, totalAmount, amounts, da
                 <ColumnChartSkeleton />
             ) : (
                 <MainCard>
+                    <AnimatedPage>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
                             <Grid container alignItems="center" justifyContent="space-between">
                                 <Grid item>
                                     <Grid container direction="column" spacing={1}>
                                         <Grid item>
-                                            <Typography variant="subtitle2">{typeValue ? `Total amount left to be paid in ${value}` : `Total amount paid in ${value}`}</Typography>
+                                            <Typography variant="subtitle2">{typeValue ? `${t('Total amount left to be paid in')} ${value}` : `${t('Total amount paid in')} ${value}`}</Typography>
                                         </Grid>
                                         <Grid item>
                                             <Typography variant="h3">{typeValue ? yearAmounts.notPaidTotal : yearAmounts.paidTotal}€</Typography>
@@ -64,7 +70,7 @@ const QuotasChartWrapper = ({ loading, dropdownOptions, totalAmount, amounts, da
                                                 sx={{ color: typeValue ? 'inherit' : 'white' }}
                                                 onClick={(e) => handleChangeType(e, false)}
                                             >
-                                                Paid quotas
+                                                {t('Paid Quotas')}
                                             </Button>
                                             <Button
                                                 disableElevation
@@ -73,7 +79,7 @@ const QuotasChartWrapper = ({ loading, dropdownOptions, totalAmount, amounts, da
                                                 sx={{ color: !typeValue ? 'inherit' : 'white' }}
                                                 onClick={(e) => handleChangeType(e, true)}
                                             >
-                                                Unpaid quotas
+                                                {t('Unpaid Quotas')}
                                             </Button>
                                         </Grid>
                                         <Grid item>
@@ -99,6 +105,7 @@ const QuotasChartWrapper = ({ loading, dropdownOptions, totalAmount, amounts, da
                             <QuotasChart data={typeValue ? chartValues.series.filter(obj => obj.name === 'not_paid') : chartValues.series.filter(obj => obj.name === 'paid')} />
                         </Grid>
                     </Grid>
+                    </AnimatedPage>
                 </MainCard>
             )}
         </>

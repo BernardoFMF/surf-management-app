@@ -26,11 +26,11 @@ const AvatarBase64 = ({ label, size, memberInfo}) => {
                 onChange={e => {if(e.target.files[0])setSelectedImage(e.target.files[0])}}
             />
             <AnimatedPage>
-            <Grid container  direction={ { xs: "column", md: "column"} } justifyContent={'center'}>
+            <Grid container  direction={ { xs: "column", md: "row"} } >
                 <Grid item>
                 {
                     selectedImage ?
-                        <Box mt={2} ml={{md: 2, lg: 2}} display="flex" >
+                        <Box mt={2} display="flex" justifyContent={'center'} >
                             <Avatar
                                 alt={selectedImage.name}
                                 src={selectedImage}
@@ -38,10 +38,10 @@ const AvatarBase64 = ({ label, size, memberInfo}) => {
                             />
                             {resolution > 500 &&
                             <Grid container direction={ { xs: "row", md: "column"} } justifyContent={'center'}>
-                                <Typography sx={{ml:7, fontSize: '2.0rem', fontWeight: 500}}>
+                                <Typography sx={{ml:7, fontSize: '1.6rem', fontWeight: 500}}>
                                     {t('sign_in_welcome')}
                                 </Typography>
-                                <Typography sx={{mt: 1, ml:7, fontSize: '1.9rem', fontWeight: 500}} color={theme.palette.primary.main}>
+                                <Typography sx={{mt: 1, ml:7, fontSize: '1.5rem', fontWeight: 500}} color={theme.palette.primary.main}>
                                     {memberInfo.username_}
                                 </Typography>
                             </Grid>
@@ -69,12 +69,12 @@ const AvatarBase64 = ({ label, size, memberInfo}) => {
                         resolution < 500 &&
                         <Grid container direction="column" textAlign={'center'} >
                             <Grid item>                
-                                <Typography sx={{mt: 1, fontSize: '2.0rem', fontWeight: 500}}>
+                                <Typography sx={{mt: 1, fontSize: '1.5rem', fontWeight: 500}}>
                                     {t('sign_in_welcome')}
                                 </Typography>
                             </Grid>
                             <Grid item>                
-                                <Typography sx={{mt: 1, fontSize: '1.9rem', fontWeight: 500}} color={theme.palette.primary.main}>
+                                <Typography sx={{mt: 1, fontSize: '1.4rem', fontWeight: 500}} color={theme.palette.primary.main}>
                                     {memberInfo.username_}
                                 </Typography>
                             </Grid>

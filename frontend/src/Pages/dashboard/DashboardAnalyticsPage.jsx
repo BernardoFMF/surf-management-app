@@ -15,7 +15,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import CandidatesCardChart from '../../components/charts/CandidatesCardChart';
 import CompaniesCardChart from '../../components/charts/CompaniesCardChart';
 import UsersCardChart from '../../components/charts/UsersCardChart';
-import AnimatedCard from '../../components/AnimatedCard'
+import AnimatedPage from '../../components/AnimatedPage'
 
 const DashboardAnalyticsPage = () => {
     const [loading, setLoading] = useState(true)
@@ -233,7 +233,7 @@ const DashboardAnalyticsPage = () => {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
-        }, 500)
+        }, 300)
     }, [])
 
     /**
@@ -279,33 +279,39 @@ const DashboardAnalyticsPage = () => {
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} md={8}>
-                        <QuotasChartWrapper 
-                            loading={loading} 
-                            dropdownOptions={unformattedData.quotas.years} 
-                            totalAmount={unformattedData.quotas.total_amount} 
-                            amounts={unformattedData.quotas.amounts} 
-                            data={unformattedData.quotas.data} 
-                        />                        
+                            <QuotasChartWrapper 
+                                loading={loading} 
+                                dropdownOptions={unformattedData.quotas.years} 
+                                totalAmount={unformattedData.quotas.total_amount} 
+                                amounts={unformattedData.quotas.amounts} 
+                                data={unformattedData.quotas.data} 
+                            />                        
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <UpcomingEventsChartWrapper 
-                            loading={loading}
-                            dropdownOptions={unformattedData.upcoming_events.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
-                            data={unformattedData.upcoming_events.describers.map(obj => { let newObj = { id: obj.id, attendance: obj.attendance}; return newObj })} 
-                        />
+                            <UpcomingEventsChartWrapper 
+                                loading={loading}
+                                dropdownOptions={unformattedData.upcoming_events.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
+                                data={unformattedData.upcoming_events.describers.map(obj => { let newObj = { id: obj.id, attendance: obj.attendance}; return newObj })} 
+                            />
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12}>
                 <Grid container justifyContent={'center'} direction={ { xs: "column", md: "row"} } spacing={2}>
                     <Grid item xs={4} md={4}>
-                        <UsersCardChart isLoading={loading} total={unformattedData.users.total} total_males={unformattedData.users.total_males} total_females={unformattedData.users.total_females} total_other={unformattedData.users.total_other} distribution={unformattedData.users.distribution} />
+                        <AnimatedPage>
+                            <UsersCardChart isLoading={loading} total={unformattedData.users.total} total_males={unformattedData.users.total_males} total_females={unformattedData.users.total_females} total_other={unformattedData.users.total_other} distribution={unformattedData.users.distribution} />
+                        </AnimatedPage>
                     </Grid>
                     <Grid item xs={4} md={4}>
-                        <CompaniesCardChart isLoading={loading} total={unformattedData.companies.total} />
+                        <AnimatedPage>
+                            <CompaniesCardChart isLoading={loading} total={unformattedData.companies.total} />
+                        </AnimatedPage>
                     </Grid>
                     <Grid item xs={4} md={4}>
-                        <CandidatesCardChart isLoading={loading} total={unformattedData.candidates.total} total_males={unformattedData.candidates.total_males} total_females={unformattedData.candidates.total_females} total_other={unformattedData.candidates.total_other} distribution={unformattedData.candidates.distribution} />
+                        <AnimatedPage>
+                            <CandidatesCardChart isLoading={loading} total={unformattedData.candidates.total} total_males={unformattedData.candidates.total_males} total_females={unformattedData.candidates.total_females} total_other={unformattedData.candidates.total_other} distribution={unformattedData.candidates.distribution} />
+                        </AnimatedPage>
                     </Grid>
                 </Grid>
             </Grid>
