@@ -8,9 +8,7 @@ import ColumnChartSkeleton from '../skeletons/ColumnChartSkeleton'
 
 const QuotasChartWrapper = ({ loading, dropdownOptions, data }) => {
     const extractData = (id) => {
-        console.log(id);
         const idData = data.filter(obj => obj.id === id)[0]
-        console.log(idData);
         return [idData.attendance.going, idData.attendance.not_going, idData.attendance.interested, idData.attendance.unanswered]
     }
 

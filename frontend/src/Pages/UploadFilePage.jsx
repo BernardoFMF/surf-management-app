@@ -39,10 +39,10 @@ import AnimateButton from '../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '../components/multiStepForm/InputField';
 import FileInputField from '../components/multiStepForm/FileInputField';
-import User_Company_example from '../assets/data/User_CompanyExample.csv'
-import quotas_example from '../assets/data/User_CompanyExample.csv'
-import member_types_example from '../assets/data/User_CompanyExample.csv'
-import sports_example from '../assets/data/User_CompanyExample.csv'
+import User_Company_example from '../assets/data/User_CompanyExample.xlsx'
+import quotas_example from '../assets/data/QuotaExample.xlsx'
+import member_types_example from '../assets/data/TypesExample.xlsx'
+import sports_example from '../assets/data/sportsExample.xlsx'
 
 const UploadFilePage = () => {
 
@@ -57,15 +57,17 @@ const UploadFilePage = () => {
       setExpanded(isExpanded ? panel : false);
     };
 
-    const handleSubmit = (values) => {
-      const formData = new FormData()
-      formData.append("file", values.file)
-      dispatch(uploadFile(formData))
+    const handleSubmit = (values,type) => {
+        console.log("chegou")
+        console.log(type);
+        const formData = new FormData()
+        formData.append("file", values.file)
+        dispatch(uploadFile(formData))
     }
 
     const onUser_CompanyDownload = () => {
         const link = document.createElement("a");
-        link.download = `User_CompanyExample.csv`;
+        link.download = `User_CompanyExample.xlsx`;
         link.href = User_Company_example
         link.click();
     }
@@ -132,17 +134,18 @@ const UploadFilePage = () => {
             <Typography>
             Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
             </Typography>
-            <Button onClick={onUser_CompanyDownload} variant="contained" color="primary">
+            <Button onClick={onUser_CompanyDownload} variant="contained" color="success">
                 User/Company example
             </Button>
             <Formik
             initialValues={{ file: null }}
-            onSubmit={handleSubmit} 
+            onSubmit={(values) => handleSubmit(values,'usersCompanies')} 
             validationSchema={Yup.object().shape({
               file: Yup.mixed(),
             })}
             >
             {formik => (
+                <Box mt={2} textAlign="left" width={'fit-content'}>
                 <Form>
                 <FileInputField name = 'Users/Companies File' label = 'file'/>
                 <br></br>
@@ -158,6 +161,7 @@ const UploadFilePage = () => {
                 </LoadingButton>
                 </AnimateButton>
                 </Form>
+                </Box>
             )}
         </Formik>
             </AccordionDetails>
@@ -179,31 +183,33 @@ const UploadFilePage = () => {
             <Typography>
             Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
             </Typography>
-            <Button onClick={onQuotaDownload} variant="contained" color="primary">
+            <Button onClick={onQuotaDownload} variant="contained" color="success">
                 Quotas example
             </Button>
             <Formik
             initialValues={{ file: null }}
-            onSubmit={handleSubmit} 
+            onSubmit={(values) => handleSubmit(values,'quotas')} 
             validationSchema={Yup.object().shape({
               file: Yup.mixed(),
             })}
             >
             {formik => (
                 <Form>
-                <FileInputField name = 'Quotas File' label = 'file'/>
-                <br></br>
-                <AnimateButton>
-                <LoadingButton
-                    disableElevation
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                >
-                    {t('upload')}
-                </LoadingButton>
-                </AnimateButton>
+                    <Box mt={2} textAlign="left" width={'fit-content'}>
+                        <FileInputField position= "fixed" name = 'Quotas File' label = 'file'/>
+                        <br></br>
+                        <AnimateButton>
+                        <Button
+                            disableElevation
+                            size="large"
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                        >
+                            {t('upload')}
+                        </Button>
+                        </AnimateButton>
+                        </Box>
                 </Form>
             )}
         </Formik>
@@ -224,17 +230,18 @@ const UploadFilePage = () => {
             <Typography>
             Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
             </Typography>
-            <Button onClick={onMemberTypeDownload} variant="contained" color="primary">
+            <Button onClick={onMemberTypeDownload} variant="contained" color="success">
                 Member Types example
             </Button>
             <Formik
             initialValues={{ file: null }}
-            onSubmit={handleSubmit} 
+            onSubmit={(values) => handleSubmit(values,'memberTypes')} 
             validationSchema={Yup.object().shape({
               file: Yup.mixed(),
             })}
             >
             {formik => (
+                <Box mt={2} textAlign="left" width={'fit-content'}>
                 <Form>
                 <FileInputField name = 'MemberTypes File' label = 'file'/>
                 <br></br>
@@ -250,6 +257,7 @@ const UploadFilePage = () => {
                 </LoadingButton>
                 </AnimateButton>
                 </Form>
+                </Box>
             )}
         </Formik>
             </AccordionDetails>
@@ -269,17 +277,18 @@ const UploadFilePage = () => {
             <Typography>
                 Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
             </Typography>
-            <Button onClick={onSportDownload} variant="contained" color="primary">
+            <Button onClick={onSportDownload} variant="contained" color="success">
                 Sports example
             </Button>
             <Formik
             initialValues={{ file: null }}
-            onSubmit={handleSubmit} 
+            onSubmit={(values) => handleSubmit(values,'sports')} 
             validationSchema={Yup.object().shape({
               file: Yup.mixed(),
             })}
             >
             {formik => (
+                <Box mt={2} textAlign="left" width={'fit-content'}>
                 <Form>
                 <FileInputField name = 'Sports File' label = 'file'/>
                 <br></br>
@@ -295,6 +304,7 @@ const UploadFilePage = () => {
                 </LoadingButton>
                 </AnimateButton>
                 </Form>
+                </Box>
             )}
         </Formik>
             </AccordionDetails>

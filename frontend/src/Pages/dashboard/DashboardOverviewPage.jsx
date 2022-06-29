@@ -1,20 +1,27 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next'
+import { styled, useTheme } from '@mui/material/styles';
+import { useNavigate } from 'react-router'
+import { useSelector } from 'react-redux';
 
 // material-ui
-import { Grid } from '@mui/material';
 
 // project imports
-
-import { gridSpacing } from '../../store/constants/themeConstants';
+import OverviewWrapper from '../../components/overviewWrapper/OverviewWrapper'
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
 
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 1000)
+    }, [])
+
     return (
-        <Grid container spacing={gridSpacing}>
-            <h2>Dashboard Page</h2>
-        </Grid> 
+        <OverviewWrapper loading={loading}/>
     );
 };
 
