@@ -112,6 +112,11 @@
     "MESSAGE_CODE_36": "Este tipo não existe",
     "MESSAGE_CODE_37": "Candidato com este iban já existe",
     "MESSAGE_CODE_38": "Membro com este iban já existe",
+    "MESSAGE_CODE_39": "Grupo eliminado com sucesso",
+    "MESSAGE_CODE_40": "Grupo não existe",
+    "MESSAGE_CODE_41": "Grupo com esse nome já existe",
+    "MESSAGE_CODE_42": "Erro ao enviar o email",
+    "MESSAGE_CODE_43": "Email enviado com sucesso",
 
     "hello_profile": "Olá,",
     "name": "Nome",

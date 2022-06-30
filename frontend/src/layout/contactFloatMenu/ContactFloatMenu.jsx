@@ -93,7 +93,7 @@ const ContactFloatMenu = () => {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        { result && <Box><Alert severity="success">{t('email_sent')}</Alert></Box> }
+                                        { result && <Box><Alert severity="success">{t(result.message_code)}</Alert></Box> }
                                         { error && <Box><Alert severity="error">{t(error)}</Alert></Box> }
                                     </Grid>
                                     <Grid item xs={12}>

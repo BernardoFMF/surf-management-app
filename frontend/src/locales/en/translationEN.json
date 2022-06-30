@@ -113,7 +113,11 @@
     "MESSAGE_CODE_36": "That type does not exist",
     "MESSAGE_CODE_37": "Candidate with that iban already exists",
     "MESSAGE_CODE_38": "Member with that iban already exists",
-
+    "MESSAGE_CODE_39": "Group deleted sucessfully",
+    "MESSAGE_CODE_40": "Group does not exist",
+    "MESSAGE_CODE_41": "Group with that name already exists",
+    "MESSAGE_CODE_42": "Error sending the email",
+    "MESSAGE_CODE_43": "Email sent with success",
 
     "hello_profile": "Hello,",
     "name": "Name",

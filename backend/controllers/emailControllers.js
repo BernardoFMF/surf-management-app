@@ -12,7 +12,7 @@ const emailController = () => {
 		console.log(emailResp);
 		if (emailResp) {
 			res.status(201)
-			res.json({ message: 'Email sent successfully', message_code: 'MESSAGE_CODE_45' })
+			res.json({ message: 'Email sent successfully', message_code: 'MESSAGE_CODE_43' })
 		}
 		
 	})
