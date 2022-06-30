@@ -1,9 +1,9 @@
 'use strict'
 
 import {createTransport, getTestMessageUrl } from 'nodemailer'
+import error from '../error.js'
 
 export const mailSender = async(receivers, subject, content) => {
-
 	let transporter = createTransport({
 		host: 'smtp-mail.outlook.com',
 		service: 'outlook',
@@ -26,12 +26,12 @@ export const mailSender = async(receivers, subject, content) => {
 	})
 }
 
-export const contact = async(from, name, topic, content) => {
+export const contact = async(from, name, content) => {
 	let transporter = createTransport({
-		host: 'smtp-mail.outlook.com', // hostname
+		host: 'smtp-mail.outlook.com',
 		service: 'outlook',
-		secureConnection: false, // TLS requires secureConnection to be false
-		port: 587, // port for secure SMTP
+		secureConnection: false,
+		port: 587,
 		tls: {
 			rejectUnauthorized: false
 		},
@@ -42,15 +42,17 @@ export const contact = async(from, name, topic, content) => {
 	})
 	try {
 		let info = await transporter.sendMail({
-			from: from,
+			from: 'ericeirasurfclub@outlook.com',
 			to: 'ericeirasurfclub@outlook.com',
-			subject: topic + name, 
-			text: content, 
-			html: content, 
+			cc: from,
+			subject: `Novo email de: ${name}`, 
+			text: content.text,
+			html: content.html,
 		})
-		console.log("INFO -> " + info);
+		return info
 	} catch (e) {
-		console.log("ERROR -> " + e);
+		console.log(e);
+		throw error(554, 'Error while sending email', 'MESSAGE_CODE_44')
 	}
 	
 }

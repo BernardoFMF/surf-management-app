@@ -74,8 +74,6 @@ const ContactFloatMenu = () => {
                 }}
             >
                 <PerfectScrollbar component="div">
-                    { result && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('email_sent')}</Alert></Box> }
-                    { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
                     <Formik
                         initialValues={{
                             from_email: '',
@@ -93,6 +91,10 @@ const ContactFloatMenu = () => {
                                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
                                             {t('front_page_contact_us')}
                                         </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        { result && <Box><Alert severity="success">{t('email_sent')}</Alert></Box> }
+                                        { error && <Box><Alert severity="error">{t(error)}</Alert></Box> }
                                     </Grid>
                                     <Grid item xs={12}>
                                         <InputField name='from_email' label={t('your_email')} type='text' />
