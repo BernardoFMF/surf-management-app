@@ -3,17 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { styled, useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux';
-
-// material-ui
-
-// project imports
 import OverviewWrapper from '../../components/overviewWrapper/OverviewWrapper'
-
-// ==============================|| DEFAULT DASHBOARD ||============================== //
+import Meta from '../../components/Meta';
 
 const Dashboard = () => {
-
+    const { t } = useTranslation()
     const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
@@ -21,7 +17,10 @@ const Dashboard = () => {
     }, [])
 
     return (
-        <OverviewWrapper loading={loading}/>
+        <>
+            <Meta title={t('overview_page_title')}/>
+            <OverviewWrapper loading={loading}/>
+        </>
     );
 };
 

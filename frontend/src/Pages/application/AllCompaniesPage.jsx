@@ -20,6 +20,7 @@ import { Pagination } from '@mui/material';
 import CompanyCreateDialog from '../../components/dialogs/CompanyCreateDialog';
 import { useTheme } from '@mui/material/styles';
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
+import Meta from '../../components/Meta';
 
 const AllCompaniesPage = () => {
     const theme = useTheme()
@@ -137,6 +138,7 @@ const columns = [
 
   return (
     <>
+        <Meta title={t('all_companies_page_title')}/>
         <CompanyCreateDialog
             open={open}
             closeHandler={handleClose}        

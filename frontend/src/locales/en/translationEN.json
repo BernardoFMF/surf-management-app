@@ -331,5 +331,32 @@
     "Unpaid Quotas" : "Unpaid Quotas",
     "Total amount left to be paid in": "Total amount left to be paid in",
     "Total amount paid in": "Total amount paid in",
-    "Total user growth in": "Total user growth in"
+    "Total user growth in": "Total user growth in",
+
+    "sport_page_title": "Sport",
+    "event_page_title": "Event",
+    "group_page_title": "Group",
+    "all_members_page_title": "All members",
+    "all_quotas_page_title": "All quotas",
+    "all_sports_page_title": "All sports",
+    "all_groups_page_title": "All groups",
+    "all_events_page_title": "All events",
+    "all_companies_page_title": "All companies",
+    "all_candidates_page_title": "All candidates",
+    "my_events_page_title": "My events",
+    "my_groups_page_title": "My groups",
+    "my_quotas_page_title": "My quotas",
+    "quotas_management_page_title": "Quotas management",
+    "profile_page_title": "Profile",
+    "my_sports_page_title": "My sports",
+    "signup_page_title": "Sign up",
+    "signin_page_title": "Sign in",
+    "analytics_page_title": "Analytics",
+    "overview_page_title": "Overview",
+    "error_page_title": "Error",
+    "home_page_title": "Homepage",
+    "upload_file_page_title": "Upload files",
+    "validate_page_title": "Validate member",
+
+    "topic": "Topic"
 }

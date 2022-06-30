@@ -19,6 +19,7 @@ import InputField from '../../components/multiStepForm/InputField';
 import { getTypes } from '../../store/actions/typeActions'
 import { getUserSportsTypes } from '../../store/actions/sportActions'
 import CheckGroupInputField from '../../components/multiStepForm/CheckGroupInputField';
+import Meta from '../../components/Meta';
 
 const MyGroupsPage = () => {
     const theme = useTheme();
@@ -119,6 +120,7 @@ const MyGroupsPage = () => {
 
     return (
         <>
+            <Meta title={t('my_groups_page_title')}/>
             <MainCard title={t('member_groups')} sx={{height: '100%'}}>
                 {
                     loadingMemberTypes || loadingSportTypes ? 

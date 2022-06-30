@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMemberEventsAttendance} from '../../store/actions/eventActions'
-
+import Meta from '../../components/Meta';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -141,6 +141,7 @@ const columns = [
 
   return (
     <>  
+        <Meta title={t('my_events_page_title')}/>
         <AttendanceEditDialog
             open={openSubmit}
             closeHandler={handleCloseSubmit} 

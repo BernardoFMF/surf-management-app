@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback  } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSports, deleteSport, createSport, updateSport } from '../../store/actions/sportActions'
 import { useTheme } from '@mui/material/styles'
-
+import Meta from '../../components/Meta';
 import { useTranslation } from 'react-i18next'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SurfingIcon from '@mui/icons-material/Surfing'
@@ -86,6 +86,7 @@ const AllSportsPage = () => {
 
   return (
     <>
+      <Meta title={t('all_sports_page_title')}/>
       <UserSportApplyDialog
         open={openDialog}
         closeHandler={closeDialogHandler}

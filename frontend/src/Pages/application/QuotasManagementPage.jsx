@@ -16,8 +16,7 @@ import MainCard from '../../components/cards/MainCard';
 import InputField from '../../components/multiStepForm/InputField';
 import { Formik, Form } from 'formik';
 import QuotaManagementCreateDialog from '../../components/dialogs/QuotaManagementCreateDialog'
-
-
+import Meta from '../../components/Meta';
 
 const QuotasManagementPage = () => {
     const {t, i18n} = useTranslation()
@@ -48,6 +47,7 @@ const QuotasManagementPage = () => {
 
     return (
     <>
+        <Meta title={t('quotas_management_page_title')}/>
         <QuotaManagementCreateDialog
             open={open}
             closeHandler={handleClose}

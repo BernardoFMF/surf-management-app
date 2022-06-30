@@ -16,6 +16,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import UserCreateDialog from '../../components/dialogs/UserCreateDialog';
 import { getTypes } from '../../store/actions/typeActions'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
+import Meta from '../../components/Meta';
 
 const AllMembersPage = () => {
     const navigate = useNavigate()
@@ -139,6 +140,7 @@ const AllMembersPage = () => {
 
     return (
         <>
+            <Meta title={t('all_members_page_title')}/>
             <UserCreateDialog
                 open={open}
                 closeHandler={handleClose}

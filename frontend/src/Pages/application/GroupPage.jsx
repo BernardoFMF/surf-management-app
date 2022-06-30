@@ -15,6 +15,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { blue } from "@mui/material/colors";
 import InputField from '../../components/multiStepForm/InputField';
+import Meta from '../../components/Meta';
 
 const GroupPage = () => {
     const { t } = useTranslation()
@@ -139,6 +140,7 @@ const GroupPage = () => {
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                 <>
+                    <Meta title={groupById.name_ + ' | ' + t('group_page_title')}/>
                     <MainCard title={groupById ? groupById.name_ : ''} secondaryText={groupById.description_} sx={{height: '100%'}}>
                         { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
                         { errorMembers && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorMembers)}</Alert></Box> }
