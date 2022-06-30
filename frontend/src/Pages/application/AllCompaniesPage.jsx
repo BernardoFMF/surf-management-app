@@ -23,6 +23,7 @@ import DropdownInputField from '../../components/multiStepForm/DropdownInputFiel
 import ExportCSV from '../../components/ExportCSV'
 import { exportCompaniesCSV } from '../../store/actions/exportActions'
 import CheckInputField from '../../components/multiStepForm/CheckInputField';
+import Meta from '../../components/Meta';
 
 const AllCompaniesPage = () => {
     const theme = useTheme()
@@ -172,6 +173,7 @@ const AllCompaniesPage = () => {
 
   return (
     <>
+        <Meta title={t('all_companies_page_title')}/>
         <CompanyCreateDialog
             open={open}
             closeHandler={handleClose}        

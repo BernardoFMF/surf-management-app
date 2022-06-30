@@ -113,7 +113,11 @@
     "MESSAGE_CODE_36": "That type does not exist",
     "MESSAGE_CODE_37": "Candidate with that iban already exists",
     "MESSAGE_CODE_38": "Member with that iban already exists",
-
+    "MESSAGE_CODE_39": "Group deleted sucessfully",
+    "MESSAGE_CODE_40": "Group does not exist",
+    "MESSAGE_CODE_41": "Group with that name already exists",
+    "MESSAGE_CODE_42": "Error sending the email",
+    "MESSAGE_CODE_43": "Email sent with success",
 
     "hello_profile": "Hello,",
     "name": "Name",
@@ -335,6 +339,32 @@
 
     "export_users": "Export users",
     "export_companies": "Export companies",
-    "export_candidates": "Export candidates"
+    "export_candidates": "Export candidates",
 
+    "sport_page_title": "Sport",
+    "event_page_title": "Event",
+    "group_page_title": "Group",
+    "all_members_page_title": "All members",
+    "all_quotas_page_title": "All quotas",
+    "all_sports_page_title": "All sports",
+    "all_groups_page_title": "All groups",
+    "all_events_page_title": "All events",
+    "all_companies_page_title": "All companies",
+    "all_candidates_page_title": "All candidates",
+    "my_events_page_title": "My events",
+    "my_groups_page_title": "My groups",
+    "my_quotas_page_title": "My quotas",
+    "quotas_management_page_title": "Quotas management",
+    "profile_page_title": "Profile",
+    "my_sports_page_title": "My sports",
+    "signup_page_title": "Sign up",
+    "signin_page_title": "Sign in",
+    "analytics_page_title": "Analytics",
+    "overview_page_title": "Overview",
+    "error_page_title": "Error",
+    "home_page_title": "Homepage",
+    "upload_file_page_title": "Upload files",
+    "validate_page_title": "Validate member",
+
+    "topic": "Topic"
 }

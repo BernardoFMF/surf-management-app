@@ -2,6 +2,7 @@
 
 import error from '../utils/error.js'
 import { contact } from '../utils/email/mailSender.js'
+import { contactUsTemplate } from '../utils/email/mailTemplates.js'
 
 const emailServices = () => {
     const sendContactEmailServices = async (from, name, topic, content) => {
@@ -10,7 +11,7 @@ const emailServices = () => {
         if (!topic) throw error(400, 'Parameter not found: topic', 'MESSAGE_CODE_14')
         if (!content) throw error(400, 'Parameter not found: content', 'MESSAGE_CODE_14')
 
-        await contact(from, name, topic, content)
+        return await contact(from, name, contactUsTemplate(from, name, topic, content))
     }
 
     return {

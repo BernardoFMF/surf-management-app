@@ -15,7 +15,7 @@ export const sendEmailContact = (values) => async (dispatch) => {
             headers: { "Content-Type": "application/json" }
         })
         const emailResponse = await response.json()
-        if(emailResponse.status !== 200) throw Error(emailResponse.message_code)
+        if(response.status !== 201) throw Error(emailResponse.message_code)
         dispatch({
             type: SEND_EMAIL_SUCCESS,
             payload: emailResponse,

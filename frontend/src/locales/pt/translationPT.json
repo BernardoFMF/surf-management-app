@@ -112,6 +112,11 @@
     "MESSAGE_CODE_36": "Este tipo não existe",
     "MESSAGE_CODE_37": "Candidato com este iban já existe",
     "MESSAGE_CODE_38": "Membro com este iban já existe",
+    "MESSAGE_CODE_39": "Grupo eliminado com sucesso",
+    "MESSAGE_CODE_40": "Grupo não existe",
+    "MESSAGE_CODE_41": "Grupo com esse nome já existe",
+    "MESSAGE_CODE_42": "Erro ao enviar o email",
+    "MESSAGE_CODE_43": "Email enviado com sucesso",
 
     "hello_profile": "Olá,",
     "name": "Nome",
@@ -336,6 +341,32 @@
 
     "export_users": "Exportar utilizadores",
     "export_companies": "Exportar empresas",
-    "export_candidates": "Exportar candidatos"
+    "export_candidates": "Exportar candidatos",
 
+    "sport_page_title": "Desporto",
+    "event_page_title": "Evento",
+    "group_page_title": "Grupo",
+    "all_members_page_title": "Todos os membros",
+    "all_quotas_page_title": "Todas as quotas",
+    "all_sports_page_title": "Todos os desportos",
+    "all_groups_page_title": "Todos os grupos",
+    "all_events_page_title": "Todos os eventos",
+    "all_companies_page_title": "Todas as empresas",
+    "all_candidates_page_title": "Todos os candidatos",
+    "my_events_page_title": "Os meus eventos",
+    "my_groups_page_title": "Os meus grupos",
+    "my_quotas_page_title": "As minhas quotas",
+    "quotas_management_page_title": "Gestão de quotas",
+    "profile_page_title": "Perfil",
+    "my_sports_page_title": "Os meus desportos",
+    "signup_page_title": "Registar",
+    "signin_page_title": "Entrar",
+    "analytics_page_title": "Estatísticas",
+    "overview_page_title": "Visão geral",
+    "error_page_title": "Erro",
+    "home_page_title": "Página principal",
+    "upload_file_page_title": "Carregar ficheiros",
+    "validate_page_title": "Validar membro",
+
+    "topic": "Assunto"
 }

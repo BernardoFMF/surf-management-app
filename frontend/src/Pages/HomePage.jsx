@@ -12,6 +12,7 @@ import AuthWrapper from './auth/AuthWrapper'
 import Box from '@mui/material/Box';
 import ClockLoader from 'react-spinners/ClockLoader'
 import AnimatedPage from '../components/AnimatedPage'
+import Meta from '../components/Meta'
 
 const HomePage = () => {
   const theme = useTheme();
@@ -35,6 +36,7 @@ const HomePage = () => {
 
   return (
     <>
+        <Meta title={t('home_page_title')}/>
         {loading ?  
           <AnimatedPage>
             <AuthWrapper>

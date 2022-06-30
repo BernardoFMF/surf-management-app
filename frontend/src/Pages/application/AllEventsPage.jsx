@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getEvents, deleteEvent } from '../../store/actions/eventActions'
 import * as Yup from 'yup';
-
+import Meta from '../../components/Meta';
 import { useTranslation } from 'react-i18next'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -149,6 +149,7 @@ const columns = [
 
   return (
     <>
+        <Meta title={t('all_events_page_title')}/>
         <EventCreateDialog
             open={openSubmit}
             closeHandler={handleCloseSubmit}     

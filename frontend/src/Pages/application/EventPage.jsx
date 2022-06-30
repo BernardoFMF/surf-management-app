@@ -16,6 +16,7 @@ import { Form, Formik } from 'formik';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SearchIcon from '@mui/icons-material/Search';
+import Meta from '../../components/Meta'
 
 const EventPage = () => {
 
@@ -99,22 +100,22 @@ const EventPage = () => {
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                 <>
+                    <Meta title={eventGet.name_ + ' | ' + t('event_page_title')}/>
                     <Grid container direction={ { xs: "column", md: "row"} } spacing={2}>
                         <Grid item xs>
                             <h2>{t("event_list")}</h2>
-                            
-                                    <DataGrid
-                                    autoHeight
-                                    rows={rows}
-                                    columns={columns}
-                                    pageSize={searchState.limit}
-                                    hideFooter={true}
-                                    sx={{
-                                        "& .MuiDataGrid-columnHeaders": {
-                                            backgroundColor: "rgba(219, 219, 219, 0.5)"
-                                        }
-                                    }}
-                                    />
+                            <DataGrid
+                                autoHeight
+                                rows={rows}
+                                columns={columns}
+                                pageSize={searchState.limit}
+                                hideFooter={true}
+                                sx={{
+                                    "& .MuiDataGrid-columnHeaders": {
+                                        backgroundColor: "rgba(219, 219, 219, 0.5)"
+                                    }
+                                }}
+                            />
                             <Grid container>
                                 <Grid item>
                                     <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(eventAttendanceGet !==undefined ? eventAttendanceGet.number_of_attendance / searchState.limit : 1)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>                            

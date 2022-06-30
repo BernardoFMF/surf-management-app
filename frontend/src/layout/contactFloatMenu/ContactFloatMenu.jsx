@@ -41,7 +41,7 @@ const ContactFloatMenu = () => {
 
     return (
         <>
-            <Tooltip title="Contact us">
+            <Tooltip title={t("front_page_contact_us")}>
                 <Fab
                     component="div"
                     onClick={(e) => handleToggle()}
@@ -74,8 +74,6 @@ const ContactFloatMenu = () => {
                 }}
             >
                 <PerfectScrollbar component="div">
-                    { result && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('email_sent')}</Alert></Box> }
-                    { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
                     <Formik
                         initialValues={{
                             from_email: '',
@@ -95,10 +93,14 @@ const ContactFloatMenu = () => {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <InputField name='from_email' label={t('your_email')} type='text' />
+                                        { result && <Box><Alert severity="success">{t(result.message_code)}</Alert></Box> }
+                                        { error && <Box><Alert severity="error">{t(error)}</Alert></Box> }
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <InputField name='from_name' label={t('your_name')} type='text' />
+                                        <InputField name='from_email' label={'Email'} type='text' />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <InputField name='from_name' label={t('name')} type='text' />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <InputField name='topic' label={t('topic')} type='text' />

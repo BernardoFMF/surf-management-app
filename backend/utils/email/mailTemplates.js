@@ -24,5 +24,17 @@ const passwordChangedTemplate = () => {
 	return {text, html}
 }
 
+const contactUsTemplate = (from, name, topic, content) => {
+	const text = `Email: ${from}\nNome: ${name}\nTópico: ${topic}\nConteúdo: ${content}`
+	const html = `<p'>Novo email de: <strong><a href = "mailto: ${from}">${from}</a></strong> [${name}]</p>
+		<hr style='border-top: 3px solid #bbb;'>
+		<p>Assunto: ${topic}</p>
+		<hr style='border-top: 3px solid #bbb;'>
+		<p>${content}</p>`
+	console.log(text);
+	console.log(html);
+	return {text, html}
+}
 
-export{eventTemplate, quotaAlertTemplate, passwordChangeTemplate,passwordChangedTemplate}
+
+export{eventTemplate, quotaAlertTemplate, passwordChangeTemplate, passwordChangedTemplate, contactUsTemplate}

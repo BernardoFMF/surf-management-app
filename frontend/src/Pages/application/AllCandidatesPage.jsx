@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteCandidate, getCandidates } from '../../store/actions/candidateActions'
 import { getTypes } from '../../store/actions/typeActions'
 import InputField from '../../components/multiStepForm/InputField';
-
+import Meta from '../../components/Meta';
 import * as Yup from 'yup';
-
 import { Grid,Stack, CircularProgress, Alert, Pagination} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -162,6 +161,7 @@ const AllCandidatesPage = () => {
 
   return (
     <>
+        <Meta title={t('all_candidates_page_title')}/>
         <CandidateApproveDialog 
             open={open}
             closeHandler={handleClose}
