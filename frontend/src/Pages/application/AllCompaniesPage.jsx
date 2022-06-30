@@ -20,6 +20,9 @@ import { Pagination } from '@mui/material';
 import CompanyCreateDialog from '../../components/dialogs/CompanyCreateDialog';
 import { useTheme } from '@mui/material/styles';
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
+import ExportCSV from '../../components/ExportCSV'
+import { exportCompaniesCSV } from '../../store/actions/exportActions'
+import CheckInputField from '../../components/multiStepForm/CheckInputField';
 
 const AllCompaniesPage = () => {
     const theme = useTheme()
@@ -27,6 +30,11 @@ const AllCompaniesPage = () => {
     const {t} = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const exportC = useSelector((state) => state.exportCompaniesCSV)
+    const { exportCompanies } = exportC
+    const [data, setData] = useState([]);
+
     const companiesFetch = useSelector((state) => state.companiesFetch)
     const { loading, error, companiesGet } = companiesFetch
 
@@ -36,6 +44,7 @@ const AllCompaniesPage = () => {
       username_filter: "",
       name_filter: "",
       email_filter: "",
+      toggle_filter: false,
       limit: 10
     })
 
@@ -48,7 +57,7 @@ const AllCompaniesPage = () => {
     const [page, setPage] = useState(1);
 
     const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit))};
+    const handleClose = () => {setOpen(false); dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit))};
     const handleOpen = () => setOpen(true);
 
 
@@ -57,19 +66,21 @@ const AllCompaniesPage = () => {
             setSearchState({
                 username_filter: "",
                 name_filter: "",
-                email_filter: ""
+                email_filter: "",
+                toggle_filter: false
             })
         }
     }, [posted])
 
     useEffect(() => {
-        dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit))
+        dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter,searchState.toggle_filter, 0, searchState.limit))
         dispatch(getTypes('company'))
+        dispatch(exportCompaniesCSV())
     }, [])
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, (value-1)*searchState.limit, searchState.limit))
+        dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter,searchState.toggle_filter, (value-1)*searchState.limit, searchState.limit))
     }
 
     useEffect(() => {
@@ -82,6 +93,12 @@ const AllCompaniesPage = () => {
             }))
         }
     }, [companiesGet])
+
+    useEffect(() => {
+        if(exportCompanies){
+            setData(exportCompanies)
+        }
+    }, [exportCompanies])
 
     
     const deleteCompanyHandle = React.useCallback(
@@ -101,38 +118,56 @@ const AllCompaniesPage = () => {
         setSearchState(values)
         setPage(1)
         setRows([])
-        dispatch(getCompanies(values.username_filter,values.name_filter,values.email_filter,0,values.limit))
+        dispatch(getCompanies(values.username_filter,values.name_filter,values.email_filter,values.toggle_filter,0,values.limit))
     }
 
-const columns = [
-    { field: 'member_id_', headerName: 'ID', width: 40 ,headerAlign: "center",align:'center'},
-    { field: 'username_', headerName: t('username'), width: 140 ,headerAlign: "center",align:'center'},
-    { field: 'name_', headerName: t('name'), width: 150,headerAlign: "center",align:'center' },
-    { field: 'email_', headerName: 'Email', width: 170 ,headerAlign: "center",align:'center'},  
-    { field: 'iban_', headerName: 'IBAN', width: 220,headerAlign: "center",align:'center'},  
-    { field: 'nif_', headerName: 'NIF', width: 110 ,headerAlign: "center",align:'center'},
-    { field: 'has_debt_', headerName: t('has_debt_'), type: 'boolean', width: 130 ,headerAlign: "center",align:'center'},
-    { field: 'is_deleted_', headerName: t('is_deleted_'), type: 'boolean', width: 130 ,headerAlign: "center",align:'center'},
-    {
-        field: 'actions',
-        type: 'actions',
-        headerName: t('actions'),
-        width: 110,
-        getActions: (params) => [
-          <GridActionsCellItem
-          icon={<BusinessIcon />}
-          label="Show Profile"
-          onClick={() => navigate(`/application/members/${params.id}`)}
-          />,
+    const columns = [
+        { field: 'member_id_', headerName: 'ID', width: 40 ,headerAlign: "center",align:'center'},
+        { field: 'username_', headerName: t('username'), width: 140 ,headerAlign: "center",align:'center'},
+        { field: 'name_', headerName: t('name'), width: 150,headerAlign: "center",align:'center' },
+        { field: 'email_', headerName: 'Email', width: 170 ,headerAlign: "center",align:'center'},  
+        { field: 'iban_', headerName: 'IBAN', width: 220,headerAlign: "center",align:'center'},  
+        { field: 'nif_', headerName: 'NIF', width: 110 ,headerAlign: "center",align:'center'},
+        { field: 'has_debt_', headerName: t('has_debt_'), type: 'boolean', width: 130 ,headerAlign: "center",align:'center'},
+        { field: 'is_deleted_', headerName: t('is_deleted_'), type: 'boolean', width: 130 ,headerAlign: "center",align:'center'},
+        {
+            field: 'actions',
+            type: 'actions',
+            headerName: t('actions'),
+            width: 110,
+            getActions: (params) => [
             <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={deleteCompanyHandle(params.id)}
-            disabled={params.row.is_deleted_}
-            />
-        ],
-    },
-];
+            icon={<BusinessIcon />}
+            label="Show Profile"
+            onClick={() => navigate(`/application/members/${params.id}`)}
+            />,
+                <GridActionsCellItem
+                icon={<DeleteIcon />}
+                label="Delete"
+                onClick={deleteCompanyHandle(params.id)}
+                disabled={params.row.is_deleted_}
+                />
+            ],
+        },
+    ];
+
+
+    const headers = [
+        { key: 'member_id_', label: 'ID'},
+        { key: 'username_', label: t('candidates_username')},
+        { key: 'name_', label: t('name')},
+        { key: 'email_', label: 'Email'},
+        { key: 'iban_', label: 'IBAN'},
+        { key: 'nif_', label: 'NIF'},
+        { key: 'has_debt_', label: t('has_debt_')},
+        { key: 'is_deleted_', label: t('is_deleted_')}
+    ];
+    
+    const csvreport = {
+        data: data,
+        headers: headers,
+        filename: 'club_companies.csv'
+    };
 
 
   return (
@@ -172,6 +207,9 @@ const columns = [
                                     </Grid>
                                     <Grid item>
                                         <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
+                                    </Grid>
+                                    <Grid item>
+                                        <CheckInputField name='toggle_filter' label={t('has_debt_')} type='boolean'></CheckInputField>
                                     </Grid>
                                     <Grid item>
                                         <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
@@ -231,6 +269,9 @@ const columns = [
                         }}
                     />
                     <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(companiesGet.number_of_companies / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                    <Grid sx={{ mt: 2 }} >
+                        <ExportCSV csvreport={csvreport} exportText={t('export_companies')} ></ExportCSV>
+                    </Grid>
                 </>
             )}
         </MainCard> 

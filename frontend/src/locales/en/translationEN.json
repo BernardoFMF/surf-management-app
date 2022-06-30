@@ -331,5 +331,10 @@
     "Unpaid Quotas" : "Unpaid Quotas",
     "Total amount left to be paid in": "Total amount left to be paid in",
     "Total amount paid in": "Total amount paid in",
-    "Total user growth in": "Total user growth in"
+    "Total user growth in": "Total user growth in",
+
+    "export_users": "Export users",
+    "export_companies": "Export companies",
+    "export_candidates": "Export candidates"
+
 }

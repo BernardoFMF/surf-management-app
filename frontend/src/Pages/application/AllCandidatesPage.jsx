@@ -20,10 +20,17 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import CandidateApproveDialog from '../../components/dialogs/CandidateApproveDialog'
+import ExportCSV from '../../components/ExportCSV'
+import { exportCandidatesCSV } from '../../store/actions/exportActions'
 
 const AllCandidatesPage = () => {
     const {t} = useTranslation()
     const dispatch = useDispatch()
+
+    const exportC = useSelector((state) => state.exportCandidatesCSV)
+    const { exportCandidates } = exportC
+    const [data, setData] = useState([]);
+
     const [ searchState, setSearchState ] = useState({
         username_filter: "",
         name_filter: "",
@@ -50,6 +57,7 @@ const AllCandidatesPage = () => {
     useEffect(() => {
         dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit))
         dispatch(getTypes('user'))
+        dispatch(exportCandidatesCSV())
     }, [])
 
     useEffect(() => {
@@ -62,6 +70,13 @@ const AllCandidatesPage = () => {
             }))
         }
     },[candidatesGet])
+
+    useEffect(() => {
+        if(exportCandidates){
+            setData(exportCandidates)
+        }
+    }, [exportCandidates])
+
     
     const deleteCandidateHandle = React.useCallback(
       (id) => () => {
@@ -115,6 +130,29 @@ const AllCandidatesPage = () => {
             ],
         },
     ];
+
+    
+    const headers = [
+        { key: 'id_', label: 'ID'},
+        { key: 'username_', label: t('candidates_username')},
+        { key: 'full_name_', label: t('candidates_full_name')},
+        { key: 'email_', label: 'Email'},
+        { key: 'iban_', label: 'IBAN'},
+        { key: 'phone_number_', label: t('candidates_phone_number')},
+        { key: 'gender_', label: t('candidates_gender')},
+        { key: 'birth_date_', label: t('candidates_birth_date')},
+        { key: 'location_', label: t('candidates_location')},
+        { key: 'address_', label: t('candidates_address')},
+        { key: 'postal_code_', label: t('candidates_postal_code')},
+        { key: 'cc_', label: 'CC', width: 110 ,headerAlign: "center",align:'center'},
+        { key: 'nif_', label: 'NIF'}
+    ];
+    
+    const csvreport = {
+        data: data,
+        headers: headers,
+        filename: 'club_candidates.csv'
+    };
 
     const changePageHandler = (event, value) => {
         setPage(value)
@@ -189,6 +227,9 @@ const AllCandidatesPage = () => {
                         }}
                     />
                     <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(candidatesGet.number_of_candidates / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                    <Grid sx={{ mt: 2 }} >
+                        <ExportCSV csvreport={csvreport} exportText={t('export_candidates')} ></ExportCSV>
+                    </Grid>
                 </>
             )}
         </MainCard> 

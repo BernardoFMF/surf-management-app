@@ -46,7 +46,8 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` position('${email_filter}' in email_) > 0`
 			count++
 		}
-		query = query + ` order by id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
+		query = query + ` order by id_ offset ${offset}`
+		if (limit !== '-1') query = query + ` FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
@@ -210,10 +211,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	 * Companies
 	 */
 
-	const getCompaniesData = async (username_filter,name_filter,email_filter,offset,limit) => {
+	const getCompaniesData = async (username_filter,name_filter,email_filter, debt_filter,offset,limit) => {
 		let query = queries.QUERY_GET_COMPANIES
 		let count = 0
-		if(username_filter || name_filter || email_filter){
+		if(username_filter || name_filter || email_filter || debt_filter){
 			query = query + " where "
 		}
 		if(username_filter){
@@ -230,7 +231,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` position('${email_filter}' in email_) > 0`
 			count++
 		}
-		query = query + ` order by c.member_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
+		if(debt_filter != undefined){
+			if(count > 0) query = query + " and "
+			query = query + ` has_debt_ = ${debt_filter}`
+			count++
+		}
+		query = query + ` order by c.member_id_ offset ${offset}`
+		if (limit !== '-1') query = query + ` FETCH FIRST ${limit} ROWS only`
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
@@ -619,10 +626,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	/**
 	 * Users
 	 */
-	const getUsersData = async (username_filter,name_filter,email_filter,offset,limit) => {
+	const getUsersData = async (username_filter,name_filter,email_filter,debt_filter,offset,limit) => {
 		let query = queries.QUERY_GET_USERS
 		let count = 0
-		if(username_filter || name_filter || email_filter){
+		if(username_filter || name_filter || email_filter || debt_filter){
 			query = query + " where "
 		}
 		if(username_filter){
@@ -639,8 +646,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` position('${email_filter}' in email_) > 0`
 			count++
 		}
-		query = query + ` order by u.member_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
-
+		if(debt_filter != undefined){
+			if(count > 0) query = query + " and "
+			query = query + ` has_debt_ = ${debt_filter}`
+			count++
+		}
+		query = query + ` order by u.member_id_ offset ${offset}`
+		if (limit !== '-1') query = query + ` FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
@@ -1291,7 +1303,9 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			if(count > 0) query = query + " and "
 			query = query + `position('${name_filter}' in name_) > 0`
 		}
-		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		query = query + ` offset ${offset}`
+		if(limit !== '-1') query = query + ` FETCH FIRST ${limit} ROWS only`
+
 		const client = await pool.connect()
 		try {
 			await client.query('begin')

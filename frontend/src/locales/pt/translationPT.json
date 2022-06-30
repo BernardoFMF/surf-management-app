@@ -332,6 +332,10 @@
     "Unpaid Quotas" : "Quotas não pagas",
     "Total amount left to be paid in": "Valor total a ser pago em",
     "Total amount paid in": "Valor total pago em",
-    "Total user growth in": "Crescimento total de utilizadores em"
+    "Total user growth in": "Crescimento total de utilizadores em",
+
+    "export_users": "Exportar utilizadores",
+    "export_companies": "Exportar empresas",
+    "export_candidates": "Exportar candidatos"
 
 }

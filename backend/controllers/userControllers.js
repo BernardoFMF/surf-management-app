@@ -9,7 +9,7 @@ const userController = (data) => {
 	const services = userServices(data)
 
 	const getUsers = asyncHandler(async (req, res) => {
-		const users = await services.getUsersServices(req.query.username, req.query.name, req.query.email, req.query.offset, req.query.limit)
+		const users = await services.getUsersServices(req.query.username, req.query.name, req.query.email, req.query.hasDebt, req.query.offset, req.query.limit)
 		res.json(users)
 	})
 	

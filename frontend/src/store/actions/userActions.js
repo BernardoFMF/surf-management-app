@@ -91,12 +91,12 @@ export const deleteUser = (id) => async (dispatch) => {
   }
 }
 
-export const getUsers = (username_filter, name_filter, email_filter, offset, limit) => async (dispatch) => {
+export const getUsers = (username_filter, name_filter, email_filter, toggle_filter, offset, limit) => async (dispatch) => {
   try {
     dispatch({
       type: USERS_FETCH_REQUEST,
     })
-    const response = await fetch(`/api/users?offset=${offset}&limit=${limit}${username_filter ? `&username=${username_filter}`:""}${name_filter ? `&name=${name_filter}`:""}${email_filter ? `&email=${email_filter}`:""}`, {
+    const response = await fetch(`/api/users?offset=${offset}&limit=${limit}${username_filter ? `&username=${username_filter}`:""}${name_filter ? `&name=${name_filter}`:""}${email_filter ? `&email=${email_filter}`:""}${toggle_filter ? `&hasDebt=${toggle_filter}`:""}`, {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
     })
