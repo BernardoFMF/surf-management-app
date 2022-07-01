@@ -315,14 +315,14 @@ test('Approve a candidate', async () => {
 
 test('Get all companies', async () => {
 	expect.assertions(2)
-	const companies = await dbCompany.getCompanies(undefined, undefined, undefined, offset, limit)
+	const companies = await dbCompany.getCompanies(undefined, undefined, undefined, undefined, offset, limit)
 	expect(companies.companies[0].name_).toBe('Ericeira surf shop')
 	expect(companies.companies[1].name_).toBe('Billabong')
 })
 
 test('Get all companies', async () => {
 	expect.assertions(1)
-	const companies = await dbCompany.getCompanies('eric', 'Ericeira surf shop', 'ess@gmail.com', offset, limit)
+	const companies = await dbCompany.getCompanies('eric', 'Ericeira surf shop', 'ess@gmail.com',undefined, offset, limit)
 	expect(companies.companies[0].name_).toBe('Ericeira surf shop')
 })
 
@@ -420,13 +420,13 @@ test('Create management quota', async () => {
 
 test('Get all users', async () => {
 	expect.assertions(1)
-	const users = await dbUser.getUsers(undefined, undefined, undefined, offset, limit)
+	const users = await dbUser.getUsers(undefined, undefined, undefined, undefined, offset, limit)
 	expect(users.users.length).toBe(3)
 })
 
 test('Get all users', async () => {
 	expect.assertions(1)
-	const users = await dbUser.getUsers('jobileu', 'Jobileu Santos', 'jobi@clix.pt', offset, limit)
+	const users = await dbUser.getUsers('jobileu', 'Jobileu Santos', 'jobi@clix.pt', undefined, offset, limit)
 	expect(users.users.length).toBe(1)
 })
 
