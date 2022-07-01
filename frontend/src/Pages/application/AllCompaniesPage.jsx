@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteCompany, getCompanies } from '../../store/actions/companyActions'
 import BusinessIcon from '@mui/icons-material/Business';
-import { Stack, CircularProgress, Dialog, DialogActions, DialogContent, Typography, Button, useMediaQuery, InputAdornment, IconButton } from '@mui/material'
+import { Stack, CircularProgress, useMediaQuery } from '@mui/material'
 import { getTypes } from '../../store/actions/typeActions'
 import { useTranslation } from 'react-i18next'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';

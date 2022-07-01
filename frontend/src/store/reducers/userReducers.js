@@ -31,7 +31,8 @@ import {
     USER_SPORT_DELETE_FAIL,
     USERS_SPORTS_CREATE_REQUEST,
     USERS_SPORTS_CREATE_SUCCESS,
-    USERS_SPORTS_CREATE_FAIL
+    USERS_SPORTS_CREATE_FAIL,
+    USER_UPDATE_RESET
   } from '../constants/userConstants'
 
   export const userRegisterReducer = (state = {}, action) => {
@@ -94,6 +95,8 @@ import {
         return { loading: false, updated: true, updateResult: action.payload }
       case USER_UPDATE_FAIL:
         return { loading: false, error: action.payload }
+      case USER_UPDATE_RESET:
+        return {}
       default:
         return state
     }

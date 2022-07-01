@@ -8,19 +8,17 @@ import { Formik, Form } from 'formik';
 import { updateCompany } from '../../store/actions/companyActions';
 import { getTypes } from '../../store/actions/typeActions'
 import DropdownInputField from '../multiStepForm/DropdownInputField';
-
 import { useTheme } from '@mui/material/styles';
-
 import AnimateButton from '../extended/AnimateButton';
 import { useState } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
+import { COMPANY_UPDATE_RESET } from '../../store/constants/companyConstants'
+import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants'
 
 const AdminPrivilegesTab = () => {
     const theme = useTheme()
     const category = 'company'
     const { t } = useTranslation()
-    const [alertSuccess, setAlertSuccess] = useState(false)
 
     const memberFetch = useSelector((state) => state.memberFetch)
     const { memberGet } = memberFetch
@@ -37,26 +35,29 @@ const AdminPrivilegesTab = () => {
 
     useEffect(() => {
         dispatch(getTypes(category))
-    },[dispatch])
+        return () => {
+            dispatch({ type: COMPANY_UPDATE_RESET })
+            dispatch({ type: TYPES_FETCH_RESET })
+        }
+    },[])
 
     const handleSubmit = async (values) => {
         const updatedCompany = { ...values, cid: memberGet.member_id_, name: memberGet.name_, nif: memberGet.nif_, address: memberGet.address_, location: memberGet.location_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, iban: memberGet.iban_, img: memberGet.img_value_ }
         dispatch(updateCompany(updatedCompany))
-        setAlertSuccess(true)
     }
 
     return (
         <>
-        {
+            {
                 loadingTypes || !typesGet || (typesGet && typesGet.length === 0) ?
                     <Stack alignItems="center">
                         <CircularProgress size='4rem'/>
                     </Stack>
                 : (
                     <>
-                        { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                        { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
-                        { updated && alertSuccess && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
+                        { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => {dispatch({ type: COMPANY_UPDATE_RESET })}}>{t(error)}</Alert></Box> }
+                        { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => {dispatch({ type: TYPES_FETCH_RESET })}}>{t(errorTypes)}</Alert></Box> }
+                        { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {dispatch({ type: COMPANY_UPDATE_RESET })}}>{t('updated_sucessfully')}</Alert></Box> }
                         <Formik
                             initialValues={{
                                 type: memberGet.member_type_, 
@@ -72,9 +73,7 @@ const AdminPrivilegesTab = () => {
                             <Form>
                                 <Grid container direction="column" sx={{ ml: { md: 4, lg: 4 } }} justifyContent='center' spacing={1}>
                                     <Grid item>
-                                        
                                         <>
-
                                             {    
                                                 memberGet.is_deleted_ &&  
                                                     <Box justifyContent='center' sx={{ pt: 2, width: { md: 400 }}}>

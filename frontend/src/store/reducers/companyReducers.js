@@ -11,6 +11,7 @@ import {
     COMPANY_UPDATE_REQUEST,
     COMPANY_UPDATE_SUCCESS,
     COMPANY_UPDATE_FAIL,
+    COMPANY_UPDATE_RESET,
     COMPANY_POST_FAIL,
     COMPANY_POST_REQUEST,
     COMPANY_POST_SUCCESS,
@@ -79,6 +80,8 @@ export const companyDeletionReducer = (state = {}, action) => {
         return { loading: false, updated: true, updateResult: action.payload }
       case COMPANY_UPDATE_FAIL:
         return { loading: false, error: action.payload }
+      case COMPANY_UPDATE_RESET:
+        return {}
       default:
         return state
     }

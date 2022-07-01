@@ -4,7 +4,6 @@ import { deleteCandidate, getCandidates } from '../../store/actions/candidateAct
 import { getTypes } from '../../store/actions/typeActions'
 import InputField from '../../components/multiStepForm/InputField';
 import Meta from '../../components/Meta';
-import * as Yup from 'yup';
 import { Grid,Stack, CircularProgress, Alert, Pagination} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -16,11 +15,13 @@ import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Form, Formik } from 'formik';
 import SearchIcon from '@mui/icons-material/Search';
-
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import CandidateApproveDialog from '../../components/dialogs/CandidateApproveDialog'
 import ExportCSV from '../../components/ExportCSV'
 import { exportCandidatesCSV } from '../../store/actions/exportActions'
+import { CANDIDATES_FETCH_RESET, CANDIDATE_DELETE_RESET } from '../../store/constants/candidateConstants';
+import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
+import { EXPORT_CANDIDATE_FETCH_RESET } from '../../store/constants/exportConstants';
 
 const AllCandidatesPage = () => {
     const {t} = useTranslation()
@@ -37,12 +38,13 @@ const AllCandidatesPage = () => {
         limit: 10
     })
     const [rows, setRows] = useState([]);
-    const [id, setId] = React.useState();
+    const [id, setId] = useState();
     const [open, setOpen] = useState(false);
     const handleClose = () => {
         setOpen(false)
         dispatch(getCandidates(searchState.username_filter,searchState.name_filter,searchState.email_filter,0,searchState.limit))
     };
+
     const handleOpen = (id) => {
         setId(id)
         setOpen(true);
@@ -57,6 +59,12 @@ const AllCandidatesPage = () => {
         dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit))
         dispatch(getTypes('user'))
         dispatch(exportCandidatesCSV())
+        return () => {
+            dispatch({ type: CANDIDATES_FETCH_RESET })
+            dispatch({ type: CANDIDATE_DELETE_RESET })
+            dispatch({ type: TYPES_FETCH_RESET })
+            dispatch({ type: EXPORT_CANDIDATE_FETCH_RESET })
+        }
     }, [])
 
     useEffect(() => {
@@ -76,7 +84,6 @@ const AllCandidatesPage = () => {
         }
     }, [exportCandidates])
 
-    
     const deleteCandidateHandle = React.useCallback(
       (id) => () => {
         setTimeout(() => {
@@ -168,7 +175,7 @@ const AllCandidatesPage = () => {
             id={id}
         />
         <MainCard title={t('all_candidates')} sx={{height: '100%'}}>
-            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClick={() => dispatch({ type: CANDIDATES_FETCH_RESET })}>{t(error)}</Alert></Box> }
             <Formik
                     initialValues={searchState}
                     enableReinitialize={true}

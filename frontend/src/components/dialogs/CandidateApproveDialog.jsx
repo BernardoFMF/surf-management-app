@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert, Grid, FormControlLabel } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +9,8 @@ import * as Yup from 'yup'
 import { approveCandidate } from '../../store/actions/candidateActions'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import SwitchButton from '../../components/SwitchButton';
+import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants'
+import { APPROVE_CANDIDATE_RESET } from '../../store/constants/candidateConstants'
 
 const CandidateApproveDialog = ({open, closeHandler, id}) => {
     const { t } = useTranslation()
@@ -24,6 +26,11 @@ const CandidateApproveDialog = ({open, closeHandler, id}) => {
         dispatch(approveCandidate(id, values.member_type, values.paid_enrollment))
     }
 
+    useEffect(() => {
+        return () => {
+            dispatch({ type: APPROVE_CANDIDATE_RESET })
+        }
+    }, [])
 
     return (
         <Dialog
@@ -39,9 +46,9 @@ const CandidateApproveDialog = ({open, closeHandler, id}) => {
                 {t('candidates_modal_title')}
             </Typography>
             <DialogContent>
-                { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
-                { approvalSuccess && <Box sx={{ pt: 2 }}><Alert severity="success">{t('MESSAGE_CODE_4')}</Alert></Box> }
-                { error && <Box sx={{ pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+                { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: TYPES_FETCH_RESET })}>{t(errorTypes)}</Alert></Box> }
+                { approvalSuccess && <Box sx={{ pt: 2 }}><Alert severity="success" onClose={() => dispatch({ type: APPROVE_CANDIDATE_RESET })}>{t('MESSAGE_CODE_4')}</Alert></Box> }
+                { error && <Box sx={{ pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: APPROVE_CANDIDATE_RESET })}>{t(error)}</Alert></Box> }
                 <Box
                     sx={{
                     display: 'flex',

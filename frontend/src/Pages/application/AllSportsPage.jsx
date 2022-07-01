@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback  } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getSports, deleteSport, createSport, updateSport } from '../../store/actions/sportActions'
-import { useTheme } from '@mui/material/styles'
+import { getSports, deleteSport, updateSport } from '../../store/actions/sportActions'
 import Meta from '../../components/Meta';
 import { useTranslation } from 'react-i18next'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -16,11 +15,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import { Formik, Form } from 'formik';
-import SubCard from '../../components/cards/SubCard'
-import * as Yup from 'yup';
 import Box from '@mui/material/Box';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import SportCreateDialog from '../../components/dialogs/SportCreateDialog'
 import UserSportApplyDialog from '../../components/dialogs/UserSportApplyDialog';

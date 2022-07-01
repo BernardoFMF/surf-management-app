@@ -11,13 +11,13 @@ import * as Yup from 'yup';
 import DropdownInputField from '../multiStepForm/DropdownInputField';
 import { useTheme } from '@mui/material/styles';
 import { getTypes } from '../../store/actions/typeActions'
-import { useState } from 'react';
+import { USER_UPDATE_RESET } from '../../store/constants/userConstants'
+import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants'
 
 const AdminPrivilegesTab = () => {
     const theme = useTheme()
     const category = 'user'
     const { t } = useTranslation()
-    const [alertSuccess, setAlertSuccess] = useState(false)
     const memberFetch = useSelector((state) => state.memberFetch)
     const { memberGet } = memberFetch
 
@@ -33,12 +33,15 @@ const AdminPrivilegesTab = () => {
 
     useEffect(() => {
         dispatch(getTypes(category))
-    },[dispatch])
+        return () => {
+            dispatch({ type: USER_UPDATE_RESET })
+            dispatch({ type: TYPES_FETCH_RESET })
+        }
+    }, [])
 
     const handleSubmit = async (values) => {
         const updatedUser = { ...values, member_id: memberGet.member_id_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, address: memberGet.address_, location: memberGet.location_, username: memberGet.username_, email: memberGet.email_, gender: memberGet.gender_, nationality: memberGet.nationality_, full_name: memberGet.full_name_, cc: memberGet.cc_, nif: memberGet.nif_, birth_date: memberGet.birth_date_, img: memberGet.img_value_, iban: memberGet.iban_ }
         dispatch(updateUser(updatedUser))
-        setAlertSuccess(true)
     }
 
     return (
@@ -50,9 +53,9 @@ const AdminPrivilegesTab = () => {
                     </Stack>
                 : (
                     <>
-                        { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                        { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
-                        { updated && alertSuccess && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {setAlertSuccess(false)}}>{t('updated_sucessfully')}</Alert></Box> }
+                        { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => {dispatch({ type: USER_UPDATE_RESET })}}>{t(error)}</Alert></Box> }
+                        { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => {dispatch({ type: TYPES_FETCH_RESET })}}>{t(errorTypes)}</Alert></Box> }
+                        { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {dispatch({ type: USER_UPDATE_RESET })}}>{t('updated_sucessfully')}</Alert></Box> }
                         <Formik
                             initialValues={{
                                 type: memberGet.member_type_, 
