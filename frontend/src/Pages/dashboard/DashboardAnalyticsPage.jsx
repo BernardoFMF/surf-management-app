@@ -239,20 +239,21 @@ const DashboardAnalyticsPage = () => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12} md={8}>
-                                <QuotasChartWrapper 
-                                    loading={loading} 
-                                    dropdownOptions={unformattedData.quotas.years} 
-                                    totalAmount={unformattedData.quotas.total_amount} 
-                                    amounts={unformattedData.quotas.amounts} 
-                                    data={unformattedData.quotas.data} 
-                                />                        
+                            <QuotasChartWrapper 
+                                loading={loading} 
+                                dropdownOptions={unformattedData.quotas.years} 
+                                totalAmount={unformattedData.quotas.total_amount} 
+                                amounts={unformattedData.quotas.amounts} 
+                                data={unformattedData.quotas.data} 
+                            />                        
                         </Grid>
                         <Grid item xs={12} md={4}>
-                                <UpcomingEventsChartWrapper 
-                                    loading={loading}
-                                    dropdownOptions={unformattedData.upcoming_events.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
-                                    data={unformattedData.upcoming_events.describers.map(obj => { let newObj = { id: obj.id, attendance: obj.attendance}; return newObj })} 
-                                />
+                            <UpcomingEventsChartWrapper 
+                                loading={loading}
+                                title={t('Upcoming events attendance')}
+                                dropdownOptions={unformattedData.upcoming_events.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
+                                data={unformattedData.upcoming_events.describers.map(obj => { let newObj = { id: obj.id, attendance: obj.attendance}; return newObj })} 
+                            />
                         </Grid>
                     </Grid>
                 </Grid>

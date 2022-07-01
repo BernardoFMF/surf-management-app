@@ -6,12 +6,17 @@ import { Grid, Typography, TextField, MenuItem, Button } from '@mui/material'
 import { gridSpacing } from '../../store/constants/themeConstants'
 import ColumnChartSkeleton from '../skeletons/ColumnChartSkeleton'
 import AnimatedPage from '../AnimatedPage'
-const QuotasChartWrapper = ({ loading, dropdownOptions, data }) => {
+const QuotasChartWrapper = ({ loading, dropdownOptions, data, title }) => {
+
     const extractData = (id) => {
+        console.log(data);
         const idData = data.filter(obj => obj.id === id)[0]
+        console.log(id);
+
         return [idData.attendance.going, idData.attendance.not_going, idData.attendance.interested, idData.attendance.unanswered]
     }
     const {t, i18n} = useTranslation()
+
 
     const [value, setValue] = useState(Math.min(...(dropdownOptions.map(option => option.value))));
     const [chartValues, setChartValues] = useState(extractData(Math.min(...(dropdownOptions.map(option => option.value)))))
@@ -34,7 +39,7 @@ const QuotasChartWrapper = ({ loading, dropdownOptions, data }) => {
                                     <Grid item>
                                         <Grid container direction="column" spacing={1}>
                                             <Grid item>
-                                                <Typography variant="subtitle2">{t('Upcoming events attendance')}</Typography>
+                                                <Typography variant="subtitle2">{title}</Typography>
                                             </Grid>
                                         </Grid>
                                     </Grid>
