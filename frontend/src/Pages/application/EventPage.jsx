@@ -17,9 +17,9 @@ import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SearchIcon from '@mui/icons-material/Search';
 import Meta from '../../components/Meta'
+import UpcomingEventsChartWrapper from '../../components/chartWrappers/UpcomingEventsChartWrapper'
 
 const EventPage = () => {
-
     let { id } = useParams()
     const scriptedRef = useScriptRef()
 
@@ -27,7 +27,7 @@ const EventPage = () => {
 
     const dispatch = useDispatch()
     const eventFetch = useSelector((state) => state.eventFetch)
-    const { error, eventGet } = eventFetch
+    const { loadingEvent, error, eventGet } = eventFetch
 
     const eventAttendanceFetch = useSelector((state) => state.eventAttendanceFetch)
     const { loading, a_error, eventAttendanceGet } = eventAttendanceFetch
@@ -35,9 +35,11 @@ const EventPage = () => {
     const [page, setPage] = useState(1);
 
     const [rows, setRows] = useState([]);
+
     const [ searchState, setSearchState ] = useState({
         limit: 10
     })
+
     useEffect(() => {
         dispatch(getEvent(id))
         dispatch(getEventAttendance(id, 0, searchState.limit))
@@ -51,6 +53,7 @@ const EventPage = () => {
                 }
                 return x
             }))
+            
         }
     },[eventAttendanceGet])
 
@@ -62,7 +65,7 @@ const EventPage = () => {
             }
         }
     }
-
+    
     const columns = [
         { field: 'member_id_', headerName: t('member_id'), width: 120 ,headerAlign: "center",align:'center'},
         { field: 'username_', headerName: t("username"), headerAlign: "left", width: 150 ,headerAlign: "center",align:'center'},
@@ -95,15 +98,14 @@ const EventPage = () => {
         <>
             <MainCard title={eventGet !==undefined ? eventGet.name_ : ""}>
             <br/>
-            { loading? 
+            { loading || loadingEvent ? 
                 <Stack alignItems="center">
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                 <>
                     <Meta title={eventGet.name_ + ' | ' + t('event_page_title')}/>
                     <Grid container direction={ { xs: "column", md: "row"} } spacing={2}>
-                        <Grid item xs>
-                            <h2>{t("event_list")}</h2>
+                        <Grid item xs={12} md={6}>
                             <DataGrid
                                 autoHeight
                                 rows={rows}
@@ -154,21 +156,15 @@ const EventPage = () => {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid sx={{mt: 0.5}} item xs>
-                            <h2>{t("event_information")}</h2>
-                            <b>{eventGet !==undefined ? t("start_date") + ": " : ""}</b> {eventGet !==undefined ? eventGet.initial_date_ : ""}
-                            <Divider orientation="horizontal" flexItem sx={{mb: 1}}/>
-                            <b>{eventGet !==undefined ? t("end_date") + ": " : ""}</b> {eventGet !==undefined ? eventGet.end_date_ : ""}
-                            <Divider orientation="horizontal" flexItem sx={{mb: 1}}/>
-                            <b>{eventAttendanceGet !==undefined ? t("event_people_going")  : ""}</b> {eventAttendanceGet !==undefined ? eventAttendanceGet.going : ""}
-                            <Divider orientation="horizontal" flexItem sx={{mb: 1}}/>
-                            <b>{eventAttendanceGet !==undefined ? t("event_people_not_going")  : ""}</b> {eventAttendanceGet !==undefined ? eventAttendanceGet.not_going : ""}
-                            <Divider orientation="horizontal" flexItem sx={{mb: 1}}/>
-                            <b>{eventAttendanceGet !==undefined ? t("event_people_interested")  : ""}</b> {eventAttendanceGet !==undefined ? eventAttendanceGet.interested : ""}
-                            <Divider orientation="horizontal" flexItem sx={{mb: 1}}/>
-                            <b>{eventAttendanceGet !==undefined ? t("event_people_none")  : ""}</b> {eventAttendanceGet !==undefined ? eventAttendanceGet.none : ""}
-                            <Divider orientation="horizontal" flexItem sx={{mb: 1}}/>
+                        { eventGet && eventAttendanceGet.text.length !== 0 && <Grid item xs={12} md={6}>
+                            <UpcomingEventsChartWrapper 
+                                loading={loading}
+                                dropdownOptions={[{label: eventGet.name_, value: eventGet.id_}]} 
+                                data={[{id: eventGet.id_, attendance: {going : eventAttendanceGet.going, not_going: eventAttendanceGet.not_going, interested: eventAttendanceGet.interested, unanswered: eventAttendanceGet.none}}]} 
+                                title={t('attendance')}
+                            />
                         </Grid>
+                        }
                     </Grid> 
                 </>
             )}
