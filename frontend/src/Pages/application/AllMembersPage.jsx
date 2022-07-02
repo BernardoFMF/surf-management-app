@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteUser, getUsers } from '../../store/actions/userActions'
+import { exportUsersCSV } from '../../store/actions/exportActions'
 import { Form, Formik } from 'formik';
 import { Grid, Stack, Pagination, CircularProgress, Alert, Box} from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -16,11 +17,20 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import UserCreateDialog from '../../components/dialogs/UserCreateDialog';
 import { getTypes } from '../../store/actions/typeActions'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
+import ExportCSV from '../../components/ExportCSV'
+import CheckInputField from '../../components/multiStepForm/CheckInputField';
+import Meta from '../../components/Meta';
 
 const AllMembersPage = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
     const dispatch = useDispatch()
+
+    const exportU = useSelector((state) => state.exportUsersCSV)
+    const { exportUsers } = exportU
+    const [data, setData] = useState([]);
+
+
     const userFetch = useSelector((state) => state.usersFetch)
     const { loading, error, usersGet } = userFetch
 
@@ -36,11 +46,12 @@ const AllMembersPage = () => {
         username_filter: "",
         name_filter: "",
         email_filter: "",
+        toggle_filter: false,
         limit: 10
     })
 
     const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit)};
+    const handleClose = () => {setOpen(false); getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit)};
     const handleOpen = () => setOpen(true);
 
 
@@ -59,8 +70,9 @@ const AllMembersPage = () => {
     }, [posted])
     
     useEffect(() => {
-        dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit))
+        dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit))
         dispatch(getTypes('user'))
+        dispatch(exportUsersCSV())
     }, [])
 
     useEffect(() => {
@@ -73,6 +85,12 @@ const AllMembersPage = () => {
             }))
         }
     },[usersGet])
+
+    useEffect(() => {
+        if(exportUsers){
+            setData(exportUsers.filter(user => user.is_admin_ === false))
+        }
+    },[exportUsers])
 
     const deleteUserHandle = React.useCallback(
       (id) => () => {
@@ -91,15 +109,13 @@ const AllMembersPage = () => {
         setSearchState(values)
         setPage(1)
         setRows([])
-        dispatch(getUsers(values.username_filter,values.name_filter,values.email_filter,0,values.limit))
+        dispatch(getUsers(values.username_filter,values.name_filter,values.email_filter, values.toggle_filter,0,values.limit))
     }
 
     const changePageHandler = (event, value) => {
         setPage(value)
-        dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, (value-1)*searchState.limit, searchState.limit))
+        dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, (value-1)*searchState.limit, searchState.limit))
     }
-
-
 
     const columns = [
         { field: 'member_id_', headerName: 'ID', width: 40 ,headerAlign: "center",align:'center'},
@@ -137,8 +153,32 @@ const AllMembersPage = () => {
         },
     ];
 
+
+    const headers = [
+        { key: 'member_id_', label: 'ID'},
+        { key: 'username_', label: t('candidates_username')},
+        { key: 'full_name_', label: t('full_name')},
+        { key: 'email_', label: 'Email'},
+        { key: 'iban_', label: 'IBAN'},
+        { key: 'gender_', label: t('gender')},    
+        { key: 'nationality_', label: t('nationality')},
+        { key: 'birth_date_', label: t('birth_date')},
+        { key: 'member_type_', label: t('member_type')},
+        { key: 'enrollment_date_', label: t('enrollment_date')},
+        { key: 'has_debt_', label: t('has_debt_')},
+        { key: 'paid_enrollment_', label: t('paid_enrollment_')},
+        { key: 'is_deleted_', label: t('is_deleted_')}
+      ];
+       
+    const csvreport = {
+        data: data,
+        headers: headers,
+        filename: 'club_users.csv'
+    };
+
     return (
         <>
+            <Meta title={t('all_members_page_title')}/>
             <UserCreateDialog
                 open={open}
                 closeHandler={handleClose}
@@ -174,6 +214,9 @@ const AllMembersPage = () => {
                                         </Grid>
                                         <Grid item>
                                             <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
+                                        </Grid>
+                                        <Grid item>
+                                            <CheckInputField name='toggle_filter' label={t('has_debt_')} type='boolean'></CheckInputField>
                                         </Grid>
                                         <Grid item>
                                             <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
@@ -234,6 +277,9 @@ const AllMembersPage = () => {
                             }}
                         />
                         <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(usersGet.number_of_users / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                        <Grid sx={{ mt: 2 }} >
+                            <ExportCSV csvreport={csvreport} exportText={t('export_users')} ></ExportCSV>
+                        </Grid>
                     </>
                 )}
             </MainCard> 

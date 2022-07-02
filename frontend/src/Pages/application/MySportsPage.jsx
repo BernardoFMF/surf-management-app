@@ -15,7 +15,8 @@ import DropdownInputField from '../../components/multiStepForm/DropdownInputFiel
 import { Form, Formik } from 'formik';
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from '@mui/icons-material/Search'
+import Meta from '../../components/Meta'
 
 const MySportsPage = () => {
     const theme = useTheme();
@@ -126,6 +127,7 @@ const MySportsPage = () => {
     }
     return (
         <>
+            <Meta title={t('my_sports_page_title')}/>
             <UserSportEditDialog
                 open={openEditDialog}
                 closeHandler={closeDialogHandler}

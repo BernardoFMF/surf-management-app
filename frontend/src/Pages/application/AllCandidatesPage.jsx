@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteCandidate, getCandidates } from '../../store/actions/candidateActions'
 import { getTypes } from '../../store/actions/typeActions'
 import InputField from '../../components/multiStepForm/InputField';
-
-import * as Yup from 'yup';
-
+import Meta from '../../components/Meta';
 import { Grid,Stack, CircularProgress, Alert, Pagination} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -17,13 +15,22 @@ import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Form, Formik } from 'formik';
 import SearchIcon from '@mui/icons-material/Search';
-
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import CandidateApproveDialog from '../../components/dialogs/CandidateApproveDialog'
+import ExportCSV from '../../components/ExportCSV'
+import { exportCandidatesCSV } from '../../store/actions/exportActions'
+import { CANDIDATES_FETCH_RESET, CANDIDATE_DELETE_RESET } from '../../store/constants/candidateConstants';
+import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
+import { EXPORT_CANDIDATE_FETCH_RESET } from '../../store/constants/exportConstants';
 
 const AllCandidatesPage = () => {
     const {t} = useTranslation()
     const dispatch = useDispatch()
+
+    const exportC = useSelector((state) => state.exportCandidatesCSV)
+    const { exportCandidates } = exportC
+    const [data, setData] = useState([]);
+
     const [ searchState, setSearchState ] = useState({
         username_filter: "",
         name_filter: "",
@@ -31,12 +38,13 @@ const AllCandidatesPage = () => {
         limit: 10
     })
     const [rows, setRows] = useState([]);
-    const [id, setId] = React.useState();
+    const [id, setId] = useState();
     const [open, setOpen] = useState(false);
     const handleClose = () => {
         setOpen(false)
         dispatch(getCandidates(searchState.username_filter,searchState.name_filter,searchState.email_filter,0,searchState.limit))
     };
+
     const handleOpen = (id) => {
         setId(id)
         setOpen(true);
@@ -50,6 +58,13 @@ const AllCandidatesPage = () => {
     useEffect(() => {
         dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, 0, searchState.limit))
         dispatch(getTypes('user'))
+        dispatch(exportCandidatesCSV())
+        return () => {
+            dispatch({ type: CANDIDATES_FETCH_RESET })
+            dispatch({ type: CANDIDATE_DELETE_RESET })
+            dispatch({ type: TYPES_FETCH_RESET })
+            dispatch({ type: EXPORT_CANDIDATE_FETCH_RESET })
+        }
     }, [])
 
     useEffect(() => {
@@ -62,7 +77,13 @@ const AllCandidatesPage = () => {
             }))
         }
     },[candidatesGet])
-    
+
+    useEffect(() => {
+        if(exportCandidates){
+            setData(exportCandidates)
+        }
+    }, [exportCandidates])
+
     const deleteCandidateHandle = React.useCallback(
       (id) => () => {
         setTimeout(() => {
@@ -116,6 +137,29 @@ const AllCandidatesPage = () => {
         },
     ];
 
+    
+    const headers = [
+        { key: 'id_', label: 'ID'},
+        { key: 'username_', label: t('candidates_username')},
+        { key: 'full_name_', label: t('candidates_full_name')},
+        { key: 'email_', label: 'Email'},
+        { key: 'iban_', label: 'IBAN'},
+        { key: 'phone_number_', label: t('candidates_phone_number')},
+        { key: 'gender_', label: t('candidates_gender')},
+        { key: 'birth_date_', label: t('candidates_birth_date')},
+        { key: 'location_', label: t('candidates_location')},
+        { key: 'address_', label: t('candidates_address')},
+        { key: 'postal_code_', label: t('candidates_postal_code')},
+        { key: 'cc_', label: 'CC', width: 110 ,headerAlign: "center",align:'center'},
+        { key: 'nif_', label: 'NIF'}
+    ];
+    
+    const csvreport = {
+        data: data,
+        headers: headers,
+        filename: 'club_candidates.csv'
+    };
+
     const changePageHandler = (event, value) => {
         setPage(value)
         dispatch(getCandidates(searchState.username_filter, searchState.name_filter, searchState.email_filter, (value-1)*searchState.limit, searchState.limit))
@@ -124,13 +168,14 @@ const AllCandidatesPage = () => {
 
   return (
     <>
+        <Meta title={t('all_candidates_page_title')}/>
         <CandidateApproveDialog 
             open={open}
             closeHandler={handleClose}
             id={id}
         />
         <MainCard title={t('all_candidates')} sx={{height: '100%'}}>
-            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClick={() => dispatch({ type: CANDIDATES_FETCH_RESET })}>{t(error)}</Alert></Box> }
             <Formik
                     initialValues={searchState}
                     enableReinitialize={true}
@@ -189,6 +234,9 @@ const AllCandidatesPage = () => {
                         }}
                     />
                     <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(candidatesGet.number_of_candidates / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                    <Grid sx={{ mt: 2 }} >
+                        <ExportCSV csvreport={csvreport} exportText={t('export_candidates')} ></ExportCSV>
+                    </Grid>
                 </>
             )}
         </MainCard> 

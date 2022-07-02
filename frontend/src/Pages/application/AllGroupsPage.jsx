@@ -20,6 +20,7 @@ import CheckGroupInputField from '../../components/multiStepForm/CheckGroupInput
 import { getTypes } from '../../store/actions/typeActions'
 import { getUserSportsTypes, getSports } from '../../store/actions/sportActions'
 import GroupCreateDialog from '../../components/dialogs/GroupCreateDialog';
+import Meta from '../../components/Meta';
 
 const AllGroupsPage = () => {
     const theme = useTheme();
@@ -137,6 +138,7 @@ const AllGroupsPage = () => {
 
     return (
         <>
+            <Meta title={t('all_groups_page_title')}/>
             <GroupCreateDialog
                 open={open}
                 closeHandler={handleClose}        

@@ -6,7 +6,7 @@ import { Grid, Typography, TextField, MenuItem, Button } from '@mui/material'
 import { gridSpacing } from '../../store/constants/themeConstants'
 import PieChartSkeleton from '../skeletons/PieChartSkeleton'
 import SportsChart from '../charts/SportsChart'
-
+import AnimatedPage from '../AnimatedPage'
 const SportsWrapper = ({ loading, dropdownOptions, data }) => {
     const {t, i18n} = useTranslation()
     console.log(dropdownOptions);
@@ -32,6 +32,7 @@ const SportsWrapper = ({ loading, dropdownOptions, data }) => {
                 <PieChartSkeleton />
             ) : (
                 <MainCard sx={{ height: '100%' }}>
+                    <AnimatedPage>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
                             <Grid container alignItems="center" justifyContent="space-between">
@@ -64,6 +65,7 @@ const SportsWrapper = ({ loading, dropdownOptions, data }) => {
                             <SportsChart data={chartValues} />
                         </Grid>
                     </Grid>
+                    </AnimatedPage>
                 </MainCard>
             )}
         </>

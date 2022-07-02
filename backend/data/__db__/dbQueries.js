@@ -150,9 +150,9 @@ const QUERY_GET_MANAGEMENT_QUOTA_BY_TYPE = 'select type_, quota_value_ from Memb
 
 const QUERY_NUMBER_OF_EVENTS = 'select count(*) from event_'
 
-const QUERY_GET_MEMBER_VALIDATE = 'select has_debt_, full_name_ from Member_ join user_  on id_ = member_id_  where id_ = $1'
+const QUERY_GET_MEMBER_VALIDATE = 'select has_debt_, full_name_, img_value_ from Member_ m join user_ u on m.id_ = u.member_id_ join Member_Img_ mi on mi.member_id_ = m.id_ where m.id_ = $1'
 
-const QUERY_GET_GROUPS = 'select distinct g.group_id_, name_, description_, group_type_ from Group_ g order by g.group_id_'
+const QUERY_GET_GROUPS = 'select distinct g.group_id_, name_, description_, group_type_ from Group_ g '
 
 const QUERY_NUMBER_OF_GROUPS = 'select count(*) from Group_'
 

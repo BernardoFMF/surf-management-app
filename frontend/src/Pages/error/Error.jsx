@@ -1,4 +1,6 @@
 import React from 'react';
+import Meta from '../../components/Meta';
+import { withTranslation } from 'react-i18next';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -11,13 +13,14 @@ class ErrorBoundary extends React.Component {
     }
   
     componentDidCatch(error, errorInfo) {
-      //log the error to an error reporting service
       console.log({ error, errorInfo });
     }
   
     render() {
       if (this.state.hasError) {
+        const { t } = this.props;
         return <>
+            <Meta title={t('error_page_title')}/>
             <h1>Hmm.</h1>
             <p>Something went wrong.</p>
         </>
@@ -26,4 +29,4 @@ class ErrorBoundary extends React.Component {
     }
   }
 
-  export default ErrorBoundary;
+  export default withTranslation()(ErrorBoundary);

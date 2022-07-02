@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMembersQuotas} from '../../store/actions/quotaActions'
-
+import Meta from '../../components/Meta';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -64,6 +64,7 @@ const MyQuotasPage = () => {
 
   return (
     <>
+        <Meta title={t('my_quotas_page_title')}/>
       <MainCard title={t('my_quotas')} sx={{height: '100%'}}>
       { loading ? 
         <Stack alignItems="center">

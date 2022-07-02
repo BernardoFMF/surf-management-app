@@ -1,17 +1,18 @@
 import React from 'react'
 import '../../assets/scss/forbidden.scss'
-
+import Meta from '../../components/Meta'
 import { useTheme } from '@mui/material/styles'
-import { Avatar, Box, ButtonBase } from '@mui/material'
-import TranslationMenu from '../../components/TranslationMenu'
+import { Box } from '@mui/material'
 import Logo from '../../components/Logo'
+import { useTranslation } from 'react-i18next'
 
-import { IconMenu2 } from '@tabler/icons';
 const Unauthorized = () => {
     const theme = useTheme();
+    const { t } = useTranslation()
 
-  return (
+    return (
       <>
+        <Meta title={t('unauthorized_page_title')}/>
        {/* logo & toggler button */}
        <Box
                 sx={{

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getQuotas} from '../../store/actions/quotaActions'
 import Box from '@mui/material/Box';
-
+import Meta from '../../components/Meta';
 import { useTranslation } from 'react-i18next'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
@@ -117,6 +117,7 @@ const columns = [
 
   return (
     <>
+        <Meta title={t('all_quotas_page_title')}/>
         <QuotaUpdateDialog
             open={openUpdate}
             closeHandler={handleCloseUpdate}

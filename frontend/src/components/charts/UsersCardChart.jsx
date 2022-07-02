@@ -118,7 +118,7 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
                                                 <PersonRoundedIcon></PersonRoundedIcon>
                                             </Avatar>
                                         </Grid>
-                                        <Grid item sx={{ml: {xs: 0, md: 0, lg: 5, xl: 5}}}>
+                                        <Grid item zIndex={100} sx={{ml: {xs: 0, md: 0, lg: 5, xl: 5}}}>
                                             <FormControl variant="standard" sx={{ minWidth: 120}}>
                                                 <InputLabel id="gender-label" sx={{color: 'white'}}>{t('sign_up_gender')}</InputLabel>
                                                 <Select
@@ -129,19 +129,22 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
                                                     label="gender"
                                                     sx={{color: 'white'}}
                                                 >
-                                                    <MenuItem key={t('male')} value={t('male')}>
-                                                        {t('male')}
+                                                    <MenuItem key={'none'} value={''} >
+                                                        {t('none')}
                                                     </MenuItem>
-                                                    <MenuItem key={t('female')} value={t('female')}>
-                                                        {t('female')}
+                                                    <MenuItem key={t('male')} value={'Male'}>
+                                                        {t('male_for_donut')}
                                                     </MenuItem>
-                                                    <MenuItem key={t('other')} value={t('other')}>
-                                                        {t('other')}
+                                                    <MenuItem key={t('female')} value={'Female'}>
+                                                        {t('female_for_donut')}
+                                                    </MenuItem>
+                                                    <MenuItem key={t('other')} value={'Other'}>
+                                                        {t('other_for_donut')}
                                                     </MenuItem>
                                                 </Select>
                                             </FormControl>
                                         </Grid> 
-                                        <Grid item sx={{ml: {lg:1 ,md: 7.5, sm: 7.5, xs: 7.5}}}>
+                                        <Grid item zIndex={100} sx={{ml: {lg:1 ,md: 7.5, sm: 7.5, xs: 7.5}}}>
                                             <FormControl variant="standard" sx={{  minWidth: 120 }}>
                                                 <InputLabel id="nationality-label" sx={{color: 'white'}}>{t('sign_up_nationality')}</InputLabel>
                                                 <Select
@@ -151,6 +154,9 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
                                                     onChange={changeDataNationality}
                                                     label="nationality"
                                                 >
+                                                    <MenuItem key={'none'} value={''} >
+                                                        {t('none')}
+                                                    </MenuItem>
                                                     {countries.map((option) => (
                                                         <MenuItem key={option} value={option} >
                                                             {option}
@@ -158,21 +164,7 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
                                                     ))}
                                                 </Select>
                                             </FormControl>
-                                        </Grid> 
-                                        <Grid item sx={{ml: {lg:1 ,md: 7.5, sm: 7.5, xs: 7.5}}} zIndex={100}>
-                                            <Avatar
-                                                variant="rounded"
-                                                sx={{
-                                                    ...theme.typography.commonAvatar,
-                                                    ...theme.typography.largeAvatar,
-                                                    backgroundColor: theme.palette.secondary.light,
-                                                    mt: 1
-                                                }}
-                                                onClick={() => {setValueGender(''); setValueNationality('')}}
-                                            >
-                                                <RestartAltIcon sx={{color: theme.palette.primary.main}} ></RestartAltIcon>
-                                            </Avatar>
-                                        </Grid>         
+                                        </Grid>        
                                     </Grid>
                                 </Grid>
                                 <Grid item>

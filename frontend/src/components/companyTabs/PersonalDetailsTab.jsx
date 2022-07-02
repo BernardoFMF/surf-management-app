@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Grid, Typography, Stack, Alert, Button, useMediaQuery } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import * as Yup from 'yup';
@@ -6,21 +6,16 @@ import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik';
 import InputField from '../multiStepForm/InputField';
 import Base64InputField from '../multiStepForm/Base64InputField';
-
 import { useTheme } from '@mui/material/styles';
-
 import AnimateButton from '../extended/AnimateButton';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-
 import { updateCompany } from '../../store/actions/companyActions';
+import { COMPANY_UPDATE_RESET } from '../../store/constants/companyConstants'
 
 const PersonalDetailsTab = () => {
     const theme = useTheme()
 
     const { t } = useTranslation()
-    const [alertSuccess, setAlertSuccess] = useState(false)
 
     const memberFetch = useSelector((state) => state.memberFetch)
     const { memberGet } = memberFetch
@@ -35,13 +30,18 @@ const PersonalDetailsTab = () => {
     const handleSubmit = async (values) => {
         const updatedCompany = { ...values, cid: memberGet.member_id_, is_deleted: memberGet.is_deleted_, address: memberGet.address_, location: memberGet.location_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, iban: memberGet.iban_, type: memberGet.member_type_}
         dispatch(updateCompany(updatedCompany))
-        setAlertSuccess(true)
     }
+
+    useEffect(() => {
+        return () => {
+            dispatch({ type: COMPANY_UPDATE_RESET })
+        }
+    }, [])
 
     return (
         <>
-            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-            { updated && alertSuccess && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {setAlertSuccess(false)}}>{t('updated_sucessfully')}</Alert></Box> }
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => {dispatch({ type: COMPANY_UPDATE_RESET })}}>{t(error)}</Alert></Box> }
+            { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {dispatch({ type: COMPANY_UPDATE_RESET })}}>{t('updated_sucessfully')}</Alert></Box> }
             <Formik
                 enableReinitialize={true}
                 initialValues={{
@@ -64,7 +64,7 @@ const PersonalDetailsTab = () => {
                             <Grid item>
                                 <Box mt={2} sx={{ pr: 2}}>
                                     <Stack direction="column" alignItems="center">
-                                        <Base64InputField size={100} name='img' label={t('sign_up_image')}></Base64InputField>
+                                        <Base64InputField size={150} name='img' label={t('sign_up_image')}></Base64InputField>
                                         <Typography variant="subtitle2">{memberGet.member_type_}</Typography>
                                         <Typography variant="subtitle2">{t("associate_number") + ": " + memberGet.member_id_}</Typography>
                                     </Stack>

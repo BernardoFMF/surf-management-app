@@ -17,7 +17,6 @@ const EventCreateDialog = ({open, closeHandler}) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const [disable, setDisable] = useState(false)
-    const limit = 100
     const eventPost = useSelector((state) => state.createEvent)
     const { loading, error, createEvent: posted } = eventPost
 
@@ -25,7 +24,7 @@ const EventCreateDialog = ({open, closeHandler}) => {
     const { loading: loadingGroups, error: errorGroups, groupsGet } = groupsFetch
 
     useEffect(() => {
-        dispatch(getGroups(undefined, undefined, [], 0, limit))
+        dispatch(getGroups(undefined, undefined, [], 0, -1))
     },[])
 
     function formatDate(date) {

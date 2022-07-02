@@ -38,6 +38,7 @@ import MainCard from '../components/cards/MainCard';
 import AnimateButton from '../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '../components/multiStepForm/InputField';
+import Meta from '../components/Meta';
 import FileInputField from '../components/multiStepForm/FileInputField';
 import User_Company_example from '../assets/data/User_CompanyExample.xlsx'
 import quotas_example from '../assets/data/QuotaExample.xlsx'
@@ -113,6 +114,7 @@ const UploadFilePage = () => {
 
     return (
         <>
+        <Meta title={t('upload_file_page_title')}/>
         <MainCard title={t('Upload csv File')} sx={{height: '100%'}}>
             <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
             <AccordionSummary

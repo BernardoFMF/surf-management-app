@@ -48,12 +48,12 @@ export const deleteCompany = (id) => async (dispatch) => {
     }
   }
   
-  export const getCompanies = (username_filter, name_filter, email_filter, offset, limit) => async (dispatch) => {
+  export const getCompanies = (username_filter, name_filter, email_filter, toggle_filter, offset, limit) => async (dispatch) => {
     try {
       dispatch({
         type: COMPANIES_FETCH_REQUEST,
       })
-      const response = await fetch(`/api/companies?offset=${offset}&limit=${limit}${username_filter ? `&username=${username_filter}`:""}${name_filter ? `&name=${name_filter}`:""}${email_filter ? `&email=${email_filter}`:""}`, {
+      const response = await fetch(`/api/companies?offset=${offset}&limit=${limit}${username_filter ? `&username=${username_filter}`:""}${name_filter ? `&name=${name_filter}`:""}${email_filter ? `&email=${email_filter}`:""}${toggle_filter ? `&hasDebt=${toggle_filter}`:""}`, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
       })
@@ -151,19 +151,21 @@ export const deleteCompany = (id) => async (dispatch) => {
       })
   
       if (memberInfo.id_ === body.cid) {
-        const userInfo = {
+        const companyInfo = {
           id_: updateResp.member_id_,
           member_type_: updateResp.member_type_,
           username_: updateResp.username_,
           is_admin_: updateResp.is_admin_,
-          img_value_: updateResp.img_value_
+          img_value_: updateResp.img_value_,
+          category_ : memberInfo.category_,
+          quota_value_ : memberInfo.quota_value_
         }
         dispatch({
           type: MEMBER_LOGIN_SUCCESS,
-          payload: userInfo,
+          payload: companyInfo,
         })
         const expirationDate = JSON.parse(localStorage.getItem('memberInfo')).expires
-        localStorage.setItem('memberInfo', JSON.stringify({...memberInfo, expires: expirationDate}))
+        localStorage.setItem('memberInfo', JSON.stringify({...companyInfo, expires: expirationDate}))
       }
       dispatch({
         type: MEMBER_FETCH_SUCCESS,

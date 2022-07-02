@@ -15,6 +15,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { blue } from "@mui/material/colors";
 import InputField from '../../components/multiStepForm/InputField';
+import Meta from '../../components/Meta';
 
 const GroupPage = () => {
     const { t } = useTranslation()
@@ -139,44 +140,50 @@ const GroupPage = () => {
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                 <>
+                    <Meta title={groupById.name_ + ' | ' + t('group_page_title')}/>
                     <MainCard title={groupById ? groupById.name_ : ''} secondaryText={groupById.description_} sx={{height: '100%'}}>
                         { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
                         { errorMembers && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorMembers)}</Alert></Box> }
-                        {
-                            groupById && groupById.types_ && (
-                            <Box marginTop={2}>
-                                <Typography variant={"h2"}>{t("types")}</Typography>
-                                <Stack direction="row" spacing={1} marginTop={2}>
-                                    {
-                                        groupById.group_type_ === 'member_type' ?  
-                                        groupById.types_.map(type => (
-                                            <Chip label={type} key={type} color="secondary" variant="outlined" />
-                                        ))
-                                        :
-                                        extractTypes(groupById.types_).map(entry => (
-                                            <Chip label={entry} key={entry} color="secondary" variant="outlined" />
-                                        ))
-                                    }
-                                </Stack>
-                            </Box>
-                            )
-                        }
-                        {
-                            groupById && groupById.types_ && groupById.group_type_ === 'member_sport_type' && (
-                            <Box marginTop={2}>
-                                <Typography variant={"h2"}>{t("sports")}</Typography>
-                                <Stack direction="row" spacing={1} marginTop={2}>
-                                    {
-                                        extractSports(groupById.types_).map(entry => (
-                                            <Chip clickable label={entry.sport_name_} key={entry.sport_} color="primary" component="a"
-                                            href={`/application/sports/${entry.sport_}`} />
-                                        ))
-                                    }
-                                </Stack>
-                            </Box>
-                            )
-                        }
-                        
+                        <Grid container direction={'row'} spacing={5}>
+                            <Grid item>
+                                {
+                                    groupById && groupById.types_ && (
+                                    <Box marginTop={2}>
+                                        <Typography variant={"h2"}>{t("types")}</Typography>
+                                        <Stack direction="row" spacing={1} marginTop={2}>
+                                            {
+                                                groupById.group_type_ === 'member_type' ?  
+                                                groupById.types_.map(type => (
+                                                    <Chip label={type} key={type} color="secondary" variant="outlined" />
+                                                ))
+                                                :
+                                                extractTypes(groupById.types_).map(entry => (
+                                                    <Chip label={entry} key={entry} color="secondary" variant="outlined" />
+                                                ))
+                                            }
+                                        </Stack>
+                                    </Box>
+                                    )
+                                }
+                            </Grid>
+                            <Grid item>
+                                {
+                                    groupById && groupById.types_ && groupById.group_type_ === 'member_sport_type' && (
+                                    <Box marginTop={2}>
+                                        <Typography variant={"h2"}>{t("sports")}</Typography>
+                                        <Stack direction="row" spacing={1} marginTop={2}>
+                                            {
+                                                extractSports(groupById.types_).map(entry => (
+                                                    <Chip clickable label={entry.sport_name_} key={entry.sport_} color="primary" component="a"
+                                                    href={`/application/sports/${entry.sport_}`} />
+                                                ))
+                                            }
+                                        </Stack>
+                                    </Box>
+                                    )
+                                }
+                            </Grid>
+                        </Grid>     
                         <Box
                             sx={{
                                 pt: 4,

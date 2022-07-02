@@ -9,7 +9,7 @@ const companyController = (data) => {
 	const services = companyServices(data)
 
 	const getCompanies = asyncHandler(async (req, res) => {
-		const companies = await services.getCompaniesServices(req.query.username,req.query.name,req.query.email,req.query.offset,req.query.limit)
+		const companies = await services.getCompaniesServices(req.query.username,req.query.name,req.query.email,req.query.hasDebt,req.query.offset,req.query.limit)
 		res.json(companies)
 	})
 	

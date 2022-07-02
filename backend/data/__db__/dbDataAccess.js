@@ -28,6 +28,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getCandidatesData = async (username_filter,name_filter,email_filter,offset,limit) => {
 		let query = queries.QUERY_GET_CANDIDATES
+		let queryCount = ''
 		let count = 0
 		if(username_filter || name_filter || email_filter){
 			query = query + " where "
@@ -46,18 +47,20 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` position('${email_filter}' in email_) > 0`
 			count++
 		}
-		query = query + ` order by id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
+		queryCount = query
+		query = query + ` order by id_ offset ${offset}`
+		if (limit !== '-1') query = query + ` FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
 			const candidates = await client.query(query)
-			const number_of_candidates = await client.query(queries.QUERY_NUMBER_OF_CANDIDATES)
+			const number_of_candidates = await client.query(queryCount)
 			await client.query('Commit')
 			candidates.rows = candidates.rows.map(candidate => {
 				candidate.birth_date_ = formatDate(candidate.birth_date_)
 				return candidate
 			})
-			const result = {candidates:candidates.rows,number_of_candidates:username_filter || name_filter || email_filter ? candidates.rows.length : parseInt(number_of_candidates.rows[0].count)}
+			const result = {candidates:candidates.rows, number_of_candidates: number_of_candidates.rowCount}
 			return result
 		} catch(e) {
 			await client.query('Rollback')
@@ -210,10 +213,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	 * Companies
 	 */
 
-	const getCompaniesData = async (username_filter,name_filter,email_filter,offset,limit) => {
+	const getCompaniesData = async (username_filter,name_filter,email_filter, debt_filter,offset,limit) => {
 		let query = queries.QUERY_GET_COMPANIES
+		let queryCounter = ''
 		let count = 0
-		if(username_filter || name_filter || email_filter){
+		if(username_filter || name_filter || email_filter || debt_filter){
 			query = query + " where "
 		}
 		if(username_filter){
@@ -230,14 +234,21 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` position('${email_filter}' in email_) > 0`
 			count++
 		}
-		query = query + ` order by c.member_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
+		if(debt_filter != undefined){
+			if(count > 0) query = query + " and "
+			query = query + ` has_debt_ = ${debt_filter}`
+			count++
+		}
+		queryCounter = query
+		query = query + ` order by c.member_id_ offset ${offset}`
+		if (limit !== '-1') query = query + ` FETCH FIRST ${limit} ROWS only`
 		const company = await pool.connect()
 		try {
 			await company.query('Begin')
 			const companies = await company.query(query)
-			const number_of_companies = await company.query(queries.QUERY_NUMBER_OF_COMPANIES)
+			const number_of_companies = await company.query(queryCounter)
 			await company.query('Commit')
-			const result = {companies:companies.rows,number_of_companies:username_filter || name_filter || email_filter ? companies.rows.length : parseInt(number_of_companies.rows[0].count)}
+			const result = {companies:companies.rows, number_of_companies: number_of_companies.rowCount}
 			return result
 		} catch(e) {
 			await company.query('Rollback')
@@ -396,6 +407,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offset,limit) => {
 		let query = queries.QUERY_GET_EVENTS
+		let queryCount = ''
 		let count = 0
 		if(name_filter || initialDate_filter || endDate_filter){
 			query = query + " where "
@@ -414,12 +426,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` end_date_ ='${endDate_filter}'`
 			count++
 		}
+		queryCount = query
 		query = query + ` order by id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const events = await pool.connect()
 		try {
 			await events.query('Begin')
 			const eventsResult = await events.query(query)
-			const number_of_events =  await events.query(queries.QUERY_NUMBER_OF_EVENTS)
+			const number_of_events =  await events.query(queryCount)
 			await events.query('Commit')
 			let date_today = formatDate(new Date())
 			eventsResult.rows = eventsResult.rows.map(event => {
@@ -445,7 +458,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 					}
 				}
 			})
-			const result = {events: eventsResult.rows, number_of_events: name_filter || initialDate_filter || endDate_filter ? eventsResult.rows.length : parseInt(number_of_events.rows[0].count)}
+			const result = {events: eventsResult.rows, number_of_events: number_of_events.rowCount}
 			return result
 		} catch(e) {
 			await events.query('Rollback')
@@ -576,6 +589,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,date_filter,offset,limit) => {
 		let query = queries.QUERY_GET_MEMBER_ATTENDANCE
+		let queryCount = ''
 		let count = 0
 		if(name_filter || state_filter || date_filter){
 			query = query + " and "
@@ -594,19 +608,20 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` initial_date_ ='${date_filter}'`
 			count++
 		}
+		queryCount = query
 		query = query + ` order by a.event_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
 			const events = await client.query(query, [id_])
-			const number_of_events = await client.query(queries.QUERY_MY_NUMBER_OF_EVENTS,[id_])
+			const number_of_events = await client.query(queryCount,[id_])
 			await client.query('Commit')
 			events.rows = events.rows.map(event => {
 				event.initial_date_ = formatDate(event.initial_date_)
 				event.end_date_ = formatDate(event.end_date_)
 				return event
 			})
-			const result = {events:events.rows,number_of_events:name_filter || state_filter || date_filter ? events.rows.length : parseInt(number_of_events.rows[0].count)}
+			const result = {events:events.rows,number_of_events: number_of_events.rowCount}
 			return result
 		} catch(e) {
 			await client.query('Rollback')
@@ -619,10 +634,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	/**
 	 * Users
 	 */
-	const getUsersData = async (username_filter,name_filter,email_filter,offset,limit) => {
+	const getUsersData = async (username_filter,name_filter,email_filter,debt_filter,offset,limit) => {
 		let query = queries.QUERY_GET_USERS
+		let queryCount = ''
 		let count = 0
-		if(username_filter || name_filter || email_filter){
+		if(username_filter || name_filter || email_filter || debt_filter){
 			query = query + " where "
 		}
 		if(username_filter){
@@ -639,13 +655,19 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` position('${email_filter}' in email_) > 0`
 			count++
 		}
-		query = query + ` order by u.member_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
-
+		if(debt_filter != undefined){
+			if(count > 0) query = query + " and "
+			query = query + ` has_debt_ = ${debt_filter}`
+			count++
+		}
+		queryCount = query
+		query = query + ` order by u.member_id_ offset ${offset}`
+		if (limit !== '-1') query = query + ` FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('Begin')
 			const users = await client.query(query)
-			const number_of_users = await client.query(queries.QUERY_NUMBER_OF_USERS)
+			const number_of_users = await client.query(queryCount)
 			await client.query('Commit')
 			users.rows = users.rows.map(user => {
 				user.birth_date_ = formatDate(user.birth_date_)
@@ -654,7 +676,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			})
 			const result = {
 				users: users.rows,
-				number_of_users: username_filter || name_filter || email_filter ? users.rows.length : parseInt(number_of_users.rows[0].count)
+				number_of_users: number_of_users.rowCount
 			}
 			return result
 		} catch(e) {
@@ -745,17 +767,19 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getUsersSportData = async (id_, offset, limit, is_candidate_, username_) => {
 		let query = queries.QUERY_GET_USERS_SPORT
+		let queryCount = ''
 		if (username_)
-			query += ` and username_ = '${username_}'`
+			query += ` and position('${username_}' in username_) > 0`
+		queryCount = query
 		query = query + ` order by sport_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
 			const sport = await client.query(queries.QUERY_GET_SPORT_BY_ID, [id_])
 			const sports = await client.query(query, [id_, is_candidate_])
-			const number_of_sports = await client.query(queries.QUERY_NUMBER_OF_SPORT_USERS, [id_, is_candidate_])
+			const number_of_sports = await client.query(queryCount, [id_, is_candidate_])
 			await client.query('commit')
-			const result = { users: sports.rows, number_of_users: parseInt(number_of_sports.rows[0].count),  sport : sport.rows[0] }
+			const result = { users: sports.rows, number_of_users: number_of_sports.rowCount }
 			return result
 		} catch (e) {
 			await client.query('rollback')
@@ -850,6 +874,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	 */
 	const getQuotasData = async (username_filter,email_filter,date_filter,offset,limit) => {
 		let query = queries.QUERY_GET_QUOTAS
+		let queryCount = ''
 		let count = 0
 		if(username_filter || email_filter || date_filter){
 			query = query + " where "
@@ -868,19 +893,20 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			query = query + ` date_ ='${date_filter}'`
 			count++
 		}
+		queryCount = query
 		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
 			const quotas = await client.query(query)
-			const number_of_quotas = await client.query(queries.QUERY_NUMBER_OF_QUOTAS)
+			const number_of_quotas = await client.query(queryCount)
 			await client.query('commit')
 			quotas.rows = quotas.rows.map(quota => {
 				quota.date_ = formatDate(quota.date_)
 				if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
 				return quota
 			})
-			const result = {quotas:quotas.rows,number_of_quotas:username_filter || email_filter || date_filter ? quotas.rows.length : parseInt(number_of_quotas.rows[0].count)}
+			const result = {quotas:quotas.rows,number_of_quotas:number_of_quotas.rowCount}
 			return result
 		} catch (e) {
 			await client.query('rollback')
@@ -1268,6 +1294,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getGroupsData = async (name_filter, group_type_filter, types_filter, offset, limit) => {
 		let query = queries.QUERY_GET_GROUPS
+		let queryCount = ''
 		let count = 0
 		if (types_filter.length > 0) {
 			query = query + ` join ${group_type_filter == 'member_type' ? 
@@ -1291,14 +1318,17 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			if(count > 0) query = query + " and "
 			query = query + `position('${name_filter}' in name_) > 0`
 		}
-		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		queryCount = query
+		query = query + ` order by g.group_id_ offset ${offset}`
+		if(limit !== '-1') query = query + ` FETCH FIRST ${limit} ROWS only`
+
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
 			const groups = await client.query(query)
-			const number_of_groups = await client.query(queries.QUERY_NUMBER_OF_GROUPS)
+			const number_of_groups = await client.query(queryCount)
 			await client.query('commit')
-			const result = {groups:groups.rows, number_of_groups:name_filter || group_type_filter ? groups.rows.length : parseInt(number_of_groups.rows[0].count)}
+			const result = {groups:groups.rows, number_of_groups:number_of_groups.rowCount}
 			return result
 		} catch (e) {
 			await client.query('rollback')
@@ -1390,6 +1420,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_filter, offset_, limit_) => {
 		let query = queries.QUERY_GET_MEMBER_GROUPS
+		let queryCount = ''
 		let count = 0
 		if (types_filter.length > 0) {
 			query = query + ` join ${group_type_filter == 'member_type' ? 
@@ -1398,6 +1429,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			}`
 		}
 		query = query + " where gm.member_id_ = $1"
+		count++
 		if (group_type_filter) {
 			query = query + ` and group_type_ = '${group_type_filter}'`
 			if (types_filter.length > 0) {
@@ -1411,14 +1443,15 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			if(count > 0) query = query + " and "
 			query = query + `position('${name_filter}' in name_) > 0`
 		}
+		queryCount = query
 		query = query + ` offset ${offset_} FETCH FIRST ${limit_} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
 			const groups = await client.query(query, [id_])
-			const number_of_groups = await client.query(queries.QUERY_NUMBER_OF_MEMBER_GROUPS, [id_])
+			const number_of_groups = await client.query(queryCount, [id_])
 			await client.query('commit')
-			const result = {groups:groups.rows, number_of_groups: parseInt(number_of_groups.rows[0].count)}
+			const result = {groups:groups.rows, number_of_groups: number_of_groups.rowCount}
 			return result
 		} catch (e) {
 			await client.query('rollback')
@@ -1430,18 +1463,20 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getGroupByIdMembersData = async (id_, username_filter_, offset_, limit_) => {
 		let query = queries.QUERY_GET_GROUP_MEMBERS
+		let queryCount = ''
 		if (username_filter_) {
 			query = query + ` and position('${username_filter_}' in username_) > 0`
 		}
+		queryCount = query
 		query = query + ' order by id_'
 		query = query + ` offset ${offset_} FETCH FIRST ${limit_} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
 			const members = await client.query(query, [id_])
-			const number_of_members = await client.query(queries.QUERY_NUMBER_OF_MEMBERS_IN_GROUP, [id_])
+			const number_of_members = await client.query(queryCount, [id_])
 			await client.query('commit')
-			return { members: members.rows, number_of_members: parseInt(number_of_members.rows[0].count) }
+			return { members: members.rows, number_of_members: number_of_members.rowCount }
 		} catch (e) {
 			await client.query('rollback')
 			throw e

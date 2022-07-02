@@ -5,19 +5,15 @@ import NewUsersChartWrapper from '../../components/chartWrappers/NewUsersChartWr
 import SportsWrapper from '../../components/chartWrappers/SportsWrapper'
 import { gridSpacing } from '../../store/constants/themeConstants'
 import { Grid } from '@mui/material'
-
-import { useParams } from 'react-router-dom';
-import MainCard from '../../components/cards/MainCard';
-import QuotasChart from '../../components/charts/QuotasChart'
-import SportsChart from '../../components/charts/SportsChart';
-import Paper from '@mui/material/Paper';
-import { styled, useTheme } from '@mui/material/styles';
 import CandidatesCardChart from '../../components/charts/CandidatesCardChart';
 import CompaniesCardChart from '../../components/charts/CompaniesCardChart';
 import UsersCardChart from '../../components/charts/UsersCardChart';
-import AnimatedCard from '../../components/AnimatedCard'
+import AnimatedPage from '../../components/AnimatedPage'
+import Meta from '../../components/Meta'
+import { useTranslation } from 'react-i18next'
 
 const DashboardAnalyticsPage = () => {
+    const { t } = useTranslation()
     const [loading, setLoading] = useState(true)
     const unformattedData = {
         "quotas": {
@@ -233,102 +229,76 @@ const DashboardAnalyticsPage = () => {
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
-        }, 500)
+        }, 300)
     }, [])
 
-    /**
-     *             <Grid container justifyContent={'center'} direction={ { xs: "column", md: "row"} }spacing={2}>
-                <Grid item lg={7} md={6} sm={6} xs={12} >
-                    <MainCard title={'Quotas'} sx={{ height: '100%' }}>
-                        <QuotasChart data={quotaData}/>
-                    </MainCard> 
-                </Grid>
-                <Grid item lg={4.5} md={6} sm={6} xs={12} >
-                    <MainCard title={'Sports'} sx={{ height: '100%' }}>
-                        <SportsChart data={sportData}/>
-                    </MainCard>   
-                </Grid>
-            </Grid>
-            <Grid container justifyContent={'center'} direction={ { xs: "column", md: "row"} } spacing={2} sx={{mt: 0.1}}>
-                <Grid item xs={4} >
-                    <UsersCardChart isLoading={loading} total={userData.series.users.total} total_males={userData.series.users.total_males} total_females={userData.series.users.total_females} total_other={userData.series.users.total_other} distribution={userData.series.users.distribution} />
-                </Grid>
-                <Grid item xs={3.5} >
-                    <CompaniesCardChart isLoading={loading} data={userData} />
-                </Grid>
-                <Grid item xs={4} >
-                    <CandidatesCardChart isLoading={loading} total={candidateData.series.candidates.total} total_males={candidateData.series.candidates.total_males} total_females={candidateData.series.candidates.total_females} total_other={candidateData.series.candidates.total_other} distribution={candidateData.series.candidates.distribution} />
-                </Grid>
-            </Grid>
-            <Grid container justifyContent={'center'} direction={ { xs: "column", md: "row"} }spacing={2} sx={{mt: 0.1}}>
-                <Grid item lg={4.5} md={6} sm={6} xs={12} >
-                    <MainCard title={'Sports'} sx={{ height: '100%' }}>
-                        <SportsChart data={sportData}/>
-                    </MainCard>   
-                </Grid>
-                <Grid item lg={7} md={6} sm={6} xs={12} >
-                    <MainCard title={'Quotas'} sx={{ height: '100%' }}>
-                        <QuotasChart data={quotaData}/>
-                    </MainCard> 
-                </Grid> 
-            </Grid>
-     */
-
     return (
-        <Grid container spacing={gridSpacing}>
-            <Grid item xs={12}>
-                <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} md={8}>
-                        <QuotasChartWrapper 
-                            loading={loading} 
-                            dropdownOptions={unformattedData.quotas.years} 
-                            totalAmount={unformattedData.quotas.total_amount} 
-                            amounts={unformattedData.quotas.amounts} 
-                            data={unformattedData.quotas.data} 
-                        />                        
+        <>
+            <Meta title={t('analytics_page_title')}/>
+            <Grid container spacing={gridSpacing}>
+                <Grid item xs={12}>
+                    <Grid container spacing={gridSpacing}>
+                        <Grid item xs={12} md={8}>
+                            <QuotasChartWrapper 
+                                loading={loading} 
+                                dropdownOptions={unformattedData.quotas.years} 
+                                totalAmount={unformattedData.quotas.total_amount} 
+                                amounts={unformattedData.quotas.amounts} 
+                                data={unformattedData.quotas.data} 
+                            />                        
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <UpcomingEventsChartWrapper 
+                                loading={loading}
+                                title={t('Upcoming events attendance')}
+                                dropdownOptions={unformattedData.upcoming_events.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
+                                data={unformattedData.upcoming_events.describers.map(obj => { let newObj = { id: obj.id, attendance: obj.attendance}; return newObj })} 
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} md={4}>
-                        <UpcomingEventsChartWrapper 
-                            loading={loading}
-                            dropdownOptions={unformattedData.upcoming_events.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
-                            data={unformattedData.upcoming_events.describers.map(obj => { let newObj = { id: obj.id, attendance: obj.attendance}; return newObj })} 
-                        />
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container justifyContent={'center'} direction={ { xs: "column", md: "row"} } spacing={2}>
+                        <Grid item xs={4} md={4}>
+                            <AnimatedPage>
+                                <UsersCardChart isLoading={loading} total={unformattedData.users.total} total_males={unformattedData.users.total_males} total_females={unformattedData.users.total_females} total_other={unformattedData.users.total_other} distribution={unformattedData.users.distribution} />
+                            </AnimatedPage>
+                        </Grid>
+                        <Grid item xs={4} md={4}>
+                            <AnimatedPage>
+                                <CompaniesCardChart isLoading={loading} total={unformattedData.companies.total} />
+                            </AnimatedPage>
+                        </Grid>
+                        <Grid item xs={4} md={4}>
+                            <AnimatedPage>
+                                <CandidatesCardChart isLoading={loading} total={unformattedData.candidates.total} total_males={unformattedData.candidates.total_males} total_females={unformattedData.candidates.total_females} total_other={unformattedData.candidates.total_other} distribution={unformattedData.candidates.distribution} />
+                            </AnimatedPage>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container spacing={gridSpacing}>
+                        <Grid item xs={12} md={4}>
+                            <SportsWrapper
+                                loading={loading}
+                                dropdownOptions={unformattedData.sports.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
+                                data={unformattedData.sports.describers.map(obj => { let newObj = { id: obj.id, gender: obj.gender}; return newObj })} 
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={8}>
+                            <NewUsersChartWrapper 
+                                loading={loading}
+                                dropdownOptions={unformattedData.members.years} 
+                                growth={unformattedData.members.member_growth} 
+                                data={unformattedData.members.data} 
+                            />                        
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={12}>
-                <Grid container justifyContent={'center'} direction={ { xs: "column", md: "row"} } spacing={2}>
-                    <Grid item xs={4} md={4}>
-                        <UsersCardChart isLoading={loading} total={unformattedData.users.total} total_males={unformattedData.users.total_males} total_females={unformattedData.users.total_females} total_other={unformattedData.users.total_other} distribution={unformattedData.users.distribution} />
-                    </Grid>
-                    <Grid item xs={4} md={4}>
-                        <CompaniesCardChart isLoading={loading} total={unformattedData.companies.total} />
-                    </Grid>
-                    <Grid item xs={4} md={4}>
-                        <CandidatesCardChart isLoading={loading} total={unformattedData.candidates.total} total_males={unformattedData.candidates.total_males} total_females={unformattedData.candidates.total_females} total_other={unformattedData.candidates.total_other} distribution={unformattedData.candidates.distribution} />
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid item xs={12}>
-                <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} md={4}>
-                        <SportsWrapper
-                            loading={loading}
-                            dropdownOptions={unformattedData.sports.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
-                            data={unformattedData.sports.describers.map(obj => { let newObj = { id: obj.id, gender: obj.gender}; return newObj })} 
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={8}>
-                        <NewUsersChartWrapper 
-                            loading={loading}
-                            dropdownOptions={unformattedData.members.years} 
-                            growth={unformattedData.members.member_growth} 
-                            data={unformattedData.members.data} 
-                        />                        
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Grid>
+        </>
+        
+        
     )
 }
 

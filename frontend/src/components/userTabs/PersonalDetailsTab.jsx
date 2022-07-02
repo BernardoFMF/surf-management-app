@@ -10,26 +10,16 @@ import Base64InputField from '../multiStepForm/Base64InputField';
 import DropdownInputField from '../multiStepForm/DropdownInputField';
 import DateInputField from '../multiStepForm/DateInputField';
 import { updateUser } from '../../store/actions/userActions';
-import { useState } from 'react';
-import { getMemberById } from '../../store/actions/memberActions'
-
 import { useTheme } from '@mui/material/styles';
-
 import countries from '../../assets/data/countries.json'
-
 import AnimateButton from '../extended/AnimateButton';
-
 import { useDispatch, useSelector } from 'react-redux';
+import { USER_UPDATE_RESET } from '../../store/constants/userConstants'
 
 const PersonalDetailsTab = () => {
     const theme = useTheme()
     const dispatch = useDispatch()
-
-    
-    
     const { t } = useTranslation()
-    const [alertSuccess, setAlertSuccess] = useState(false)
-
     const memberFetch = useSelector((state) => state.memberFetch)
     const { memberGet } = memberFetch
 
@@ -50,14 +40,18 @@ const PersonalDetailsTab = () => {
     const handleSubmit = async (values) => {
         const updatedUser = { ...values, member_id: memberGet.member_id_, type: memberGet.member_type_, phone_number: memberGet.phone_number_, postal_code: memberGet.postal_code_, address: memberGet.address_, location: memberGet.location_, paid_enrollment: memberGet.paid_enrollment_, is_admin: memberGet.is_admin_, is_deleted: memberGet.is_deleted_ }
         dispatch(updateUser(updatedUser))
-        setAlertSuccess(true)
-    
     }
+
+    useEffect(() => {
+        return () => {
+            dispatch({ type: USER_UPDATE_RESET })
+        }
+    }, [])
 
     return (
         <>
-            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-            { updated && alertSuccess && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {setAlertSuccess(false);}}>{t('updated_sucessfully')}</Alert></Box> }
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => {dispatch({ type: USER_UPDATE_RESET })}}>{t(error)}</Alert></Box> }
+            { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {dispatch({ type: USER_UPDATE_RESET })}}>{t('updated_sucessfully')}</Alert></Box> }
             <Formik
             enableReinitialize={true}
             initialValues={{
@@ -93,7 +87,7 @@ const PersonalDetailsTab = () => {
                         <Grid item>
                             <Box mt={2} sx={{ pt: 2, pr: 2}}>
                                 <Stack direction="column" alignItems="center">
-                                    <Base64InputField size={100} name='img' label={t('sign_up_image')}></Base64InputField>
+                                    <Base64InputField size={150} name='img' label={t('sign_up_image')}></Base64InputField>
                                     <Typography variant="subtitle2">{memberGet.member_type_}</Typography>
                                     <Typography variant="subtitle2">{t("associate_number") + ": " + memberGet.member_id_}</Typography>
                                 </Stack>
@@ -166,8 +160,7 @@ const PersonalDetailsTab = () => {
                 </Form>
             )}
             </Formik>
-        </>
-            
+        </>         
   )
 }
 

@@ -7,7 +7,10 @@ import {
     CANDIDATES_FETCH_REQUEST,
     APPROVE_CANDIDATE_REQUEST,
     APPROVE_CANDIDATE_SUCCESS,
-    APPROVE_CANDIDATE_FAIL
+    APPROVE_CANDIDATE_FAIL,
+    APPROVE_CANDIDATE_RESET,
+    CANDIDATES_FETCH_RESET,
+    CANDIDATE_DELETE_RESET
   } from '../constants/candidateConstants'
 
 export const candidateDeletionReducer = (state = {}, action) => {
@@ -18,6 +21,8 @@ export const candidateDeletionReducer = (state = {}, action) => {
         return { loading: false, candidateDeletion: action.payload }
       case CANDIDATE_DELETE_FAIL:
         return { loading: false, error: action.payload }
+      case CANDIDATE_DELETE_RESET:
+        return {}
       default:
         return state
     }
@@ -31,6 +36,8 @@ export const candidateDeletionReducer = (state = {}, action) => {
         return { loading: false, candidatesGet: action.payload }
       case CANDIDATES_FETCH_FAIL:
         return { loading: false, error: action.payload }
+      case CANDIDATES_FETCH_RESET:
+        return {candidatesGet: {candidates:[],number_of_candidates:0}}
       default:
         return state
     }
@@ -44,6 +51,8 @@ export const candidateDeletionReducer = (state = {}, action) => {
         return { loading: false, approveCandidate: action.payload }
       case APPROVE_CANDIDATE_FAIL:
         return { loading: false, error: action.payload }
+      case APPROVE_CANDIDATE_RESET:
+        return {}
       default:
         return state
     }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Grid, Alert, Button, useMediaQuery } from '@mui/material'
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next'
@@ -9,13 +9,12 @@ import { useTheme } from '@mui/material/styles';
 import AnimateButton from '../extended/AnimateButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { COMPANY_UPDATE_RESET } from '../../store/constants/companyConstants'
 
 const AddressInformationTab = () => {
     const theme = useTheme()
 
     const { t } = useTranslation()
-    const [alertSuccess, setAlertSuccess] = useState(false)
 
     const memberFetch = useSelector((state) => state.memberFetch)
     const { memberGet } = memberFetch
@@ -30,13 +29,18 @@ const AddressInformationTab = () => {
     const handleSubmit = async (values) => {
         const updatedCompany = { ...values, cid: memberGet.member_id_, name: memberGet.name_, nif: memberGet.nif_, is_deleted: memberGet.is_deleted_, img: memberGet.img_value_, iban: memberGet.iban_, type: memberGet.member_type_ }
         dispatch(updateCompany(updatedCompany))
-        setAlertSuccess(true)
     }
+
+    useEffect(() => {
+        return () => {
+            dispatch({ type: COMPANY_UPDATE_RESET })
+        }
+    }, [])
 
     return (
         <>
-           { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-            { updated && alertSuccess && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {setAlertSuccess(false)}}>{t('updated_sucessfully')}</Alert></Box> }
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => {dispatch({ type: COMPANY_UPDATE_RESET })}}>{t(error)}</Alert></Box> }
+            { updated && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => {dispatch({ type: COMPANY_UPDATE_RESET })}}>{t('updated_sucessfully')}</Alert></Box> }
             <Formik
                 initialValues={{
                     location: memberGet.location_, 

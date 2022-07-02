@@ -4,8 +4,8 @@ import error from '../utils/error.js'
 import { toDataURL } from 'qrcode'
 
 const userData = (db) => {
-	const getUsers = async (username_filter,name_filter,email_filter,offset,limit) => {
-		return await db.getUsersData(username_filter,name_filter,email_filter,offset,limit)
+	const getUsers = async (username_filter,name_filter,email_filter, debt_filter,offset,limit) => {
+		return await db.getUsersData(username_filter,name_filter,email_filter,debt_filter,offset,limit)
 	}
 	
 	const getUserById = async (id_) => {
