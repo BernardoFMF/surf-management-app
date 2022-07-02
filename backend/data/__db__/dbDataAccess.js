@@ -1507,6 +1507,32 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}	
 	}
 
+	const uploadMemberTypesData = async(values) => {
+		const client = await pool.connect()
+		let query = queries.QUERY_INSERT_MEMBER_TYPES
+		let count = 0
+		for(let value of values){
+			count++
+			query += `(${value})`
+			if(count < values.length) {query += ','}
+			else {query += ';'}
+		}
+		console.log(query)
+		try {
+			
+			await client.query('begin')
+			const types = await client.query(query)
+			await client.query('commit')
+			return types
+			
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
 	return { 
 		getUserSportByIdAndUserData,
 		getGroupsData, 
@@ -1587,6 +1613,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getMemberTokenByIdData,
 		deleteMemberTokenData,
 		updateMemberTokenData,
+		uploadMemberTypesData,
 		pool 
 	}
 
