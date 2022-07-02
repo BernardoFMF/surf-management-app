@@ -43,7 +43,7 @@ import User_Company_example from '../assets/data/User_CompanyExample.xlsx'
 import quotas_example from '../assets/data/QuotaExample.xlsx'
 import member_types_example from '../assets/data/TypesExample.xlsx'
 import sports_example from '../assets/data/sportsExample.xlsx'
-//import member_sports_example from '../assets/data/MemberSportsExample.xlsx'
+import member_sports_example from '../assets/data/MemberSportsExample.xlsx'
 import sportsTypes_example from '../assets/data/SportTypesExample.xlsx'
 
 const UploadFilePage = () => {
@@ -60,10 +60,9 @@ const UploadFilePage = () => {
     };
 
     const handleSubmit = (values,type) => {
-        console.log("chegou")
-        console.log(type);
         const formData = new FormData()
         formData.append("file", values.file)
+        formData.append("type",type)
         dispatch(uploadFile(formData))
     }
 
@@ -76,35 +75,35 @@ const UploadFilePage = () => {
 
     const onQuotaDownload = () => {
         const link = document.createElement("a");
-        link.download = `QuotaExample.csv`;
+        link.download = `QuotaExample.xlsx`;
         link.href = quotas_example
         link.click();
     }
 
     const onMemberTypeDownload = () => {
         const link = document.createElement("a");
-        link.download = `MemberTypeExample.csv`;
+        link.download = `MemberTypeExample.xlsx`;
         link.href = member_types_example
         link.click();
     }
 
     const onSportDownload = () => {
         const link = document.createElement("a");
-        link.download = `SportExample.csv`;
+        link.download = `SportExample.xlsx`;
         link.href = sports_example
         link.click();
     }
 
     const onMemberSportDownload = () => {
         const link = document.createElement("a");
-        link.download = `MemberSportExample.csv`;
-        //link.href = member_sports_example
+        link.download = `MemberSportExample.xlsx`;
+        link.href = member_sports_example
         link.click();
     }
 
     const onSportTypesDownload = () => {
         const link = document.createElement("a");
-        link.download = `SportTypesExample.csv`;
+        link.download = `SportTypesExample.xlsx`;
         link.href = sportsTypes_example
         link.click();
     }
@@ -128,10 +127,10 @@ const UploadFilePage = () => {
             </AccordionSummary>
             <AccordionDetails>
             <Typography>
-            To import your data from the csv files to the application database, will be needed 5 different csv files
+            To import your data from the csv files to the application database, will be needed 6 different csv files
             </Typography>
             <Typography>
-            <strong>IMPORTANT:</strong> All the users will have a password equal to their username, remember them to change it the quickest that they can
+            <strong>IMPORTANT:</strong> All the users will receive an email to set their password and username
             </Typography>
             </AccordionDetails>
         </Accordion>
@@ -163,7 +162,7 @@ const UploadFilePage = () => {
             {formik => (
                 <Box mt={2} textAlign="left" width={'fit-content'}>
                 <Form>
-                <FileInputField name = 'MemberTypes File' label = 'file'/>
+                <FileInputField name = 'file' label = 'MemberTypes File'/>
                 <br></br>
                 <AnimateButton>
                 <LoadingButton
@@ -283,8 +282,8 @@ const UploadFilePage = () => {
             id="panel5bh-header"
             >
             <Typography sx={{ width: '33%', flexShrink: 0 }}>Sports</Typography>
-            <Typography>
-                Define all the sports that exists in the club
+            <Typography sx={{ color: 'text.secondary' }}>
+            Define all the sports that exists in the club
             </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -330,7 +329,7 @@ const UploadFilePage = () => {
             id="panel6bh-header"
             >
             <Typography sx={{ width: '33%', flexShrink: 0 }}>SportsTypes</Typography>
-            <Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
             Define the various types on sports
             </Typography>
             </AccordionSummary>
@@ -339,7 +338,7 @@ const UploadFilePage = () => {
                 Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
             </Typography>
             <Button onClick={onSportTypesDownload} variant="contained" color="success">
-                SportTypes example
+                Sport Types example
             </Button>
             <Formik
             initialValues={{ file: null }}
@@ -352,6 +351,53 @@ const UploadFilePage = () => {
                 <Box mt={2} textAlign="left" width={'fit-content'}>
                 <Form>
                 <FileInputField name = 'Member Types File' label = 'file'/>
+                <br></br>
+                <AnimateButton>
+                <LoadingButton
+                    disableElevation
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                >
+                    {t('upload')}
+                </LoadingButton>
+                </AnimateButton>
+                </Form>
+                </Box>
+            )}
+        </Formik>
+            </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>
+            <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel7bh-content"
+            id="panel7bh-header"
+            >
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>Member Sports</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
+            Upload the sports related to each user
+            </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <Typography>
+                Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+            </Typography>
+            <Button onClick={onMemberSportDownload} variant="contained" color="success">
+                Member Sports example
+            </Button>
+            <Formik
+            initialValues={{ file: null }}
+            onSubmit={(values) => handleSubmit(values,'memberSports')} 
+            validationSchema={Yup.object().shape({
+              file: Yup.mixed(),
+            })}
+            >
+            {formik => (
+                <Box mt={2} textAlign="left" width={'fit-content'}>
+                <Form>
+                <FileInputField name = 'Member Sports File' label = 'file'/>
                 <br></br>
                 <AnimateButton>
                 <LoadingButton

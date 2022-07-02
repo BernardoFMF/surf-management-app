@@ -46,7 +46,7 @@ const FileInputField = ({ label, size, ...props}) => {
                             variant="contained"
                             color="primary"
                             component="span">
-                            {props.name}
+                            {label}
                         </Button>
                     </AnimateButton>
                 </label>

@@ -6,8 +6,8 @@ import uploadData from '../data/uploadData.js'
 const uploadServices = (db) => {
 	const data = uploadData(db)
 
-	const uploadFileServices = async (file) => {
-		return await data.upload(file)
+	const uploadFileServices = async (file,type) => {
+		return await data.upload(file,type)
 	}
 
     return {
