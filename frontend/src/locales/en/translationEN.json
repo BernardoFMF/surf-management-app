@@ -367,5 +367,11 @@
     "upload_file_page_title": "Upload files",
     "validate_page_title": "Validate member",
 
-    "topic": "Topic"
+    "topic": "Topic",
+
+    "unauthorized": "Unauthorized",
+    "go home": "Go Home",
+    "go back": "Go Back",
+    "something went wrong": "Something went wrong!"
+
 }

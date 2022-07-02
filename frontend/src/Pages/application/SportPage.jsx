@@ -175,13 +175,13 @@ return (
             sid={id}
             byAdmin={true}
         />
-        <MainCard title={usersSportGet && usersSportGet.users ? usersSportGet.users[0].name_ : ''} sx={{height: '100%'}}>
+        <MainCard title={usersSportGet && usersSportGet.sport ? usersSportGet.sport.name_ : ''} sx={{height: '100%'}}>
         { loading ? 
             <Stack alignItems="center">
                 <CircularProgress size='4rem'/>
             </Stack> : (
             <>
-                <Meta title={usersSportGet && usersSportGet.users ? usersSportGet.users[0].name_ + ' | ' + t('sport_page_title') : ''}/>
+                <Meta title={usersSportGet && usersSportGet.sport ? usersSportGet.sport.name_ + ' | ' + t('sport_page_title') : ''}/>
                 { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
                 <Box
                     sx={{

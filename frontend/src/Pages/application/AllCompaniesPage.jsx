@@ -271,8 +271,10 @@ const AllCompaniesPage = () => {
                         }}
                     />
                     <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(companiesGet.number_of_companies / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
-                    <Grid sx={{ mt: 2 }} >
-                        <ExportCSV csvreport={csvreport} exportText={t('export_companies')} ></ExportCSV>
+                    <Grid container sx={{ mt: 2 }} >
+                        <Grid item>
+                            <ExportCSV csvreport={csvreport} exportText={t('export_companies')} ></ExportCSV>
+                        </Grid>
                     </Grid>
                 </>
             )}

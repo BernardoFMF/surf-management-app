@@ -170,6 +170,7 @@ export const deleteCompany = (id) => async (dispatch) => {
       dispatch({
         type: MEMBER_FETCH_SUCCESS,
         payload: updateResp,
+
       })
     } catch (error) {
       dispatch({

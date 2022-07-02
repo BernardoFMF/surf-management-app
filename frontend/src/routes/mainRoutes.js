@@ -11,7 +11,7 @@ import AnimatedCard from '../components/AnimatedCard';
 
 const DashboardDefault = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
 const DashboardAnalytics = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
-const AllMembersPage = Loadable(lazy(() => import('../Pages/application/AllMembersPage')))
+const AllUsersPage = Loadable(lazy(() => import('../Pages/application/AllUsersPage')))
 const AllSportsPage = Loadable(lazy(() => import('../Pages/application/AllSportsPage')))
 const SportPage = Loadable(lazy(() => import('../Pages/application/SportPage')))
 const AllQuotasPage = Loadable(lazy(() => import('../Pages/application/AllQuotasPage')))
@@ -43,7 +43,7 @@ const mainRoutes = {
         },
         {
             path: '/application/users',
-            element: <RequireAdmin><AllMembersPage/></RequireAdmin>
+            element: <RequireAdmin><AllUsersPage/></RequireAdmin>
         },
         {
             path: '/application/members/:id',

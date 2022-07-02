@@ -779,7 +779,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			const sports = await client.query(query, [id_, is_candidate_])
 			const number_of_sports = await client.query(queryCount, [id_, is_candidate_])
 			await client.query('commit')
-			const result = { users: sports.rows, number_of_users: number_of_sports.rowCount }
+			const result = { users: sports.rows, number_of_users: number_of_sports.rowCount, sport: sport.rows[0] }
 			return result
 		} catch (e) {
 			await client.query('rollback')
