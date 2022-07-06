@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserSports} from '../../store/actions/userActions'
-import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
-import { CircularProgress, Button, Typography, Stack, Box, Alert, Pagination, Grid } from '@mui/material';
+import { CircularProgress, Stack, Box, Alert, Pagination, Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import MainCard from '../../components/cards/MainCard';
 import UserSportEditDialog from '../../components/dialogs/UserSportEditDialog';
@@ -17,10 +16,12 @@ import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SearchIcon from '@mui/icons-material/Search'
 import Meta from '../../components/Meta'
+import { USER_SPORTS_FETCH_RESET, USER_SPORT_DELETE_RESET, USER_SPORT_UPDATE_RESET } from '../../store/constants/userConstants'
+import { USER_SPORT_TYPES_FETCH_RESET } from '../../store/constants/sportConstants'
+import { getUserSportsTypes } from '../../store/actions/sportActions'
 
 const MySportsPage = () => {
-    const theme = useTheme();
-    const {t, i18n} = useTranslation()
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const userSportDelete = useSelector((state) => state.userSportDelete)
     const { loading: loadingDelete, error: errorDelete, usersSportDelete } = userSportDelete
@@ -34,6 +35,7 @@ const MySportsPage = () => {
     const [ searchState, setSearchState ] = useState({
         limit: 10
     })
+
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const closeDialogHandler = useCallback(function _handleClose() {
         setOpenEditDialog(false);
@@ -47,6 +49,7 @@ const MySportsPage = () => {
         })
         setPage(1)
         dispatch(getUserSports(id, 0, searchState.limit))
+        dispatch({ type: USER_SPORT_UPDATE_RESET })
     }, []);
 
     const [selectedUserSport, setselectedUserSport] = useState({
@@ -65,7 +68,14 @@ const MySportsPage = () => {
 
     useEffect(() => {
         dispatch(getUserSports(id, 0, searchState.limit))
-    },[dispatch,id])
+        dispatch(getUserSportsTypes())
+        return () => {
+            dispatch({ type: USER_SPORTS_FETCH_RESET })
+            dispatch({ type: USER_SPORT_DELETE_RESET })
+            dispatch({ type: USER_SPORT_UPDATE_RESET })
+            dispatch({ type: USER_SPORT_TYPES_FETCH_RESET })
+        }
+    },[])
 
     useEffect(() => {
         if(userSportsGet){
@@ -139,8 +149,8 @@ const MySportsPage = () => {
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                 <>
-                    { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                    { errorDelete && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorDelete)}</Alert></Box> }
+                    { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: USER_SPORTS_FETCH_RESET })}>{t(error)}</Alert></Box> }
+                    { errorDelete && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: USER_SPORT_DELETE_RESET })}>{t(errorDelete)}</Alert></Box> }
                     <DataGrid
                         autoHeight
                         rows={rows}

@@ -8,7 +8,8 @@ import {
     EXPORT_CANDIDATE_FETCH_REQUEST,
     EXPORT_CANDIDATE_FETCH_SUCCESS,
     EXPORT_CANDIDATE_FETCH_FAIL,
-    EXPORT_CANDIDATE_FETCH_RESET
+    EXPORT_CANDIDATE_FETCH_RESET,
+    EXPORT_COMPANY_FETCH_RESET
 } from '../constants/exportConstants'
 
 export const exportUsersCSVReducer = (state = {exportUsers: []}, action) => {
@@ -32,6 +33,8 @@ export const exportUsersCSVReducer = (state = {exportUsers: []}, action) => {
         return { loading: false, exportCompanies: action.payload }
       case EXPORT_COMPANY_FETCH_FAIL:
         return { loading: false, error: action.payload }
+      case EXPORT_COMPANY_FETCH_RESET:
+        return {exportCompanies: []}
       default:
         return state
     }

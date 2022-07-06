@@ -24,6 +24,9 @@ import ExportCSV from '../../components/ExportCSV'
 import { exportCompaniesCSV } from '../../store/actions/exportActions'
 import CheckInputField from '../../components/multiStepForm/CheckInputField';
 import Meta from '../../components/Meta';
+import { COMPANIES_FETCH_RESET, COMPANY_DELETE_RESET, COMPANY_POST_RESET } from '../../store/constants/companyConstants';
+import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
+import { EXPORT_COMPANY_FETCH_RESET } from '../../store/constants/exportConstants';
 
 const AllCompaniesPage = () => {
     const theme = useTheme()
@@ -58,9 +61,8 @@ const AllCompaniesPage = () => {
     const [page, setPage] = useState(1);
 
     const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit))};
+    const handleClose = () => {setOpen(false); dispatch({ type: COMPANY_POST_RESET }); dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit))};
     const handleOpen = () => setOpen(true);
-
 
     useEffect(() => {
         if (posted) {
@@ -68,7 +70,8 @@ const AllCompaniesPage = () => {
                 username_filter: "",
                 name_filter: "",
                 email_filter: "",
-                toggle_filter: false
+                toggle_filter: false,
+                limit: 10
             })
         }
     }, [posted])
@@ -77,6 +80,12 @@ const AllCompaniesPage = () => {
         dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter,searchState.toggle_filter, 0, searchState.limit))
         dispatch(getTypes('company'))
         dispatch(exportCompaniesCSV())
+        return () => {
+            dispatch({ type: COMPANIES_FETCH_RESET })
+            dispatch({ type: COMPANY_DELETE_RESET })
+            dispatch({ type: TYPES_FETCH_RESET })
+            dispatch({ type: EXPORT_COMPANY_FETCH_RESET })
+        }
     }, [])
 
     const changePageHandler = (event, value) => {
@@ -137,21 +146,20 @@ const AllCompaniesPage = () => {
             headerName: t('actions'),
             width: 110,
             getActions: (params) => [
-            <GridActionsCellItem
-            icon={<BusinessIcon />}
-            label="Show Profile"
-            onClick={() => navigate(`/application/members/${params.id}`)}
-            />,
                 <GridActionsCellItem
-                icon={<DeleteIcon />}
-                label="Delete"
-                onClick={deleteCompanyHandle(params.id)}
-                disabled={params.row.is_deleted_}
+                    icon={<BusinessIcon />}
+                    label="Show Profile"
+                    onClick={() => navigate(`/application/members/${params.id}`)}
+                />,
+                <GridActionsCellItem
+                    icon={<DeleteIcon />}
+                    label="Delete"
+                    onClick={deleteCompanyHandle(params.id)}
+                    disabled={params.row.is_deleted_}
                 />
             ],
         },
     ];
-
 
     const headers = [
         { key: 'member_id_', label: 'ID'},
@@ -170,115 +178,114 @@ const AllCompaniesPage = () => {
         filename: 'club_companies.csv'
     };
 
-
-  return (
-    <>
-        <Meta title={t('all_companies_page_title')}/>
-        <CompanyCreateDialog
-            open={open}
-            closeHandler={handleClose}        
-        />
-        <MainCard title={t('all_companies')}sx={{height: '100%'}}>
-            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-            { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
-            <Box
-                    sx={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(4, 1fr)',
-                    gap: 1,
-                    gridTemplateRows: 'auto',
-                    gridTemplateAreas: `". . . ."
-                    "search search search create"
-                    ". . . ."`,
-                    }}
-            >
-                <Box gridArea={'search'}>
-                    <Formik
-                        initialValues={searchState}
-                        enableReinitialize={true}
-                        onSubmit={values => searchHandler(values)}
-                    >
-                        {formik => (
-                            <Form>
-                                <Grid container spacing={2} direction="row" alignItems={'center'}>
-                                    <Grid item>
-                                        <InputField name='username_filter' label={t('sign_up_username')} type='text'></InputField>
-                                    </Grid>
-                                    <Grid item>
-                                        <InputField name='name_filter' label={t('sign_up_full_name')} type='text' ></InputField>
-                                    </Grid>
-                                    <Grid item>
-                                        <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
-                                    </Grid>
-                                    <Grid item>
-                                        <CheckInputField name='toggle_filter' label={t('has_debt_')} type='boolean'></CheckInputField>
-                                    </Grid>
-                                    <Grid item>
-                                        <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
-                                    </Grid>
-                                    <Grid item>
-                                        <AnimateButton>
-                                            <LoadingButton
-                                                disableElevation
-                                                size="large"
-                                                type="submit"
-                                                variant="contained"
-                                                color="primary"
-                                                loading = {loading}
-                                                startIcon={<SearchIcon></SearchIcon>}
-                                            >
-                                                {t('search')}
-                                            </LoadingButton>
-                                        </AnimateButton>
-                                    </Grid>    
-                                </Grid>
-                            </Form>
-                        )}
-                    </Formik>
-                </Box>
-                <Box gridArea={'create'} alignItems={'center'} display={{md: 'flex', lg: 'flex'}} justifyContent='flex-end' sx={{ mt: { xs: 14, md : 0, lg : 0 }}}>
-                    <AnimateButton>
-                        <LoadingButton
-                            disableElevation
-                            size="large"
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => {
-                                handleOpen()
-                            }}
-                        >
-                            {t('create')}
-                        </LoadingButton>
-                    </AnimateButton>
-                </Box>
-            </Box>
-            { loading || loadingTypes ? 
-                <Stack alignItems="center">
-                    <CircularProgress size='4rem'/>
-                </Stack> : (
-                <>
-                    <DataGrid
-                        autoHeight
-                        rows={rows}
-                        columns={columns}
-                        pageSize={searchState.limit}
-                        hideFooter={true}
-                        onPageChange={changePageHandler}
+    return (
+        <>
+            <Meta title={t('all_companies_page_title')}/>
+            <CompanyCreateDialog
+                open={open}
+                closeHandler={handleClose}        
+            />
+            <MainCard title={t('all_companies')} sx={{height: '100%'}}>
+                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: COMPANIES_FETCH_RESET })}>{t(error)}</Alert></Box> }
+                { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: TYPES_FETCH_RESET })}>{t(errorTypes)}</Alert></Box> }
+                <Box
                         sx={{
-                            "& .MuiDataGrid-columnHeaders": {
-                                backgroundColor: "rgba(219, 219, 219, 0.5)"
-                            }
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: 1,
+                        gridTemplateRows: 'auto',
+                        gridTemplateAreas: `". . . ."
+                        "search search search create"
+                        ". . . ."`,
                         }}
-                    />
-                    <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(companiesGet.number_of_companies / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
-                    <Grid sx={{ mt: 2 }} >
-                        <ExportCSV csvreport={csvreport} exportText={t('export_companies')} ></ExportCSV>
-                    </Grid>
-                </>
-            )}
-        </MainCard> 
-    </>
-  )
+                >
+                    <Box gridArea={'search'}>
+                        <Formik
+                            initialValues={searchState}
+                            enableReinitialize={true}
+                            onSubmit={values => searchHandler(values)}
+                        >
+                            {formik => (
+                                <Form>
+                                    <Grid container spacing={2} direction="row" alignItems={'center'}>
+                                        <Grid item>
+                                            <InputField name='username_filter' label={t('sign_up_username')} type='text'></InputField>
+                                        </Grid>
+                                        <Grid item>
+                                            <InputField name='name_filter' label={t('sign_up_full_name')} type='text' ></InputField>
+                                        </Grid>
+                                        <Grid item>
+                                            <InputField name='email_filter' label={t('sign_up_email')} type='text' ></InputField>
+                                        </Grid>
+                                        <Grid item>
+                                            <CheckInputField name='toggle_filter' label={t('has_debt_')} type='boolean'></CheckInputField>
+                                        </Grid>
+                                        <Grid item>
+                                            <DropdownInputField name='limit' label={t('rows')} options={[10, 15, 20]} ></DropdownInputField>
+                                        </Grid>
+                                        <Grid item>
+                                            <AnimateButton>
+                                                <LoadingButton
+                                                    disableElevation
+                                                    size="large"
+                                                    type="submit"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    loading = {loading}
+                                                    startIcon={<SearchIcon></SearchIcon>}
+                                                >
+                                                    {t('search')}
+                                                </LoadingButton>
+                                            </AnimateButton>
+                                        </Grid>    
+                                    </Grid>
+                                </Form>
+                            )}
+                        </Formik>
+                    </Box>
+                    <Box gridArea={'create'} alignItems={'center'} display={{md: 'flex', lg: 'flex'}} justifyContent='flex-end' sx={{ mt: { xs: 14, md : 0, lg : 0 }}}>
+                        <AnimateButton>
+                            <LoadingButton
+                                disableElevation
+                                size="large"
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => {
+                                    handleOpen()
+                                }}
+                            >
+                                {t('create')}
+                            </LoadingButton>
+                        </AnimateButton>
+                    </Box>
+                </Box>
+                { loading || loadingTypes ? 
+                    <Stack alignItems="center">
+                        <CircularProgress size='4rem'/>
+                    </Stack> : (
+                    <>
+                        <DataGrid
+                            autoHeight
+                            rows={rows}
+                            columns={columns}
+                            pageSize={searchState.limit}
+                            hideFooter={true}
+                            onPageChange={changePageHandler}
+                            sx={{
+                                "& .MuiDataGrid-columnHeaders": {
+                                    backgroundColor: "rgba(219, 219, 219, 0.5)"
+                                }
+                            }}
+                        />
+                        <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(companiesGet.number_of_companies / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
+                        <Grid sx={{ mt: 2 }} >
+                            <ExportCSV csvreport={csvreport} exportText={t('export_companies')} ></ExportCSV>
+                        </Grid>
+                    </>
+                )}
+            </MainCard> 
+        </>
+    )
 }
 
 export default AllCompaniesPage

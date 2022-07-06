@@ -9,6 +9,7 @@ import * as Yup from 'yup'
 import { updateQuota} from '../../store/actions/quotaActions'
 import DateInputField from '../../components/multiStepForm/DateInputField';
 import { parse, isDate } from "date-fns";
+import { QUOTA_UPDATE_RESET } from '../../store/constants/quotaConstants'
 
 const QuotaUpdateDialog = ({open, closeHandler, id}) => {
     const { t } = useTranslation()
@@ -62,8 +63,8 @@ const QuotaUpdateDialog = ({open, closeHandler, id}) => {
                 {t('payment_date')}
             </Typography>
             <DialogContent>
-                { message && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('quota_updated')}</Alert></Box> }
-                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+                { message && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => dispatch({ type: QUOTA_UPDATE_RESET })}>{t('quota_updated')}</Alert></Box> }
+                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: QUOTA_UPDATE_RESET })}>{t(error)}</Alert></Box> }
                 <Box
                     sx={{
                     display: 'flex',

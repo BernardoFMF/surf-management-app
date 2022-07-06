@@ -10,6 +10,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import RadioGroupInputField from '../multiStepForm/RadioGroupInputField'
 import CheckGroupInputField from '../multiStepForm/CheckGroupInputField'
 import { postGroup } from '../../store/actions/groupActions'
+import { GROUP_POST_RESET } from '../../store/constants/groupConstants'
 
 const GroupCreateDialog = ({open, closeHandler}) => {
     const { t } = useTranslation()
@@ -54,8 +55,8 @@ const GroupCreateDialog = ({open, closeHandler}) => {
                     width: 'fit-content',
                     }}
                 >
-                    { errorPost && <Box sx={{ pt: 2 }}><Alert severity="error">{t(errorPost)}</Alert></Box> }
-                    { createdGroup && <Box sx={{ pt: 2 }}><Alert severity="success">{t('group_created_successfully')}</Alert></Box> }
+                    { errorPost && <Box sx={{ pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: GROUP_POST_RESET })}>{t(errorPost)}</Alert></Box> }
+                    { createdGroup && <Box sx={{ pt: 2 }}><Alert severity="success" onClose={() => dispatch({ type: GROUP_POST_RESET })}>{t('group_created_successfully')}</Alert></Box> }
                     <Formik
                         enableReinitialize={true}
                         initialValues={{

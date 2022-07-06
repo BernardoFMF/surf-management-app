@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getEvents, deleteEvent } from '../../store/actions/eventActions'
-import * as Yup from 'yup';
 import Meta from '../../components/Meta';
 import { useTranslation } from 'react-i18next'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
@@ -23,6 +22,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Pagination } from '@mui/material';
 import EventCreateDialog from '../../components/dialogs/EventCreateDialog';
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
+import { EVENTS_FETCH_RESET, EVENT_CREATE_RESET, EVENT_DELETE_RESET } from '../../store/constants/eventConstants';
+import { GROUPS_FETCH_RESET } from '../../store/constants/groupConstants';
 
 const AllEventsPage = () => {
     const {t} = useTranslation()
@@ -39,7 +40,7 @@ const AllEventsPage = () => {
     })
 
     const [openSubmit, setOpenSubmit] = React.useState(false);
-    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter, 0, searchState.limit))};
+    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch({ type: EVENT_CREATE_RESET }); dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter, 0, searchState.limit))};
     const handleOpenSubmit = () => setOpenSubmit(true);
 
     const [page, setPage] = useState(1);
@@ -47,6 +48,12 @@ const AllEventsPage = () => {
    
     useEffect(() => {
         dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter, 0, searchState.limit))
+        return () => {
+            dispatch({ type: EVENTS_FETCH_RESET })
+            dispatch({ type: EVENT_DELETE_RESET })
+            dispatch({ type: EVENT_CREATE_RESET })
+            dispatch({ type: GROUPS_FETCH_RESET })
+        }
     },[])
 
     useEffect(() => {
@@ -83,7 +90,7 @@ const AllEventsPage = () => {
     const searchHandler = async(values) => {
         const new_values = values
 
-        // not the most correct way to do but for now works 03/06/2022&& values.event_initial_date_filter.length === undefined
+        // not the most correct way to do but for now works 03/06/2022 && values.event_initial_date_filter.length === undefined
         if(values.event_initial_date_filter && values.event_initial_date_filter.length === undefined) {
             let day = values.event_initial_date_filter.getDate()
             let month = values.event_initial_date_filter.getMonth() + 1
@@ -155,7 +162,7 @@ const columns = [
             closeHandler={handleCloseSubmit}     
         />
         <MainCard title={t('all_events')} sx={{height: '100%'}}>
-            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: EVENTS_FETCH_RESET })}>{t(error)}</Alert></Box> }
             <Box
                 sx={{
                 display: 'grid',

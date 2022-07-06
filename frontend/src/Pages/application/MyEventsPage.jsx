@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMemberEventsAttendance} from '../../store/actions/eventActions'
 import Meta from '../../components/Meta';
-import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
@@ -24,10 +23,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import AttendanceEditDialog from '../../components/dialogs/AttendanceEditDialog';
 import {  Alert} from '@mui/material'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
+import { MEMBER_EVENTS_ATTENDANCE_FETCH_RESET, MEMBER_EVENT_ATTENDANCE_UPDATE_RESET } from '../../store/constants/eventConstants';
 
 const MyEventsPage = () => {
-    const theme = useTheme();
-    const {t, i18n} = useTranslation()
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -36,17 +35,26 @@ const MyEventsPage = () => {
 
     const memberEventsAttendanceFetch = useSelector((state) => state.memberEventsAttendanceFetch)
     const { loading, error, memberEventsAttendanceGet } = memberEventsAttendanceFetch
-    const [rows, setRows] = useState([]);
+    const [rows, setRows] = useState([])
     let { id } = useParams()
-    const [row, setRow] = useState({});
-    
+    const [row, setRow] = useState({})
+
     const [openSubmit, setOpenSubmit] = React.useState(false);
-    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getMemberEventsAttendance(id,searchState.name_filter,searchState.state_filter,searchState.date_filter,(page-1)*searchState.limit,searchState.limit));};
+    const handleCloseSubmit = () => {
+        setOpenSubmit(false); 
+        dispatch(getMemberEventsAttendance(id,searchState.name_filter,searchState.state_filter,searchState.date_filter,(page-1)*searchState.limit,searchState.limit));
+        dispatch({ type: MEMBER_EVENT_ATTENDANCE_UPDATE_RESET })
+    };
+
     const handleOpenSubmit = (row) => {setOpenSubmit(true); setRow(row)};
 
     useEffect(() => {
         dispatch(getMemberEventsAttendance(id,searchState.name_filter,searchState.state_filter,searchState.date_filter,0,searchState.limit))
-    },[dispatch,id])
+        return () => {
+            dispatch({ type: MEMBER_EVENT_ATTENDANCE_UPDATE_RESET })
+            dispatch({ type: MEMBER_EVENTS_ATTENDANCE_FETCH_RESET })
+        }
+    }, [])
 
     const [page, setPage] = useState(1);
 
@@ -148,7 +156,7 @@ const columns = [
             row={row}    
         />
         <MainCard title={t('my_events')} sx={{height: '100%'}}>
-            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: MEMBER_EVENTS_ATTENDANCE_FETCH_RESET })}>{t(error)}</Alert></Box> }
             <Box
                 sx={{
                 display: 'grid',

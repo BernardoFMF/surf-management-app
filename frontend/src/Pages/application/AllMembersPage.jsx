@@ -20,6 +20,9 @@ import DropdownInputField from '../../components/multiStepForm/DropdownInputFiel
 import ExportCSV from '../../components/ExportCSV'
 import CheckInputField from '../../components/multiStepForm/CheckInputField';
 import Meta from '../../components/Meta';
+import { USERS_FETCH_RESET } from '../../store/constants/userConstants';
+import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
+import { EXPORT_USER_FETCH_RESET } from '../../store/constants/exportConstants';
 
 const AllMembersPage = () => {
     const navigate = useNavigate()
@@ -29,7 +32,6 @@ const AllMembersPage = () => {
     const exportU = useSelector((state) => state.exportUsersCSV)
     const { exportUsers } = exportU
     const [data, setData] = useState([]);
-
 
     const userFetch = useSelector((state) => state.usersFetch)
     const { loading, error, usersGet } = userFetch
@@ -53,8 +55,6 @@ const AllMembersPage = () => {
     const [open, setOpen] = useState(false);
     const handleClose = () => {setOpen(false); getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit)};
     const handleOpen = () => setOpen(true);
-
-
    
     const [page, setPage] = useState(1);
 
@@ -73,6 +73,11 @@ const AllMembersPage = () => {
         dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit))
         dispatch(getTypes('user'))
         dispatch(exportUsersCSV())
+        return () => {
+            dispatch({ type: USERS_FETCH_RESET })
+            dispatch({ type: TYPES_FETCH_RESET })
+            dispatch({ type: EXPORT_USER_FETCH_RESET })
+        }
     }, [])
 
     useEffect(() => {
@@ -87,7 +92,7 @@ const AllMembersPage = () => {
     },[usersGet])
 
     useEffect(() => {
-        if(exportUsers){
+        if(exportUsers) {
             setData(exportUsers.filter(user => user.is_admin_ === false))
         }
     },[exportUsers])
@@ -168,7 +173,7 @@ const AllMembersPage = () => {
         { key: 'has_debt_', label: t('has_debt_')},
         { key: 'paid_enrollment_', label: t('paid_enrollment_')},
         { key: 'is_deleted_', label: t('is_deleted_')}
-      ];
+    ];
        
     const csvreport = {
         data: data,
@@ -184,8 +189,8 @@ const AllMembersPage = () => {
                 closeHandler={handleClose}
             />
             <MainCard title={t('all_users')} direction='ltr' sx={{height: '100%'}}>
-                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
+                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: USERS_FETCH_RESET })}>{t(error)}</Alert></Box> }
+                { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: TYPES_FETCH_RESET })}>{t(errorTypes)}</Alert></Box> }
                 <Box
                     sx={{
                     display: 'grid',

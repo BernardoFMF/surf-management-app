@@ -19,31 +19,41 @@ import {
     MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL,
     MEMBER_EVENT_ATTENDANCE_UPDATE_REQUEST,
     MEMBER_EVENT_ATTENDANCE_UPDATE_SUCCESS,
-    MEMBER_EVENT_ATTENDANCE_UPDATE_FAIL
+    MEMBER_EVENT_ATTENDANCE_UPDATE_FAIL,
+    EVENTS_FETCH_RESET,
+    EVENT_DELETE_RESET,
+    EVENT_CREATE_RESET,
+    EVENT_ATTENDANCE_FETCH_RESET,
+    MEMBER_EVENTS_ATTENDANCE_FETCH_RESET,
+    MEMBER_EVENT_ATTENDANCE_UPDATE_RESET
 } from '../constants/eventConstants'
 
 export const eventsFetchReducer = (state = {eventsGet: {events: [], number_of_events : 0}}, action) => {
     switch (action.type) {
         case EVENTS_FETCH_REQUEST:
-        return { loading: true }
+            return { loading: true }
         case EVENTS_FETCH_SUCCESS:
-        return { loading: false, eventsGet: action.payload }
+            return { loading: false, eventsGet: action.payload }
         case EVENTS_FETCH_FAIL:
-        return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
+        case EVENTS_FETCH_RESET:
+            return {eventsGet: {events: [], number_of_events : 0}}
         default:
-        return state
+            return state
     }
 }
-export const EventDeletionReducer = (state = {eventDeletion: {}}, action) => {
+export const eventDeletionReducer = (state = {eventDeletion: {}}, action) => {
     switch (action.type) {
         case EVENT_DELETE_REQUEST:
-        return { loading: true }
+            return { loading: true }
         case EVENT_DELETE_SUCCESS:
-        return { loading: false, eventDeletion: action.payload }
+            return { loading: false, eventDeletion: action.payload }
         case EVENT_DELETE_FAIL:
-        return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
+        case EVENT_DELETE_RESET:
+            return {eventDeletion: {}}
         default:
-        return state
+            return state
     }
 }
 
@@ -51,64 +61,72 @@ export const EventDeletionReducer = (state = {eventDeletion: {}}, action) => {
 export const createEventReducer = (state = {}, action) => {
     switch (action.type) {
         case EVENT_CREATE_REQUEST:
-        return { loading: true }
+            return { loading: true }
         case EVENT_CREATE_SUCCESS:
-        return { loading: false, createEvent: action.payload }
+            return { loading: false, createEvent: action.payload }
         case EVENT_CREATE_FAIL:
-        return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
+        case EVENT_CREATE_RESET:
+            return {}
         default:
-        return state
+            return state
     }
 }
 
 export const eventFetchReducer = (state = {eventGet: {}}, action) => {
     switch (action.type) {
         case EVENT_FETCH_REQUEST:
-        return { loading: true }
+            return { loading: true }
         case EVENT_FETCH_SUCCESS:
-        return { loading: false, eventGet: action.payload }
+            return { loading: false, eventGet: action.payload }
         case EVENT_FETCH_FAIL:
-        return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
         default:
-        return state
+            return state
     }
 }
 
 export const eventAttendanceFetchReducer = (state = {eventAttendanceGet: {text:[],interested:0,not_going:0,going:0, number_of_attendance:0}}, action) => {
     switch (action.type) {
         case EVENT_ATTENDANCE_FETCH_REQUEST:
-        return { loading: true }
+            return { loading: true }
         case EVENT_ATTENDANCE_FETCH_SUCCESS:
-        return { loading: false, eventAttendanceGet: action.payload }
+            return { loading: false, eventAttendanceGet: action.payload }
         case EVENT_ATTENDANCE_FETCH_FAIL:
-        return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
+        case EVENT_ATTENDANCE_FETCH_RESET:
+            return {eventAttendanceGet: {text:[],interested:0,not_going:0,going:0, number_of_attendance:0}}
         default:
-        return state
+            return state
     }
 }
 
 export const memberEventsAttendanceFetchReducer = (state = {memberEventsAttendanceGet: {events:[],number_of_events:0}}, action) => {
     switch (action.type) {
         case MEMBER_EVENTS_ATTENDANCE_FETCH_REQUEST:
-        return { loading: true }
+            return { loading: true }
         case MEMBER_EVENTS_ATTENDANCE_FETCH_SUCCESS:
-        return { loading: false, memberEventsAttendanceGet: action.payload }
+            return { loading: false, memberEventsAttendanceGet: action.payload }
         case MEMBER_EVENTS_ATTENDANCE_FETCH_FAIL:
-        return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
+        case MEMBER_EVENTS_ATTENDANCE_FETCH_RESET:
+            return {memberEventsAttendanceGet: {events:[],number_of_events:0}}
         default:
-        return state
+            return state
     }
 }
 
 export const memberEventAttendanceUpdateReducer = (state = {}, action) => {
     switch (action.type) {
         case MEMBER_EVENT_ATTENDANCE_UPDATE_REQUEST:
-        return { loading: true }
+            return { loading: true }
         case MEMBER_EVENT_ATTENDANCE_UPDATE_SUCCESS:
-        return { loading: false, memberEventAttendanceUpdate: action.payload }
+            return { loading: false, memberEventAttendanceUpdate: action.payload }
         case MEMBER_EVENT_ATTENDANCE_UPDATE_FAIL:
-        return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
+        case MEMBER_EVENT_ATTENDANCE_UPDATE_RESET:
+            return {}
         default:
-        return state
+            return state
     }
 }

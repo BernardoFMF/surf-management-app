@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMembersQuotas} from '../../store/actions/quotaActions'
 import Meta from '../../components/Meta';
-import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import MainCard from '../../components/cards/MainCard';
 import { Grid, Pagination, Alert , Box, Stack, CircularProgress} from '@mui/material';
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField'
@@ -13,10 +12,10 @@ import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SearchIcon from '@mui/icons-material/Search';
 import { Form, Formik } from 'formik';
+import { MEMBER_QUOTAS_FETCH_RESET } from '../../store/constants/quotaConstants';
 
 const MyQuotasPage = () => {
-    const theme = useTheme();
-    const {t, i18n} = useTranslation()
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const memberQuotasFetch = useSelector((state) => state.memberQuotaFetch)
     const { loading, error, memberQuotasGet } = memberQuotasFetch
@@ -25,12 +24,16 @@ const MyQuotasPage = () => {
     
     useEffect(() => {
         dispatch(getMembersQuotas(id,0,searchState.limit))
-    },[dispatch,id])
+        return () => {
+            dispatch({ type: MEMBER_QUOTAS_FETCH_RESET })
+        }
+    }, [])
 
     const [page, setPage] = useState(1);
     const [ searchState, setSearchState ] = useState({
         limit: 10
     })
+
     useEffect(() => {
         if(memberQuotasGet){
             setRows(memberQuotasGet.quotas.map(quota => {
@@ -71,7 +74,7 @@ const MyQuotasPage = () => {
             <CircularProgress size='4rem'/>
         </Stack> : (
         <>
-            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: MEMBER_QUOTAS_FETCH_RESET })}>{t(error)}</Alert></Box> }
             <DataGrid
                 autoHeight
                 rows={rows}

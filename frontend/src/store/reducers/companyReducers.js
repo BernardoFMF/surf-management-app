@@ -17,7 +17,10 @@ import {
     COMPANY_POST_SUCCESS,
     MEMBER_VALIDATION_FETCH_REQUEST,
     MEMBER_VALIDATION_FETCH_SUCCESS,
-    MEMBER_VALIDATION_FETCH_FAIL
+    MEMBER_VALIDATION_FETCH_FAIL,
+    COMPANY_DELETE_RESET,
+    COMPANIES_FETCH_RESET,
+    COMPANY_POST_RESET
 } from '../constants/companyConstants'
 
 export const companyDeletionReducer = (state = {}, action) => {
@@ -28,6 +31,8 @@ export const companyDeletionReducer = (state = {}, action) => {
         return { loading: false, companyDeletion: action.payload }
       case COMPANY_DELETE_FAIL:
         return { loading: false, error: action.payload }
+      case COMPANY_DELETE_RESET:
+        return {}
       default:
         return state
     }
@@ -41,6 +46,8 @@ export const companyDeletionReducer = (state = {}, action) => {
         return { loading: false, companiesGet: action.payload }
       case COMPANIES_FETCH_FAIL:
         return { loading: false, error: action.payload }
+      case COMPANIES_FETCH_RESET:
+        return {companiesGet: {companies:[],number_of_companies:0}}
       default:
         return state
     }
@@ -95,6 +102,8 @@ export const companyDeletionReducer = (state = {}, action) => {
         return { loading: false, posted: true, postedResult: action.payload }
       case COMPANY_POST_FAIL:
         return { loading: false, error: action.payload }
+      case COMPANY_POST_RESET:
+        return {}
       default:
         return state
     }
