@@ -11,8 +11,12 @@ const NewUsersChartWrapper = ({ loading, dropdownOptions, growth, data }) => {
     const {t, i18n} = useTranslation()
 
     const extractData = (year) => {
-        const yearData = data.filter(obj => obj.id === year)[0]
-        return yearData
+        const yearData = data.filter(obj => parseInt(obj.year_) === year)
+        let series = [{"name": year, "data" : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}]
+        yearData.forEach(element => {
+            series[0].data[parseInt(element.month_) - 1] = parseInt(element.count)
+        });
+        return series
     }
 
     const extractGrowth = (year) => {
@@ -69,7 +73,7 @@ const NewUsersChartWrapper = ({ loading, dropdownOptions, growth, data }) => {
                             </Grid>
                         </Grid>
                         <Grid item xs={12}>
-                            <NewUsersChart data={chartValues.series} />
+                            <NewUsersChart data={chartValues} />
                         </Grid>
                     </Grid>
                     </AnimatedPage>

@@ -57,10 +57,15 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
-const CompaniesCardChart = ({ isLoading, total }) => {
+const CompaniesCardChart = ({ isLoading, obj }) => {
     const theme = useTheme();
     const {t, i18n} = useTranslation()
     const navigate = useNavigate()
+
+    let count = 0
+    obj.forEach(element => {
+        count += parseInt(element.count)
+    });
 
     return (
         <>
@@ -83,7 +88,7 @@ const CompaniesCardChart = ({ isLoading, total }) => {
                                                     color: theme.palette.primary.primaryLight,
                                                     mt: 1
                                                 }}
-                                                onClick={() => navigate(`/application/users`)}
+                                                onClick={() => navigate(`/application/companies`)}
                                             >
                                                 <BusinessIcon/>
                                             </Avatar>
@@ -94,7 +99,7 @@ const CompaniesCardChart = ({ isLoading, total }) => {
                                     <Grid container alignItems="center">
                                         <Grid item>
                                             <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                {total}
+                                                {count}
                                             </Typography>
                                         </Grid>
                                     </Grid>

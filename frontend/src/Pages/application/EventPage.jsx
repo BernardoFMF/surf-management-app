@@ -24,7 +24,6 @@ const EventPage = () => {
     const scriptedRef = useScriptRef()
 
     const {t, i18n} = useTranslation()
-
     const dispatch = useDispatch()
     const eventFetch = useSelector((state) => state.eventFetch)
     const { loadingEvent, error, eventGet } = eventFetch
@@ -158,9 +157,10 @@ const EventPage = () => {
                         </Grid>
                         { eventGet && eventAttendanceGet.text.length !== 0 && <Grid item xs={12} md={6}>
                             <UpcomingEventsChartWrapper 
-                                loading={loading}
-                                dropdownOptions={[{label: eventGet.name_, value: eventGet.id_}]} 
-                                data={[{id: eventGet.id_, attendance: {going : eventAttendanceGet.going, not_going: eventAttendanceGet.not_going, interested: eventAttendanceGet.interested, unanswered: eventAttendanceGet.none}}]} 
+                                loading={loading} 
+                                dropdownOptions={eventAttendanceGet.text.map(obj => { let newObj = { label: obj.name_, value: obj.event_id_}; return newObj })} 
+                                data={eventAttendanceGet.text.map(obj => { let newObj = { id: obj.event_id_, state: obj.state_, count: 0}; return newObj })} 
+                                attendance={eventAttendanceGet}
                                 title={t('attendance')}
                             />
                         </Grid>
