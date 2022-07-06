@@ -11,7 +11,7 @@ create table Candidate_ (
 	email_ 			varchar(50) check (email_ like '%@%') unique,
 	phone_number_	int,
 	pword_			text,
-	username_		varchar(30) unique,
+	username_		varchar(30),
 	img_ 			text,
 	gender_ 		varchar(40),
 	iban_ 			text unique check (iban_ like 'PT50%'),
@@ -207,3 +207,5 @@ create table Member_token_ (
 	primary key(member_id_),
 	constraint fk_user foreign key(member_id_) references Member_(id_)
 );
+
+

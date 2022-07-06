@@ -186,6 +186,8 @@ const QUERY_GET_USER_SPORT_SPECIFIC = 'select username_, name_, user_id_, sport_
 
 const QUERY_INSERT_MEMBER_TYPES = 'insert into Member_Types_ values'
 
+const QUERY_INSERT_QUOTAS = 'insert into Quota_ values'
+
 export default {
     QUERY_GET_USER_SPORT_SPECIFIC,
     QUERY_GET_GROUP_BY_ID_MEMBER_TYPES,
@@ -279,5 +281,6 @@ export default {
     QUERY_MY_NUMBER_OF_EVENTS, 
     QUERY_GET_MEMBER_VALIDATE,
     QUERY_GET_USER_SPORT_TYPES,
-    QUERY_INSERT_MEMBER_TYPES
+    QUERY_INSERT_MEMBER_TYPES,
+    QUERY_INSERT_QUOTAS
 }
