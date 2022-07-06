@@ -373,5 +373,9 @@
     "unauthorized": "Não autorizado",
     "go home": "Página Principal",
     "go back": "Voltar atrás",
-    "something went wrong": "Algo correu mal!"
+    "something went wrong": "Algo correu mal!",
+
+    
+    "You are not longer part of the club" : "Já não faz parte do clube",
+    "Feel free to contact us via email": "Qualquer questão contacte-nos por email"
 }

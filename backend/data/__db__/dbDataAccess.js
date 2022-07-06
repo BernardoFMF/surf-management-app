@@ -1609,7 +1609,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			const members = await getMemberGrowthStatistics()
 			const quotas = await getQuotasStatistics()
 
-
 			return {
 				quotas,
 				members,
@@ -1629,11 +1628,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getUsersStatistics = async() => {
 		const client = await pool.connect()
-		let queryDistribution = "select count(*), nationality_, gender_  from user_ group by nationality_, gender_"
 	
 		try {
 			await client.query('begin')
-			const distribution = await client.query(queryDistribution)
+			const distribution = await client.query(queries.QUERY_USERS_STATISTICS)
 			await client.query('commit')
 			return distribution.rows
 		} catch (e) {
@@ -1646,14 +1644,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getCompaniesStatistics = async() => {
 		const client = await pool.connect()
-		let queryDistribution = "select count(*) from company_"
 
 		try {
 			await client.query('begin')
-			const distribution = await client.query(queryDistribution)
+			const distribution = await client.query(queries.QUERY_COMPANIES_STATISTICS)
 			await client.query('commit')
 			return distribution.rows
-			
+
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1664,11 +1661,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getCandidatesStatistics = async() => {
 		const client = await pool.connect()
-		let queryDistribution = "select count(*), nationality_, gender_  from candidate_ group by nationality_, gender_"
 	
 		try {
 			await client.query('begin')
-			const distribution = await client.query(queryDistribution)
+			const distribution = await client.query(queries.QUERY_CANDIDATES_STATISTICS)
 			await client.query('commit')
 			return distribution.rows
 			
@@ -1682,11 +1678,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getSportsStatistics = async() => {
 		const client = await pool.connect()
-		let queryDistribution = "select count(*), s.id_, s.name_, u.gender_ from sport_ s join user_sport_ us on (s.id_ = us.sport_id_) join user_ u on (us.user_id_ = u.member_id_) group by s.id_, s.name_, u.gender_"
 	
 		try {
 			await client.query('begin')
-			const distribution = await client.query(queryDistribution)
+			const distribution = await client.query(queries.QUERY_SPORTS_STATISTICS)
 			await client.query('commit')
 			return distribution.rows
 			
@@ -1700,10 +1695,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getUpcomingEventsStatistics = async() => {
 		const client = await pool.connect()
-		let queryDistribution = "select count(*), e.id_, e.name_, a.state_  from event_ e join attendance_ a on (e.id_ = a.event_id_) where initial_date_ > current_date and initial_date_ < current_date + 7 group by e.id_, e.name_, a.state_"
+
 		try {
 			await client.query('begin')
-			const distribution = await client.query(queryDistribution)
+			const distribution = await client.query(queries.QUERY_EVENTS_STATISTICS)
 			await client.query('commit')
 			return distribution.rows
 			
@@ -1717,14 +1712,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getMemberGrowthStatistics = async() => {
 		const client = await pool.connect()
-		let queryDistribution = "select count(*), extract( month from u.enrollment_date_) as month_, extract( year from u.enrollment_date_) as year_ from user_ u group by extract( month from u.enrollment_date_), extract( year from u.enrollment_date_) order by extract( year from u.enrollment_date_) DESC"
-		let queryGrowth = "select count(*), extract( year from u.enrollment_date_) as year_ from user_ u group by extract( year from u.enrollment_date_) order by extract( year from u.enrollment_date_) DESC"
-		let queryYears = "select extract( year from u.enrollment_date_) as years from user_ u group by extract( year from u.enrollment_date_) order by extract( year from u.enrollment_date_) DESC"
+
 		try {
 			await client.query('begin')
-			const distribution = await client.query(queryDistribution)
-			const growth = await client.query(queryGrowth)
-			const years = await client.query(queryYears)
+			const distribution = await client.query(queries.QUERY_MEMBER_DISTRIBUTION_STATISTICS)
+			const growth = await client.query(queries.QUERY_MEMBER_GROWTH_STATISTICS)
+			const years = await client.query(queries.QUERY_MEMBER_YEARS_STATISTICS)
 			await client.query('commit')
 
 			let member_growth = []
@@ -1751,16 +1744,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getQuotasStatistics = async() => {
 		const client = await pool.connect()
-		let queryDistribution = "select sum(q.amount_), extract( month from q.payment_date_) as month_, extract( year from q.date_) as year_ from quota_ q where q.payment_date_ is not null group by extract( month from q.payment_date_), extract( year from q.date_) order by extract( year from q.date_) DESC"
-		let queryAmountPaid = "select sum(q.amount_), extract( year from q.date_) from quota_ q where q.payment_date_ is not null group by extract( year from q.date_) order by extract( year from q.date_) DESC"
-		let queryTotalAmount = "select sum(q.amount_), extract( year from q.date_) from quota_ q group by extract( year from q.date_) order by extract( year from q.date_) DESC"
-		let queryYears = "select extract( year from q.date_) as years from quota_ q  group by extract( year from q.date_) order by extract( year from q.date_) DESC"
+
 		try {
 			await client.query('begin')
-			const distribution = await client.query(queryDistribution)
-			const amountPaid = await client.query(queryAmountPaid)
-			const totalAmount = await client.query(queryTotalAmount)
-			const years = await client.query(queryYears)
+			const distribution = await client.query(queries.QUERY_QUOTAS_DISTRIBUTION_STATISTICS)
+			const amountPaid = await client.query(queries.QUERY_QUOTAS_AMOUNT_STATISTICS)
+			const totalAmount = await client.query(queries.QUERY_QUOTAS_TOTALAMOUNT_STATISTICS)
+			const years = await client.query(queries.QUERY_QUOTAS_YEARS_STATISTICS)
 			await client.query('commit')
 
 			const years_ = years.rows.map(row => parseInt(row.years))

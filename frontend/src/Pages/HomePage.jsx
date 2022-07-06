@@ -14,6 +14,8 @@ import ClockLoader from 'react-spinners/ClockLoader'
 import AnimatedPage from '../components/AnimatedPage'
 import Meta from '../components/Meta'
 
+
+
 const HomePage = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
