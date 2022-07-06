@@ -36,12 +36,13 @@ export const login = (username, password) => async (dispatch) => {
       })
 
       const member = await response1.json()
-
+      
       if(response1.status !== 200) throw Error(member.message_code)
       memberInfo.is_admin_ = member.is_admin_
       memberInfo.img_value_ = member.img_value_
       memberInfo.category_ = member.category_
       memberInfo.quota_value_ = member.quota_value_
+      memberInfo.is_deleted_ = member.is_deleted_
 
       localStorage.setItem('memberInfo', JSON.stringify({...memberInfo, expires: memberLogin.expires}))
 

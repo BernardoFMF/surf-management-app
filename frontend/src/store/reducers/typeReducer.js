@@ -1,4 +1,4 @@
-import { TYPES_FETCH_REQUEST, TYPES_FETCH_SUCCESS, TYPES_FETCH_FAIL, TYPES_UPDATE_REQUEST, TYPES_UPDATE_SUCCESS, TYPES_UPDATE_FAIL, TYPES_CREATE_REQUEST, TYPES_CREATE_SUCCESS, TYPES_CREATE_FAIL, TYPES_FETCH_RESET } from '../constants/typeConstants'
+import { TYPES_FETCH_REQUEST, TYPES_FETCH_SUCCESS, TYPES_FETCH_FAIL, TYPES_UPDATE_REQUEST, TYPES_UPDATE_SUCCESS, TYPES_UPDATE_RESET, TYPES_UPDATE_FAIL, TYPES_CREATE_REQUEST, TYPES_CREATE_SUCCESS, TYPES_CREATE_FAIL, TYPES_FETCH_RESET, TYPES_CREATE_RESET } from '../constants/typeConstants'
 
 export const typesFetchReducer = (state = {typesGet: []}, action) => {
     switch (action.type) {
@@ -23,6 +23,8 @@ export const typesUpdateReducer = (state = {}, action) => {
             return { loading: false, typesUpdate: action.payload }
         case TYPES_UPDATE_FAIL:
             return { loading: false, error: action.payload }
+        case TYPES_UPDATE_RESET:
+            return {}
         default:
             return state
     }
@@ -36,6 +38,8 @@ export const createTypeReducer = (state = {}, action) => {
             return { loading: false, createType: action.payload }
         case TYPES_CREATE_FAIL:
             return { loading: false, error: action.payload }
+        case TYPES_CREATE_RESET:
+            return {}
         default:
             return state
     }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import QuotasChartWrapper from '../../components/chartWrappers/QuotasChartWrapper'
 import UpcomingEventsChartWrapper from '../../components/chartWrappers/UpcomingEventsChartWrapper'
 import NewUsersChartWrapper from '../../components/chartWrappers/NewUsersChartWrapper'
@@ -11,10 +12,27 @@ import UsersCardChart from '../../components/charts/UsersCardChart';
 import AnimatedPage from '../../components/AnimatedPage'
 import Meta from '../../components/Meta'
 import { useTranslation } from 'react-i18next'
+import { getStatistics } from '../../store/actions/statisticActions'
+import { STATISTICS_FETCH_RESET } from '../../store/constants/statisticConstants'
+import Box from '@mui/material/Box';
+import {Alert} from '@mui/material'
 
 const DashboardAnalyticsPage = () => {
     const { t } = useTranslation()
-    const [loading, setLoading] = useState(true)
+    const dispatch = useDispatch()
+
+    const [isLoading, setLoading] = useState(true)
+
+    useEffect(() => {
+        dispatch(getStatistics())
+        return () => {
+            dispatch({ type: STATISTICS_FETCH_RESET })
+        }
+    }, [])
+
+    const statistics = useSelector((state) => state.statisticsFetch)
+    const { loading, error, statisticsGet } = statistics
+
     const unformattedData = {
         "quotas": {
             "years": [ 2022, 2001 ],
@@ -72,157 +90,6 @@ const DashboardAnalyticsPage = () => {
                     ]
                 }
             ]
-        },
-        "upcoming_events": {
-            "describers": [
-                {
-                    "id": 1,
-                    "name": "Evento 1",
-                    "attendance": {
-                        "going": 55,
-                        "not_going": 30,
-                        "interested": 20,
-                        "unanswered": 5
-                    }
-                },
-                {
-                    "id": 2,
-                    "name": "Evento 2",
-                    "attendance": {
-                        "going": 10,
-                        "not_going": 10,
-                        "interested": 50,
-                        "unanswered": 0
-                    }
-                }
-            ]
-        },
-        "sports": {
-            "describers": [
-                {
-                    "id": 1,
-                    "name": "Sport 1",
-                    "gender": {
-                        "male": 55,
-                        "female": 30,
-                        "other": 20
-                    }
-                },
-                {
-                    "id": 2,
-                    "name": "Sport 2",
-                    "gender": {
-                        "male": 26,
-                        "female": 14,
-                        "other": 8
-                    }
-                }
-            ]
-        },
-        "users": {
-            "total": 2500,
-            "total_males": 50,
-            "total_females": 20,
-            "total_other": 3,
-            "distribution": [
-                {
-                    "nationality": "Portuguese",
-                    "gender_distribution": {
-                        "male": 5,
-                        "female": 10,
-                        "other": 2
-                    }
-                },
-                {
-                    "nationality": "Brazilian",
-                    "gender_distribution": {
-                        "male": 2,
-                        "female": 11,
-                        "other": 5
-                    }
-                }
-            ]
-        },
-        "companies": {
-            "total": 20,
-        },
-        "candidates": {
-            "total": 2500,
-            "total_males": 50,
-            "total_females": 20,
-            "total_other": 3,
-            "distribution": [
-                {
-                    "nationality": "Portuguese",
-                    "gender_distribution": {
-                        "male": 5,
-                        "female": 10,
-                        "other": 2
-                    }
-                },
-                {
-                    "nationality": "Brazilian",
-                    "gender_distribution": {
-                        "male": 2,
-                        "female": 11,
-                        "other": 5
-                    }
-                }
-            ]
-        },
-        "sportsV2": {
-            "describers": [
-                {
-                    "id": 1,
-                    "name": "Sport 1",
-                    "total_males": 50,
-                    "total_females": 20,
-                    "total_other": 3,
-                    "gender_distribution": [
-                        {
-                            "type": "Coach",
-                            "gender_distribution": {
-                                "male": 5,
-                                "female": 10,
-                                "other": 2
-                            }
-                        },
-                        {
-                            "type": "Jury",
-                            "gender_distribution": {
-                                "male": 2,
-                                "female": 14,
-                                "other": 1
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": 1,
-                    "name": "Sport 2",
-                    "total_males": 10,
-                    "total_females": 30,
-                    "total_other": 1,
-                    "gender_distribution": [
-                        {
-                            "type": "Coach",
-                            "gender_distribution": {
-                                "male": 1,
-                                "female": 12,
-                                "other": 3
-                            }
-                        },
-                        {
-                            "type": "Jury",
-                            "gender_distribution": {
-                                "male": 2,
-                                "female": 14,
-                                "other": 1
-                            }
-                        }
-                    ]
-                },
-            ]
         }
     }
 
@@ -235,24 +102,27 @@ const DashboardAnalyticsPage = () => {
     return (
         <>
             <Meta title={t('analytics_page_title')}/>
-            <Grid container spacing={gridSpacing}>
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClick={() => dispatch({ type: STATISTICS_FETCH_RESET })}>{t(error)}</Alert></Box> }
+            {
+                loading === false && statisticsGet && 
+                <Grid container spacing={gridSpacing}>
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12} md={8}>
                             <QuotasChartWrapper 
-                                loading={loading} 
-                                dropdownOptions={unformattedData.quotas.years} 
-                                totalAmount={unformattedData.quotas.total_amount} 
-                                amounts={unformattedData.quotas.amounts} 
-                                data={unformattedData.quotas.data} 
+                                loading={isLoading} 
+                                dropdownOptions={statisticsGet.quotas.years} 
+                                totalAmount={statisticsGet.quotas.total_amount} 
+                                amounts={statisticsGet.quotas.amounts} 
+                                data={statisticsGet.quotas.data}
                             />                        
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <UpcomingEventsChartWrapper 
-                                loading={loading}
+                                loading={isLoading}
                                 title={t('Upcoming events attendance')}
-                                dropdownOptions={unformattedData.upcoming_events.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
-                                data={unformattedData.upcoming_events.describers.map(obj => { let newObj = { id: obj.id, attendance: obj.attendance}; return newObj })} 
+                                dropdownOptions={statisticsGet.upcoming_events.map(obj => { let newObj = { label: obj.name_, value: obj.id_}; return newObj })} 
+                                data={statisticsGet.upcoming_events.map(obj => { let newObj = { id: obj.id_, state: obj.state_, count: parseInt(obj.count)}; return newObj })} 
                             />
                         </Grid>
                     </Grid>
@@ -261,17 +131,17 @@ const DashboardAnalyticsPage = () => {
                     <Grid container justifyContent={'center'} direction={ { xs: "column", md: "row"} } spacing={2}>
                         <Grid item xs={4} md={4}>
                             <AnimatedPage>
-                                <UsersCardChart isLoading={loading} total={unformattedData.users.total} total_males={unformattedData.users.total_males} total_females={unformattedData.users.total_females} total_other={unformattedData.users.total_other} distribution={unformattedData.users.distribution} />
+                                <UsersCardChart isLoading={isLoading} obj={statisticsGet.users} />
                             </AnimatedPage>
                         </Grid>
                         <Grid item xs={4} md={4}>
                             <AnimatedPage>
-                                <CompaniesCardChart isLoading={loading} total={unformattedData.companies.total} />
+                                <CompaniesCardChart isLoading={isLoading} obj={statisticsGet.companies} />
                             </AnimatedPage>
                         </Grid>
                         <Grid item xs={4} md={4}>
                             <AnimatedPage>
-                                <CandidatesCardChart isLoading={loading} total={unformattedData.candidates.total} total_males={unformattedData.candidates.total_males} total_females={unformattedData.candidates.total_females} total_other={unformattedData.candidates.total_other} distribution={unformattedData.candidates.distribution} />
+                                <CandidatesCardChart isLoading={isLoading} obj={statisticsGet.candidates} />
                             </AnimatedPage>
                         </Grid>
                     </Grid>
@@ -280,22 +150,24 @@ const DashboardAnalyticsPage = () => {
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12} md={4}>
                             <SportsWrapper
-                                loading={loading}
-                                dropdownOptions={unformattedData.sports.describers.map(obj => { let newObj = { label: obj.name, value: obj.id}; return newObj })} 
-                                data={unformattedData.sports.describers.map(obj => { let newObj = { id: obj.id, gender: obj.gender}; return newObj })} 
+                                loading={isLoading}
+                                dropdownOptions={statisticsGet.sports.map(obj => { let newObj = { label: obj.name_, value: obj.id_}; return newObj })} 
+                                data={statisticsGet.sports.map(obj => { let newObj = { id: obj.id_, gender: obj.gender_, count: parseInt(obj.count)}; return newObj })} 
                             />
                         </Grid>
                         <Grid item xs={12} md={8}>
                             <NewUsersChartWrapper 
-                                loading={loading}
-                                dropdownOptions={unformattedData.members.years} 
-                                growth={unformattedData.members.member_growth} 
-                                data={unformattedData.members.data} 
+                                loading={isLoading}
+                                dropdownOptions={statisticsGet.members.years} 
+                                growth={statisticsGet.members.member_growth} 
+                                data={statisticsGet.members.data} 
                             />                        
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
+            }
+            
         </>
         
         

@@ -20,7 +20,8 @@ import {
     MEMBER_VALIDATION_FETCH_FAIL,
     COMPANY_DELETE_RESET,
     COMPANIES_FETCH_RESET,
-    COMPANY_POST_RESET
+    COMPANY_POST_RESET,
+    MEMBER_VALIDATION_FETCH_RESET
 } from '../constants/companyConstants'
 
 export const companyDeletionReducer = (state = {}, action) => {
@@ -74,6 +75,8 @@ export const companyDeletionReducer = (state = {}, action) => {
         return { loading: false, validateGet: action.payload }
       case MEMBER_VALIDATION_FETCH_FAIL:
         return { loading: false, error: action.payload }
+      case MEMBER_VALIDATION_FETCH_RESET:
+        return {validateGet: {full_name_ : ""}}
       default:
         return state
     }

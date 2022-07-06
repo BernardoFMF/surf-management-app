@@ -1,7 +1,7 @@
 import React from 'react';
 import Meta from '../../components/Meta';
 import { withTranslation } from 'react-i18next';
-
+import AnyError from './AnyError';
 class ErrorBoundary extends React.Component {
     constructor(props) {
       super(props);
@@ -21,8 +21,7 @@ class ErrorBoundary extends React.Component {
         const { t } = this.props;
         return <>
             <Meta title={t('error_page_title')}/>
-            <h1>Hmm.</h1>
-            <p>Something went wrong.</p>
+            <AnyError message={t('something went wrong')}></AnyError>
         </>
       }
       return this.props.children; 

@@ -6,7 +6,7 @@ const HomePage = Loadable(lazy(() => import('../Pages/HomePage')))
 
 const homeRoutes = {
     path: '/',
-    element: <HomePage/>,
+    element: <HomePage/>
 };
 
 export default homeRoutes;

@@ -367,5 +367,14 @@
     "upload_file_page_title": "Upload files",
     "validate_page_title": "Validate member",
 
-    "topic": "Topic"
+    "topic": "Topic",
+
+    "unauthorized": "Unauthorized",
+    "go home": "Go Home",
+    "go back": "Go Back",
+    "something went wrong": "Something went wrong!",
+
+    "You are not longer part of the club" : "You are not longer part of the club",
+    "Feel free to contact us via email": "Feel free to contact us via email"
+
 }

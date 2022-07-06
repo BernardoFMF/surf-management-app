@@ -17,15 +17,15 @@ import InputField from '../../components/multiStepForm/InputField';
 import { Formik, Form } from 'formik';
 import QuotaManagementCreateDialog from '../../components/dialogs/QuotaManagementCreateDialog'
 import Meta from '../../components/Meta';
+import { TYPES_CREATE_RESET, TYPES_FETCH_RESET, TYPES_UPDATE_RESET } from '../../store/constants/typeConstants';
 
 const QuotasManagementPage = () => {
-    const {t, i18n} = useTranslation()
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const typesFetch = useSelector((state) => state.typesFetch)
     const { loading, error: errorTypes, typesGet } = typesFetch
     const update = useSelector((state) => state.typesUpdate)
     const { typesUpdate } = update
-
 
     const [type, setType] = React.useState();
     
@@ -33,17 +33,22 @@ const QuotasManagementPage = () => {
     const handleClose = () => {
         setOpen(false)
         dispatch(getTypes())
+        dispatch({ type: TYPES_CREATE_RESET })
     };
     const handleOpen = () => setOpen(true);
 
     useEffect(() => {
         dispatch(getTypes())
+        return () => {
+            dispatch({ type: TYPES_FETCH_RESET })
+            dispatch({ type: TYPES_UPDATE_RESET })
+            dispatch({ type: TYPES_CREATE_RESET })
+        }
     },[])
 
     const handleSubmitUpdate = async (values) => {
         dispatch(updateTypes(type, values.quota_value))
     }
-
 
     return (
     <>
@@ -53,7 +58,7 @@ const QuotasManagementPage = () => {
             closeHandler={handleClose}
         />
         <MainCard title={t('management_title')} sx={{height: '100%'}}>
-            { typesUpdate && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success">{t('updated_sucessfully')}</Alert></Box> }
+            { typesUpdate && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success" onClose={() => dispatch({ type: TYPES_UPDATE_RESET })}>{t('updated_sucessfully')}</Alert></Box> }
             { loading ? 
                 <Stack alignItems="center">
                     <CircularProgress size='4rem'/>

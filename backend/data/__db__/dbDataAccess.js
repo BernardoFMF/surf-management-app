@@ -689,8 +689,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getUserByIdData = async (id_) => {
 		const client = await pool.connect()
+		console.log(id_)
 		try {
 			const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
+			console.log(result.rows)
 			result.rows = result.rows.map(user => {
 				user.birth_date_ = formatDate(user.birth_date_)
 				user.enrollment_date_ = formatDate(user.enrollment_date_)
@@ -779,7 +781,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			const sports = await client.query(query, [id_, is_candidate_])
 			const number_of_sports = await client.query(queryCount, [id_, is_candidate_])
 			await client.query('commit')
-			const result = { users: sports.rows, number_of_users: number_of_sports.rowCount }
+			const result = { users: sports.rows, number_of_users: number_of_sports.rowCount, sport: sport.rows[0] }
 			return result
 		} catch (e) {
 			await client.query('rollback')
@@ -1507,6 +1509,270 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}	
 	}
 
+	const uploadMemberTypesData = async(values) => {
+		const client = await pool.connect()
+		let query = queries.QUERY_INSERT_MEMBER_TYPES
+		let count = 0
+		for(let value of values){
+			count++
+			query += `(${value})`
+			if(count < values.length) {query += ','}
+			else {query += ';'}
+		}
+		try {
+			
+			await client.query('begin')
+			const types = await client.query(query)
+			await client.query('commit')
+			return types
+			
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+	
+	const uploadUsersData = async(values) => {
+		const client = await pool.connect()
+		let ids = []
+		try {
+			await client.query('begin')
+			for(let value of values){
+				let birthDate = value[6].split("/") 
+				let enrollmentDate = value[7].split("/")
+				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],`${birthDate[2]}-${birthDate[0]}-${birthDate[1]}`,value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,`${enrollmentDate[2]}-${enrollmentDate[0]}-${enrollmentDate[1]}`,0])
+				await client.query('commit')
+				ids.push(result.rows[0].new_id_)
+			}
+			return ids
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const uploadCompaniesData = async(values) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			for(let value of values){
+				//name_, nif_ , phone_number_, email_, postal_code_, address_ , location_, username_ , pword_, mtype_ , img_ , iban_ , out new_id_ 
+				await client.query(queries.QUERY_POST_COMPANY, [value[4],value[2],value[14],value[13],value[12],value[11],value[10],null,null,value[0],null,value[1],0])
+				await client.query('commit')
+			}	
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const uploadQuotasData = async(values) => {
+		const client = await pool.connect()
+		let query = queries.QUERY_INSERT_QUOTAS
+		let count = 0
+		for(let value of values){
+			count++
+			query += `(${value})`
+			if(count < values.length) {query += ','}
+			else {query += ';'}
+		}
+		try {
+
+			//await client.query('begin')
+			//const types = await client.query(query)
+			//await client.query('commit')
+			return types
+
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getStatisticsData = async() => {
+		const client = await pool.connect()
+
+		try {
+			const users = await getUsersStatistics()
+			const companies = await getCompaniesStatistics()
+			const candidates = await getCandidatesStatistics()
+			const sports = await getSportsStatistics()
+			const upcoming_events = await getUpcomingEventsStatistics()
+			const members = await getMemberGrowthStatistics()
+			const quotas = await getQuotasStatistics()
+
+			return {
+				quotas,
+				members,
+				users,
+				companies,
+				candidates,
+				sports,
+				upcoming_events
+			}	
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getUsersStatistics = async() => {
+		const client = await pool.connect()
+	
+		try {
+			await client.query('begin')
+			const distribution = await client.query(queries.QUERY_USERS_STATISTICS)
+			await client.query('commit')
+			return distribution.rows
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getCompaniesStatistics = async() => {
+		const client = await pool.connect()
+
+		try {
+			await client.query('begin')
+			const distribution = await client.query(queries.QUERY_COMPANIES_STATISTICS)
+			await client.query('commit')
+			return distribution.rows
+
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getCandidatesStatistics = async() => {
+		const client = await pool.connect()
+	
+		try {
+			await client.query('begin')
+			const distribution = await client.query(queries.QUERY_CANDIDATES_STATISTICS)
+			await client.query('commit')
+			return distribution.rows
+			
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getSportsStatistics = async() => {
+		const client = await pool.connect()
+	
+		try {
+			await client.query('begin')
+			const distribution = await client.query(queries.QUERY_SPORTS_STATISTICS)
+			await client.query('commit')
+			return distribution.rows
+			
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getUpcomingEventsStatistics = async() => {
+		const client = await pool.connect()
+
+		try {
+			await client.query('begin')
+			const distribution = await client.query(queries.QUERY_EVENTS_STATISTICS)
+			await client.query('commit')
+			return distribution.rows
+			
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getMemberGrowthStatistics = async() => {
+		const client = await pool.connect()
+
+		try {
+			await client.query('begin')
+			const distribution = await client.query(queries.QUERY_MEMBER_DISTRIBUTION_STATISTICS)
+			const growth = await client.query(queries.QUERY_MEMBER_GROWTH_STATISTICS)
+			const years = await client.query(queries.QUERY_MEMBER_YEARS_STATISTICS)
+			await client.query('commit')
+
+			let member_growth = []
+			for (let i = 1; i < growth.rows.length; i++) {
+				member_growth[i-1] = ((parseInt(growth.rows[i-1].count) - parseInt(growth.rows[i].count)) / parseInt(growth.rows[i].count)) * 100
+			}
+			member_growth[growth.rows.length-1] = 0
+
+			const years_ = years.rows.map(row => parseInt(row.years))
+			const res = {
+				"years": years_,
+				"member_growth": member_growth,
+				"data": distribution.rows
+			}
+			return res
+			
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getQuotasStatistics = async() => {
+		const client = await pool.connect()
+
+		try {
+			await client.query('begin')
+			const distribution = await client.query(queries.QUERY_QUOTAS_DISTRIBUTION_STATISTICS)
+			const amountPaid = await client.query(queries.QUERY_QUOTAS_AMOUNT_STATISTICS)
+			const totalAmount = await client.query(queries.QUERY_QUOTAS_TOTALAMOUNT_STATISTICS)
+			const years = await client.query(queries.QUERY_QUOTAS_YEARS_STATISTICS)
+			await client.query('commit')
+
+			const years_ = years.rows.map(row => parseInt(row.years))
+			const amountPaid_ = amountPaid.rows.map(row => parseInt(row.sum))
+			const totalAmount_ = totalAmount.rows.map(row => parseInt(row.sum))
+
+			const res = {
+				"years": years_,
+				"amounts" : amountPaid_,
+				"total_amount": totalAmount_,
+				"data": distribution.rows
+			}
+			return res
+			
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
 	return { 
 		getUserSportByIdAndUserData,
 		getGroupsData, 
@@ -1587,6 +1853,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getMemberTokenByIdData,
 		deleteMemberTokenData,
 		updateMemberTokenData,
+		uploadMemberTypesData,
+		uploadCompaniesData,
+		uploadQuotasData,
+		uploadUsersData,
+		getStatisticsData,
 		pool 
 	}
 

@@ -189,15 +189,15 @@ const AllCompaniesPage = () => {
                 { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: COMPANIES_FETCH_RESET })}>{t(error)}</Alert></Box> }
                 { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: TYPES_FETCH_RESET })}>{t(errorTypes)}</Alert></Box> }
                 <Box
-                        sx={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(4, 1fr)',
-                        gap: 1,
-                        gridTemplateRows: 'auto',
-                        gridTemplateAreas: `". . . ."
-                        "search search search create"
-                        ". . . ."`,
-                        }}
+                    sx={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(4, 1fr)',
+                    gap: 1,
+                    gridTemplateRows: 'auto',
+                    gridTemplateAreas: `". . . ."
+                    "search search search create"
+                    ". . . ."`,
+                    }}
                 >
                     <Box gridArea={'search'}>
                         <Formik
@@ -278,14 +278,16 @@ const AllCompaniesPage = () => {
                             }}
                         />
                         <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(companiesGet.number_of_companies / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
-                        <Grid sx={{ mt: 2 }} >
-                            <ExportCSV csvreport={csvreport} exportText={t('export_companies')} ></ExportCSV>
+                        <Grid container sx={{ mt: 2 }} >
+                            <Grid item>
+                                <ExportCSV csvreport={csvreport} exportText={t('export_companies')} ></ExportCSV>
+                            </Grid>
                         </Grid>
                     </>
                 )}
-            </MainCard> 
-        </>
-    )
+        </MainCard> 
+    </>
+  )
 }
 
 export default AllCompaniesPage

@@ -19,7 +19,7 @@ const FileInputField = ({ label, size, ...props}) => {
 
     useEffect(() => {
         if (selectedFile) {
-            setFile((selectedFile))
+            console.log(selectedFile)
             setFieldValue(field.name, selectedFile)
         }
     }, [selectedFile])
@@ -30,13 +30,14 @@ const FileInputField = ({ label, size, ...props}) => {
                 label={label}
                 accept="file/*"
                 type="file"
-                id="select-file"
+                id={label}
+                name={field.name}
                 style={{ display: 'none' }}
                 align="left"
                 onChange={e => {if(e.target.files[0])setSelectedFile(e.target.files[0])}}
             />
             <Box mt={2} textAlign="left" width={'fit-content'}>
-                <label htmlFor="select-file">
+                <label htmlFor={label}>
                     <AnimateButton>
                         <Button 
                             disableElevation
@@ -46,7 +47,7 @@ const FileInputField = ({ label, size, ...props}) => {
                             variant="contained"
                             color="primary"
                             component="span">
-                            {props.name}
+                            {label}
                         </Button>
                     </AnimateButton>
                 </label>

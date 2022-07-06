@@ -26,6 +26,7 @@ import Logo from '../components/Logo'
 import { useParams } from 'react-router-dom'
 import { getMemberValidation } from '../store/actions/companyActions';
 import Meta from '../components/Meta';
+import { MEMBER_VALIDATION_FETCH_RESET } from '../store/constants/companyConstants';
 
 const ValidatePage = () => {
 
@@ -45,6 +46,9 @@ const ValidatePage = () => {
 
     useEffect(() => {
         dispatch(getMemberValidation(id))
+        return () => {
+            dispatch({ type: MEMBER_VALIDATION_FETCH_RESET })
+        }
     },[])
 
     return (
@@ -76,7 +80,7 @@ const ValidatePage = () => {
                     >
 
                         <Grid item>
-                            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+                            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: MEMBER_VALIDATION_FETCH_RESET })}>{t(error)}</Alert></Box> }
                             <Stack alignItems="center" justifyContent="center" spacing={1}>  
                                 {validateGet ?
                                     <>

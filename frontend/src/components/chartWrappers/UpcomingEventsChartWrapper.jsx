@@ -6,14 +6,19 @@ import { Grid, Typography, TextField, MenuItem, Button } from '@mui/material'
 import { gridSpacing } from '../../store/constants/themeConstants'
 import ColumnChartSkeleton from '../skeletons/ColumnChartSkeleton'
 import AnimatedPage from '../AnimatedPage'
-const QuotasChartWrapper = ({ loading, dropdownOptions, data, title }) => {
+const QuotasChartWrapper = ({ loading, dropdownOptions, data, title, attendance }) => {
 
     const extractData = (id) => {
-        console.log(data);
-        const idData = data.filter(obj => obj.id === id)[0]
-        console.log(id);
+        const eventById = data.filter(obj => obj.id === id)
+        let goingCount = 0, notgoingCount = 0, interestedCount = 0, unansweredCount = 0
+        eventById.forEach(element => {
+            if (element.state === 'going') goingCount += element.count
+            else if (element.state === 'not going') notgoingCount += element.count
+            else if (element.state === 'interested') interestedCount += element.count
+            else unansweredCount += element.count
 
-        return [idData.attendance.going, idData.attendance.not_going, idData.attendance.interested, idData.attendance.unanswered]
+        });
+        return [goingCount, notgoingCount, interestedCount, unansweredCount]
     }
     const {t, i18n} = useTranslation()
 
@@ -62,7 +67,7 @@ const QuotasChartWrapper = ({ loading, dropdownOptions, data, title }) => {
                                 </Grid>
                             </Grid>
                             <Grid item xs={12}>
-                                <UpcomingEventsChart data={chartValues} />
+                                <UpcomingEventsChart data={!attendance ? chartValues : [attendance.going, attendance.not_going, attendance.interested, attendance.none]} />
                             </Grid>
                         </Grid>
                         </AnimatedPage>

@@ -24,7 +24,7 @@ import { USERS_FETCH_RESET } from '../../store/constants/userConstants';
 import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
 import { EXPORT_USER_FETCH_RESET } from '../../store/constants/exportConstants';
 
-const AllMembersPage = () => {
+const AllUsersPage = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
     const dispatch = useDispatch()
@@ -282,8 +282,10 @@ const AllMembersPage = () => {
                             }}
                         />
                         <Pagination sx={{ mt: 2 }} variant="outlined" shape='rounded' color="primary" count={Math.ceil(usersGet.number_of_users / searchState.limit)} page={page} onChange={changePageHandler} showFirstButton showLastButton/>
-                        <Grid sx={{ mt: 2 }} >
-                            <ExportCSV csvreport={csvreport} exportText={t('export_users')} ></ExportCSV>
+                        <Grid container sx={{ mt: 2 }} >
+                            <Grid item>
+                                <ExportCSV csvreport={csvreport} exportText={t('export_users')} ></ExportCSV>
+                            </Grid>
                         </Grid>
                     </>
                 )}
@@ -292,4 +294,4 @@ const AllMembersPage = () => {
     )
 }
 
-export default AllMembersPage
+export default AllUsersPage

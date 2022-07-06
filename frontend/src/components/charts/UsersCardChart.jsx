@@ -57,7 +57,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const UsersCardChart = ({ isLoading, total, total_males, total_females, total_other, distribution }) => {
+const UsersCardChart = ({ isLoading, obj }) => {
     const theme = useTheme();
     const {t, i18n} = useTranslation()
     const navigate = useNavigate()
@@ -74,22 +74,27 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
     }
 
     let usersCount = 0
-    if(!valueGender && !valueNationality) usersCount = total
-    else {
 
+    if(!valueGender && !valueNationality) {
+        obj.forEach(element => {
+            usersCount += parseInt(element.count)
+        });
+    } else {
         if(valueNationality) {
-            distribution.forEach(element => {
-                if(element.nationality === valueNationality) {
-                    if(valueGender === t('male')) usersCount = element.gender_distribution.male
-                    else if(valueGender === t('female')) usersCount = element.gender_distribution.female
-                    else if(valueGender === t('other')) usersCount = element.gender_distribution.other
-                    else usersCount = element.gender_distribution.male + element.gender_distribution.female + element.gender_distribution.other
+            obj.forEach(element => {
+                if(element.nationality_ === valueNationality) {
+                    if(valueGender === t('male') && element.gender_ === 'Male') usersCount += parseInt(element.count)
+                    else if(valueGender === t('female') && element.gender_ === 'Female') usersCount += parseInt(element.count)
+                    else if(valueGender === t('other') && element.gender_ === 'Other') usersCount += parseInt(element.count)
+                    else if(!valueGender) usersCount += parseInt(element.count)
                 } 
             });
         } else {
-            if(valueGender === t('male')) usersCount = total_males
-            if(valueGender === t('female')) usersCount = total_females
-            if(valueGender === t('other')) usersCount = total_other
+            obj.forEach(element => {
+                if(valueGender === t('male') && element.gender_ === 'Male') usersCount += parseInt(element.count)
+                if(valueGender === t('female') && element.gender_ === 'Female') usersCount += parseInt(element.count)
+                if(valueGender === t('other') && element.gender_ === 'Other') usersCount += parseInt(element.count)
+            });
         }
     }
     

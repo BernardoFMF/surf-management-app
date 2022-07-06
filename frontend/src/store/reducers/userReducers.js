@@ -36,7 +36,8 @@ import {
     USERS_SPORTS_CREATE_RESET,
     USER_SPORTS_FETCH_RESET,
     USER_SPORT_DELETE_RESET,
-    USER_SPORT_UPDATE_RESET
+    USER_SPORT_UPDATE_RESET,
+    USERS_SPORT_FETCH_RESET
   } from '../constants/userConstants'
 
   export const userRegisterReducer = (state = {}, action) => {
@@ -127,6 +128,8 @@ import {
         return { loading: false, userSportsGet: action.payload }
       case USER_SPORTS_FETCH_FAIL:
         return { loading: false, error: action.payload }
+      case USER_SPORTS_FETCH_RESET:
+        return {userSportsGet: { sports: [], number_of_sports: 0}}
       default:
         return state
     }
@@ -155,7 +158,7 @@ import {
           return { loading: false, usersSportGet: action.payload }
         case USERS_SPORT_FETCH_FAIL:
           return { loading: false, error: action.payload }
-        case USER_SPORTS_FETCH_RESET:
+        case USERS_SPORT_FETCH_RESET:
           return {usersSportGet: {users: [], number_of_users: 0, sport: {}}}
         default:
           return state

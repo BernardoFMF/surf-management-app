@@ -56,7 +56,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const UsersCardChart = ({ isLoading, total, total_males, total_females, total_other, distribution }) => {
+const UsersCardChart = ({ isLoading, obj }) => {
     const theme = useTheme();
     const {t, i18n} = useTranslation()
     const navigate = useNavigate()
@@ -75,21 +75,27 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
 
     
     let candidatesCount = 0
-    if(!valueGender && !valueNationality) candidatesCount = total
-    else {
+
+    if(!valueGender && !valueNationality) {
+        obj.forEach(element => {
+            candidatesCount += parseInt(element.count)
+        });
+    } else {
         if(valueNationality) {
-            distribution.forEach(element => {
-                if(element.nationality === valueNationality) {
-                    if(valueGender === t('male')) candidatesCount = element.gender_distribution.male
-                    else if(valueGender === t('female')) candidatesCount = element.gender_distribution.female
-                    else if(valueGender === t('other')) candidatesCount = element.gender_distribution.other
-                    else candidatesCount = element.gender_distribution.male + element.gender_distribution.female + element.gender_distribution.other
+            obj.forEach(element => {
+                if(element.nationality_ === valueNationality) {
+                    if(valueGender === t('male') && element.gender_ === 'Male') candidatesCount += parseInt(element.count)
+                    else if(valueGender === t('female') && element.gender_ === 'Female') candidatesCount += parseInt(element.count)
+                    else if(valueGender === t('other') && element.gender_ === 'Other') candidatesCount += parseInt(element.count)
+                    else if(!valueGender) candidatesCount += parseInt(element.count)
                 } 
             });
         } else {
-            if(valueGender === t('male') ) candidatesCount = total_males
-            if(valueGender === t('female')) candidatesCount = total_females
-            if(valueGender === t('other')) candidatesCount = total_other
+            obj.forEach(element => {
+                if(valueGender === t('male') && element.gender_ === 'Male') candidatesCount += parseInt(element.count)
+                if(valueGender === t('female') && element.gender_ === 'Female') candidatesCount += parseInt(element.count)
+                if(valueGender === t('other') && element.gender_ === 'Other') candidatesCount += parseInt(element.count)
+            });
         }
     }
 
@@ -113,7 +119,7 @@ const UsersCardChart = ({ isLoading, total, total_males, total_females, total_ot
                                                     backgroundColor: theme.palette.secondary[800],
                                                     mt: 1
                                                 }}
-                                                onClick={() => navigate(`/application/users`)}
+                                                onClick={() => navigate(`/application/candidates`)}
                                             >
                                                 <PersonAddIcon></PersonAddIcon>
                                             </Avatar>

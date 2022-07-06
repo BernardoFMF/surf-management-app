@@ -21,6 +21,7 @@ import quotaRoutes from './routes/quotaRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import memberRoutes from './routes/memberRoutes.js'
 import groupRoutes from './routes/groupRoutes.js'
+import statisticsRoutes from './routes/statisticsRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 import emailRoutes from './routes/emailRoutes.js'
 import error from './utils/error.js'
@@ -92,6 +93,7 @@ const router = (app, data) => {
 	app.use('/api/members', memberRoutes(data))
 	app.use('/api', uploadRoutes(data))
 	app.use('/api/groups', groupRoutes(data))
+	app.use('/api/statistics', statisticsRoutes(data))
 	app.use('/api/emails', emailRoutes())
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openapi))
 
