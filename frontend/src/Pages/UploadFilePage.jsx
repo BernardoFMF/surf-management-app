@@ -61,6 +61,8 @@ const UploadFilePage = () => {
     };
 
     const handleSubmit = (values,type) => {
+        console.log(values)
+        console.log(type)
         const formData = new FormData()
         formData.append("file", values.file)
         formData.append("type",type)
@@ -203,7 +205,7 @@ const UploadFilePage = () => {
             </Button>
             <Formik
             initialValues={{ file: null }}
-            onSubmit={(values) => handleSubmit(values,'usersCompanies')} 
+            onSubmit={(values) => {handleSubmit(values,'usersCompanies')}} 
             validationSchema={Yup.object().shape({
               file: Yup.mixed(),
             })}
@@ -211,7 +213,7 @@ const UploadFilePage = () => {
             {formik => (
                 <Box mt={2} textAlign="left" width={'fit-content'}>
                 <Form>
-                <FileInputField name = 'Users/Companies File' label = 'file'/>
+                <FileInputField name = 'file' label = 'Users/Companies File'/>
                 <br></br>
                 <AnimateButton>
                 <LoadingButton
@@ -258,7 +260,7 @@ const UploadFilePage = () => {
             {formik => (
                 <Form>
                     <Box mt={2} textAlign="left" width={'fit-content'}>
-                        <FileInputField position= "fixed" name = 'Quotas File' label = 'file'/>
+                        <FileInputField name = 'file' label = 'Quotas File'/>
                         <br></br>
                         <AnimateButton>
                         <Button
@@ -305,7 +307,7 @@ const UploadFilePage = () => {
             {formik => (
                 <Box mt={2} textAlign="left" width={'fit-content'}>
                 <Form>
-                <FileInputField name = 'Sports File' label = 'file'/>
+                <FileInputField name = 'file' label = 'Sports File'/>
                 <br></br>
                 <AnimateButton>
                 <LoadingButton
@@ -350,9 +352,9 @@ const UploadFilePage = () => {
             })}
             >
             {formik => (
-                <Box mt={2} textAlign="left" width={'fit-content'}>
+                <Box mt={2} textAlign="left4" width={'fit-content'}>
                 <Form>
-                <FileInputField name = 'Member Types File' label = 'file'/>
+                <FileInputField name = 'file' label = 'Sport Types File'/>
                 <br></br>
                 <AnimateButton>
                 <LoadingButton
@@ -399,7 +401,7 @@ const UploadFilePage = () => {
             {formik => (
                 <Box mt={2} textAlign="left" width={'fit-content'}>
                 <Form>
-                <FileInputField name = 'Member Sports File' label = 'file'/>
+                <FileInputField name = 'file' label = 'Member Sports File'/>
                 <br></br>
                 <AnimateButton>
                 <LoadingButton
