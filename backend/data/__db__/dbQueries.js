@@ -209,7 +209,10 @@ const QUERY_QUOTAS_DISTRIBUTION_STATISTICS = "select sum(q.amount_), extract( mo
 
 const QUERY_CHANGE_PASSWORD = "update Member_ set pword_ = $2 where id_ = $1;"
 
+const QUERY_CHANGE_CREDENTIALS = "update Member_ set pword_ = $3, username_ = $2 where id_ = $1;"
+
 export default {
+    QUERY_CHANGE_CREDENTIALS,
     QUERY_CHANGE_PASSWORD,
     QUERY_QUOTAS_DISTRIBUTION_STATISTICS,
     QUERY_QUOTAS_TOTALAMOUNT_STATISTICS,

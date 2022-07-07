@@ -20,9 +20,20 @@ const authServices = (db) => {
 
 		return await data.resetPassword(userId, token, password)
 	}
+
+	const updateCredentialsServices = async (userId, token, username, password) => {
+		if (!userId) throw error(400, 'Parameter not found: userId', 'MESSAGE_CODE_14')
+		if (!token) throw error(400, 'Parameter not found: token', 'MESSAGE_CODE_14')
+		if (!username) throw error(400, 'Parameter not found: username', 'MESSAGE_CODE_14')
+		if (!password) throw error(400, 'Parameter not found: password', 'MESSAGE_CODE_14')
+
+		return await data.changeCredentials(userId, token, username, password)
+	}
+
 	return {
 		requestPasswordResetServices,
-		resetPasswordServices
+		resetPasswordServices,
+		updateCredentialsServices
 	}
 }
 

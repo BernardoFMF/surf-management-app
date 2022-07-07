@@ -1788,6 +1788,21 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
+	const changeCredentials = async (id, username, hash) => {
+		const client = await pool.connect()
+
+		try {
+			await client.query('begin')
+			await client.query(queries.QUERY_CHANGE_CREDENTIALS, [id, username, hash])
+			await client.query('commit')	
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
 	return {
 		changePassword,
 		getUserSportByIdAndUserData,

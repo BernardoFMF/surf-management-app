@@ -36,5 +36,10 @@ const contactUsTemplate = (from, name, topic, content) => {
 	return {text, html}
 }
 
+const credentialsChangedTemplate = () => {
+	const text = 'As suas credenciais foram alteradas com sucesso.'
+	const html = '<h1>As suas credenciais foram alteradas com sucesso.</h1>'
+	return {text, html}
+}
 
-export{eventTemplate, quotaAlertTemplate, passwordChangeTemplate, passwordChangedTemplate, contactUsTemplate}
+export{eventTemplate, quotaAlertTemplate, passwordChangeTemplate, passwordChangedTemplate, contactUsTemplate, credentialsChangedTemplate}

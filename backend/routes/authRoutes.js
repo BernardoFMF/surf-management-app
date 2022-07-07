@@ -17,6 +17,8 @@ const authRoutes = (data) => {
 
 	app.post('/resetPassword', controller.resetPassword)
 
+	app.post('/updateCredentials', controller.updateCredentials)
+
 	return app
 }
 
