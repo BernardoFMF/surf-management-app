@@ -13,7 +13,11 @@ const authRoutes = (data) => {
 
 	app.post('/logout', controller.postLogout)
 
-	app.post('/resetPassword', controller.resetPasswordRequest)
+	app.post('/requestResetPassword', controller.resetPasswordRequest)
+
+	app.post('/resetPassword', controller.resetPassword)
+
+	app.post('/updateCredentials', controller.updateCredentials)
 
 	return app
 }

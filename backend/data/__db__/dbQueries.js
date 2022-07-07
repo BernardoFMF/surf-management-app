@@ -210,9 +210,13 @@ const QUERY_QUOTAS_DISTRIBUTION_STATISTICS = "select sum(q.amount_), extract( mo
 const QUERY_GET_USER_EMAIL_BY_GROUP = "select distinct c.email_ from group_member_ gm join contact_ c on (gm.member_id_ = c.member_id_)"
 
 const QUERY_GET_QUOTAS_BY_DATE = "select * from quota_ q join contact_ c on (q.member_id_ = c.member_id_) join user_ u on (q.member_id_ = u.member_id_) where date_ = $1"
+const QUERY_CHANGE_PASSWORD = "update Member_ set pword_ = $2 where id_ = $1;"
 
+const QUERY_CHANGE_CREDENTIALS = "update Member_ set pword_ = $3, username_ = $2 where id_ = $1;"
 
 export default {
+    QUERY_CHANGE_PASSWORD,
+    QUERY_CHANGE_CREDENTIALS,
     QUERY_GET_QUOTAS_BY_DATE,
     QUERY_GET_USER_EMAIL_BY_GROUP,
     QUERY_QUOTAS_DISTRIBUTION_STATISTICS,

@@ -1,64 +1,39 @@
 'use strict'
 
-import cryptoUtil from '../utils/crypto.js'
-import crypto from 'crypto'
-import { mailSender } from '../utils/email/mailSender.js'
-import { passwordChangeTemplate, passwordChangedTemplate } from  '../utils/email/mailTemplates.js'
+import authData from '../data/authData.js'
 import error from '../utils/error.js'
 
 const authServices = (db) => { 
+	const data = authData(db)
 
-	const requestPasswordReset = async (id) => {
-		const user = await db.getMemberByIdData(id)
-		if (!user) throw new error(404, 'User does not exist', 'MESSAGE_CODE_12')
-	
-		let token = await db.getMemberTokenByIdData(id) //ir buscar o token do user
-		if (token) await db.deleteMemberTokenData(id) //se ja existir eliminá-lo
-	
-		let resetToken = crypto.randomBytes(32).toString('hex') //gerar um novo
-		const hash = await cryptoUtil.hashpassword(resetToken) //encripta-lo para guardar
-		
-		await db.postNewTokenData(id,hash) //guardar o novo token ja encriptado
-	
-		const link = `/passwordReset?token=${resetToken}&id=${user.id_}`
+	const requestPasswordResetServices = async (url, email) => {
+		if (!url) throw error(400, 'Parameter not found: url', 'MESSAGE_CODE_14')
+		if (!email) throw error(400, 'Parameter not found: email', 'MESSAGE_CODE_14')
 
-		let userEmail = await db.getUserEmailByIdData(id)
-	
-		await mailSender(userEmail,'Mudança de password',passwordChangeTemplate(link))
-
-		return link
+		return await data.requestPasswordReset(url, email)
 	}
 	
-	const resetPassword = async (userId, token, password) => {
-		let passwordResetToken = await db.getMemberTokenByIdData(userId) //verificar se o User tem um token
+	const resetPasswordServices = async (userId, token, password) => {
+		if (!userId) throw error(400, 'Parameter not found: userId', 'MESSAGE_CODE_14')
+		if (!token) throw error(400, 'Parameter not found: token', 'MESSAGE_CODE_14')
+		if (!password) throw error(400, 'Parameter not found: password', 'MESSAGE_CODE_14')
 
-		if (!passwordResetToken) {
-			throw new error(409, 'Invalid or expired password reset token', 'MESSAGE_CODE_13')
-		}
-
-		let isValid = await cryptoUtil.comparepassword(token, passwordResetToken.token) //comparar o token
-	
-		if (!isValid) {
-			throw new error(409, 'Invalid or expired password reset token', 'MESSAGE_CODE_13')
-		}
-	
-		const hash = await cryptoUtil.hashpassword(password)
-		await db.deleteMemberTokenData(userId)
-		await db.postNewTokenData(userId, hash) 
-	
-		//const user = await userServices.findById(userId)
-
-		//let userEmail = await db.getUserEmailByIdData(userId)
-	
-		//await mailSender(userEmail,'Password changed successfully',passwordChangedTemplate())
-	
-		//await passwordResetToken.deleteOne()
-	
-		return true
+		return await data.resetPassword(userId, token, password)
 	}
+
+	const updateCredentialsServices = async (userId, token, username, password) => {
+		if (!userId) throw error(400, 'Parameter not found: userId', 'MESSAGE_CODE_14')
+		if (!token) throw error(400, 'Parameter not found: token', 'MESSAGE_CODE_14')
+		if (!username) throw error(400, 'Parameter not found: username', 'MESSAGE_CODE_14')
+		if (!password) throw error(400, 'Parameter not found: password', 'MESSAGE_CODE_14')
+
+		return await data.changeCredentials(userId, token, username, password)
+	}
+
 	return {
-		requestPasswordReset,
-		resetPassword
+		requestPasswordResetServices,
+		resetPasswordServices,
+		updateCredentialsServices
 	}
 }
 
