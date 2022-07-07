@@ -2,7 +2,22 @@
 
 const eventTemplate = (name_, initial_date_, final_date_) => {
 	const text = `Novo Evento: ${name_} Data do evento: ${initial_date_}`
-	const html = `<h1> Novo Evento ${name_} Data do evento: ${initial_date_}</h1>`
+	const html = `<h1> Novo Evento </h1>
+					<h2> ${name_} </h2> 
+					<h4> Data de início do evento: ${initial_date_} </h4>
+					<h4> Data de fim do evento: ${final_date_} </h4>`
+	return {text, html}
+}
+
+const notifyTemplate = (date, value) => {
+	const text = `A quota de ${date} no valor de ${value} euros encontra-se com o pagamento pendente.`
+	const html = `
+					<h4> A quota de ${date} no valor de ${value} euros encontra-se com o pagamento pendente. </h4> 
+					<h4> Qualquer dúvida não hesite em nos contactar. </h4>
+					<p/>
+					<h4> Cumprimentos da equipa, </h4>
+					<h4> Ericeira Surf Club </h4>
+				`
 	return {text, html}
 }
 
@@ -31,10 +46,8 @@ const contactUsTemplate = (from, name, topic, content) => {
 		<p>Assunto: ${topic}</p>
 		<hr style='border-top: 3px solid #bbb;'>
 		<p>${content}</p>`
-	console.log(text);
-	console.log(html);
 	return {text, html}
 }
 
 
-export{eventTemplate, quotaAlertTemplate, passwordChangeTemplate, passwordChangedTemplate, contactUsTemplate}
+export{eventTemplate, quotaAlertTemplate, passwordChangeTemplate, passwordChangedTemplate, contactUsTemplate, notifyTemplate}

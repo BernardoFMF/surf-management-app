@@ -2372,9 +2372,60 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-                
+  /api/statistics:
+    get:
+      summary: fetches statistics 
+      operationId: getStatistics
+      responses:
+        '200':
+          description: response body should be a statistics object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statistics_object'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'              
 components:
   schemas:
+    statistics_object:
+      type: object
+      properties:
+        quotas:
+          type: object
+        members:
+          type: object
+        users:
+          type: object
+        companies:
+          type: object
+        candidates:
+          type: object
+        sports:
+          type: object
+        upcoming_events:
+          type: object
     validated_user:
       type: object
       required:

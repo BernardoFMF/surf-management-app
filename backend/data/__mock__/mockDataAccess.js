@@ -42,7 +42,7 @@ let contacts = [{
 	location_: 'Ericeira',
 	address_: 'Rua do surf, n543',
 	postal_code_:'1890-987',
-	email_:'miguelgbosousa@gmail.com',
+	email_:'miguelosousa@gmail.com',
 	phone_number_:912345432
 }]
 let user_imgs = []

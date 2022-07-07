@@ -207,8 +207,14 @@ const QUERY_QUOTAS_AMOUNT_STATISTICS = "select sum(q.amount_), extract( year fro
 const QUERY_QUOTAS_TOTALAMOUNT_STATISTICS = "select sum(q.amount_), extract( year from q.date_) from quota_ q group by extract( year from q.date_) order by extract( year from q.date_) DESC"
 const QUERY_QUOTAS_DISTRIBUTION_STATISTICS = "select sum(q.amount_), extract( month from q.payment_date_) as month_, extract( year from q.date_) as year_ from quota_ q where q.payment_date_ is not null group by extract( month from q.payment_date_), extract( year from q.date_) order by extract( year from q.date_) DESC"
 
+const QUERY_GET_USER_EMAIL_BY_GROUP = "select distinct c.email_ from group_member_ gm join contact_ c on (gm.member_id_ = c.member_id_)"
+
+const QUERY_GET_QUOTAS_BY_DATE = "select * from quota_ q join contact_ c on (q.member_id_ = c.member_id_) join user_ u on (q.member_id_ = u.member_id_) where date_ = $1"
+
 
 export default {
+    QUERY_GET_QUOTAS_BY_DATE,
+    QUERY_GET_USER_EMAIL_BY_GROUP,
     QUERY_QUOTAS_DISTRIBUTION_STATISTICS,
     QUERY_QUOTAS_TOTALAMOUNT_STATISTICS,
     QUERY_QUOTAS_AMOUNT_STATISTICS,

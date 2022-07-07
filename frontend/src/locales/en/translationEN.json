@@ -118,6 +118,7 @@
     "MESSAGE_CODE_41": "Group with that name already exists",
     "MESSAGE_CODE_42": "Error sending the email",
     "MESSAGE_CODE_43": "Email sent with success",
+    "MESSAGE_CODE_44" : "Quota with that date already exists",
 
     "hello_profile": "Hello,",
     "name": "Name",
@@ -375,6 +376,9 @@
     "something went wrong": "Something went wrong!",
 
     "You are not longer part of the club" : "You are not longer part of the club",
-    "Feel free to contact us via email": "Feel free to contact us via email"
+    "Feel free to contact us via email": "Feel free to contact us via email",
 
+    "Notifiy" : "Notifiy",
+    "Message for notify": "By saying yes, all users that haven't paid their quotas will be notified.",
+    "Are you sure?" : "Are you sure?"
 }

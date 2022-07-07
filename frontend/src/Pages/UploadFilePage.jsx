@@ -68,8 +68,6 @@ const UploadFilePage = () => {
     };
 
     const handleSubmit = (values,type) => {
-        console.log(values)
-        console.log(type)
         const formData = new FormData()
         formData.append("file", values.file)
         formData.append("type",type)

@@ -117,6 +117,7 @@
     "MESSAGE_CODE_41": "Grupo com esse nome já existe",
     "MESSAGE_CODE_42": "Erro ao enviar o email",
     "MESSAGE_CODE_43": "Email enviado com sucesso",
+    "MESSAGE_CODE_44" : "Quota com essa data já existe",
 
     "hello_profile": "Olá,",
     "name": "Nome",
@@ -377,5 +378,9 @@
 
     
     "You are not longer part of the club" : "Já não faz parte do clube",
-    "Feel free to contact us via email": "Qualquer questão contacte-nos por email"
+    "Feel free to contact us via email": "Qualquer questão contacte-nos por email",
+    
+    "Notifiy" : "Notificar",
+    "Message for notify": "Ao clicar sim, todos os utilizadores que ainda não pagaram as quotas serão notificados.",
+    "Are you sure?" : "Tem a certeza?"
 }
