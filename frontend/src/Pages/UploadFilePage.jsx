@@ -61,8 +61,6 @@ const UploadFilePage = () => {
     };
 
     const handleSubmit = (values,type) => {
-        console.log(values)
-        console.log(type)
         const formData = new FormData()
         formData.append("file", values.file)
         formData.append("type",type)
@@ -160,7 +158,7 @@ const UploadFilePage = () => {
             initialValues={{ file: null }}
             onSubmit={(values) => handleSubmit(values,'memberTypes')} 
             validationSchema={Yup.object().shape({
-              file: Yup.mixed(),
+                file: Yup.mixed().required("file needed"),
             })}
             >
             {formik => (
@@ -207,7 +205,7 @@ const UploadFilePage = () => {
             initialValues={{ file: null }}
             onSubmit={(values) => {handleSubmit(values,'usersCompanies')}} 
             validationSchema={Yup.object().shape({
-              file: Yup.mixed(),
+                file: Yup.mixed().required("file needed"),
             })}
             >
             {formik => (
@@ -254,7 +252,7 @@ const UploadFilePage = () => {
             initialValues={{ file: null }}
             onSubmit={(values) => handleSubmit(values,'quotas')} 
             validationSchema={Yup.object().shape({
-              file: Yup.mixed(),
+                file: Yup.mixed().required("file needed"),
             })}
             >
             {formik => (
@@ -301,7 +299,7 @@ const UploadFilePage = () => {
             initialValues={{ file: null }}
             onSubmit={(values) => handleSubmit(values,'sports')} 
             validationSchema={Yup.object().shape({
-              file: Yup.mixed(),
+                file: Yup.mixed().required("file needed"),
             })}
             >
             {formik => (
@@ -348,7 +346,7 @@ const UploadFilePage = () => {
             initialValues={{ file: null }}
             onSubmit={(values) => handleSubmit(values,'sportTypes')} 
             validationSchema={Yup.object().shape({
-              file: Yup.mixed(),
+                file: Yup.mixed().required("file needed"),
             })}
             >
             {formik => (
@@ -395,7 +393,7 @@ const UploadFilePage = () => {
             initialValues={{ file: null }}
             onSubmit={(values) => handleSubmit(values,'memberSports')} 
             validationSchema={Yup.object().shape({
-              file: Yup.mixed(),
+                file: Yup.mixed().required("file needed"),
             })}
             >
             {formik => (

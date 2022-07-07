@@ -689,10 +689,8 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getUserByIdData = async (id_) => {
 		const client = await pool.connect()
-		console.log(id_)
 		try {
 			const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
-			console.log(result.rows)
 			result.rows = result.rows.map(user => {
 				user.birth_date_ = formatDate(user.birth_date_)
 				user.enrollment_date_ = formatDate(user.enrollment_date_)
@@ -1519,7 +1517,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			if(count < values.length) {query += ','}
 			else {query += ';'}
 		}
-		console.log(query)
 		try {
 			
 			await client.query('begin')
@@ -1539,8 +1536,8 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		let ids = []
 		try {
-			await client.query('begin')
 			for(let value of values){
+				await client.query('begin')
 				let birthDate = value[6].split("/") 
 				let enrollmentDate = value[7].split("/")
 				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],`${birthDate[2]}-${birthDate[0]}-${birthDate[1]}`,value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,`${enrollmentDate[2]}-${enrollmentDate[0]}-${enrollmentDate[1]}`,0])
@@ -1558,14 +1555,14 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const uploadCompaniesData = async(values) => {
 		const client = await pool.connect()
-		console.log(values[0])
+		let res
 		try {
-			await client.query('begin')
 			for(let value of values){
-				//name_, nif_ , phone_number_, email_, postal_code_, address_ , location_, username_ , pword_, mtype_ , img_ , iban_ , out new_id_ 
-				await client.query(queries.QUERY_POST_COMPANY, [value[4],value[2],value[14],value[13],value[12],value[11],value[10],null,null,value[0],null,value[1],0])
+				await client.query('begin')
+				let res = await client.query(queries.QUERY_POST_COMPANY, [value[4],value[2],value[14],value[13],value[12],value[11],value[10],null,null,value[0],null,value[1],0])
 				await client.query('commit')
 			}	
+			return res
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1584,14 +1581,76 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			if(count < values.length) {query += ','}
 			else {query += ';'}
 		}
-		console.log(query)
 		try {
-			
-			//await client.query('begin')
-			//const types = await client.query(query)
-			//await client.query('commit')
+			await client.query('begin')
+			const quotas = await client.query(query)
+			await client.query('commit')
+			return quotas	
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const uploadSportsData = async(values) => {
+		const client = await pool.connect()
+		let query = queries.QUERY_INSERT_SPORTS
+		let count = 0
+		for(let value of values){
+			count++
+			query += `(${value})`
+			if(count < values.length) {query += ','}
+			else {query += ';'}
+		}
+		try {
+			await client.query('begin')
+			const sports = await client.query(query)
+			await client.query('commit')
+			return sports
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const uploadSportTypesData = async(values) => {
+		const client = await pool.connect()
+		let query = queries.QUERY_INSERT_SPORT_TYPES
+		let count = 0
+		for(let value of values){
+			count++
+			query += `(${value})`
+			if(count < values.length) {query += ','}
+			else {query += ';'}
+		}
+		try {
+			await client.query('begin')
+			const types = await client.query(query)
+			await client.query('commit')
 			return types
-			
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const uploadUsersSportsData = async(values) => {
+		const client = await pool.connect()
+		let res
+		try {
+			for(let value of values){
+				console.log(value)
+				await client.query('begin')
+				res = await client.query(queries.QUERY_POST_USER_SPORT, [value[0],value[1],value[4],value[3],value[5],value[2],value[6],false])
+				await client.query('commit')
+			}
+			return res	
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1683,6 +1742,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		uploadMemberTypesData,
 		uploadUsersData,
 		uploadCompaniesData,
+		uploadQuotasData,
+		uploadSportsData,
+		uploadSportTypesData,
+		uploadUsersSportsData,
 		pool 
 	}
 
