@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert } from '@mui/material'
+import { Typography, Dialog, DialogActions, DialogContent, Button } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-
-import * as Yup from 'yup'
-import { TYPES_CREATE_RESET } from '../../store/constants/typeConstants'
 
 import { sendEmailNotify } from '../../store/actions/emailActions'
 
