@@ -377,5 +377,10 @@
 
     
     "You are not longer part of the club" : "Já não faz parte do clube",
-    "Feel free to contact us via email": "Qualquer questão contacte-nos por email"
+    "Feel free to contact us via email": "Qualquer questão contacte-nos por email",
+
+    "reset_password_page_title": "Mude a sua palavra passe",
+    "change_password": "Mudar a palavra passe",
+    "password_requested_successfully": "O seu pedido foi realizado com sucesso, verifique o seu email",
+    "password_changed_successfully": "A palavra passe foi alterada com sucesso"
 }

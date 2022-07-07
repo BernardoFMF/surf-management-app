@@ -14,6 +14,9 @@ const authServices = (db) => {
 	}
 	
 	const resetPasswordServices = async (userId, token, password) => {
+		console.log(userId);
+		console.log(token);
+		console.log(password);
 		if (!userId) throw error(400, 'Parameter not found: userId', 'MESSAGE_CODE_14')
 		if (!token) throw error(400, 'Parameter not found: token', 'MESSAGE_CODE_14')
 		if (!password) throw error(400, 'Parameter not found: password', 'MESSAGE_CODE_14')

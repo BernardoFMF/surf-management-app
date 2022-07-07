@@ -5,7 +5,13 @@ import {
     MEMBER_LOGOUT,
     MEMBER_FETCH_REQUEST,
     MEMBER_FETCH_SUCCESS,
-    MEMBER_FETCH_FAIL
+    MEMBER_FETCH_FAIL,
+    CHANGE_PASSWORD_FAIL,
+    CHANGE_PASSWORD_REQUEST,
+    CHANGE_PASSWORD_SUCCESS,
+    CHANGE_PASSWORD_REQUEST_REQUEST,
+    CHANGE_PASSWORD_REQUEST_SUCCESS,
+    CHANGE_PASSWORD_REQUEST_FAIL
   } from '../constants/memberConstants'
 
   
@@ -87,6 +93,66 @@ export const login = (username, password) => async (dispatch) => {
     } catch (error) {
       dispatch({
         type: MEMBER_FETCH_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+  export const changePassword = (token, id, password) => async (dispatch) => {
+    try {
+      dispatch({
+        type: CHANGE_PASSWORD_REQUEST,
+      })
+      const response = await fetch('/api/auth/resetPassword', {
+          method: 'POST',
+          body: JSON.stringify({ token, id, password }),
+          headers: { "Content-Type": "application/json" }
+      })
+      const passwordChange = await response.json()
+
+      if(response.status !== 201) throw Error(passwordChange.message_code)
+
+      dispatch({
+        type: CHANGE_PASSWORD_SUCCESS,
+        payload: passwordChange,
+      })
+      
+    } catch (error) {
+      dispatch({
+        type: CHANGE_PASSWORD_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+  export const requestChangePassword = (email) => async (dispatch) => {
+    try {
+      dispatch({
+        type: CHANGE_PASSWORD_REQUEST_REQUEST,
+      })
+      const response = await fetch('/api/auth/requestResetPassword', {
+          method: 'POST',
+          body: JSON.stringify({ email }),
+          headers: { "Content-Type": "application/json" }
+      })
+      const passwordChangeRequest = await response.json()
+
+      if(response.status !== 201) throw Error(passwordChangeRequest.message_code)
+
+      dispatch({
+        type: CHANGE_PASSWORD_REQUEST_SUCCESS,
+        payload: passwordChangeRequest,
+      })
+      
+    } catch (error) {
+      dispatch({
+        type: CHANGE_PASSWORD_REQUEST_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

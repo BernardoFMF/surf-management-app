@@ -20,9 +20,11 @@ const authData = (db) => {
 		
 		await db.postNewTokenData(user.id_, hash)
 	
-		const link = url + `/passwordReset?token=${resetToken}&id=${user.id_}`
+		const link = url + `/password-reset?token=${resetToken}&id=${user.id_}`
 	
-		await mailSender("bernas91@hotmail.com", 'Mudança de password', passwordChangeTemplate(link))
+		console.log(link);
+		
+		await mailSender(email, 'Mudança de password', passwordChangeTemplate(link))
 
 		return link
 	}
