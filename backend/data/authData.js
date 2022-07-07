@@ -22,7 +22,7 @@ const authData = (db) => {
 	
 		const link = url + `/passwordReset?token=${resetToken}&id=${user.id_}`
 	
-		await mailSender(email, 'Mudança de password', passwordChangeTemplate(link))
+		await mailSender("bernas91@hotmail.com", 'Mudança de password', passwordChangeTemplate(link))
 
 		return link
 	}
@@ -97,7 +97,8 @@ const authData = (db) => {
 
 	return {
 		requestPasswordReset,
-        resetPassword
+        resetPassword,
+		changeCredentials
 	} 
 }
 
