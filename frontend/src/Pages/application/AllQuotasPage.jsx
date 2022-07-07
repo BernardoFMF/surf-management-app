@@ -191,13 +191,14 @@ const AllQuotasPage = () => {
                 )}
             </Formik>
             </Box>
-                <Box gridArea={'create'} alignItems={'center'} display={{md: 'flex', lg: 'flex'}} justifyContent='flex-end' sx={{ mt: { xs: 14, md : 0, lg : 0 }}}>
+                <Box gridArea={'create'} alignItems={'center'} display={{md: 'flex', lg: 'flex'}}  justifyContent='flex-end' sx={{ mt: { xs: 14, md : 0, lg : 0 }}}>
                     <AnimateButton>
                         <LoadingButton
                             disableElevation
                             size="large"
                             variant="outlined"
                             color="secondary"
+                            fullWidth
                             onClick={() => {
                                 handleOpenSubmit()
                             }}
@@ -207,11 +208,12 @@ const AllQuotasPage = () => {
                     </AnimateButton>
                     <AnimateButton>
                         <LoadingButton
-                            sx={{ ml: 1}}
+                            sx={{ ml: {md: 1}}}
                             disableElevation
                             size="large"
                             variant="outlined"
                             color="secondary"
+                            fullWidth
                             onClick={() => {
                                 handleOpenVerification()
                             }}

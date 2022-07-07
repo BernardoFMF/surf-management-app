@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Typography, Dialog, DialogActions, DialogContent, Button } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
@@ -8,9 +8,6 @@ import { sendEmailNotify } from '../../store/actions/emailActions'
 const QuotaManagementCreateDialog = ({open, closeHandler}) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
-
-    const email = useSelector((state) => state.sendEmailNotify)
-    const { loading, error, result: message } = email
 
     const handleNotifiy = async () => {
         dispatch(sendEmailNotify())

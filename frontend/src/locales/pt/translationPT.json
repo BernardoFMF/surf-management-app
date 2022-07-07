@@ -382,5 +382,8 @@
     
     "Notifiy" : "Notificar",
     "Message for notify": "Ao clicar sim, todos os utilizadores que ainda não pagaram as quotas serão notificados.",
-    "Are you sure?" : "Tem a certeza?"
+    "Are you sure?" : "Tem a certeza?",
+
+    "Yes" : "Sim",
+    "No": "Não"
 }

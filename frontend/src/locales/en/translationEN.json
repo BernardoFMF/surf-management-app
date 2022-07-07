@@ -380,5 +380,8 @@
 
     "Notifiy" : "Notifiy",
     "Message for notify": "By saying yes, all users that haven't paid their quotas will be notified.",
-    "Are you sure?" : "Are you sure?"
+    "Are you sure?" : "Are you sure?",
+
+    "Yes" : "Yes",
+    "No": "No"
 }
