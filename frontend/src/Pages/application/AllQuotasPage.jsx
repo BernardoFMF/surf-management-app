@@ -17,6 +17,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Pagination } from '@mui/material'
 import QuotaCreateDialog from '../../components/dialogs/QuotaCreateDialog';
 import QuotaUpdateDialog from '../../components/dialogs/QuotaUpdateDialog';
+import QuotaNotifyVerificationDialog from '../../components/dialogs/QuotaNotifyVerificationDialog'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import { QUOTAS_FETCH_RESET, QUOTA_CREATE_RESET, QUOTA_UPDATE_RESET } from '../../store/constants/quotaConstants';
 
@@ -43,8 +44,12 @@ const AllQuotasPage = () => {
     }
 
     const [openSubmit, setOpenSubmit] = React.useState(false);
-    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit))};
+    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit)); dispatch({ type: QUOTA_CREATE_RESET })};
     const handleOpenSubmit = () => setOpenSubmit(true);
+
+    const [openVerification, setOpenVerification] = React.useState(false);
+    const handleCloseVerification = () => {setOpenVerification(false); setPage(1); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit))};
+    const handleOpenVerification = () => setOpenVerification(true);
 
     useEffect(() => {
         dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit))
@@ -128,6 +133,10 @@ const AllQuotasPage = () => {
             open={openSubmit}
             closeHandler={handleCloseSubmit}
         />
+        <QuotaNotifyVerificationDialog
+            open={openVerification}
+            closeHandler={handleCloseVerification}
+        />
         <MainCard title={t('Quotas')}sx={{height: '100%'}}>
             { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: QUOTAS_FETCH_RESET })}>{t(error)}</Alert></Box> }
             <Box
@@ -182,18 +191,34 @@ const AllQuotasPage = () => {
                 )}
             </Formik>
             </Box>
-                <Box gridArea={'create'} alignItems={'center'} display={{md: 'flex', lg: 'flex'}} justifyContent='flex-end' sx={{ mt: { xs: 14, md : 0, lg : 0 }}}>
+                <Box gridArea={'create'} alignItems={'center'} display={{md: 'flex', lg: 'flex'}}  justifyContent='flex-end' sx={{ mt: { xs: 14, md : 0, lg : 0 }}}>
                     <AnimateButton>
                         <LoadingButton
                             disableElevation
                             size="large"
                             variant="outlined"
                             color="secondary"
+                            fullWidth
                             onClick={() => {
                                 handleOpenSubmit()
                             }}
                         >
                             {t('create')}
+                        </LoadingButton>
+                    </AnimateButton>
+                    <AnimateButton>
+                        <LoadingButton
+                            sx={{ ml: {md: 1}}}
+                            disableElevation
+                            size="large"
+                            variant="outlined"
+                            color="secondary"
+                            fullWidth
+                            onClick={() => {
+                                handleOpenVerification()
+                            }}
+                        >
+                            {t('Notify')}
                         </LoadingButton>
                     </AnimateButton>
                 </Box> 

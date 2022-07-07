@@ -40,10 +40,8 @@ const uploadData = (db) => {
 			}
 		}
 		let ids = await db.uploadUsersData(users)
-		console.log(ids)
 		for(let userId of ids){
 			const qrcode_ = await toDataURL(`${url}/validate/${userId}`)
-			console.log(qrcode_)
 			await db.updateUserQrCodeData(userId, qrcode_)
 		}
 		return await db.uploadCompaniesData(companies)

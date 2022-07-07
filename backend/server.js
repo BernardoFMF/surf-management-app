@@ -94,7 +94,7 @@ const router = (app, data) => {
 	app.use('/api', uploadRoutes(data))
 	app.use('/api/groups', groupRoutes(data))
 	app.use('/api/statistics', statisticsRoutes(data))
-	app.use('/api/emails', emailRoutes())
+	app.use('/api/emails', emailRoutes(data))
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openapi))
 
 	if (process.env.NODE_ENV == 'production') {

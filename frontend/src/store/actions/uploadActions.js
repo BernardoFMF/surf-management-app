@@ -5,7 +5,6 @@ import {
   } from '../constants/uploadConstants'
 
   export const uploadFile = (file) => async (dispatch) => {
-    console.log(file)
     try {
       dispatch({
         type: UPLOAD_REQUEST,
@@ -15,7 +14,6 @@ import {
           body: file
       })
       const response = await request.json()
-      console.log(response)
       if(request.status !== 200) throw Error(response.message_code)
       dispatch({
         type: UPLOAD_SUCCESS,

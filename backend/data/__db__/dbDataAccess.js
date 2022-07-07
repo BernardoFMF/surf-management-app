@@ -513,7 +513,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await events.query('Begin')
 			const eventResult = await events.query(queries.QUERY_POST_EVENT, [name_,initial_date_,end_date_,groups_,0])
 			await events.query('Commit')
-			console.log(eventResult.rows[0]);
 			return eventResult.rows[0].new_id_
 		} catch(e) {
 			await events.query('Rollback')
@@ -689,10 +688,8 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getUserByIdData = async (id_) => {
 		const client = await pool.connect()
-		console.log(id_)
 		try {
 			const result = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
-			console.log(result.rows)
 			result.rows = result.rows.map(user => {
 				user.birth_date_ = formatDate(user.birth_date_)
 				user.enrollment_date_ = formatDate(user.enrollment_date_)
@@ -917,6 +914,26 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			client.release()
 		}
 	}
+	
+	const getQuotasByDateData = async (date) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await client.query(queries.QUERY_GET_QUOTAS_BY_DATE, [date])
+			await client.query('commit')
+			result.rows = result.rows.map(quota => {
+				quota.date_ = formatDate(quota.date_)
+				if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
+				return quota
+			})
+			return result.rows
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
 
 	const getCompaniesQuotasData = async () => {
 		const client = await pool.connect()
@@ -1132,6 +1149,28 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			const email = await client.query(queries.QUERY_GET_USER_EMAIL,[id_])
 			await client.query('commit')
 			return email.rows[0]
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const getEmailByGroupIdData = async (ids_) => {
+		const client = await pool.connect()
+		let query = queries.QUERY_GET_USER_EMAIL_BY_GROUP
+		let count = 0
+		ids_.forEach(group_id => {
+			if (count === 0) query += ` where gm.group_id_ = ${group_id}`
+			else query += ` or gm.group_id_ = ${group_id}`
+			++count
+		})
+		try {
+			await client.query('begin')
+			const emails = await client.query(query)
+			await client.query('commit')
+			return emails.rows
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1802,9 +1841,11 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			client.release()
 		}
 	}
-
-	return {
+	
+	return { 
 		changePassword,
+		changeCredentials,
+		getQuotasByDateData,
 		getUserSportByIdAndUserData,
 		getGroupsData, 
 		getGroupByIdData, 
@@ -1878,7 +1919,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getCandidateByEmailData, 
 		getMemberValidationData,
 		GetUserSportTypesData, 
-		getEmails,
+		getEmailByGroupIdData,
 		getUserEmailByIdData,
 		postNewTokenData,
 		getMemberTokenByIdData,

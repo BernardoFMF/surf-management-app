@@ -118,6 +118,7 @@
     "MESSAGE_CODE_41": "Group with that name already exists",
     "MESSAGE_CODE_42": "Error sending the email",
     "MESSAGE_CODE_43": "Email sent with success",
+    "MESSAGE_CODE_44" : "Quota with that date already exists",
 
     "hello_profile": "Hello,",
     "name": "Name",
@@ -380,5 +381,12 @@
     "reset_password_page_title": "Change your password",
     "change_password": "Change your password",
     "password_requested_successfully": "Your request was sucessfull, check your email",
-    "password_changed_successfully": "Your password was changed successfully"
+    "password_changed_successfully": "Your password was changed successfully",
+
+    "Notify" : "Notify",
+    "Message for notify": "By saying yes, all users that haven't paid their quotas will be notified.",
+    "Are you sure?" : "Are you sure?",
+
+    "Yes" : "Yes",
+    "No": "No"
 }
