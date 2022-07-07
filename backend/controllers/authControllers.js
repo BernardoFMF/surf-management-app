@@ -1,10 +1,10 @@
 'use strict'
 
 import asyncHandler from 'express-async-handler'
-import AuthServices from '../services/authServices.js'
-
+import authServices from '../services/authServices.js'
 
 const authController = (data) => {
+	const services = authServices(data)
 
 	const postLogin = asyncHandler(async (req, res) => {
 		res.json({...req.user, expires: req.session.cookie.expires})
@@ -16,15 +16,24 @@ const authController = (data) => {
 	})
 
 	const resetPasswordRequest = asyncHandler(async (req, res) => {
-		const requestPasswordResetService = await AuthServices(data).requestPasswordReset(req.body.id_)
-		res.sendStatus(200)
-		res.json(requestPasswordResetService)
+		const url = req.protocol + '://' + req.get('host')
+		const requestPasswordResetService = await services.requestPasswordResetServices(url, req.body.email)
+		console.log(requestPasswordResetService);
+		res.status(201)
+		res.json({ message: 'Password change request was successful', message_code: 'MESSAGE_CODE_44' })
+	})
+
+	const resetPassword = asyncHandler(async (req, res) => {
+		const passwordResetService = await services.resetPasswordServices(req.body.id, req.body.token, req.body.password)
+		res.status(201)
+		res.json({ message: 'Password changed successfully', message_code: 'MESSAGE_CODE_45' })
 	})
 
 	return {
 		postLogin,
 		postLogout,
-		resetPasswordRequest
+		resetPasswordRequest,
+		resetPassword
 	}
 }
 
