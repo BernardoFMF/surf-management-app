@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert,  InputAdornment, IconButton } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -11,6 +11,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import PasswordInputField from '../../components/multiStepForm/PasswordInputField'
 import ImageInputField from '../../components/multiStepForm/ImageInputField';
 import MultiStepForm, { FormStep } from '../../components/multiStepForm/MultiStepForm';
+import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants'
+import { COMPANY_POST_RESET } from '../../store/constants/companyConstants'
 
 const CompanyCreateDialog = ({open, closeHandler}) => {
     const { t } = useTranslation()
@@ -50,17 +52,16 @@ const CompanyCreateDialog = ({open, closeHandler}) => {
         }
     }
 
-
     return (
         <Dialog
-                PaperProps={{
-                    sx: {
-                      width: 500,
-                      height: 'fit-content'
-                    }
-                }}
-                open={open}
-                onClose={closeHandler}
+            PaperProps={{
+                sx: {
+                    width: 500,
+                    height: 'fit-content'
+                }
+            }}
+            open={open}
+            onClose={closeHandler}
         >
             <Typography sx={{pl: 3, pt: 5, mb: 1}} id="modal-modal-title" variant="h2" component="h2">
                 {t('create_company')}
@@ -74,9 +75,9 @@ const CompanyCreateDialog = ({open, closeHandler}) => {
                     width: 'fit-content',
                     }}
                 >
-                    { errorTypes && <Box sx={{ pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
-                    { errorPost && <Box sx={{ pt: 2 }}><Alert severity="error">{t(errorPost)}</Alert></Box> }
-                    { posted && <Box sx={{ pt: 2 }}><Alert severity="success">{t('company_created_successfully')}</Alert></Box> }
+                    { errorTypes && <Box sx={{ pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: TYPES_FETCH_RESET })}>{t(errorTypes)}</Alert></Box> }
+                    { errorPost && <Box sx={{ pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: COMPANY_POST_RESET })}>{t(errorPost)}</Alert></Box> }
+                    { posted && <Box sx={{ pt: 2 }}><Alert severity="success" onClose={() => dispatch({ type: COMPANY_POST_RESET })}>{t('company_created_successfully')}</Alert></Box> }
                     <MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', iban: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null, memberType: '', paidEnrollment: false }}
                 onSubmit={handleSubmit}>
                         <FormStep stepName='User' validationSchema={Yup.object().shape({

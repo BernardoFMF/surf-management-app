@@ -5,10 +5,10 @@ import Loadable from '../components/Loadable'
 import MinimalLayout from '../layout/minimalLayout/index'
 import RequireCompany from '../components/RequireCompany'
 import RequireAuth from '../components/RequireAuth'
-import AnimatedVideo from '../components/AnimatedVideo';
 const AuthLogin = Loadable(lazy(() => import('../Pages/auth/SignInPage')))
 const AuthRegister = Loadable(lazy(() => import('../Pages/auth/SignUpPage')))
 const ValidatePage = Loadable(lazy(() => import('../Pages/ValidatePage')))
+const ResetPassword = Loadable(lazy(() => import('../Pages/auth/ResetPasswordPage')))
 
 const authRoutes = {
     path: '/',
@@ -25,6 +25,10 @@ const authRoutes = {
         {
             path: 'validate/:id',
             element: <RequireAuth><RequireCompany><ValidatePage/></RequireCompany></RequireAuth>
+        },
+        {
+            path: 'password-reset',
+            element: <ResetPassword />
         },
     ]
 };

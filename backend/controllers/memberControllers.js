@@ -14,7 +14,6 @@ const memberController = (data) => {
 				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 			}
 		}
-		console.log(req.params.id)
 		const member = await services.getMemberByIdServices(req.params.id)
 		if (member) res.json(member)
 	})

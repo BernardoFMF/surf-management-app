@@ -20,10 +20,12 @@ import { getTypes } from '../../store/actions/typeActions'
 import { getUserSportsTypes } from '../../store/actions/sportActions'
 import CheckGroupInputField from '../../components/multiStepForm/CheckGroupInputField';
 import Meta from '../../components/Meta';
+import { MEMBER_GROUPS_FETCH_RESET } from '../../store/constants/groupConstants';
+import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
+import { USER_SPORT_TYPES_FETCH_RESET } from '../../store/constants/sportConstants';
 
 const MyGroupsPage = () => {
-    const theme = useTheme();
-    const {t, i18n} = useTranslation()
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const memberGroupsFetch = useSelector((state) => state.memberGroupsFetch)
@@ -34,7 +36,6 @@ const MyGroupsPage = () => {
 
     const userSportsTypesFetch = useSelector((state) => state.userSportsTypesFetch)
     const { loading: loadingSportTypes, error: errorSportTypes, userSportsTypesGet } = userSportsTypesFetch
-
 
     const [rows, setRows] = useState([]);
     let { id } = useParams()
@@ -52,10 +53,15 @@ const MyGroupsPage = () => {
         dispatch(getMemberGroups(id, searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))
         dispatch(getTypes())
         dispatch(getUserSportsTypes())
-    },[dispatch,id])
+        return () => {
+            dispatch({ type: MEMBER_GROUPS_FETCH_RESET })
+            dispatch({ type: TYPES_FETCH_RESET })
+            dispatch({ type: USER_SPORT_TYPES_FETCH_RESET })
+        }
+    }, [])
 
     useEffect(() => {
-        if(memberGroupsGet){
+        if (memberGroupsGet) {
             setRows(memberGroupsGet.groups.map(memberGroup => {
                 let x = {
                     ...memberGroup, id: memberGroup.group_id_
@@ -123,12 +129,14 @@ const MyGroupsPage = () => {
             <Meta title={t('my_groups_page_title')}/>
             <MainCard title={t('member_groups')} sx={{height: '100%'}}>
                 {
-                    loadingMemberTypes || loadingSportTypes ? 
+                    loading || loadingMemberTypes || loadingSportTypes ? 
                         <Stack alignItems="center">
                             <CircularProgress size='4rem'/>
                         </Stack> : (
                         <>
-                            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+                            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: MEMBER_GROUPS_FETCH_RESET })}>{t(error)}</Alert></Box> }
+                            { errorSportTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: USER_SPORT_TYPES_FETCH_RESET })}>{t(errorSportTypes)}</Alert></Box> }
+                            { errorMemberTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: TYPES_FETCH_RESET })}>{t(error)}</Alert></Box> }
                             <Box
                                 sx={{
                                 display: 'grid',

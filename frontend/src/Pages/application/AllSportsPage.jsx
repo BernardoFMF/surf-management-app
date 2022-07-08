@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SurfingIcon from '@mui/icons-material/Surfing'
 import MainCard from '../../components/cards/MainCard'
-import { Stack, CircularProgress, Grid, Divider, ButtonBase} from '@mui/material'
+import { Stack, CircularProgress, Grid, Alert, ButtonBase} from '@mui/material'
 import { useNavigate } from 'react-router'
 import AnimateButton from '../../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -19,16 +19,14 @@ import Box from '@mui/material/Box';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import SportCreateDialog from '../../components/dialogs/SportCreateDialog'
 import UserSportApplyDialog from '../../components/dialogs/UserSportApplyDialog';
+import { SPORT_UPDATE_RESET, SPORT_DELETE_RESET, SPORT_CREATE_RESET, SPORTS_FETCH_RESET, USER_SPORT_TYPES_FETCH_RESET } from '../../store/constants/sportConstants';
+import { USERS_SPORTS_CREATE_RESET } from '../../store/constants/userConstants';
 
 const AllSportsPage = () => {
     const {t, i18n} = useTranslation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [openDialog, setOpenDialog] = useState(false);
-    const closeDialogHandler = useCallback(function _handleClose() {
-      setOpenDialog(false);
-      dispatch(getSports())
-    }, []);
     
     const [sid, setSid] = useState(0);
 
@@ -41,10 +39,10 @@ const AllSportsPage = () => {
     const { loading, error, sportsGet } = sportsFetch
 
     const sportUpdate = useSelector((state) => state.updateSport)
-    const { loading: loadingUpdate, updateSport: update } = sportUpdate
+    const { loading: loadingUpdate, error: errorUpdate, updateSport: update } = sportUpdate
 
     const sportDelete = useSelector((state) => state.sportDeletion)
-    const { sportsDeletion } = sportDelete
+    const { error: errorDelete, sportsDeletion } = sportDelete
     
     useEffect(() => {
       dispatch(getSports())
@@ -52,11 +50,20 @@ const AllSportsPage = () => {
 
     useEffect(() => {
       dispatch(getSports())
+      return () => {
+        dispatch({ type: SPORTS_FETCH_RESET })
+        dispatch({ type: SPORT_UPDATE_RESET })
+        dispatch({ type: SPORT_DELETE_RESET })
+        dispatch({ type: SPORT_CREATE_RESET })
+        dispatch({ type: USERS_SPORTS_CREATE_RESET })
+        dispatch({ type: USER_SPORT_TYPES_FETCH_RESET })
+      }
     },[])
 
-
     useEffect(() => {
-      if(sportsGet) setSports(sportsGet)
+      if(sportsGet) {
+        setSports(sportsGet)
+      }
     },[sportsGet])
 
     const deleteSportHandle = async (id) => {
@@ -75,9 +82,16 @@ const AllSportsPage = () => {
     const [open, setOpen] = useState(false);
     const handleClose = () => {
         setOpen(false)
+        dispatch({ type: SPORT_CREATE_RESET })
         dispatch(getSports())
     };
     const handleOpen = () => setOpen(true);
+
+    const closeDialogHandler = useCallback(function _handleClose() {
+      setOpenDialog(false);
+      dispatch({ type: SPORT_CREATE_RESET })
+      dispatch(getSports())
+    }, []);
 
   return (
     <>
@@ -93,11 +107,14 @@ const AllSportsPage = () => {
         closeHandler={handleClose}
       />
       <MainCard title={t('all_sports')} sx={{height: '100%'}}>
-            { loading || loadingUpdate ? 
+            { loading ? 
                 <Stack alignItems="center">
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                     <>
+                      { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: SPORTS_FETCH_RESET })}>{t(error)}</Alert></Box> }
+                      { errorUpdate && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: SPORT_UPDATE_RESET })}>{t(errorUpdate)}</Alert></Box> }
+                      { errorDelete && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: SPORT_DELETE_RESET })}>{t(errorDelete)}</Alert></Box> }
                       {
                         memberInfo.is_admin_ && <Box sx={{mb : 5}} gridArea={'create'} alignItems={'center'} display='flex' justifyContent={{md : 'flex-end', lg : 'flex-end', xs: 'center'}}>
                             <AnimateButton>

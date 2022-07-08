@@ -46,6 +46,7 @@ import member_types_example from '../assets/data/TypesExample.xlsx'
 import sports_example from '../assets/data/sportsExample.xlsx'
 import member_sports_example from '../assets/data/MemberSportsExample.xlsx'
 import sportsTypes_example from '../assets/data/SportTypesExample.xlsx'
+import { UPLOAD_RESET } from '../store/constants/uploadConstants'
 
 const UploadFilePage = () => {
 
@@ -55,6 +56,12 @@ const UploadFilePage = () => {
     const dispatch = useDispatch()
 
     const [expanded, setExpanded] = useState(false);
+
+    useEffect(() => {
+        return () => {
+            dispatch({ type: UPLOAD_RESET })
+        }
+    })
 
     const handleChange = (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false);

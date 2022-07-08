@@ -117,6 +117,7 @@
     "MESSAGE_CODE_41": "Grupo com esse nome já existe",
     "MESSAGE_CODE_42": "Erro ao enviar o email",
     "MESSAGE_CODE_43": "Email enviado com sucesso",
+    "MESSAGE_CODE_44" : "Quota com essa data já existe",
 
     "hello_profile": "Olá,",
     "name": "Nome",
@@ -373,5 +374,21 @@
     "unauthorized": "Não autorizado",
     "go home": "Página Principal",
     "go back": "Voltar atrás",
-    "something went wrong": "Algo correu mal!"
+    "something went wrong": "Algo correu mal!",
+
+    
+    "You are not longer part of the club" : "Já não faz parte do clube",
+    "Feel free to contact us via email": "Qualquer questão contacte-nos por email",
+
+    "reset_password_page_title": "Mude a sua palavra passe",
+    "change_password": "Mudar a palavra passe",
+    "password_requested_successfully": "O seu pedido foi realizado com sucesso, verifique o seu email",
+    "password_changed_successfully": "A palavra passe foi alterada com sucesso",
+    
+    "Notify" : "Notificar",
+    "Message for notify": "Ao clicar sim, todos os utilizadores que ainda não pagaram as quotas serão notificados.",
+    "Are you sure?" : "Tem a certeza?",
+
+    "Yes" : "Sim",
+    "No": "Não"
 }

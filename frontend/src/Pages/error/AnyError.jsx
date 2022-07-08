@@ -13,14 +13,13 @@ import AuthWrapper from '../auth/AuthWrapper'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AnimatedPage from '../../components/AnimatedPage'
 
-const AnyError = ({code, message}) => {
+const AnyError = ({code, message, extraMessage}) => {
     const theme = useTheme();
     const { t } = useTranslation()
     const navigate = useNavigate();
-
     return (
       <>
-        <Meta title={code + ' - ' + message}/>
+        <Meta title={code ? code + ' - ' + message : message}/>
         {/* logo & toggler button */}
         <AuthWrapper>
             <TranslationMenu sx={{ pt: 2}}></TranslationMenu>
@@ -33,9 +32,15 @@ const AnyError = ({code, message}) => {
                                 <Typography sx={{fontSize: '12rem', fontWeight: 500}} color={theme.palette.primary.main}>
                                     Oops!
                                 </Typography>
-                                <Typography mb={2} sx={{fontSize: '2rem', fontWeight: 500}}>
+                                <Typography mb={2} sx={{fontSize: '1.6rem', fontWeight: 500}}>
                                     {`${code ? code : ''} ${code ? '-' : ''} ${message}`}
                                 </Typography>
+                                {extraMessage && 
+                                    <Typography mb={2} sx={{fontSize: '1.1rem', fontWeight: 500}}>
+                                        {extraMessage}
+                                        <a href="mailto:ericeirasurfclub@outlook.com">ericeirasurfclub@outlook.com</a>
+                                    </Typography>
+                                }
                                 <Stack direction={'row'} spacing={2} alignItems="center">
                                     <AnimateButton >
                                         <Link to={'/'} style={{textDecoration:"none"}}>

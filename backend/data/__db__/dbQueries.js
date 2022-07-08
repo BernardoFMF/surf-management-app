@@ -192,7 +192,49 @@ const QUERY_INSERT_SPORTS = 'insert into Sport_(name_, is_deleted_) values'
 
 const QUERY_INSERT_SPORT_TYPES = 'insert into User_Sport_Types_(type_) values'
 
+const QUERY_USERS_STATISTICS = "select count(*), nationality_, gender_  from user_ group by nationality_, gender_"
+
+const QUERY_COMPANIES_STATISTICS = "select count(*) from company_"
+
+const QUERY_CANDIDATES_STATISTICS = "select count(*), nationality_, gender_  from candidate_ group by nationality_, gender_"
+
+const QUERY_SPORTS_STATISTICS = "select count(*), s.id_, s.name_, u.gender_ from sport_ s join user_sport_ us on (s.id_ = us.sport_id_) join user_ u on (us.user_id_ = u.member_id_) group by s.id_, s.name_, u.gender_"
+
+const QUERY_EVENTS_STATISTICS = "select count(*), e.id_, e.name_, a.state_  from event_ e join attendance_ a on (e.id_ = a.event_id_) where initial_date_ > current_date and initial_date_ < current_date + 7 group by e.id_, e.name_, a.state_"
+
+const QUERY_MEMBER_YEARS_STATISTICS = "select extract( year from u.enrollment_date_) as years from user_ u group by extract( year from u.enrollment_date_) order by extract( year from u.enrollment_date_) DESC"
+const QUERY_MEMBER_GROWTH_STATISTICS = "select count(*), extract( year from u.enrollment_date_) as year_ from user_ u group by extract( year from u.enrollment_date_) order by extract( year from u.enrollment_date_) DESC"
+const QUERY_MEMBER_DISTRIBUTION_STATISTICS = "select count(*), extract( month from u.enrollment_date_) as month_, extract( year from u.enrollment_date_) as year_ from user_ u group by extract( month from u.enrollment_date_), extract( year from u.enrollment_date_) order by extract( year from u.enrollment_date_) DESC"
+
+const QUERY_QUOTAS_YEARS_STATISTICS = "select extract( year from q.date_) as years from quota_ q  group by extract( year from q.date_) order by extract( year from q.date_) DESC"
+const QUERY_QUOTAS_AMOUNT_STATISTICS = "select sum(q.amount_), extract( year from q.date_) from quota_ q where q.payment_date_ is not null group by extract( year from q.date_) order by extract( year from q.date_) DESC"
+const QUERY_QUOTAS_TOTALAMOUNT_STATISTICS = "select sum(q.amount_), extract( year from q.date_) from quota_ q group by extract( year from q.date_) order by extract( year from q.date_) DESC"
+const QUERY_QUOTAS_DISTRIBUTION_STATISTICS = "select sum(q.amount_), extract( month from q.payment_date_) as month_, extract( year from q.date_) as year_ from quota_ q where q.payment_date_ is not null group by extract( month from q.payment_date_), extract( year from q.date_) order by extract( year from q.date_) DESC"
+
+const QUERY_GET_USER_EMAIL_BY_GROUP = "select distinct c.email_ from group_member_ gm join contact_ c on (gm.member_id_ = c.member_id_)"
+
+const QUERY_GET_QUOTAS_BY_DATE = "select * from quota_ q join contact_ c on (q.member_id_ = c.member_id_) join user_ u on (q.member_id_ = u.member_id_) where date_ = $1"
+const QUERY_CHANGE_PASSWORD = "update Member_ set pword_ = $2 where id_ = $1;"
+
+const QUERY_CHANGE_CREDENTIALS = "update Member_ set pword_ = $3, username_ = $2 where id_ = $1;"
+
 export default {
+    QUERY_CHANGE_PASSWORD,
+    QUERY_CHANGE_CREDENTIALS,
+    QUERY_GET_QUOTAS_BY_DATE,
+    QUERY_GET_USER_EMAIL_BY_GROUP,
+    QUERY_QUOTAS_DISTRIBUTION_STATISTICS,
+    QUERY_QUOTAS_TOTALAMOUNT_STATISTICS,
+    QUERY_QUOTAS_AMOUNT_STATISTICS,
+    QUERY_QUOTAS_YEARS_STATISTICS,
+    QUERY_MEMBER_GROWTH_STATISTICS,
+    QUERY_MEMBER_YEARS_STATISTICS,
+    QUERY_MEMBER_DISTRIBUTION_STATISTICS,
+    QUERY_EVENTS_STATISTICS,
+    QUERY_SPORTS_STATISTICS,
+    QUERY_CANDIDATES_STATISTICS,
+    QUERY_COMPANIES_STATISTICS,
+    QUERY_USERS_STATISTICS,
     QUERY_GET_USER_SPORT_SPECIFIC,
     QUERY_GET_GROUP_BY_ID_MEMBER_TYPES,
     QUERY_GET_GROUP_BY_ID_SPORT_TYPES,

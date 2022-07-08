@@ -21,10 +21,12 @@ import { getTypes } from '../../store/actions/typeActions'
 import { getUserSportsTypes, getSports } from '../../store/actions/sportActions'
 import GroupCreateDialog from '../../components/dialogs/GroupCreateDialog';
 import Meta from '../../components/Meta';
+import { GROUPS_FETCH_RESET } from '../../store/constants/groupConstants';
+import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
+import { SPORTS_FETCH_RESET, USER_SPORT_TYPES_FETCH_RESET } from '../../store/constants/sportConstants';
 
 const AllGroupsPage = () => {
-    const theme = useTheme();
-    const {t, i18n} = useTranslation()
+    const {t} = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const groupsFetch = useSelector((state) => state.groupsFetch)
@@ -37,7 +39,7 @@ const AllGroupsPage = () => {
     const { loading: loadingSportTypes, error: errorSportTypes, userSportsTypesGet } = userSportsTypesFetch
 
     const sportsFetch = useSelector((state) => state.sportsFetch)
-    const { loading: loadingSports, error: errorSports, sportsGet } = sportsFetch
+    const { loading: loadingSports, error: errorSports } = sportsFetch
 
     const [rows, setRows] = useState([]);
 
@@ -52,13 +54,17 @@ const AllGroupsPage = () => {
     const handleClose = () => {setOpen(false); dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))};
     const handleOpen = () => setOpen(true);
 
-    
-
     useEffect(() => {
         dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))
         dispatch(getTypes())
         dispatch(getUserSportsTypes())
         dispatch(getSports())
+        return () => {
+            dispatch({ type: GROUPS_FETCH_RESET })
+            dispatch({ type: TYPES_FETCH_RESET })
+            dispatch({ type: USER_SPORT_TYPES_FETCH_RESET })
+            dispatch({ type: SPORTS_FETCH_RESET })
+        }
     },[dispatch])
 
     useEffect(() => {
@@ -150,10 +156,10 @@ const AllGroupsPage = () => {
                             <CircularProgress size='4rem'/>
                         </Stack> : (
                         <>
-                            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                            { errorMemberTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorMemberTypes)}</Alert></Box> }
-                            { errorSportTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorSportTypes)}</Alert></Box> }
-                            { errorSports && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorSports)}</Alert></Box> }
+                            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: GROUPS_FETCH_RESET })}>{t(error)}</Alert></Box> }
+                            { errorMemberTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: TYPES_FETCH_RESET })}>{t(errorMemberTypes)}</Alert></Box> }
+                            { errorSportTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: USER_SPORT_TYPES_FETCH_RESET })}>{t(errorSportTypes)}</Alert></Box> }
+                            { errorSports && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: SPORTS_FETCH_RESET })}>{t(errorSports)}</Alert></Box> }
                             <Box
                                 sx={{
                                 display: 'grid',

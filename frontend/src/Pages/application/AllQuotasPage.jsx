@@ -17,7 +17,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Pagination } from '@mui/material'
 import QuotaCreateDialog from '../../components/dialogs/QuotaCreateDialog';
 import QuotaUpdateDialog from '../../components/dialogs/QuotaUpdateDialog';
+import QuotaNotifyVerificationDialog from '../../components/dialogs/QuotaNotifyVerificationDialog'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
+import { QUOTAS_FETCH_RESET, QUOTA_CREATE_RESET, QUOTA_UPDATE_RESET } from '../../store/constants/quotaConstants';
 
 const AllQuotasPage = () => {
     const {t, i18n} = useTranslation()
@@ -42,16 +44,20 @@ const AllQuotasPage = () => {
     }
 
     const [openSubmit, setOpenSubmit] = React.useState(false);
-    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit))};
+    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit)); dispatch({ type: QUOTA_CREATE_RESET })};
     const handleOpenSubmit = () => setOpenSubmit(true);
 
-    const typesFetch = useSelector((state) => state.typesFetch)
-    const { loading: loadingTypes, error: errorTypes } = typesFetch
+    const [openVerification, setOpenVerification] = React.useState(false);
+    const handleCloseVerification = () => {setOpenVerification(false); setPage(1); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit))};
+    const handleOpenVerification = () => setOpenVerification(true);
 
-    
-    
     useEffect(() => {
         dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit))
+        return () => {
+            dispatch({ type: QUOTAS_FETCH_RESET })
+            dispatch({ type: QUOTA_CREATE_RESET })
+            dispatch({ type: QUOTA_UPDATE_RESET })
+        }
     }, [])
 
     useEffect(() => {
@@ -89,30 +95,30 @@ const AllQuotasPage = () => {
         dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, (value-1)*searchState.limit, searchState.limit))
     }
 
-const columns = [
-    { field: 'member_id_', headerAlign: "center", headerName: t('member_id'),align:'center', width: 120 },
-    { field: 'username_', headerAlign: "center",headerName: t('username'),align:'center', width: 140 },
-    { field: 'email_',headerAlign: "center", headerName: "Email",align:'center', width: 170 },
-    { field: 'iban_', headerAlign: "center",headerName: 'IBAN',align:'center', width: 220},
-    { field: 'phone_number_',headerAlign: "center", headerName: t('candidates_phone_number'), align:'center',width: 150 },
-    { field: 'date_',headerAlign: "center", headerName: t('date'), align:'center',width: 170 },
-    { field: 'payment_date_',headerAlign: "center", headerName: t('payment_date'), align:'center',width: 170 },
-    { field: 'quota_value_',headerAlign: "center", headerName: t('quota_value'), align:'center',width: 170 },
-    {
-        field: 'actions',
-        headerName: t('actions'),
-        type: 'actions',
-        width: 110,
-        getActions: (params) => [
-            <GridActionsCellItem
-            icon={<CreditScoreIcon />}
-            label="Show Quota"
-            onClick={() => handleOpenUpdate(params.id)}
-            disabled={params.row.payment_date_ !== null}
-            />
-        ],
-    },
-];
+    const columns = [
+        { field: 'member_id_', headerAlign: "center", headerName: t('member_id'),align:'center', width: 120 },
+        { field: 'username_', headerAlign: "center",headerName: t('username'),align:'center', width: 140 },
+        { field: 'email_',headerAlign: "center", headerName: "Email",align:'center', width: 170 },
+        { field: 'iban_', headerAlign: "center",headerName: 'IBAN',align:'center', width: 220},
+        { field: 'phone_number_',headerAlign: "center", headerName: t('candidates_phone_number'), align:'center',width: 150 },
+        { field: 'date_',headerAlign: "center", headerName: t('date'), align:'center',width: 170 },
+        { field: 'payment_date_',headerAlign: "center", headerName: t('payment_date'), align:'center',width: 170 },
+        { field: 'quota_value_',headerAlign: "center", headerName: t('quota_value'), align:'center',width: 170 },
+        {
+            field: 'actions',
+            headerName: t('actions'),
+            type: 'actions',
+            width: 110,
+            getActions: (params) => [
+                <GridActionsCellItem
+                icon={<CreditScoreIcon />}
+                label="Show Quota"
+                onClick={() => handleOpenUpdate(params.id)}
+                disabled={params.row.payment_date_ !== null}
+                />
+            ],
+        },
+    ];
 
 
   return (
@@ -127,9 +133,12 @@ const columns = [
             open={openSubmit}
             closeHandler={handleCloseSubmit}
         />
+        <QuotaNotifyVerificationDialog
+            open={openVerification}
+            closeHandler={handleCloseVerification}
+        />
         <MainCard title={t('Quotas')}sx={{height: '100%'}}>
-            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-            { errorTypes && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: QUOTAS_FETCH_RESET })}>{t(error)}</Alert></Box> }
             <Box
                 sx={{
                 display: 'grid',
@@ -182,13 +191,14 @@ const columns = [
                 )}
             </Formik>
             </Box>
-                <Box gridArea={'create'} alignItems={'center'} display={{md: 'flex', lg: 'flex'}} justifyContent='flex-end' sx={{ mt: { xs: 14, md : 0, lg : 0 }}}>
+                <Box gridArea={'create'} alignItems={'center'} display={{md: 'flex', lg: 'flex'}}  justifyContent='flex-end' sx={{ mt: { xs: 14, md : 0, lg : 0 }}}>
                     <AnimateButton>
                         <LoadingButton
                             disableElevation
                             size="large"
                             variant="outlined"
                             color="secondary"
+                            fullWidth
                             onClick={() => {
                                 handleOpenSubmit()
                             }}
@@ -196,9 +206,24 @@ const columns = [
                             {t('create')}
                         </LoadingButton>
                     </AnimateButton>
+                    <AnimateButton>
+                        <LoadingButton
+                            sx={{ ml: {md: 1}}}
+                            disableElevation
+                            size="large"
+                            variant="outlined"
+                            color="secondary"
+                            fullWidth
+                            onClick={() => {
+                                handleOpenVerification()
+                            }}
+                        >
+                            {t('Notify')}
+                        </LoadingButton>
+                    </AnimateButton>
                 </Box> 
             </Box>
-      { loading || loadingTypes ? 
+      { loading ? 
         <Stack alignItems="center">
             <CircularProgress size='4rem'/>
         </Stack> : (

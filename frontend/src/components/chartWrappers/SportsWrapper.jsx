@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import UpcomingEventsChart from '../charts/UpcomingEventsChart'
 import MainCard from '../cards/MainCard'
-import { Grid, Typography, TextField, MenuItem, Button } from '@mui/material'
+import { Grid, Typography, TextField, MenuItem } from '@mui/material'
 import { gridSpacing } from '../../store/constants/themeConstants'
 import PieChartSkeleton from '../skeletons/PieChartSkeleton'
 import SportsChart from '../charts/SportsChart'
 import AnimatedPage from '../AnimatedPage'
 const SportsWrapper = ({ loading, dropdownOptions, data }) => {
     const {t, i18n} = useTranslation()
-    console.log(dropdownOptions);
-    console.log(data);
 
     const extractData = (id) => {
-        const idData = data.filter(obj => obj.id === id)[0]
-        return [idData.gender.male, idData.gender.female, idData.gender.other]
+        const sportById = data.filter(obj => obj.id === id)
+        let maleCount = 0, femaleCount = 0, otherCount = 0
+        sportById.forEach(element => {
+            if (element.gender === 'Male') maleCount += element.count
+            else if (element.gender === 'Female') femaleCount += element.count
+            else if (element.gender === 'Other') otherCount += element.count
+
+        });
+        return [maleCount, femaleCount, otherCount]
     }
 
     const [value, setValue] = useState(Math.min(...(dropdownOptions.map(option => option.value))));
     const [chartValues, setChartValues] = useState(extractData(Math.min(...(dropdownOptions.map(option => option.value)))))
 
-    console.log(chartValues);
     const changeData = (e) => {
         setChartValues(extractData(e.target.value))
         setValue(e.target.value)

@@ -19,7 +19,7 @@ import DropdownInputField from '../../components/multiStepForm/DropdownInputFiel
 import CandidateApproveDialog from '../../components/dialogs/CandidateApproveDialog'
 import ExportCSV from '../../components/ExportCSV'
 import { exportCandidatesCSV } from '../../store/actions/exportActions'
-import { CANDIDATES_FETCH_RESET, CANDIDATE_DELETE_RESET } from '../../store/constants/candidateConstants';
+import { CANDIDATES_FETCH_RESET, CANDIDATE_DELETE_RESET, APPROVE_CANDIDATE_RESET } from '../../store/constants/candidateConstants';
 import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
 import { EXPORT_CANDIDATE_FETCH_RESET } from '../../store/constants/exportConstants';
 
@@ -42,6 +42,7 @@ const AllCandidatesPage = () => {
     const [open, setOpen] = useState(false);
     const handleClose = () => {
         setOpen(false)
+        dispatch({ type: APPROVE_CANDIDATE_RESET })
         dispatch(getCandidates(searchState.username_filter,searchState.name_filter,searchState.email_filter,0,searchState.limit))
     };
 
@@ -175,7 +176,7 @@ const AllCandidatesPage = () => {
             id={id}
         />
         <MainCard title={t('all_candidates')} sx={{height: '100%'}}>
-            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClick={() => dispatch({ type: CANDIDATES_FETCH_RESET })}>{t(error)}</Alert></Box> }
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: CANDIDATES_FETCH_RESET })}>{t(error)}</Alert></Box> }
             <Formik
                     initialValues={searchState}
                     enableReinitialize={true}

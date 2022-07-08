@@ -13,6 +13,9 @@ import InputField from '../../components/multiStepForm/InputField';
 import DateInputField from '../../components/multiStepForm/DateInputField';
 import { parse, isDate } from "date-fns";
 import CheckInputField from '../multiStepForm/CheckInputField'
+import { EVENT_CREATE_RESET } from '../../store/constants/eventConstants'
+import { GROUPS_FETCH_RESET } from '../../store/constants/groupConstants'
+
 const EventCreateDialog = ({open, closeHandler}) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
@@ -63,6 +66,7 @@ const EventCreateDialog = ({open, closeHandler}) => {
     const changeState = async (disable) => {
         setDisable(disable)
     }
+
     return (
         <Dialog
             PaperProps={{
@@ -78,9 +82,9 @@ const EventCreateDialog = ({open, closeHandler}) => {
                 {t('create_event')}
             </Typography>
             <DialogContent>
-                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                { errorGroups && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorGroups)}</Alert></Box> }
-                { posted && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('event_created_successfully')}</Alert></Box> }
+                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: EVENT_CREATE_RESET })}>{t(error)}</Alert></Box> }
+                { errorGroups && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: GROUPS_FETCH_RESET })}>{t(errorGroups)}</Alert></Box> }
+                { posted && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => dispatch({ type: EVENT_CREATE_RESET })}>{t('event_created_successfully')}</Alert></Box> }
                 { !loadingGroups && <Box
                     sx={{
                     display: 'flex',

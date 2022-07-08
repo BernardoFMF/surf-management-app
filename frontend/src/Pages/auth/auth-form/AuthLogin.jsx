@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
 import { isAfter } from "date-fns";
+import { Link } from 'react-router-dom'
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -65,7 +66,6 @@ const AuthLogin = ({ ...others }) => {
                 if (isExpired) {
                     dispatch(logout())
                 } else {
-                    console.log("vai para o dashboard");
                     navigate((state && state.from) || '/dashboard/overview')
                 }
             }
@@ -193,7 +193,7 @@ const AuthLogin = ({ ...others }) => {
                             )}
                         </FormControl>
                         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-                            <Typography variant="subtitle1" color="primary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+                            <Typography variant="subtitle1" component={Link} to="/password-reset" color="primary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
                                 {t('sign_in_new_password')}
                             </Typography>
                         </Stack>

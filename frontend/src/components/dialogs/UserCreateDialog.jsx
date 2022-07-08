@@ -16,6 +16,7 @@ import ImageInputField from '../../components/multiStepForm/ImageInputField';
 import { useTheme } from '@mui/material/styles';
 import countries from '../../assets/data/countries.json'
 import CheckInputField from '../../components/multiStepForm/CheckInputField';
+import { USER_POST_RESET } from '../../store/constants/userConstants'
 
 const UserCreateDialog = ({open, closeHandler}) => {
     const { t } = useTranslation()
@@ -94,8 +95,8 @@ const UserCreateDialog = ({open, closeHandler}) => {
                         width: 'fit-content',
                         }}
                     >
-                    { posted && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('user_created_successfully')}</Alert></Box> }
-                    { errorPost && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorPost)}</Alert></Box> }
+                    { posted && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => dispatch({ type: USER_POST_RESET })}>{t('user_created_successfully')}</Alert></Box> }
+                    { errorPost && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: USER_POST_RESET })}>{t(errorPost)}</Alert></Box> }
                         <MultiStepForm initialValues={{ username: '', email: '', password: '', fullName: '', iban: '', cc: '', nif: '', gender: '', nationality: '', birthDate: '', location: '', address: '', phoneNumber: '', postalCode: '', image: null, memberType: '', paidEnrollment: false, enrollmentDate: '' }}
                     onSubmit={handleSubmit}>
                             <FormStep stepName='User' validationSchema={Yup.object().shape({

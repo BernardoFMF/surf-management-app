@@ -20,6 +20,9 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import CheckInputField from '../../components/multiStepForm/CheckInputField'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField'
+import { getUserSportsTypes } from '../../store/actions/sportActions'
+import { USERS_SPORT_FETCH_RESET, USER_SPORT_UPDATE_RESET, USERS_SPORTS_CREATE_RESET } from '../../store/constants/userConstants'
+import { USER_SPORT_TYPES_FETCH_RESET } from '../../store/constants/sportConstants'
 
 const SportPage = () => {
     const {t} = useTranslation()
@@ -36,10 +39,13 @@ const SportPage = () => {
     })
 
     const [open, setOpen] = useState(false);
+
     const handleClose = () => {
         setOpen(false)
         dispatch(getUsersSport(id, 0, searchState.limit, searchState.toggle_filter))
+        dispatch({ type: USERS_SPORTS_CREATE_RESET })
     };
+
     const handleOpen = () => setOpen(true);
 
     const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -55,6 +61,7 @@ const SportPage = () => {
         })
         setPage(1)
         dispatch(getUsersSport(id, 0, searchState.limit, searchState.toggle_filter))
+        dispatch({ type: USER_SPORT_UPDATE_RESET })
     }, []);
 
 
@@ -74,8 +81,15 @@ const SportPage = () => {
 
     useEffect(() => { 
         dispatch(getUsersSport(id, 0, searchState.limit, searchState.toggle_filter))
-    },[])
+        dispatch(getUserSportsTypes())
 
+        return () => {
+            dispatch({ type: USERS_SPORT_FETCH_RESET })
+            dispatch({ type: USERS_SPORTS_CREATE_RESET })
+            dispatch({ type: USER_SPORT_UPDATE_RESET })
+            dispatch({ type: USER_SPORT_TYPES_FETCH_RESET })
+        }
+    },[])
 
     const [page, setPage] = useState(1);
 
@@ -182,7 +196,7 @@ return (
             </Stack> : (
             <>
                 <Meta title={usersSportGet && usersSportGet.sport ? usersSportGet.sport.name_ + ' | ' + t('sport_page_title') : ''}/>
-                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: USERS_SPORT_FETCH_RESET })}>{t(error)}</Alert></Box> }
                 <Box
                     sx={{
                     display: 'grid',

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert} from '@mui/material'
+import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert, Stack, CircularProgress } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { Form, Formik } from 'formik'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -11,7 +11,8 @@ import CheckGroupInputField from '../multiStepForm/CheckGroupInputField'
 import CheckInputField from '../multiStepForm/CheckInputField'
 import ChipInputField from '../multiStepForm/ChipInputField'
 import { updateUserSports } from '../../store/actions/userActions'
-import { getUserSportsTypes } from '../../store/actions/sportActions'
+import { USER_SPORT_UPDATE_RESET } from '../../store/constants/userConstants'
+import { USER_SPORT_TYPES_FETCH_RESET } from '../../store/constants/sportConstants'
 
 const UserSportEditDialog = ({open, closeHandler, userSport}) => {
     const { t } = useTranslation()
@@ -26,10 +27,6 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
     const editUserSportHandler = (values) => {
         dispatch(updateUserSports(userSport.user_id_, userSport.sport_id_, values))
     }
-
-    useEffect(() => {
-        dispatch(getUserSportsTypes())
-    }, [])
     
     return (
         <>
@@ -47,69 +44,77 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
                     {t('Update')}
                 </Typography>
                 <DialogContent>
-                    { error && <Box sx={{ pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                    { errorTypes && <Box sx={{ pt: 2 }}><Alert severity="error">{t(errorTypes)}</Alert></Box> }
-                    { updateResult && <Box sx={{ pt: 2 }}><Alert severity="success">{t('updated_sucessfully')}</Alert></Box> }
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            m: 'auto',
-                            width: 'fit-content',
-                            mt: 1
-                        }}
-                    >
-                        <Formik
-                            enableReinitialize={true}
-                            initialValues={{
-                                type: userSport.type_,
-                                fed_number: userSport.fed_number_,
-                                fed_id: userSport.fed_id_,
-                                fed_name: userSport.fed_name_,
-                                years_federated: userSport.years_federated_,
-                                is_absent: userSport.is_absent_
-                            }}
-                            validationSchema={Yup.object().shape({
-                                type: Yup.array().of(Yup.string()).min(1, t('sport_type_mandatory')),
-                                fed_number: Yup.string().required(t('fed_number_mandatory')),
-                                fed_id: Yup.string().required(t('fed_id_mandatory')),
-                                fed_name: Yup.string().required(t('fed_name_mandatory')),
-                                years_federated: Yup.array().of(Yup.number()),
-                                is_absent: Yup.bool()
-                            })}
-                            onSubmit={editUserSportHandler}
-                        >
-                        {formik => (
-                            <Form>
-                                <CheckGroupInputField
-                                    name="type"
-                                    label={t("types")}
-                                    options={userSportsTypesGet}
-                                />
-                                <InputField name='fed_number' label={t('fed_number_')} type='text'></InputField>
-                                <InputField name='fed_id' label={t('fed_id_')} type='text'></InputField>
-                                <InputField name='fed_name' label={t('fed_name_')} type='text'></InputField>
-                                <Box sx={{ pt: 2, pb: 2 }}>
-                                    <ChipInputField name='years_federated' label={t('years_federated_')} startingOptions={userSport.years_federated_} type='number' placeholder={t('year')}></ChipInputField>
-                                </Box>
-                                {userSport.is_absent_ && <CheckInputField name='is_absent' label={t('is_absent_')}/>}
-                                <AnimateButton>
-                                    <LoadingButton
-                                        disableElevation
-                                        fullWidth
-                                        size="normal"
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        loading={loading}
-                                    >
-                                        {t('sign_up_submit')}
-                                    </LoadingButton>
-                                </AnimateButton>
-                            </Form>
-                        )}
-                        </Formik>
-                    </Box>
+                { loadingTypes ? 
+                    <Stack alignItems="center">
+                        <CircularProgress size='4rem'/>
+                    </Stack> : (
+                        <>
+                            { error && <Box sx={{ pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: USER_SPORT_UPDATE_RESET })}>{t(error)}</Alert></Box> }
+                            { errorTypes && <Box sx={{ pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: USER_SPORT_TYPES_FETCH_RESET })}>{t(errorTypes)}</Alert></Box> }
+                            { updateResult && <Box sx={{ pt: 2 }}><Alert severity="success" onClose={() => dispatch({ type: USER_SPORT_UPDATE_RESET })}>{t('updated_sucessfully')}</Alert></Box> }
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    m: 'auto',
+                                    width: 'fit-content',
+                                    mt: 1
+                                }}
+                            >
+                                <Formik
+                                    enableReinitialize={true}
+                                    initialValues={{
+                                        type: userSport.type_,
+                                        fed_number: userSport.fed_number_,
+                                        fed_id: userSport.fed_id_,
+                                        fed_name: userSport.fed_name_,
+                                        years_federated: userSport.years_federated_,
+                                        is_absent: userSport.is_absent_
+                                    }}
+                                    validationSchema={Yup.object().shape({
+                                        type: Yup.array().of(Yup.string()).min(1, t('sport_type_mandatory')),
+                                        fed_number: Yup.string().required(t('fed_number_mandatory')),
+                                        fed_id: Yup.string().required(t('fed_id_mandatory')),
+                                        fed_name: Yup.string().required(t('fed_name_mandatory')),
+                                        years_federated: Yup.array().of(Yup.number()),
+                                        is_absent: Yup.bool()
+                                    })}
+                                    onSubmit={editUserSportHandler}
+                                >
+                                {formik => (
+                                    <Form>
+                                        <CheckGroupInputField
+                                            name="type"
+                                            label={t("types")}
+                                            options={userSportsTypesGet}
+                                        />
+                                        <InputField name='fed_number' label={t('fed_number_')} type='text'></InputField>
+                                        <InputField name='fed_id' label={t('fed_id_')} type='text'></InputField>
+                                        <InputField name='fed_name' label={t('fed_name_')} type='text'></InputField>
+                                        <Box sx={{ pt: 2, pb: 2 }}>
+                                            <ChipInputField name='years_federated' label={t('years_federated_')} startingOptions={userSport.years_federated_} type='number' placeholder={t('year')}></ChipInputField>
+                                        </Box>
+                                        {userSport.is_absent_ && <CheckInputField name='is_absent' label={t('is_absent_')}/>}
+                                        <AnimateButton>
+                                            <LoadingButton
+                                                disableElevation
+                                                fullWidth
+                                                size="normal"
+                                                type="submit"
+                                                variant="contained"
+                                                color="primary"
+                                                loading={loading}
+                                            >
+                                                {t('sign_up_submit')}
+                                            </LoadingButton>
+                                        </AnimateButton>
+                                    </Form>
+                                )}
+                                </Formik>
+                            </Box>
+                        </>
+                    )
+                }
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={closeHandler}>{t('close')}</Button>

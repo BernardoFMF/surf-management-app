@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Grid, Stack, CircularProgress} from '@mui/material'
+import {Grid, Stack, CircularProgress, Box, Alert} from '@mui/material'
 import MainCard from '../../components/cards/MainCard'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -18,19 +18,17 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import SearchIcon from '@mui/icons-material/Search';
 import Meta from '../../components/Meta'
 import UpcomingEventsChartWrapper from '../../components/chartWrappers/UpcomingEventsChartWrapper'
+import { EVENT_ATTENDANCE_FETCH_RESET, EVENT_FETCH_RESET } from '../../store/constants/eventConstants'
 
 const EventPage = () => {
     let { id } = useParams()
-    const scriptedRef = useScriptRef()
-
     const {t, i18n} = useTranslation()
-
     const dispatch = useDispatch()
     const eventFetch = useSelector((state) => state.eventFetch)
-    const { loadingEvent, error, eventGet } = eventFetch
+    const { loading, error, eventGet } = eventFetch
 
     const eventAttendanceFetch = useSelector((state) => state.eventAttendanceFetch)
-    const { loading, a_error, eventAttendanceGet } = eventAttendanceFetch
+    const { loading: loadingAttendance, error: errorAttendance, eventAttendanceGet } = eventAttendanceFetch
 
     const [page, setPage] = useState(1);
 
@@ -43,6 +41,10 @@ const EventPage = () => {
     useEffect(() => {
         dispatch(getEvent(id))
         dispatch(getEventAttendance(id, 0, searchState.limit))
+        return () => {
+            dispatch({ type: EVENT_FETCH_RESET })
+            dispatch({ type: EVENT_ATTENDANCE_FETCH_RESET })
+        }
     },[])
 
     useEffect(() => {
@@ -98,12 +100,14 @@ const EventPage = () => {
         <>
             <MainCard title={eventGet !==undefined ? eventGet.name_ : ""}>
             <br/>
-            { loading || loadingEvent ? 
+            { loading || loadingAttendance ? 
                 <Stack alignItems="center">
                     <CircularProgress size='4rem'/>
                 </Stack> : (
                 <>
                     <Meta title={eventGet.name_ + ' | ' + t('event_page_title')}/>
+                    { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: EVENT_FETCH_RESET })}>{t(error)}</Alert></Box> }
+                    { errorAttendance && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: EVENT_ATTENDANCE_FETCH_RESET })}>{t(errorAttendance)}</Alert></Box> }
                     <Grid container direction={ { xs: "column", md: "row"} } spacing={2}>
                         <Grid item xs={12} md={6}>
                             <DataGrid
@@ -158,9 +162,10 @@ const EventPage = () => {
                         </Grid>
                         { eventGet && eventAttendanceGet.text.length !== 0 && <Grid item xs={12} md={6}>
                             <UpcomingEventsChartWrapper 
-                                loading={loading}
-                                dropdownOptions={[{label: eventGet.name_, value: eventGet.id_}]} 
-                                data={[{id: eventGet.id_, attendance: {going : eventAttendanceGet.going, not_going: eventAttendanceGet.not_going, interested: eventAttendanceGet.interested, unanswered: eventAttendanceGet.none}}]} 
+                                loading={loading} 
+                                dropdownOptions={eventAttendanceGet.text.map(obj => { let newObj = { label: obj.name_, value: obj.event_id_}; return newObj })} 
+                                data={eventAttendanceGet.text.map(obj => { let newObj = { id: obj.event_id_, state: obj.state_, count: 0}; return newObj })} 
+                                attendance={eventAttendanceGet}
                                 title={t('attendance')}
                             />
                         </Grid>

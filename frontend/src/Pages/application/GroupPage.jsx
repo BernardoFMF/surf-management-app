@@ -16,6 +16,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { blue } from "@mui/material/colors";
 import InputField from '../../components/multiStepForm/InputField';
 import Meta from '../../components/Meta';
+import { GROUP_FETCH_RESET, GROUP_MEMBERS_FETCH_RESET } from '../../store/constants/groupConstants'
 
 const GroupPage = () => {
     const { t } = useTranslation()
@@ -41,6 +42,10 @@ const GroupPage = () => {
     useEffect(() => {
         dispatch(getGroupById(id))
         dispatch(getGroupByIdMembers(id, searchState.username_filter, 0, searchState.limit))
+        return () => {
+            dispatch({ type: GROUP_FETCH_RESET })
+            dispatch({ type: GROUP_MEMBERS_FETCH_RESET })
+        }
     }, [dispatch,id])
 
     useEffect(() => {
@@ -142,8 +147,8 @@ const GroupPage = () => {
                 <>
                     <Meta title={groupById.name_ + ' | ' + t('group_page_title')}/>
                     <MainCard title={groupById ? groupById.name_ : ''} secondaryText={groupById.description_} sx={{height: '100%'}}>
-                        { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                        { errorMembers && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(errorMembers)}</Alert></Box> }
+                        { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: GROUP_FETCH_RESET })}>{t(error)}</Alert></Box> }
+                        { errorMembers && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: GROUP_FETCH_RESET })}>{t(errorMembers)}</Alert></Box> }
                         <Grid container direction={'row'} spacing={5}>
                             <Grid item>
                                 {

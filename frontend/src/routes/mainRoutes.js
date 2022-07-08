@@ -7,7 +7,7 @@ import RequireAdmin from '../components/RequireAdmin'
 import RequireMember from '../components/RequireMember'
 import Error from '../Pages/error/Error'
 import AnimatedVideo from '../components/AnimatedVideo';
-import AnimatedCard from '../components/AnimatedCard';
+import RequireNotDeleted from '../components/RequireNotDeleted';
 
 const DashboardDefault = Loadable(lazy(() => import('../Pages/dashboard/DashboardOverviewPage')))
 const DashboardAnalytics = Loadable(lazy(() => import('../Pages/dashboard/DashboardAnalyticsPage')))
@@ -31,7 +31,7 @@ const GroupPage = Loadable(lazy(() => import('../Pages/application/GroupPage')))
 
 const mainRoutes = {
     path: '/',
-    element: <Error><RequireAuth><AnimatedVideo><MainLayout/></AnimatedVideo></RequireAuth></Error>,
+    element: <Error><RequireAuth><RequireNotDeleted><AnimatedVideo><MainLayout/></AnimatedVideo></RequireNotDeleted></RequireAuth></Error>,
     children: [
         {
             path: '/dashboard/analytics',
@@ -108,7 +108,7 @@ const mainRoutes = {
         {
             path: '/uploadfile',
             element: <RequireAdmin><UploadFilePage/></RequireAdmin>
-        },
+        }
     ]
 };
 

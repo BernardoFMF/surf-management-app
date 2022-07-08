@@ -10,32 +10,39 @@ import {
     QUOTA_CREATE_REQUEST,
     MEMBER_QUOTAS_FETCH_SUCCESS,
     MEMBER_QUOTAS_FETCH_FAIL,
-    MEMBER_QUOTAS_FETCH_REQUEST
+    MEMBER_QUOTAS_FETCH_REQUEST,
+    QUOTAS_FETCH_RESET,
+    QUOTA_UPDATE_RESET,
+    QUOTA_CREATE_RESET
 } from '../constants/quotaConstants'
 
 export const quotasFetchReducer = (state = {quotasGet: {quotas:[],number_of_quotas:0}}, action) => {
     switch (action.type) {
         case QUOTAS_FETCH_REQUEST:
-        return { loading: true }
+            return { loading: true }
         case QUOTAS_FETCH_SUCCESS:
-        return { loading: false, quotasGet: action.payload }
+            return { loading: false, quotasGet: action.payload }
         case QUOTAS_FETCH_FAIL:
-        return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
+        case QUOTAS_FETCH_RESET:
+            return {quotasGet: {quotas:[],number_of_quotas:0}}
         default:
-        return state
+            return state
     }
 }
 
 export const quotaUpdateReducer = (state = {}, action) => {
     switch (action.type) {
         case QUOTA_UPDATE_REQUEST:
-        return { loading: true }
+            return { loading: true }
         case QUOTA_UPDATE_SUCCESS:
-        return { loading: false, quotaPut: action.payload }
+            return { loading: false, quotaPut: action.payload }
         case QUOTA_UPDATE_FAIL:
-        return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
+        case QUOTA_UPDATE_RESET:
+            return {}
         default:
-        return state
+            return state
     }
 }
 
@@ -55,12 +62,14 @@ export const memberQuotasFetchReducer = (state = {memberQuotasGet: {quotas:[],nu
 export const createQuotaReducer = (state = {}, action) => {
     switch (action.type) {
         case QUOTA_CREATE_REQUEST:
-        return { loading: true }
+            return { loading: true }
         case QUOTA_CREATE_SUCCESS:
-        return { loading: false, quotaCreate: action.payload }
+            return { loading: false, quotaCreate: action.payload }
         case QUOTA_CREATE_FAIL:
-        return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
+        case QUOTA_CREATE_RESET:
+            return {}
         default:
-        return state
+            return state
     }
 }

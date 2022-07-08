@@ -8,6 +8,7 @@ import AnimateButton from '../extended/AnimateButton';
 import * as Yup from 'yup'
 import InputField from '../multiStepForm/InputField'
 import { createSport} from '../../store/actions/sportActions'
+import { SPORT_CREATE_RESET } from '../../store/constants/sportConstants'
 
 const QuotaManagementCreateDialog = ({open, closeHandler}) => {
     const { t } = useTranslation()
@@ -35,8 +36,8 @@ const QuotaManagementCreateDialog = ({open, closeHandler}) => {
                 {t('create')}
             </Typography>
             <DialogContent>
-                { error && <Box sx={{ pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                { message && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success">{t('sport_create_alert')}</Alert></Box> }
+                { error && <Box sx={{ pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: SPORT_CREATE_RESET })}>{t(error)}</Alert></Box> }
+                { message && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success" onClose={() => dispatch({ type: SPORT_CREATE_RESET })}>{t('sport_create_alert')}</Alert></Box> }
                 <Box
                     sx={{
                         display: 'flex',

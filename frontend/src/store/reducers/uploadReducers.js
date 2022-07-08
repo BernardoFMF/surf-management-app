@@ -1,4 +1,4 @@
-import { UPLOAD_REQUEST, UPLOAD_SUCCESS, UPLOAD_FAIL } from '../constants/uploadConstants'
+import { UPLOAD_REQUEST, UPLOAD_SUCCESS, UPLOAD_FAIL, UPLOAD_RESET } from '../constants/uploadConstants'
 
 export const uploadReducer = (state = {uploadGet: {file:""}}, action) => {
     switch (action.type) {
@@ -8,6 +8,8 @@ export const uploadReducer = (state = {uploadGet: {file:""}}, action) => {
             return { loading: false, uploadGet: action.payload }
         case UPLOAD_FAIL:
             return { loading: false, error: action.payload }
+        case UPLOAD_RESET:
+            return {uploadGet: {file:""}}
         default:
             return state
     }

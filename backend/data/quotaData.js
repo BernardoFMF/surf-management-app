@@ -16,16 +16,22 @@ const quotaData = (db) => {
 	const getUsersQuotas = async () => {
 		return await db.getUsersQuotasData()
 	} 
-    
+
 	const getMemberQuotasById = async (id_,offset, limit) => {
 		const member = await db.getMemberByIdData(id_)
 		if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_28')
 		return await db.getMemberQuotasByIdData(id_,offset,limit)
 	}
+
+	const getQuotasByDate = async (date) => {
+		return await db.getQuotasByDateData(date)
+	} 
     
 	const postQuota = async (date_) => {
 		//let allEmails = await db.getEmails()
 		//await mailSender(allEmails,`Novo Evento: ${name_}`, quotaAlertTemplate(name_, initial_date_, final_date_))
+		const hasCreated = await db.getQuotasByDateData(date_)
+		if (hasCreated.length !== 0) throw error(409, 'Quota with that date already exists', 'MESSAGE_CODE_44')
 		return await db.postQuotaData(date_)
 	}
     
@@ -63,7 +69,8 @@ const quotaData = (db) => {
 		getManagementQuotas,
 		getManagementQuotaByType,
 		updateManagementQuotaByType,
-		postManagementQuota
+		postManagementQuota,
+		getQuotasByDate
 	} 
 }
 

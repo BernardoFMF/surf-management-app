@@ -26,12 +26,6 @@ const CandidateApproveDialog = ({open, closeHandler, id}) => {
         dispatch(approveCandidate(id, values.member_type, values.paid_enrollment))
     }
 
-    useEffect(() => {
-        return () => {
-            dispatch({ type: APPROVE_CANDIDATE_RESET })
-        }
-    }, [])
-
     return (
         <Dialog
             PaperProps={{

@@ -8,6 +8,7 @@ import AnimateButton from '../extended/AnimateButton';
 import * as Yup from 'yup'
 import DropdownInputField from '../multiStepForm/DropdownInputField'
 import { updateMemberAttendance} from '../../store/actions/eventActions'
+import { MEMBER_EVENT_ATTENDANCE_UPDATE_RESET } from '../../store/constants/eventConstants'
 
 
 const AttendanceEditDialog = ({open, closeHandler, row}) => {
@@ -36,8 +37,8 @@ const AttendanceEditDialog = ({open, closeHandler, row}) => {
                 {t('update_attendance')}
             </Typography>
             <DialogContent>
-                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                { memberEventAttendanceUpdate && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('state_updated_successfully')}</Alert></Box> }
+                { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: MEMBER_EVENT_ATTENDANCE_UPDATE_RESET })}>{t(error)}</Alert></Box> }
+                { memberEventAttendanceUpdate && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success" onClose={() => dispatch({ type: MEMBER_EVENT_ATTENDANCE_UPDATE_RESET })}>{t('state_updated_successfully')}</Alert></Box> }
                 <Box
                     sx={{
                     display: 'flex',

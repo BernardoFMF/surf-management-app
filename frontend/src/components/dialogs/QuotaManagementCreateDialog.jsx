@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Typography, Dialog, DialogActions, DialogContent, Button, Box, Alert, Grid } from '@mui/material'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +9,7 @@ import * as Yup from 'yup'
 import InputField from '../multiStepForm/InputField'
 import { createType } from '../../store/actions/typeActions'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
+import { TYPES_CREATE_RESET } from '../../store/constants/typeConstants'
 
 const QuotaManagementCreateDialog = ({open, closeHandler}) => {
     const { t } = useTranslation()
@@ -36,8 +37,8 @@ const QuotaManagementCreateDialog = ({open, closeHandler}) => {
                 {t('create')}
             </Typography>
             <DialogContent>
-                { error && <Box sx={{ pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
-                { message && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success">{t('management_create_alert')}</Alert></Box> }
+                { error && <Box sx={{ pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: TYPES_CREATE_RESET })}>{t(error)}</Alert></Box> }
+                { message && <Box sx={{ pl: { md: 2 }, pb: 2 }}><Alert variant="outlined" severity="success" onClose={() => dispatch({ type: TYPES_CREATE_RESET })}>{t('management_create_alert')}</Alert></Box> }
                 <Box
                     sx={{
                         display: 'flex',
