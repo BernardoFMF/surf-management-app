@@ -18,11 +18,18 @@ const emailServices = (db) => {
     }
 
     const sendNotifyEmailServices = async () => {
-        const today = new Date();
-        const date = today.getFullYear()+'-1-1';
-        const quotas = await data.getQuotasByDate(date)
-        const emails = quotas.map(row => row.email_)
-        return await notify(emails, `Quota de ${date}`, notifyTemplate(date, quotas[0].amount_))
+        const quotas = await data.getQuotas(undefined, undefined, undefined, 0, -1)
+        const receivers = []
+        quotas.quotas.map(row => {
+            if (!receivers.includes(row.email_)) {
+                receivers.push(row.email_)
+            }
+        })
+        for (const row of receivers) {
+            const quotasByEmail = await data.getQuotasByEmail(row)
+            await notify(row, `Quotas em atraso`, notifyTemplate(quotasByEmail))
+          }
+        return true
     }
 
     return {

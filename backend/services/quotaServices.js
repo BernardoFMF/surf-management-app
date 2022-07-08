@@ -31,6 +31,11 @@ const quotaServices = (db) => {
 		if(!date) throw error(400, 'Parameter not found: date', 'MESSAGE_CODE_14')
 		return await data.postQuota(date)
 	}
+
+	const deleteQuotaServices = async (date) => {
+		if(!date) throw error(400, 'Parameter not found: date', 'MESSAGE_CODE_14')
+		return await data.deleteQuota(date)
+	}
 	
 	const updateMemberQuotaServices = async (qid, paymentDate) => {
 		if(!qid) throw error(400, 'Parameter not found: qid', 'MESSAGE_CODE_14')
@@ -64,6 +69,7 @@ const quotaServices = (db) => {
 		getUsersQuotasServices, 
 		getMemberQuotasByIdServices, 
 		postQuotaServices, 
+		deleteQuotaServices,
 		updateMemberQuotaServices,
 		getManagementQuotasServices,
 		updateManagementQuotaByTypeServices,

@@ -893,7 +893,8 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			count++
 		}
 		queryCount = query
-		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		query = query + ` offset ${offset}`
+		if(limit !== -1) query +=  ` FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
@@ -934,6 +935,28 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			client.release()
 		}
 	}
+
+	const getQuotasByEmailData = async (email) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await client.query(queries.QUERY_GET_QUOTAS_BY_EMAIL, [email])
+			await client.query('commit')
+			result.rows = result.rows.map(quota => {
+				quota.date_ = formatDate(quota.date_)
+				if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
+				return quota
+			})
+			return result.rows
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	
 
 	const getCompaniesQuotasData = async () => {
 		const client = await pool.connect()
@@ -990,7 +1013,23 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			await client.query('begin')
 			const result = await client.query(queries.QUERY_POST_QUOTA, [date_, 0])
 			await client.query('commit')
+			console.log('boas');
 			return result.rows[0].count_date
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const deleteQuotaData = async (date_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await client.query(queries.QUERY_DELETE_QUOTA, [date_])
+			await client.query('commit')
+			return result
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1962,6 +2001,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getUsersQuotasData, 
 		getMemberQuotasByIdData, 
 		postQuotaData, 
+		deleteQuotaData,
 		updateMemberQuotaData, 
 		getMemberByIdData, 
 		getMemberByUsernameData, 
@@ -1995,6 +2035,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		uploadUsersSportsData,
 		uploadUsersData,
 		getStatisticsData,
+		getQuotasByEmailData,
 		pool 
 	}
 

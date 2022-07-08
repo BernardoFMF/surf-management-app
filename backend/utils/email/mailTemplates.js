@@ -9,15 +9,15 @@ const eventTemplate = (name_, initial_date_, final_date_) => {
 	return {text, html}
 }
 
-const notifyTemplate = (date, value) => {
-	const text = `A quota de ${date} no valor de ${value} euros encontra-se com o pagamento pendente.`
-	const html = `
-					<h4> A quota de ${date} no valor de ${value} euros encontra-se com o pagamento pendente. </h4> 
-					<h4> Qualquer dúvida não hesite em nos contactar. </h4>
-					<p/>
-					<h4> Cumprimentos da equipa, </h4>
-					<h4> Ericeira Surf Club </h4>
-				`
+const notifyTemplate = (quotaPair) => {
+	const text = `As seguintes quotas encontram-se em dívida:`
+	let html = `<p> Olá, </p> <p> As seguintes quotas encontram-se em dívida: </p>`
+	quotaPair.forEach(row => html += `<li> Quota de ${row.date_} no valor de ${row.amount_}. </li>` )
+	html += `
+			<p> Qualquer dúvida não hesite em nos contactar. </p>
+			<p> Cumprimentos da equipa, </p>
+			<p> Ericeira Surf Club </p>
+			`
 	return {text, html}
 }
 

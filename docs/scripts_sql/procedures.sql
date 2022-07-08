@@ -387,10 +387,9 @@ LANGUAGE plpgsql
 as
 $$
 begin
-	if not exists(select * from quota_ where date_ = p_date_) then
-		INSERT INTO Quota_(member_id_, payment_date_, amount_, date_) SELECT id_, NULL, quota_value_, p_date_ FROM Member_ m join Member_Types_ mt on m.member_type_ = mt.type_ where quota_value_ <> 0 and is_deleted_ = false;
-		select count(*) into count_date from quota_ where date_ = p_date_;
-	end if;
+	INSERT INTO Quota_(member_id_, payment_date_, amount_, date_) SELECT m.id_, NULL, quota_value_, p_date_ FROM Member_ m join Member_Types_ mt on m.member_type_ = mt.type_ 
+	where quota_value_ <> 0 and is_deleted_ = false and m.id_ not in ( select member_id_ from quota_ where date_ = p_date_);
+	select count(*) into count_date from quota_ where date_ = p_date_;
 end
 $$;
 

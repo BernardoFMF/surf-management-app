@@ -21,6 +21,8 @@ const quotaRoutes = (data) => {
 	app.get('/members/:id', authentication.authMember, controller.getMemberQuotasById)
     
 	app.post('/', authentication.authAdmin, controller.postQuota)
+
+	app.delete('/', authentication.authAdmin, controller.deleteQuota)
     
 	app.put('/:id', authentication.authAdmin, controller.updateMemberQuota)
 
