@@ -32,9 +32,9 @@ create table Member_ (
 	member_type_	text,
 	has_debt_ 		bool default false,
 	is_deleted_ 	bool default false,
-	username_		text unique,
+	username_		text,
 	pword_			text,
-	iban_			text unique check (iban_ like 'PT50%'),
+	iban_			text check (iban_ like 'PT50%'),
 	
 	primary key(id_),
 	constraint fk_role foreign key(member_type_) references Member_Types_ (type_)

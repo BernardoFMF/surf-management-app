@@ -1579,13 +1579,15 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		try {
 			for(let value of values){
 				await client.query('begin')
-				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],val[6],value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,value[7],0])
+				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],value[6],value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,value[7],0])
 				await client.query('commit')
 				ids.push(result.rows[0].new_id_)
 			}
+			console.log(ids);
 			return ids
 		} catch (e) {
 			await client.query('rollback')
+			console.log(e);
 			throw e
 		} finally {
 			client.release()
@@ -1594,14 +1596,15 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const uploadCompaniesData = async(values) => {
 		const client = await pool.connect()
-		let res
+		let ids = []
 		try {
 			for(let value of values){
 				await client.query('begin')
-				res = await client.query(queries.QUERY_POST_COMPANY, [value[4],value[2],value[14],value[13],value[12],value[11],value[10],null,null,value[0],null,value[1],0])
+				let result = await client.query(queries.QUERY_POST_COMPANY, [value[4],value[2],value[14],value[13],value[12],value[11],value[10],null,null,value[0],null,value[1],0])
 				await client.query('commit')
+				ids.push(result.rows[0].new_id_)
 			}	
-			return res
+			return ids
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1903,8 +1906,24 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			client.release()
 		}
 	}
+
+	const postNewCredentialsTokenData = async (id, hash) => {
+		const client = await pool.connect()
+
+		try {
+			await client.query('begin')
+			await client.query(queries.QUERY_POST_NEW_TOKEN_CREDENTIALS, [id, hash])
+			await client.query('commit')
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
 	
 	return { 
+		postNewCredentialsTokenData,
 		changePassword,
 		changeCredentials,
 		getQuotasByDateData,
