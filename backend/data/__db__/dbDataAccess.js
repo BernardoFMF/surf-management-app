@@ -1579,9 +1579,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		try {
 			for(let value of values){
 				await client.query('begin')
-				let birthDate = value[6].split("/") 
-				let enrollmentDate = value[7].split("/")
-				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],`${birthDate[2]}-${birthDate[0]}-${birthDate[1]}`,value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,`${enrollmentDate[2]}-${enrollmentDate[0]}-${enrollmentDate[1]}`,0])
+				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],val[6],value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,value[7],0])
 				await client.query('commit')
 				ids.push(result.rows[0].new_id_)
 			}

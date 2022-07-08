@@ -61,7 +61,7 @@ const UploadFilePage = () => {
         return () => {
             dispatch({ type: UPLOAD_RESET })
         }
-    })
+    },[])
 
     const handleChange = (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false);
