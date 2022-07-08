@@ -64,9 +64,13 @@ const authData = (db) => {
 		return true
 	}
 
-    const changeCredentials = async (userId, token, username, password) => {
+    const changeCredentials = async (userId, token, email, username, password) => {
         const user = await db.getMemberByIdData(userId)
 		if (!user || user.is_deleted_) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
+
+		let userEmail = await db.getUserEmailByIdData(userId)
+
+		if (userEmail.email_ != email) throw error(409, 'Email does not match', 'MESSAGE_CODE_48')
 
         const userByUsername = await db.getMemberByUsernameData(username)
 
@@ -89,8 +93,6 @@ const authData = (db) => {
         const hash = await cryptoUtil.hashpassword(password)
 
         await db.changeCredentials(userId, username, hash)
-
-        let userEmail = await db.getUserEmailByIdData(userId)
 
 		await mailSender(userEmail.email_, 'Credenciais foram alteradas com sucesso', credentialsChangedTemplate())
 

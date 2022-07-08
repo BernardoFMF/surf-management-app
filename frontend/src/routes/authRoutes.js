@@ -9,6 +9,7 @@ const AuthLogin = Loadable(lazy(() => import('../Pages/auth/SignInPage')))
 const AuthRegister = Loadable(lazy(() => import('../Pages/auth/SignUpPage')))
 const ValidatePage = Loadable(lazy(() => import('../Pages/ValidatePage')))
 const ResetPassword = Loadable(lazy(() => import('../Pages/auth/ResetPasswordPage')))
+const ChangeCredentials = Loadable(lazy(() => import('../Pages/auth/ChangeCredentialsPage')))
 
 const authRoutes = {
     path: '/',
@@ -30,6 +31,10 @@ const authRoutes = {
             path: 'password-reset',
             element: <ResetPassword />
         },
+        {
+            path: 'change-credentials',
+            element: <ChangeCredentials />
+        }
     ]
 };
 

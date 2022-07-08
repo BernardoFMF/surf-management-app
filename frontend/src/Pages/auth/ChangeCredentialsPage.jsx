@@ -9,19 +9,19 @@ import { Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 // project imports
 import AuthWrapper from './AuthWrapper'
 import AuthCardWrapper from './AuthCardWrapper'
-import AuthResetPassword from './auth-form/AuthResetPassword';
+import AuthChangeCredentials from './auth-form/AuthChangeCredentials';
 import Logo from '../../components/Logo'
 import AnimatedCard from '../../components/AnimatedCard';
 import Meta from '../../components/Meta';
 
-const ResetPasswordPage = () => {
+const ChangeCredentialsPage = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const { t } = useTranslation()
   
     return (
         <>
-            <Meta title={t('reset_password_page_title')}/>
+            <Meta title={t('change_credentials_page_title')}/>
             <AuthWrapper>
                 <AnimatedCard>
                     <TranslationMenu sx={{ pt: 2}}></TranslationMenu>
@@ -48,14 +48,14 @@ const ResetPasswordPage = () => {
                                                                 gutterBottom
                                                                 variant={matchDownSM ? 'h3' : 'h2'}
                                                             >
-                                                                {t('change_password')}
+                                                                {t('change_credentials')}
                                                             </Typography>
                                                         </Stack>
                                                     </Grid>
                                                 </Grid>
                                             </Grid>
                                             <Grid item xs={12}>
-                                                <AuthResetPassword />
+                                                <AuthChangeCredentials />
                                             </Grid>
                                         </Grid>
                                     </AuthCardWrapper>
@@ -66,8 +66,7 @@ const ResetPasswordPage = () => {
                 </AnimatedCard>
             </AuthWrapper>
         </>
-        
     );
 };
 
-export default ResetPasswordPage
+export default ChangeCredentialsPage

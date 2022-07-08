@@ -13,7 +13,11 @@ import {
   CHANGE_PASSWORD_REQUEST_REQUEST,
   CHANGE_PASSWORD_REQUEST_SUCCESS,
   CHANGE_PASSWORD_REQUEST_FAIL,
-  CHANGE_PASSWORD_REQUEST_RESET
+  CHANGE_PASSWORD_REQUEST_RESET,
+  CHANGE_CREDENTIALS_REQUEST,
+  CHANGE_CREDENTIALS_SUCCESS,
+  CHANGE_CREDENTIALS_FAIL,
+  CHANGE_CREDENTIALS_RESET
 } from "../constants/memberConstants"
 
 export const memberLoginReducer = (state = {}, action) => {
@@ -68,6 +72,21 @@ export const changePasswordRequestReducer = (state = {}, action) => {
     case CHANGE_PASSWORD_REQUEST_FAIL:
       return { loading: false, error: action.payload }
     case CHANGE_PASSWORD_REQUEST_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
+export const changeCredentialsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CHANGE_CREDENTIALS_REQUEST:
+      return { loading: true }
+    case CHANGE_CREDENTIALS_SUCCESS:
+      return { loading: false, updated: action.payload }
+    case CHANGE_CREDENTIALS_FAIL:
+      return { loading: false, error: action.payload }
+    case CHANGE_CREDENTIALS_RESET:
       return {}
     default:
       return state

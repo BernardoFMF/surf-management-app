@@ -1,20 +1,22 @@
 import {
-    MEMBER_LOGIN_FAIL,
-    MEMBER_LOGIN_REQUEST,
-    MEMBER_LOGIN_SUCCESS,
-    MEMBER_LOGOUT,
-    MEMBER_FETCH_REQUEST,
-    MEMBER_FETCH_SUCCESS,
-    MEMBER_FETCH_FAIL,
-    CHANGE_PASSWORD_FAIL,
-    CHANGE_PASSWORD_REQUEST,
-    CHANGE_PASSWORD_SUCCESS,
-    CHANGE_PASSWORD_REQUEST_REQUEST,
-    CHANGE_PASSWORD_REQUEST_SUCCESS,
-    CHANGE_PASSWORD_REQUEST_FAIL
-  } from '../constants/memberConstants'
+  MEMBER_LOGIN_FAIL,
+  MEMBER_LOGIN_REQUEST,
+  MEMBER_LOGIN_SUCCESS,
+  MEMBER_LOGOUT,
+  MEMBER_FETCH_REQUEST,
+  MEMBER_FETCH_SUCCESS,
+  MEMBER_FETCH_FAIL,
+  CHANGE_PASSWORD_FAIL,
+  CHANGE_PASSWORD_REQUEST,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_REQUEST_REQUEST,
+  CHANGE_PASSWORD_REQUEST_SUCCESS,
+  CHANGE_PASSWORD_REQUEST_FAIL,
+  CHANGE_CREDENTIALS_REQUEST,
+  CHANGE_CREDENTIALS_SUCCESS,
+  CHANGE_CREDENTIALS_FAIL
+} from '../constants/memberConstants'
 
-  
 export const login = (username, password) => async (dispatch) => {
     try {
       dispatch({
@@ -153,6 +155,36 @@ export const login = (username, password) => async (dispatch) => {
     } catch (error) {
       dispatch({
         type: CHANGE_PASSWORD_REQUEST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+
+  export const changeCredentials = (token, id, email, username, password) => async (dispatch) => {
+    try {
+      dispatch({
+        type: CHANGE_CREDENTIALS_REQUEST,
+      })
+      const response = await fetch('/api/auth/updateCredentials', {
+          method: 'POST',
+          body: JSON.stringify({ token, id, email, username, password }),
+          headers: { "Content-Type": "application/json" }
+      })
+      const credentialsChangeRequest = await response.json()
+
+      if(response.status !== 201) throw Error(credentialsChangeRequest.message_code)
+
+      dispatch({
+        type: CHANGE_CREDENTIALS_SUCCESS,
+        payload: credentialsChangeRequest,
+      })
+      
+    } catch (error) {
+      dispatch({
+        type: CHANGE_CREDENTIALS_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
