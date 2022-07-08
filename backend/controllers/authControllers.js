@@ -30,7 +30,7 @@ const authController = (data) => {
 	})
 
 	const updateCredentials = asyncHandler(async (req, res) => {
-		const updateCredentialsService = await services.updateCredentialsServices(req.body.id, req.body.token, req.body.username, req.body.password)
+		const updateCredentialsService = await services.updateCredentialsServices(req.body.id, req.body.token, req.body.email, req.body.username, req.body.password)
 		res.status(201)
 		res.json({ message: 'Credentials updated successfully', message_code: 'MESSAGE_CODE_47' })
 	})

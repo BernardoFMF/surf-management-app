@@ -378,7 +378,12 @@
     "You are not longer part of the club" : "You are not longer part of the club",
     "Feel free to contact us via email": "Feel free to contact us via email",
 
-    "Notifiy" : "Notifiy",
+    "reset_password_page_title": "Change your password",
+    "change_password": "Change your password",
+    "password_requested_successfully": "Your request was sucessfull, check your email",
+    "password_changed_successfully": "Your password was changed successfully",
+
+    "Notify" : "Notify",
     "Message for notify": "By saying yes, all users that haven't paid their quotas will be notified.",
     "Are you sure?" : "Are you sure?",
 

@@ -218,7 +218,7 @@ const AllQuotasPage = () => {
                                 handleOpenVerification()
                             }}
                         >
-                            {t('Notifiy')}
+                            {t('Notify')}
                         </LoadingButton>
                     </AnimateButton>
                 </Box> 

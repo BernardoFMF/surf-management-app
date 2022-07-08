@@ -9,7 +9,7 @@ const QuotaManagementCreateDialog = ({open, closeHandler}) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
 
-    const handleNotifiy = async () => {
+    const handleNotify = async () => {
         dispatch(sendEmailNotify())
         closeHandler()
     }
@@ -34,7 +34,7 @@ const QuotaManagementCreateDialog = ({open, closeHandler}) => {
                 </Typography>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleNotifiy}>{t('Yes')}</Button>
+                <Button onClick={handleNotify}>{t('Yes')}</Button>
                 <Button onClick={closeHandler}>{t('No')}</Button>
             </DialogActions>
         </Dialog>

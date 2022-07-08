@@ -9,7 +9,7 @@ import { sportsDeletionReducer, sportsFetchReducer, createSportReducer, updateSp
 import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer, createQuotaReducer} from './reducers/quotaReducers'
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyPostReducer, companyDeletionReducer, companiesFetchReducer, companyFetchReducer, companyUpdateReducer, memberValidateFetchReducer } from './reducers/companyReducers'
-import { memberLoginReducer, memberFetchReducer } from './reducers/memberReducers'
+import { memberLoginReducer, memberFetchReducer, changePasswordReducer, changePasswordRequestReducer, changeCredentialsReducer } from './reducers/memberReducers'
 import { eventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAttendanceFetchReducer, memberEventsAttendanceFetchReducer, createEventReducer, memberEventAttendanceUpdateReducer} from './reducers/eventReducers'
 import { uploadReducer} from './reducers/uploadReducers'
 import { groupFetchReducer, memberGroupsFetchReducer, groupsFetchReducer, groupDeleteReducer, groupMembersFetchReducer, groupPostReducer } from './reducers/groupReducers'
@@ -72,7 +72,10 @@ const reducer = combineReducers({
   exportCompaniesCSV: exportCompaniesCSVReducer, 
   exportCandidatesCSV: exportCandidatesCSVReducer,
   statisticsFetch: statisticsFetchReducer,
-  sendEmailNotify: sendEmailNotifyReducer
+  changePassword: changePasswordReducer,
+  changePasswordRequest: changePasswordRequestReducer,
+  sendEmailNotify: sendEmailNotifyReducer,
+  changeCredentials: changeCredentialsReducer
 })
 
 const memberInfoFromStorage = localStorage.getItem('memberInfo')

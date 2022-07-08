@@ -12,7 +12,7 @@ const uploadController = (data) => {
 		const response = await services.uploadFileServices(req.files.file.data,req.body.type,url)
 		if (response) {
 			res.status(201)
-			res.json(user)
+			res.json(response)
 		}
 	})
 

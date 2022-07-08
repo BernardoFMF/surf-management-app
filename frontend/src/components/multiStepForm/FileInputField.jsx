@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useFormikContext, useField } from 'formik'
 import default_image from './../../../src/assets/data/blank-profile-picture.png'
 
-import { Button, Box, Avatar } from '@mui/material';
+import { Button, Box, Avatar, Stack, Typography, Grid } from '@mui/material';
 import AnimateButton from '../extended/AnimateButton'
 import { useTranslation } from 'react-i18next'
 
@@ -37,6 +37,7 @@ const FileInputField = ({ label, size, ...props}) => {
                 onChange={e => {if(e.target.files[0])setSelectedFile(e.target.files[0])}}
             />
             <Box mt={2} textAlign="left" width={'fit-content'}>
+                <Grid mt={2} textAlign="left" rowSpacing={4} container direction={'row'}>
                 <label htmlFor={label}>
                     <AnimateButton>
                         <Button 
@@ -51,6 +52,8 @@ const FileInputField = ({ label, size, ...props}) => {
                         </Button>
                     </AnimateButton>
                 </label>
+                <Typography>{selectedFile ? selectedFile.name : t("no_file_selected")}</Typography>
+                </Grid>
             </Box>         
         </>
     );
