@@ -2,12 +2,29 @@
 
 import error from '../utils/error.js'
 import { toDataURL } from 'qrcode'
+import cryptoUtil from '../utils/crypto.js'
+import crypto from 'crypto'
+import { mailSender } from '../utils/email/mailSender.js'
+import { credentialsChangeTemplate } from  '../utils/email/mailTemplates.js'
 
 const uploadData = (db) => {
+	let delimiter;
+
 	const upload = async (file,type,url) => {
 		let data = new Buffer.from(file).toString().split("\r\n")
-		console.log(data);
+		console.log("erro");
+		const checkDelimiter = data[0].includes(";")
+		console.log(checkDelimiter);
+		delimiter = checkDelimiter ? ";" : ","
 		data = data.slice(1,data.length-1)
+
+		console.log(delimiter)
+
+		data = data.filter(elem => {
+			const rowElems = elem.split(delimiter)
+			console.log(typeof(rowElems[0]));
+			return !rowElems.every(rowElem => rowElem == "")
+		})
 		console.log(data)
 		if(type == "memberTypes") return await uploadMemberTypes(data)
 		if(type == "usersCompanies") return await uploadUsersAndCompanies(data,url)
@@ -21,7 +38,7 @@ const uploadData = (db) => {
 	const uploadMemberTypes = async(data) => {
 		let count = 0;
 		for(let val of data){
-			val = val.split(",")
+			val = val.split(delimiter)
 			val[0] = `'${val[0]}'`
 			val[2] = `'${val[2]}'`
 			data[count++] = val
@@ -29,13 +46,13 @@ const uploadData = (db) => {
 		return await db.uploadMemberTypesData(data)
 	}
 
-	const uploadUsersAndCompanies = async(data,url) => {
+	const uploadUsersAndCompanies = async(data, url) => {
 		let users = []
 		let companies = []
 		let countU = 0;
 		let countC = 0;
 		for(let val of data){
-			val = val.split(",")
+			val = val.split(delimiter)
 			if(val[0] == "U"){
 				let birthDate = val[7].split("/")
 				val[7] = `${birthDate[2]}-${birthDate[1]}-${birthDate[0]}`
@@ -46,18 +63,42 @@ const uploadData = (db) => {
 				companies[countC++] = val.slice(1,val.length)
 			}
 		}
-		let ids = await db.uploadUsersData(users)
-		for(let userId of ids){
+		console.log(users);
+		let idsUsers = await db.uploadUsersData(users)
+		for(let userId of idsUsers){
 			const qrcode_ = await toDataURL(`${url}/validate/${userId}`)
 			await db.updateUserQrCodeData(userId, qrcode_)
 		}
-		return await db.uploadCompaniesData(companies)
+
+		let idsCompanies = await db.uploadCompaniesData(companies)
+
+		let ids = [...idsUsers, ...idsCompanies]
+		console.log(ids);
+		for (let id of ids) {
+			try {
+				let userEmail = await db.getUserEmailByIdData(id)
+				
+				let resetToken = crypto.randomBytes(32).toString('hex')
+				const hash = await cryptoUtil.hashpassword(resetToken)
+
+				await db.postNewCredentialsTokenData(id, hash)
+
+				const link = url + `/change-credentials?token=${resetToken}&id=${id}`
+
+				await mailSender(userEmail.email_, 'Alteração de credenciais', credentialsChangeTemplate(link))
+			} catch (e) {
+				console.log(e);
+				throw e
+			}
+			
+		}
+		return ids
 	}
 
 	const uploadQuotas = async(data) => {
 		let count = 0
 		for(let val of data){
-			val = val.split(",")
+			val = val.split(delimiter)
 			let Date = val[3].split("/") 
 			val[3] = `'${Date[2]}-${Date[1]}-${Date[0]}'`
 			if(val[1]){
@@ -72,7 +113,7 @@ const uploadData = (db) => {
 	const uploadSports = async(data) => {
 		let count = 0
 		for(let val of data){
-			val = val.split(",")
+			val = val.split(delimiter)
 			val[0] = `'${val[0]}'`
 			val.push(false)
 			data[count++] = val
@@ -83,7 +124,7 @@ const uploadData = (db) => {
 	const uploadSportTypes = async(data) => {
 		let count = 0
 		for(let val of data){
-			val = val.split(",")
+			val = val.split(delimiter)
 			val[0] = `'${val[0]}'`
 			data[count++] = val
 		}
@@ -93,7 +134,7 @@ const uploadData = (db) => {
 	const uploadUsersSports = async(data) => {
 		let count = 0
 		for(let val of data){
-			val = val.split(",")
+			val = val.split(delimiter)
 			val[2] = val[2].slice(1,val[2].length-1).split("|")
 			val[6] = val[6].slice(1,val[6].length-1).split("|")
 			data[count++] = val

@@ -222,7 +222,10 @@ const QUERY_CHANGE_PASSWORD = "update Member_ set pword_ = $2 where id_ = $1;"
 
 const QUERY_CHANGE_CREDENTIALS = "update Member_ set pword_ = $3, username_ = $2 where id_ = $1;"
 
+const QUERY_POST_NEW_TOKEN_CREDENTIALS = "insert into member_token_(member_id_, token_, createdAt_) values ($1, $2, null);"
+
 export default {
+    QUERY_POST_NEW_TOKEN_CREDENTIALS,
     QUERY_CHANGE_PASSWORD,
     QUERY_CHANGE_CREDENTIALS,
     QUERY_GET_QUOTAS_BY_DATE,
