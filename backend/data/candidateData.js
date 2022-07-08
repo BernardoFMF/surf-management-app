@@ -2,7 +2,8 @@
 
 import error from '../utils/error.js'
 import { toDataURL } from 'qrcode'
-
+import { mailSender } from '../utils/email/mailSender.js'
+import { approvalTemplate } from  '../utils/email/mailTemplates.js'
 
 const candidateData = (db) => {
 	const getCandidates = async (username_filter,name_filter,email_filter,offset,limit) => {
@@ -48,13 +49,15 @@ const candidateData = (db) => {
 	}
 	
 	const approveCandidate = async (id_, type_, paid_enrollment_, url) => {
-		await getCandidateById(id_)
+		const candidate = await getCandidateById(id_)
 		
 		const u_id_ = await db.approveCandidateData(id_, type_, paid_enrollment_)
-
+		const member = await db.getMemberByIdData(u_id_)
 		const qrcode_ = await toDataURL(`${url}/validate/${u_id_}`)
 
 		await db.updateUserQrCodeData(u_id_, qrcode_)
+		
+		await mailSender([candidate.email_],`Aprovação de candidatura`, approvalTemplate(candidate.full_name_, member.member_type_))
 
 		return u_id_
 	}

@@ -2,25 +2,25 @@ create table Candidate_ (
 	id_ 			int generated always as identity,
 	nif_			int unique check (nif_ <= 999999999),
 	cc_ 			int unique check (cc_ <= 999999999),
-	full_name_ 		varchar(60),
-	nationality_ 	varchar(30),
+	full_name_ 		text,
+	nationality_ 	text,
 	birth_date_		date,
-	location_		varchar(30),
+	location_		text,
 	address_ 		text,
 	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
-	email_ 			varchar(50) check (email_ like '%@%') unique,
+	email_ 			text check (email_ like '%@%') unique,
 	phone_number_	int,
 	pword_			text,
-	username_		varchar(30),
+	username_		text,
 	img_ 			text,
-	gender_ 		varchar(40),
+	gender_ 		text,
 	iban_ 			text unique check (iban_ like 'PT50%'),
 	
 	primary key(id_)
 );
 
 create table Member_Types_ (
-	type_ 			varchar(40),
+	type_ 			text,
 	quota_value_	int,
 	category_		text check (category_ in ('user', 'company')),
 	
@@ -29,11 +29,11 @@ create table Member_Types_ (
 
 create table Member_ (
 	id_ 			int generated always as identity,
-	member_type_	varchar(40),
+	member_type_	text,
 	has_debt_ 		bool default false,
 	is_deleted_ 	bool default false,
-	username_		varchar(30) unique,
-	pword_			varchar(100),
+	username_		text unique,
+	pword_			text,
 	iban_			text unique check (iban_ like 'PT50%'),
 	
 	primary key(id_),
@@ -73,10 +73,10 @@ create table Quota_ (
 
 create table Contact_ (
 	member_id_ 	 	int,
-	location_		varchar(30),
+	location_		text,
 	address_ 		text,
 	postal_code_ 	varchar(8) check (postal_code_ like '%-%'),
-	email_ 			varchar(50) check (email_ like '%@%') unique,
+	email_ 			text check (email_ like '%@%') unique,
 	phone_number_	int,
 	
 	primary key (member_id_),
@@ -86,7 +86,7 @@ create table Contact_ (
 create table Company_ (
 	member_id_ 	 	int,
 	nif_			int unique check (nif_ <= 999999999),
-	name_ 			varchar(40),
+	name_ 			text,
 
 	primary key (member_id_),
 	constraint fk_member foreign key(member_id_) references Member_(id_)
@@ -96,13 +96,13 @@ create table User_ (
 	member_id_		int,
 	nif_			int unique check (nif_ <= 999999999),
 	cc_ 			int unique check (cc_ <= 999999999),
-	full_name_ 		varchar(60),
-	nationality_ 	varchar(30),
+	full_name_ 		text,
+	nationality_ 	text,
 	birth_date_		date,
 	enrollment_date_	date,
 	paid_enrollment_	bool,
 	is_admin_		bool default false,
-	gender_ 		varchar(40),
+	gender_ 		text,
 
 	primary key (member_id_),
 	constraint fk_member foreign key(member_id_) references Member_(id_)
@@ -118,7 +118,7 @@ create table Member_Img_ (
 
 create table Sport_ (
 	id_ 	 		int generated always as identity,
-	name_			varchar(30) unique,
+	name_			text unique,
 	is_deleted_		bool default false,
 
 	primary key (id_)
@@ -130,7 +130,7 @@ create table User_Sport_ (
 	type_			text [],
 	fed_number_		int,
 	fed_id_			int,
-	fed_name_		varchar(60),
+	fed_name_		text,
 	years_federated_ int [],
 	is_absent_		bool default false,
 	is_candidate_ 	bool default false,
@@ -173,7 +173,7 @@ create table User_Sport_Types_ (
 
 create table Group_Member_Types_ (
 	group_id_		int,
-	member_type_	varchar(40),
+	member_type_	text,
 	
 	primary key(group_id_, member_type_),
 	constraint fk_member_type foreign key(member_type_) references Member_Types_(type_),

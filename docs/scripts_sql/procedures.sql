@@ -32,13 +32,11 @@ begin
 	select new_id_, g.group_id_ from Group_ g join Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_
 	where g.group_type_ = 'member_type' and gmt.member_type_ = mtype_;
 
-	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
-	SELECT extract(YEAR FROM date1) into year1;
-	SELECT extract(YEAR FROM current_date) into curr_year;
-	if year1 = curr_year then
+	for date1 in SELECT distinct date_ FROM Quota_ where extract(YEAR FROM date_) >= extract(YEAR FROM current_date) order by date_ ASC
+    LOOP
 		INSERT INTO Quota_(member_id_,payment_date_,amount_,date_) select new_id_, null, quota_value_, date1 from Member_Types_ mt where mt.type_ = mtype_;
-	end if;
-
+    END LOOP;
+   
 	insert into member_img_ values(new_id_, p_img_);
 end
 $$;
@@ -252,26 +250,26 @@ $$;
  * Deletes a candidate
  * Creates a user
  */
-create or replace procedure approve_candidate(cid int, type_ varchar(40), paid_enrollment_ bool, out new_id int)
+create or replace procedure approve_candidate(cid int, type_ text, paid_enrollment_ bool, out new_id int)
 LANGUAGE plpgsql  
 as
 $$
 DECLARE 
 	candidate_nif_ bigint;
 	candidate_cc_  bigint;
-	candidate_full_name_ varchar(60);
-	candidate_nationality_ varchar(30);
+	candidate_full_name_ text;
+	candidate_nationality_ text;
 	candidate_birth_date_ date;
-	candidate_location_ varchar(30);
-	candidate_address_ varchar(40);
+	candidate_location_ text;
+	candidate_address_ text;
 	candidate_postal_code_ varchar(8);
-	candidate_email_ varchar(50);
+	candidate_email_ text;
 	candidate_phone_number_ int;
 	candidate_pword_ text;
- 	candidate_username_ varchar(30);
+ 	candidate_username_ text;
  	candidate_id_ int;
  	candidate_img_ text;
- 	candidate_gender_ varchar(40);
+ 	candidate_gender_ text;
  	candidate_iban_ text;
  	curr_date_ DATE;
 	
@@ -300,7 +298,7 @@ $$;
  * if not creates it)
  */
 
-create or replace procedure post_company(name_ varchar(40), nif_ bigint, phone_number_ int, email_ varchar(30), postal_code_ varchar(8), address_ text, location_ varchar(30), username_ varchar(30), pword_ text, mtype_ varchar(40), img_ text, iban_ text, out new_id_ int)
+create or replace procedure post_company(name_ text, nif_ bigint, phone_number_ int, email_ text, postal_code_ varchar(8), address_ text, location_ text, username_ text, pword_ text, mtype_ text, img_ text, iban_ text, out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$
@@ -322,12 +320,10 @@ begin
 	select new_id_, g.group_id_ from Group_ g join Group_Member_Types_ gmt on g.group_id_ = gmt.group_id_
 	where g.group_type_ = 'member_type' and gmt.member_type_ = mtype_;
 
-	SELECT date_ into date1 FROM Quota_ ORDER BY id_ DESC LIMIT 1;
-	SELECT extract(YEAR FROM date1) into year1;
-	SELECT extract(YEAR FROM current_date) into curr_date;
-	if year1 = curr_date then
-		INSERT INTO Quota_(member_id_,payment_date_,amount_,date_) select new_id_, null, quota_value_, date1 from Member_Types_ mt where mt.type_ = mtype_;	
-	end if;
+	for date1 in SELECT distinct date_ FROM Quota_ where extract(YEAR FROM date_) >= extract(YEAR FROM current_date) order by date_ ASC
+    LOOP
+		INSERT INTO Quota_(member_id_,payment_date_,amount_,date_) select new_id_, null, quota_value_, date1 from Member_Types_ mt where mt.type_ = mtype_;
+    END LOOP;
 	insert into Member_Img_ (member_id_, img_value_) values (new_id_, img_);
 end
 $$;
@@ -335,12 +331,12 @@ $$;
 /**
  * Updates contact & company
  */
-create or replace procedure put_company(cid_ int, p_nif_ bigint, p_type_ varchar(40), p_name_ varchar(40), p_phone_number_ int, p_postal_code_ varchar(8), p_address_ text, p_location_ varchar(30), p_img_ text, p_is_deleted_ bool, p_iban_ text)
+create or replace procedure put_company(cid_ int, p_nif_ bigint, p_type_ text, p_name_ text, p_phone_number_ int, p_postal_code_ varchar(8), p_address_ text, p_location_ text, p_img_ text, p_is_deleted_ bool, p_iban_ text)
 LANGUAGE plpgsql  
 as
 $$
 declare
-	old_type varchar(40);
+	old_type text;
 	old_deleted bool;
 begin
 	select member_type_ into old_type from Member_ where id_ = cid_;
@@ -458,7 +454,7 @@ begin
 end
 $$;
 
-create or replace procedure post_event(name_ varchar(50), initial_date_ date, end_date_ date, groups_ int[], out new_id_ int)
+create or replace procedure post_event(name_ text, initial_date_ date, end_date_ date, groups_ int[], out new_id_ int)
 LANGUAGE plpgsql  
 as
 $$

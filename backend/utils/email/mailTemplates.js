@@ -21,6 +21,18 @@ const notifyTemplate = (date, value) => {
 	return {text, html}
 }
 
+const approvalTemplate = (full_name, role) => {
+	const text = `Viva ${full_name},`
+	const html = `
+					<h4> Viva ${full_name}, </h4> 
+					<p> Foi aprovado no clube, na categoria de ${role}.</p>
+					<p> Qualquer dúvida não hesite em nos contactar.</p>
+					<p> Cumprimentos da equipa, </p>
+					<p> Ericeira Surf Club </p>
+				`
+	return {text, html}
+}
+
 const quotaAlertTemplate = (date_) => {
 	const text = `Nova quota(${date_}) lançada não se esqueça de pagá-la`
 	const html = `<h1> Nova quota(${date_}) lançada não se esqueça de pagá-la</h1>`
@@ -55,4 +67,4 @@ const credentialsChangedTemplate = () => {
 	return {text, html}
 }
 
-export{eventTemplate, quotaAlertTemplate, passwordChangeTemplate, passwordChangedTemplate, contactUsTemplate, notifyTemplate, credentialsChangedTemplate}
+export{eventTemplate, quotaAlertTemplate, passwordChangeTemplate, passwordChangedTemplate, contactUsTemplate, notifyTemplate, credentialsChangedTemplate, approvalTemplate}
