@@ -1018,6 +1018,21 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 
+	const getAllMembersData = async () => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await client.query(queries.QUERY_GET_ALL_MEMBERS)
+			await client.query('commit')
+			return result.rows
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
 	const getMemberByIdData = async (id_) => {
 		const client = await pool.connect()
 		try {
@@ -1576,11 +1591,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadUsersData = async(values) => {
 		const client = await pool.connect()
 		let ids = []
+		console.log(values);
 		try {
 			for(let value of values){
 				await client.query('begin')
-				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],val[6],value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,value[7],0])
+				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],value[6],value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,value[7],0])
 				await client.query('commit')
+				console.log(result);
 				ids.push(result.rows[0].new_id_)
 			}
 			return ids
@@ -1594,11 +1611,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const uploadCompaniesData = async(values) => {
 		const client = await pool.connect()
+		console.log(values);
 		let res
 		try {
 			for(let value of values){
 				await client.query('begin')
 				res = await client.query(queries.QUERY_POST_COMPANY, [value[4],value[2],value[14],value[13],value[12],value[11],value[10],null,null,value[0],null,value[1],0])
+				console.log(res);
 				await client.query('commit')
 			}	
 			return res
@@ -1917,7 +1936,8 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getMemberGroupsData,
 		getGroupByIdMembersData,
 		getCandidateByIbanData,
-		getMemberByIbanData, 
+		getMemberByIbanData,
+		getAllMembersData, 
 		getManagementQuotas, 
 		getManagementQuotaByType, 
 		updateManagementQuotaByType,

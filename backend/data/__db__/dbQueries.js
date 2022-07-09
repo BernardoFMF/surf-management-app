@@ -218,6 +218,8 @@ const QUERY_CHANGE_PASSWORD = "update Member_ set pword_ = $2 where id_ = $1;"
 
 const QUERY_CHANGE_CREDENTIALS = "update Member_ set pword_ = $3, username_ = $2 where id_ = $1;"
 
+const QUERY_GET_ALL_MEMBERS = "select id_, member_type_,email_,phone_number_ ,iban_ from Member_ m join Contact_ c on m.id_ = c.member_id_"
+
 export default {
     QUERY_CHANGE_PASSWORD,
     QUERY_CHANGE_CREDENTIALS,
@@ -330,5 +332,6 @@ export default {
     QUERY_INSERT_MEMBER_TYPES,
     QUERY_INSERT_QUOTAS,
     QUERY_INSERT_SPORTS,
-    QUERY_INSERT_SPORT_TYPES
+    QUERY_INSERT_SPORT_TYPES,
+    QUERY_GET_ALL_MEMBERS
 }
