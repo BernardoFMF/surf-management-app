@@ -9,6 +9,7 @@ import queries from './dbQueries.js'
 const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const pool = pl(PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode)
+
 	function formatDate(date) {
 		var d = new Date(date),
 			month = '' + (d.getMonth() + 1),
@@ -22,6 +23,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	
 		return [year, month, day].join('-');
 	}
+
 	/**
 	 * Candidates
 	 */
@@ -71,22 +73,16 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	}
 	
 	const getCandidateByIdData = async (id_) => {
-		const client = await pool.connect()
-		try {
-			await client.query('Begin')
+		const handler = async (client) => {
 			const candidates = await client.query(queries.QUERY_GET_CANDIDATE_BY_ID, [id_])
-			await client.query('Commit')
 			candidates.rows = candidates.rows.map(candidate => {
 				candidate.birth_date_ = formatDate(candidate.birth_date_)
 				return candidate
 			})
 			return candidates.rows[0]
-		} catch(e) {
-			await client.query('Rollback')
-			throw e
-		} finally {
-			client.release()
 		}
+
+		return await pool(handler)
 	}
 
 	const postCandidateData = async (username_, cc_, nif_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, img_, gender_, iban_) => {

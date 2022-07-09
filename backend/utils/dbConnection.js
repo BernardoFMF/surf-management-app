@@ -13,7 +13,22 @@ const pool = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			rejectUnauthorized: false
 		}
 	}
-	return new pg.Pool(creds)
+	const connector = new pg.Pool(creds)
+
+	return async (transactionHandler) => {
+		const client = await pool.connect()
+		try {
+			await client.query('Begin')
+			const result = await transactionHandler(client)
+			await client.query('Commit')
+			return result
+		} catch(e) {
+			await client.query('Rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
 }
 	
 
