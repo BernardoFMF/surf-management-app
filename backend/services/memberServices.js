@@ -11,8 +11,13 @@ const memberServices = (db) => {
 		return await data.getMemberById(id)
 	}
 
+	const getAllMembersServices = async () => {
+		return await data.getAllMembers()
+	}
+
 	return {
-		getMemberByIdServices
+		getMemberByIdServices,
+		getAllMembersServices
 	}
 }
 

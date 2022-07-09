@@ -16,7 +16,7 @@ import user from '../data/userData.js'
 import quota from '../data/quotaData.js'
 import group from '../data/groupData'
 import member from '../data/memberData'
-
+import statistics from '../data/statisticsData'
 
 const dbSport = sport(data)
 const dbEvent = event(data)
@@ -26,6 +26,7 @@ const dbUser = user(data)
 const dbQuota = quota(data)
 const dbGroup = group(data)
 const dbMember = member(data)
+const dbStatistics = statistics(data)
 
 
 async function insertSportDummies() {
@@ -36,8 +37,8 @@ async function insertSportDummies() {
 }
 
 async function insertEventDummies() {
-	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1])
-	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2])
+	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1], true)
+	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2], true)
 }
 
 async function insertCandidateDummies() {
@@ -84,13 +85,16 @@ const offset = 0
 const limit = 100
 
 beforeAll( async () => {
-	const con = await data.pool.connect()
-	await con.query(drop)
-	await con.query(create)
-	await con.query(trigger)
-	await con.query(procedures)  
-	await con.query(insert)
-	con.release()
+	const handler = async (client) => {
+		await client.query(drop)
+		await client.query(create)
+		await client.query(trigger)
+		await client.query(procedures)  
+		await client.query(insert)
+	}
+
+	await data.pool(handler)
+
 	await insertQuotaPricesDummies()
 	await insertUserDummies()
 	await insertSportDummies()
@@ -103,7 +107,6 @@ beforeAll( async () => {
 
 //Members 
 
-
 test('Get specific member', async () => {
 	expect.assertions(1)
 	const member = await dbMember.getMemberById(1)
@@ -114,6 +117,14 @@ test('Get specific member', async () => {
 	expect.assertions(1)
 	const member = await dbMember.getMemberById(3)
 	expect(member.name_).toBe('Ericeira surf shop')
+})
+
+//Statistics 
+
+test('Get statistics', async () => {
+	expect.assertions(1)
+	const statistics = await dbStatistics.getStatistics()
+	expect(statistics.candidates[0].count).toBe("1")
 })
 
 // Groups 

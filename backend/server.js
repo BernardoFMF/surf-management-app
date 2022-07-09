@@ -91,7 +91,7 @@ const router = (app, data) => {
 	app.use('/api/quotas', quotaRoutes(data))
 	app.use('/api/auth', authRoutes(data))
 	app.use('/api/members', memberRoutes(data))
-	app.use('/api', uploadRoutes(data))
+	app.use('/api/uploadfile', uploadRoutes(data))
 	app.use('/api/groups', groupRoutes(data))
 	app.use('/api/statistics', statisticsRoutes(data))
 	app.use('/api/emails', emailRoutes(data))

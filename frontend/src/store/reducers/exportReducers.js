@@ -9,7 +9,11 @@ import {
     EXPORT_CANDIDATE_FETCH_SUCCESS,
     EXPORT_CANDIDATE_FETCH_FAIL,
     EXPORT_CANDIDATE_FETCH_RESET,
-    EXPORT_COMPANY_FETCH_RESET
+    EXPORT_COMPANY_FETCH_RESET,
+    EXPORT_MEMBERS_FETCH_REQUEST,
+    EXPORT_MEMBERS_FETCH_SUCCESS,
+    EXPORT_MEMBERS_FETCH_FAIL,
+    EXPORT_MEMBERS_FETCH_RESET,
 } from '../constants/exportConstants'
 
 export const exportUsersCSVReducer = (state = {exportUsers: []}, action) => {
@@ -50,6 +54,21 @@ export const exportUsersCSVReducer = (state = {exportUsers: []}, action) => {
         return { loading: false, error: action.payload }
       case EXPORT_CANDIDATE_FETCH_RESET:
         return {exportCandidates: []}
+      default:
+        return state
+    }
+  }
+
+  export const exportMembersCSVReducer = (state = {exportMembers: []}, action) => {
+    switch (action.type) {
+      case EXPORT_MEMBERS_FETCH_REQUEST:
+        return { loading: true }
+      case EXPORT_MEMBERS_FETCH_SUCCESS:
+        return { loading: false, exportMembers: action.payload }
+      case EXPORT_MEMBERS_FETCH_FAIL:
+        return { loading: false, error: action.payload }
+      case EXPORT_MEMBERS_FETCH_RESET:
+        return {exportMembers: []}
       default:
         return state
     }

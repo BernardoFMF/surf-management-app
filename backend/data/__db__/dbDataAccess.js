@@ -127,7 +127,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getCandidateByNifData = async (nif_) => {
 		const handler = async (client) => {
-			const candidates = await client.query(queries.QUERY_GET_CANDIDATE_BY_NIF, [nif_])
+			const candidate = await client.query(queries.QUERY_GET_CANDIDATE_BY_NIF, [nif_])
 			return candidate.rows[0]
 		}
 
@@ -208,7 +208,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_, img_, iban_) => {
 		const handler = async (client) => {
 			const result = await client.query(queries.QUERY_POST_COMPANY, [name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_, img_, iban_, 0])
-			return result.rows[0]
+			return result.rows[0].new_id_
 		}
 
 		return await pool(handler)
@@ -760,6 +760,21 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		return await pool(handler)
 	}
 
+	const getAllMembersData = async () => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await client.query(queries.QUERY_GET_ALL_MEMBERS)
+			await client.query('commit')
+			return result.rows
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
 	const getMemberByIdData = async (id_) => {
 		const handler = async (client) => {
 			const result = await client.query(queries.QUERY_GET_MEMBER_BY_ID, [id_])
@@ -838,7 +853,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const getUserEmailByIdData = async (id_) => {
 		const handler = async (client) => {
 			const email = await client.query(queries.QUERY_GET_USER_EMAIL,[id_])
-			return result.rows
+			return email.rows[0]
 		}
 
 		return await pool(handler)
@@ -855,7 +870,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 		const handler = async (client) => {
 			const emails = await client.query(query)			
-			return result.rows
+			return emails.rows
 		}
 
 		return await pool(handler)
@@ -1151,6 +1166,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 				await client.query('begin')
 				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],value[6],value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,value[7],0])
 				await client.query('commit')
+				console.log(result);
 				ids.push(result.rows[0].new_id_)
 			}*/
 			return ids
@@ -1394,7 +1410,8 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getMemberGroupsData,
 		getGroupByIdMembersData,
 		getCandidateByIbanData,
-		getMemberByIbanData, 
+		getMemberByIbanData,
+		getAllMembersData, 
 		getManagementQuotas, 
 		getManagementQuotaByType, 
 		updateManagementQuotaByType,
