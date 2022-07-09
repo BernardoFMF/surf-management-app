@@ -135,9 +135,8 @@ export const deleteQuota = (date) => async (dispatch) => {
     dispatch({
       type: QUOTA_DELETE_REQUEST,
     })
-    const response = await fetch(`/api/quotas`, {
+    const response = await fetch(`/api/quotas?date=${date}`, {
         method: 'DELETE',
-        body: JSON.stringify({date}),
         headers: { "Content-Type": "application/json" }
     })
     const quotaID = await response.json()

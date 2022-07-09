@@ -39,13 +39,6 @@ const eventServices = (db) => {
 		return await data.deleteEvent(event_id)
 	}
 	
-	const postMemberAttendanceServices = async(event_id, id, state) => {
-		if(!event_id) throw error(400,'Parameter not found: event_id', 'MESSAGE_CODE_14')
-		if(!id) throw error(400,'Parameter not found: id', 'MESSAGE_CODE_14')
-		if(!state) throw error(400,'Parameter not found: state', 'MESSAGE_CODE_14')
-		return await data.postMemberAttendance(event_id, id, state)
-	}
-	
 	const updateMemberAttendanceServices = async(event_id, id, state) => {
 		if(!event_id) throw error(400,'Parameter not found: event_id', 'MESSAGE_CODE_14')
 		if(!id) throw error(400,'Parameter not found: id', 'MESSAGE_CODE_14')
@@ -74,7 +67,6 @@ const eventServices = (db) => {
 		updateEventServices, 
 		deleteEventServices, 
 		updateMemberAttendanceServices,
-		postMemberAttendanceServices, 
 		getEventByIdAttendanceServices,
 		getEventMemberByIdAttendanceServices
 	}

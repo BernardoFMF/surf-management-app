@@ -17,7 +17,7 @@ paths:
             schema:
               $ref: '#/components/schemas/login_body'
       responses:
-        '200':
+        '201':
           description: response body should be a member object
           content:
             application/json:
@@ -46,7 +46,7 @@ paths:
       summary: logout
       operationId: postLogoutApi
       responses:
-        '200':
+        '201':
           description: response body should be a message object
           content:
             application/json:
@@ -70,7 +70,108 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'  
-                
+  /api/auth/resquestResetPassword:
+    post:
+      summary: in case the password has been forgotten
+      operationId: resquestResetPasswordApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/resetPasswordRequestBody'
+      responses:
+        '201':
+          description: response body should be a message object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/auth/resetPassword:
+    post:
+      summary: in case the password has been forgotten
+      operationId: resetPasswordApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/resetPasswordBody'
+      responses:
+        '201':
+          description: response body should be a message object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/auth/updateCredentials:
+    post:
+      summary: assign a username and a password for a member
+      operationId: updateCredentialsApi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateCredentialsBody'
+      responses:
+        '201':
+          description: response body should be a message object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
   /api/users:
     get:
       summary: fetches list of users
@@ -1164,6 +1265,42 @@ paths:
       responses:
         '201':
           description: response body should be a quota object
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/message'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      summary: deletes a chunk of quotas
+      operationId: deleteQuotaApi
+      parameters:
+        - in: query
+          name: date
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Date of the quota
+      responses:
+        '200':
+          description: response body should be a message object
           content:
             application/json:
               schema:
@@ -2477,6 +2614,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
+  /api/uploadFile:
+    post:
+      summary: uploads a CSV file
+      operationId: uploadFileApi
+      requestBody:
+        content:
+          file/csv:
+            schema:
+              type: string
+              format: binary
+          application/json:
+            schema:
+              $ref: '#/components/schemas/uploadFileBody'
+      responses:
+        '200':
+          description: response body should be a message object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  
 components:
   schemas:
     statistics_object:
@@ -3544,7 +3726,42 @@ components:
           type: array
           items:
             type: integer
-    
+    resetPasswordRequestBody:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+    resetPasswordBody:
+      type: object
+      properties:
+        token:
+          type: string
+        id:
+          type: string
+        password:
+          type: string
+          format: password
+    updateCredentialsBody:
+      type: object
+      properties:
+        token:
+          type: string
+        id:
+          type: string
+        password:
+          type: string
+          format: password
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+    uploadFileBody:
+      type: object
+      properties:
+        type:
+          type: string
   parameters:
     qidParameter:
       name: qid
