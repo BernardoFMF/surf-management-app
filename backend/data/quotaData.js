@@ -34,9 +34,7 @@ const quotaData = (db) => {
     
 	const postQuota = async (date_) => {
 		const hasCreated = await getQuotasByDate(date_)
-		console.log(hasCreated);
 		if (hasCreated.length !== 0) throw error(409, 'Quota with that date already exists', 'MESSAGE_CODE_44')
-		console.log('cheguei');
 		return await db.postQuotaData(date_)
 	}
 

@@ -25,9 +25,10 @@ const emailServices = (db) => {
                 receivers.push(row.email_)
             }
         })
-        for (const row of receivers) {
-            const quotasByEmail = await data.getQuotasByEmail(row)
-            await notify(row, `Quotas em atraso`, notifyTemplate(quotasByEmail))
+        for (const row in receivers) {
+            console.log(receivers[row]);
+            const quotasByEmail = await data.getQuotasByEmail(receivers[row])
+            await notify(receivers[row], `Quotas em atraso`, notifyTemplate(quotasByEmail))
           }
         return true
     }
