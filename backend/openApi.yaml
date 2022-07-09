@@ -2669,15 +2669,25 @@ components:
         members:
           type: object
         users:
-          type: object
+          type: array
+          items: 
+            type: object
         companies:
-          type: object
+          type: array
+          items: 
+            type: object
         candidates:
-          type: object
+          type: array
+          items: 
+            type: object
         sports:
-          type: object
+          type: array
+          items: 
+            type: object
         upcoming_events:
-          type: object
+          type: array
+          items: 
+            type: object
     validated_user:
       type: object
       required:

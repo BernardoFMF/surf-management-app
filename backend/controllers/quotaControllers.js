@@ -44,7 +44,7 @@ const quotaController = (data) => {
 	const deleteQuota = asyncHandler(async (req, res) => {
 		const quota = await services.deleteQuotaServices(req.query.date)
 		if (quota) {
-			res.status(201)
+			res.status(200)
 			res.json({ message: 'Quotas deleted sucessfully', message_code: 'MESSAGE_CODE_45' })
 		}
 	})

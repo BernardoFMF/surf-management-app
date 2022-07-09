@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 //import data from '../data/__mock__/mockDataAccess.js'
 import db from '../data/__db__/dbDataAccess.js'
-const data = db(process.env.PG_USER, process.env.PG_PASSWORD, process.env.PG_HOST, process.env.PG_PORT, process.env.PG_DB_TEST, process.env.NODE_MODE)
+const data = db(process.env.PG_USER, process.env.PG_PASSWORD, process.env.PG_HOST, process.env.PG_PORT, process.env.PG_DB_TEST_INTEGRATION, process.env.NODE_MODE)
 jestOpenAPI(process.cwd() +  "/backend/openApi.yaml")
 
 const app = express()
@@ -45,13 +45,13 @@ beforeEach(async () => {
          'username': 'afonsoribeiro',
          'password': '123'
         })
-        .expect(200)
+        .expect(201)
     session = res
         .headers['set-cookie'][0]
 });
 
 // users
-/*
+
 test('Post, Gets, Put & Delete user', async () => {
     const userRes = await supertest(app)
         .post('/api/users')
@@ -304,6 +304,15 @@ test('Post, Gets, Put quotas', async () => {
 		.expect(200)
 	expect(putRes).toSatisfyApiSpec()
 	expect(putRes.body).toSatisfySchemaInApiSpec("id")
+	
+	const deleteRes = await supertest(app)
+		.delete('/api/quotas?date=2021-01-01')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.expect('Content-Type', /json/)
+		.expect(200)
+	expect(deleteRes).toSatisfyApiSpec()
+	expect(deleteRes.body).toSatisfySchemaInApiSpec("message")
 
 	const postManagementQuotas = await supertest(app)
 		.post(`/api/quotas/management`)
@@ -435,7 +444,6 @@ test('Post, Gets, Put & Delete user sport', async () => {
 		})
 		.expect('Content-Type', /json/)
 		.expect(200)
-		console.log(putRes)
 	expect(putRes).toSatisfyApiSpec()
 	expect(putRes.body).toSatisfySchemaInApiSpec("put_user_sport_ids")
 
@@ -735,6 +743,7 @@ test('Approve candidate', async () => {
 test('Validate member', async () => {
 	const res = await supertest(app)
 		.post('/api/auth/logout')
+		.expect(201)
 		expect(res).toSatisfyApiSpec()
 		expect(res.body).toSatisfySchemaInApiSpec("message_logout")
 	
@@ -744,7 +753,7 @@ test('Validate member', async () => {
 		'username': 'flocker',
 		'password': '123'
 		})
-		.expect(200)
+		.expect(201)
 	session = res1
 	.headers['set-cookie'][0]
 
@@ -767,4 +776,13 @@ test('Get member', async () => {
 		expect(getRes.body).toSatisfySchemaInApiSpec("member_object")
 })
 
-*/
+// statistics
+
+test('Get statistics', async () => {
+	const getRes = await supertest(app)
+		.get(`/api/statistics`)
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		expect(getRes).toSatisfyApiSpec()
+		expect(getRes.body).toSatisfySchemaInApiSpec("statistics_object")
+})
