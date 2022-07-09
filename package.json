@@ -18,7 +18,8 @@
     "pg": "^8.7.3",
     "qrcode": "^1.5.0",
     "swagger-ui-express": "^4.3.0",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "babel-plugin-transform-es2015-for-of": "^6.3.13"
   },
   "name": "surf-management-app",
   "description": "",

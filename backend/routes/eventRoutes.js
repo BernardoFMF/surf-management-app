@@ -21,9 +21,7 @@ const eventRoutes = (data) => {
 	app.put('/:eid', authentication.authAdmin, controller.updateEvent)
     
 	app.delete('/:eid', authentication.authAdmin, controller.deleteEvent)
-    
-	app.post('/:eid/attendance', authentication.authMember, controller.postMemberAttendance)
-    
+        
 	app.put('/:eid/attendance', authentication.authMember, controller.updateMemberAttendance)
     
 	app.get('/:eid/attendance', authentication.authMember, controller.getEventByIdAttendance)

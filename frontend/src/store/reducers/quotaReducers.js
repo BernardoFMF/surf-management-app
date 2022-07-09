@@ -13,7 +13,12 @@ import {
     MEMBER_QUOTAS_FETCH_REQUEST,
     QUOTAS_FETCH_RESET,
     QUOTA_UPDATE_RESET,
-    QUOTA_CREATE_RESET
+    QUOTA_CREATE_RESET,
+    QUOTA_DELETE_SUCCESS,
+    QUOTA_DELETE_FAIL,
+    QUOTA_DELETE_REQUEST,
+    QUOTA_DELETE_RESET,
+
 } from '../constants/quotaConstants'
 
 export const quotasFetchReducer = (state = {quotasGet: {quotas:[],number_of_quotas:0}}, action) => {
@@ -68,6 +73,21 @@ export const createQuotaReducer = (state = {}, action) => {
         case QUOTA_CREATE_FAIL:
             return { loading: false, error: action.payload }
         case QUOTA_CREATE_RESET:
+            return {}
+        default:
+            return state
+    }
+}
+
+export const deleteQuotaReducer = (state = {}, action) => {
+    switch (action.type) {
+        case QUOTA_DELETE_REQUEST:
+            return { loading: true }
+        case QUOTA_DELETE_SUCCESS:
+            return { loading: false, quotaDelete: action.payload }
+        case QUOTA_DELETE_FAIL:
+            return { loading: false, error: action.payload }
+        case QUOTA_DELETE_RESET:
             return {}
         default:
             return state

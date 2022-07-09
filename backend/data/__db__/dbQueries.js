@@ -96,6 +96,8 @@ const QUERY_GET_MEMBERS_QUOTAS_BY_ID = 'select q.id_, member_id_, username_, pay
 
 const QUERY_POST_QUOTA = 'call post_quotas($1, $2)'
 
+const QUERY_DELETE_QUOTA = 'delete from quota_ where payment_date_ is null and date_ = $1'
+
 const QUERY_UPDATE_MEMBER_QUOTA = 'update Quota_ set payment_date_ = $1 where id_ = $2'
 
 const QUERY_GET_MEMBER_BY_ID = 'select id_, member_type_, has_debt_, quota_value_, is_deleted_, username_, pword_, img_value_, iban_, category_, quota_value_ from Member_ m join Member_Types_ qp on m.member_type_ = qp.type_ join Member_img_ mi on m.id_ = mi.member_id_ where id_ = $1'
@@ -213,7 +215,9 @@ const QUERY_QUOTAS_DISTRIBUTION_STATISTICS = "select sum(q.amount_), extract( mo
 
 const QUERY_GET_USER_EMAIL_BY_GROUP = "select distinct c.email_ from group_member_ gm join contact_ c on (gm.member_id_ = c.member_id_)"
 
-const QUERY_GET_QUOTAS_BY_DATE = "select * from quota_ q join contact_ c on (q.member_id_ = c.member_id_) join user_ u on (q.member_id_ = u.member_id_) where date_ = $1"
+const QUERY_GET_QUOTAS_BY_DATE = "select * from quota_ q join contact_ c on (q.member_id_ = c.member_id_) join user_ u on (q.member_id_ = u.member_id_) where date_ = $1 and payment_date_ is null"
+const QUERY_GET_QUOTAS_BY_EMAIL = "select date_, amount_ from quota_ q join contact_ c on (q.member_id_ = c.member_id_) where email_ = $1"
+
 const QUERY_CHANGE_PASSWORD = "update Member_ set pword_ = $2 where id_ = $1;"
 
 const QUERY_CHANGE_CREDENTIALS = "update Member_ set pword_ = $3, username_ = $2 where id_ = $1;"
@@ -225,6 +229,7 @@ export default {
     QUERY_CHANGE_PASSWORD,
     QUERY_CHANGE_CREDENTIALS,
     QUERY_GET_QUOTAS_BY_DATE,
+    QUERY_GET_QUOTAS_BY_EMAIL,
     QUERY_GET_USER_EMAIL_BY_GROUP,
     QUERY_QUOTAS_DISTRIBUTION_STATISTICS,
     QUERY_QUOTAS_TOTALAMOUNT_STATISTICS,
@@ -302,6 +307,7 @@ export default {
     QUERY_GET_USERS_QUOTAS, 
     QUERY_GET_MEMBERS_QUOTAS_BY_ID, 
     QUERY_POST_QUOTA, 
+    QUERY_DELETE_QUOTA,
     QUERY_UPDATE_MEMBER_QUOTA, 
     QUERY_GET_MEMBER_BY_ID, 
     QUERY_GET_MEMBER_BY_USERNAME, 

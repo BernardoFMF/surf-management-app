@@ -889,7 +889,8 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			count++
 		}
 		queryCount = query
-		query = query + ` offset ${offset} FETCH FIRST ${limit} ROWS only`
+		query = query + ` offset ${offset}`
+		if(limit !== -1) query +=  ` FETCH FIRST ${limit} ROWS only`
 		const client = await pool.connect()
 		try {
 			await client.query('begin')
@@ -930,6 +931,28 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			client.release()
 		}
 	}
+
+	const getQuotasByEmailData = async (email) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await client.query(queries.QUERY_GET_QUOTAS_BY_EMAIL, [email])
+			await client.query('commit')
+			result.rows = result.rows.map(quota => {
+				quota.date_ = formatDate(quota.date_)
+				if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
+				return quota
+			})
+			return result.rows
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	
 
 	const getCompaniesQuotasData = async () => {
 		const client = await pool.connect()
@@ -987,6 +1010,21 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			const result = await client.query(queries.QUERY_POST_QUOTA, [date_, 0])
 			await client.query('commit')
 			return result.rows[0].count_date
+		} catch (e) {
+			await client.query('rollback')
+			throw e
+		} finally {
+			client.release()
+		}
+	}
+
+	const deleteQuotaData = async (date_) => {
+		const client = await pool.connect()
+		try {
+			await client.query('begin')
+			const result = await client.query(queries.QUERY_DELETE_QUOTA, [date_])
+			await client.query('commit')
+			return result
 		} catch (e) {
 			await client.query('rollback')
 			throw e
@@ -1548,12 +1586,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		let query = queries.QUERY_INSERT_MEMBER_TYPES
 		let count = 0
-		for(let value of values){
+		/*for(let value of values){
 			count++
 			query += `(${value})`
 			if(count < values.length) {query += ','}
 			else {query += ';'}
-		}
+		}*/
 		try {
 			
 			await client.query('begin')
@@ -1573,12 +1611,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		let ids = []
 		try {
-			for(let value of values){
+			/*for(let value of values){
 				await client.query('begin')
 				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],value[6],value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,value[7],0])
 				await client.query('commit')
 				ids.push(result.rows[0].new_id_)
-			}
+			}*/
 			console.log(ids);
 			return ids
 		} catch (e) {
@@ -1594,12 +1632,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		let ids = []
 		try {
-			for(let value of values){
+			/*for(let value of values){
 				await client.query('begin')
 				let result = await client.query(queries.QUERY_POST_COMPANY, [value[4],value[2],value[14],value[13],value[12],value[11],value[10],null,null,value[0],null,value[1],0])
 				await client.query('commit')
 				ids.push(result.rows[0].new_id_)
-			}	
+			}	*/
 			return ids
 		} catch (e) {
 			await client.query('rollback')
@@ -1613,12 +1651,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		let query = queries.QUERY_INSERT_QUOTAS
 		let count = 0
-		for(let value of values){
+		/*for(let value of values){
 			count++
 			query += `(${value})`
 			if(count < values.length) {query += ','}
 			else {query += ';'}
-		}
+		}*/
 		try {
 			await client.query('begin')
 			const quotas = await client.query(query)
@@ -1636,12 +1674,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		let query = queries.QUERY_INSERT_SPORTS
 		let count = 0
-		for(let value of values){
+		/*for(let value of values){
 			count++
 			query += `(${value})`
 			if(count < values.length) {query += ','}
 			else {query += ';'}
-		}
+		}*/
 		try {
 			await client.query('begin')
 			const sports = await client.query(query)
@@ -1659,12 +1697,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		let query = queries.QUERY_INSERT_SPORT_TYPES
 		let count = 0
-		for(let value of values){
+		/*for(let value of values){
 			count++
 			query += `(${value})`
 			if(count < values.length) {query += ','}
 			else {query += ';'}
-		}
+		}*/
 		try {
 			await client.query('begin')
 			const types = await client.query(query)
@@ -1744,12 +1782,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const client = await pool.connect()
 		let res
 		try {
-			for(let value of values){
+			/*for(let value of values){
 				console.log(value)
 				await client.query('begin')
 				res = await client.query(queries.QUERY_POST_USER_SPORT, [value[0],value[1],value[4],value[3],value[5],value[2],value[6],false])
 				await client.query('commit')
-			}
+			}*/
 			return res
 		} catch (e) {
 			await client.query('rollback')
@@ -1977,6 +2015,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getUsersQuotasData, 
 		getMemberQuotasByIdData, 
 		postQuotaData, 
+		deleteQuotaData,
 		updateMemberQuotaData, 
 		getMemberByIdData, 
 		getMemberByUsernameData, 
@@ -2010,6 +2049,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		uploadUsersSportsData,
 		uploadUsersData,
 		getStatisticsData,
+		getQuotasByEmailData,
 		pool 
 	}
 

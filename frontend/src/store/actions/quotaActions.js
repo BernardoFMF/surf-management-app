@@ -10,7 +10,10 @@ import {
     QUOTA_CREATE_REQUEST,
     MEMBER_QUOTAS_FETCH_SUCCESS,
     MEMBER_QUOTAS_FETCH_FAIL,
-    MEMBER_QUOTAS_FETCH_REQUEST
+    MEMBER_QUOTAS_FETCH_REQUEST,
+    QUOTA_DELETE_SUCCESS,
+    QUOTA_DELETE_FAIL,
+    QUOTA_DELETE_REQUEST
   } from '../constants/quotaConstants'
 
   
@@ -99,7 +102,7 @@ export const getMembersQuotas = (id,offset,limit) => async (dispatch) => {
 }
 
 
-export const createQuota = (date) => async (dispatch, getState) => {
+export const createQuota = (date) => async (dispatch) => {
   try {
     dispatch({
       type: QUOTA_CREATE_REQUEST,
@@ -119,6 +122,33 @@ export const createQuota = (date) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: QUOTA_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const deleteQuota = (date) => async (dispatch) => {
+  try {
+    dispatch({
+      type: QUOTA_DELETE_REQUEST,
+    })
+    const response = await fetch(`/api/quotas?date=${date}`, {
+        method: 'DELETE',
+        headers: { "Content-Type": "application/json" }
+    })
+    const quotaID = await response.json()
+    if(response.status !== 201) throw Error(quotaID.message_code)
+    dispatch({
+      type: QUOTA_DELETE_SUCCESS,
+      payload: quotaID
+    })
+
+  } catch (error) {
+    dispatch({
+      type: QUOTA_DELETE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

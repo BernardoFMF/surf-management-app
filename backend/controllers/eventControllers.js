@@ -36,19 +36,6 @@ const eventController = (data) => {
 		if (event) res.json({ message: 'Event deleted sucessfully', message_code: 'MESSAGE_CODE_7' })
 	})
 	
-	const postMemberAttendance = asyncHandler(async (req,res) => {
-		if(!req.user.is_admin_) {
-			if(req.user.id_ != req.body.id) {
-				throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
-			}
-		}
-		const event = await services.postMemberAttendanceServices(req.params.eid, req.body.id, req.body.state)
-		if (event) {
-			res.status(201)
-			res.json(event)
-		}
-	})
-	
 	const updateMemberAttendance = asyncHandler(async (req,res) => {
 		if(!req.user.is_admin_) {
 			if(req.user.id_ != req.body.id) {
@@ -75,7 +62,6 @@ const eventController = (data) => {
 		postEvent,
 		updateEvent,
 		deleteEvent,
-		postMemberAttendance,
 		updateMemberAttendance,
 		getEventByIdAttendance,
 		getEventMemberByIdAttendance

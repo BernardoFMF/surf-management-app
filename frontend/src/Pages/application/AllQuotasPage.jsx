@@ -17,9 +17,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Pagination } from '@mui/material'
 import QuotaCreateDialog from '../../components/dialogs/QuotaCreateDialog';
 import QuotaUpdateDialog from '../../components/dialogs/QuotaUpdateDialog';
+import QuotaDeletionDialog from '../../components/dialogs/QuotaDeletionDialog';
 import QuotaNotifyVerificationDialog from '../../components/dialogs/QuotaNotifyVerificationDialog'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
-import { QUOTAS_FETCH_RESET, QUOTA_CREATE_RESET, QUOTA_UPDATE_RESET } from '../../store/constants/quotaConstants';
+import { QUOTAS_FETCH_RESET, QUOTA_CREATE_RESET, QUOTA_UPDATE_RESET, QUOTA_DELETE_RESET } from '../../store/constants/quotaConstants';
 
 const AllQuotasPage = () => {
     const {t, i18n} = useTranslation()
@@ -50,6 +51,10 @@ const AllQuotasPage = () => {
     const [openVerification, setOpenVerification] = React.useState(false);
     const handleCloseVerification = () => {setOpenVerification(false); setPage(1); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit))};
     const handleOpenVerification = () => setOpenVerification(true);
+
+    const [openDeletion, setOpenDeletion] = React.useState(false);
+    const handleCloseDeletion = () => {setOpenDeletion(false); setPage(1); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit)) ; dispatch({ type: QUOTA_DELETE_RESET })};
+    const handleOpenDeletion = () => setOpenDeletion(true);
 
     useEffect(() => {
         dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit))
@@ -137,6 +142,10 @@ const AllQuotasPage = () => {
             open={openVerification}
             closeHandler={handleCloseVerification}
         />
+        <QuotaDeletionDialog
+            open={openDeletion}
+            closeHandler={handleCloseDeletion}
+        />
         <MainCard title={t('Quotas')}sx={{height: '100%'}}>
             { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error" onClose={() => dispatch({ type: QUOTAS_FETCH_RESET })}>{t(error)}</Alert></Box> }
             <Box
@@ -219,6 +228,21 @@ const AllQuotasPage = () => {
                             }}
                         >
                             {t('Notify')}
+                        </LoadingButton>
+                    </AnimateButton>
+                    <AnimateButton>
+                        <LoadingButton
+                            sx={{ ml: {md: 2}}}
+                            disableElevation
+                            size="large"
+                            variant="outlined"
+                            color="secondary"
+                            fullWidth
+                            onClick={() => {
+                                handleOpenDeletion()
+                            }}
+                        >
+                            {t('Delete')}
                         </LoadingButton>
                     </AnimateButton>
                 </Box> 
