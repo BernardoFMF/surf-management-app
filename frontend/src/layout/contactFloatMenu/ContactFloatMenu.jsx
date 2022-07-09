@@ -88,7 +88,7 @@ const ContactFloatMenu = () => {
                             <Form>
                                 <Grid container spacing={gridSpacing} sx={{ p: 3 }}>
                                     <Grid item xs={12}>
-                                        <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
+                                        <Typography color={theme.palette.primary.main} gutterBottom sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
                                             {t('front_page_contact_us')}
                                         </Typography>
                                     </Grid>

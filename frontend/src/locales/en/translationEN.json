@@ -119,6 +119,7 @@
     "MESSAGE_CODE_42": "Error sending the email",
     "MESSAGE_CODE_43": "Email sent with success",
     "MESSAGE_CODE_44" : "Quota with that date already exists",
+    "MESSAGE_CODE_45" : "Quota deleted successfully",
 
     "hello_profile": "Hello,",
     "name": "Name",
@@ -272,6 +273,8 @@
     "end_date": "Final date",
 
     "quota_creation": "Create new quota",
+    "quota_deletion": "Delete chunk of quotas",
+
 
     "enrollment_date_mandatory": "Enrollment date is mandatory",
     "enrollment_date": "Enrollment date",
@@ -388,5 +391,6 @@
     "Are you sure?" : "Are you sure?",
 
     "Yes" : "Yes",
-    "No": "No"
+    "No": "No",
+    "Delete" : "Delete"
 }

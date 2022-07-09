@@ -362,7 +362,7 @@ test('Create a quota', async () => {
 
 test('Get all quotas', async () => {
 	expect.assertions(1)
-	const quotas = await dbQuota.getQuotas(undefined, undefined, undefined, 0, 100)
+	const quotas = await dbQuota.getQuotas(undefined, undefined, undefined, 0, -1)
 	expect(quotas.number_of_quotas).toBe(4)
 })	
 
@@ -394,6 +394,13 @@ test('Update a company quota', async () => {
 	expect.assertions(1)
 	const quota = await dbQuota.updateMemberQuota(2, '02-03-2022')
 	expect(quota).toBe(2)
+})
+
+test('Delete a quota', async () => {
+	expect.assertions(1)
+	await dbQuota.deleteQuota('01-01-2022')
+	const quotas = await dbQuota.getQuotas(undefined, undefined, undefined, 0, -1)
+	expect(quotas.number_of_quotas).toBe(1)
 })
 
 

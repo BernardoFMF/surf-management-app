@@ -60,7 +60,7 @@ const AuthChangeCredentials = () => {
                             }}
                             validationSchema={Yup.object().shape({
                                 email: Yup.string().email(t('sign_up_email_valid')).max(255).required(t('sign_up_email_mandatory')),
-                                username: Yup.string().email(t('sign_up_email_valid')).max(255).required(t('sign_up_username_mandatory')),
+                                username: Yup.string().max(255).required(t('sign_in_username_mandatory')),
                                 password: Yup.string().max(255).required(t('sign_up_password_mandatory'))
                             })}
                             onSubmit={handleChangeCredentials}

@@ -158,7 +158,8 @@ export const deleteCompany = (id) => async (dispatch) => {
           is_admin_: updateResp.is_admin_,
           img_value_: updateResp.img_value_,
           category_ : memberInfo.category_,
-          quota_value_ : memberInfo.quota_value_
+          quota_value_ : memberInfo.quota_value_,
+          is_deleted_ : memberInfo.is_deleted_
         }
         dispatch({
           type: MEMBER_LOGIN_SUCCESS,

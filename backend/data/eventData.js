@@ -18,8 +18,10 @@ const eventData = (db) => {
 	const postEvent = async (name_, initial_date_, final_date_, groups) => {
 		let allEmails = await db.getEmailByGroupIdData(groups)
 		const emails = allEmails.map(row => row.email_)
+
+		const event = await db.postEventData(name_, initial_date_, final_date_, groups)
 		await mailSender(emails,`Novo Evento: ${name_}`, eventTemplate(name_, initial_date_, final_date_))
-		return await db.postEventData(name_, initial_date_, final_date_, groups)
+		return event
 	}
 	
 	const updateEvent = async (id_, name_, initial_date_, final_date_) => {
@@ -30,16 +32,6 @@ const eventData = (db) => {
 	const deleteEvent = async (id_) => {
 		await getEventById(id_)
 		return await db.deleteEventData(id_)
-	}
-	
-	const postMemberAttendance = async (eid_, id_, state_) => {
-		const event = await getEventById(eid_)
-		const member = await db.getMemberByIdData(id_)
-		if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_12')
-		/*const attendance = await db.getEventByIdAttendanceData(eid_)
-		if (!attendance.filter(att => att.member_id_ == id_)[0])
-			throw error(409, 'User is not related to this Event', 'MESSAGE_CODE_27')*/
-		return await db.postMemberAttendanceData(event.id_, id_, state_)
 	}
 	
 	const updateMemberAttendance = async (eid_, id_, state_) => {
@@ -69,7 +61,6 @@ const eventData = (db) => {
 		postEvent,
 		updateEvent, 
 		deleteEvent, 
-		postMemberAttendance, 
 		updateMemberAttendance, 
 		getEventByIdAttendance,
 		getEventMemberByIdAttendance

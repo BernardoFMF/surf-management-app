@@ -6,7 +6,7 @@ import { userDeletionReducer, userFetchReducer, userRegisterReducer, usersFetchR
 import customizationReducer from './reducers/customizationReducers'
 import { typesFetchReducer, typesUpdateReducer, createTypeReducer } from './reducers/typeReducer'
 import { sportsDeletionReducer, sportsFetchReducer, createSportReducer, updateSportReducer, userSportsTypesFetchReducer} from './reducers/sportReducers'
-import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer, createQuotaReducer} from './reducers/quotaReducers'
+import { memberQuotasFetchReducer, quotasFetchReducer, quotaUpdateReducer, createQuotaReducer, deleteQuotaReducer} from './reducers/quotaReducers'
 import { candidateDeletionReducer, approveCandidateReducer, candidatesFetchReducer} from './reducers/candidateReducers'
 import { companyPostReducer, companyDeletionReducer, companiesFetchReducer, companyFetchReducer, companyUpdateReducer, memberValidateFetchReducer } from './reducers/companyReducers'
 import { memberLoginReducer, memberFetchReducer, changePasswordReducer, changePasswordRequestReducer, changeCredentialsReducer } from './reducers/memberReducers'
@@ -31,6 +31,7 @@ const reducer = combineReducers({
   quotasFetch: quotasFetchReducer,
   quotaUpdate: quotaUpdateReducer,
   createQuota: createQuotaReducer,
+  deleteQuota: deleteQuotaReducer,
   userUpdate: userUpdateReducer,
   candidateDeletion: candidateDeletionReducer,
   approveCandidate: approveCandidateReducer,

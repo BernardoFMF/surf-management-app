@@ -40,6 +40,14 @@ const quotaController = (data) => {
 			res.json({ message: 'Quotas created sucessfully', message_code: 'MESSAGE_CODE_8' })
 		}
 	})
+
+	const deleteQuota = asyncHandler(async (req, res) => {
+		const quota = await services.deleteQuotaServices(req.query.date)
+		if (quota) {
+			res.status(201)
+			res.json({ message: 'Quotas deleted sucessfully', message_code: 'MESSAGE_CODE_45' })
+		}
+	})
 	
 	const updateMemberQuota = asyncHandler(async (req, res) => {
 		const quota = await services.updateMemberQuotaServices(req.params.id, req.body.payment_date)
@@ -70,6 +78,7 @@ const quotaController = (data) => {
 		getUsersQuotas,
 		getMemberQuotasById,
 		postQuota,
+		deleteQuota,
 		updateMemberQuota,
 		getManagementQuotas,
 		updateManagementQuotaByType,

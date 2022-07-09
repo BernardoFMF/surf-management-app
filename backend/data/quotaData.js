@@ -26,13 +26,20 @@ const quotaData = (db) => {
 	const getQuotasByDate = async (date) => {
 		return await db.getQuotasByDateData(date)
 	} 
+
+	const getQuotasByEmail = async (email) => {
+		return await db.getQuotasByEmailData(email)
+	} 
+    
     
 	const postQuota = async (date_) => {
-		//let allEmails = await db.getEmails()
-		//await mailSender(allEmails,`Novo Evento: ${name_}`, quotaAlertTemplate(name_, initial_date_, final_date_))
-		const hasCreated = await db.getQuotasByDateData(date_)
+		const hasCreated = await getQuotasByDate(date_)
 		if (hasCreated.length !== 0) throw error(409, 'Quota with that date already exists', 'MESSAGE_CODE_44')
 		return await db.postQuotaData(date_)
+	}
+
+	const deleteQuota = async (date_) => {
+		return await db.deleteQuotaData(date_)
 	}
     
 	const updateMemberQuota = async (qid_, payment_date_) => {
@@ -65,12 +72,14 @@ const quotaData = (db) => {
 		getUsersQuotas,
 		getMemberQuotasById, 
 		postQuota, 
+		deleteQuota,
 		updateMemberQuota,
 		getManagementQuotas,
 		getManagementQuotaByType,
 		updateManagementQuotaByType,
 		postManagementQuota,
-		getQuotasByDate
+		getQuotasByDate,
+		getQuotasByEmail
 	} 
 }
 
