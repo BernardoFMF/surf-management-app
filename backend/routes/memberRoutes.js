@@ -9,6 +9,8 @@ const memberRoutes = (data) => {
 
 	const controller = memberController(data)
 
+    app.get('/', authentication.authMember, controller.getAllMembers)
+
     app.get('/:id', authentication.authMember, controller.getMemberById)
 
     return app

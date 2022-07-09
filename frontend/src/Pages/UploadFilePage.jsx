@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import { exportMembersCSV } from '../store/actions/exportActions'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { useTheme } from '@mui/material/styles';
@@ -47,6 +48,7 @@ import sports_example from '../assets/data/sportsExample.xlsx'
 import member_sports_example from '../assets/data/MemberSportsExample.xlsx'
 import sportsTypes_example from '../assets/data/SportTypesExample.xlsx'
 import { UPLOAD_RESET } from '../store/constants/uploadConstants'
+import ExportCSV from '../components/ExportCSV'
 
 const UploadFilePage = () => {
 
@@ -54,6 +56,10 @@ const UploadFilePage = () => {
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
+    const exportM = useSelector((state) => state.exportMembersCSV)
+    const { exportMembers } = exportM
+    const [data, setData] = useState([]);
+    const [newMembers, setnewMembers] = useState(false);
 
     const [expanded, setExpanded] = useState(false);
 
@@ -63,8 +69,20 @@ const UploadFilePage = () => {
         }
     },[])
 
+    useEffect(() => {
+        dispatch(exportMembersCSV())
+        console.log(exportMembers);
+    },[newMembers])
+
+    useEffect(() => {
+        console.log(exportMembers);
+        if(exportMembers) {
+            setData(exportMembers)
+        }
+    },[exportMembers])
+
     const handleChange = (panel) => (event, isExpanded) => {
-      setExpanded(isExpanded ? panel : false);
+      setExpanded(isExpanded ? panel : false)
     };
 
     const handleSubmit = (values,type) => {
@@ -72,52 +90,68 @@ const UploadFilePage = () => {
         formData.append("file", values.file)
         formData.append("type",type)
         dispatch(uploadFile(formData))
+        if(type==="usersCompanies")setnewMembers(true)
     }
 
     const onUser_CompanyDownload = () => {
-        const link = document.createElement("a");
-        link.download = `User_CompanyExample.xlsx`;
+        const link = document.createElement("a")
+        link.download = `User_CompanyExample.xlsx`
         link.href = User_Company_example
         link.click();
     }
 
     const onQuotaDownload = () => {
         const link = document.createElement("a");
-        link.download = `QuotaExample.xlsx`;
+        link.download = `QuotaExample.xlsx`
         link.href = quotas_example
         link.click();
     }
 
     const onMemberTypeDownload = () => {
-        const link = document.createElement("a");
-        link.download = `MemberTypeExample.xlsx`;
+        const link = document.createElement("a")
+        link.download = `MemberTypeExample.xlsx`
         link.href = member_types_example
         link.click();
     }
 
     const onSportDownload = () => {
-        const link = document.createElement("a");
-        link.download = `SportExample.xlsx`;
+        const link = document.createElement("a")
+        link.download = `SportExample.xlsx`
         link.href = sports_example
         link.click();
     }
 
     const onMemberSportDownload = () => {
-        const link = document.createElement("a");
-        link.download = `MemberSportExample.xlsx`;
+        const link = document.createElement("a")
+        link.download = `MemberSportExample.xlsx`
         link.href = member_sports_example
         link.click();
     }
 
     const onSportTypesDownload = () => {
-        const link = document.createElement("a");
-        link.download = `SportTypesExample.xlsx`;
+        const link = document.createElement("a")
+        link.download = `SportTypesExample.xlsx`
         link.href = sportsTypes_example
         link.click();
     }
 
     const uploadFileFetch = useSelector((state) => state.uploadFileFetch)
     const { uploadGet } = uploadFileFetch
+
+    const headers = [
+        { key: 'id_', label: 'ID'},
+        { key: 'email_', label: 'Email'},
+        { key: 'iban_', label: 'IBAN'},   
+        { key: 'member_type_', label: t('member_type')},
+        { key: 'phone_number_', label: t('enrollment_date')},
+    ];
+
+    const csvreport = {
+        data: data,
+        headers: headers,
+        filename: 'club_members.csv'
+    };
+
 
     return (
         <>
@@ -235,6 +269,30 @@ const UploadFilePage = () => {
                 </Box>
             )}
         </Formik>
+            </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={expanded === 'panel3.5'} onChange={handleChange('panel3.5')}>
+            <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel3.5bh-content"
+            id="panel3.5bh-header"
+            >
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                Check ids
+            </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Check ids from the members that were inserted</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <Typography>
+            Check ids from the members that were inserted, this ids will be used on the next imports
+            </Typography>
+            <Box sx={{ flexGrow: 1 }}>
+            <Grid rowSpacing={4} columnSpacing={0} container direction={'row'} sx={{ mt: 2 }} >
+                <Grid item>
+                    <ExportCSV csvreport={csvreport} exportText={t('export_members')} ></ExportCSV>
+                </Grid>
+            </Grid>
+            </Box>
             </AccordionDetails>
         </Accordion>
         <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>

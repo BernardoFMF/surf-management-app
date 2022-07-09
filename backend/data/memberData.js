@@ -20,8 +20,15 @@ const memberData = (db) => {
 		}
 	}
 
+	const getAllMembers = async () => {
+		const members = await db.getAllMembersData()
+		if (!members) throw error(404, 'Member does not exist', 'MESSAGE_CODE_12')
+		return members
+	}
+
     return { 
-        getMemberById
+        getMemberById,
+		getAllMembers
 	}
 }
 

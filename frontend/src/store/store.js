@@ -14,7 +14,7 @@ import { eventDeletionReducer, eventsFetchReducer, eventFetchReducer, eventAtten
 import { uploadReducer} from './reducers/uploadReducers'
 import { groupFetchReducer, memberGroupsFetchReducer, groupsFetchReducer, groupDeleteReducer, groupMembersFetchReducer, groupPostReducer } from './reducers/groupReducers'
 import { sendEmailReducer, sendEmailNotifyReducer } from './reducers/emailReducers'
-import { exportUsersCSVReducer, exportCompaniesCSVReducer, exportCandidatesCSVReducer} from './reducers/exportReducers'
+import { exportUsersCSVReducer, exportCompaniesCSVReducer, exportCandidatesCSVReducer, exportMembersCSVReducer} from './reducers/exportReducers'
 import { statisticsFetchReducer} from './reducers/statisticsReducers'
 
 const reducer = combineReducers({
@@ -72,6 +72,7 @@ const reducer = combineReducers({
   exportUsersCSV: exportUsersCSVReducer, 
   exportCompaniesCSV: exportCompaniesCSVReducer, 
   exportCandidatesCSV: exportCandidatesCSVReducer,
+  exportMembersCSV: exportMembersCSVReducer,
   statisticsFetch: statisticsFetchReducer,
   changePassword: changePasswordReducer,
   changePasswordRequest: changePasswordRequestReducer,
