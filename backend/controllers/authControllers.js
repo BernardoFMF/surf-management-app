@@ -7,11 +7,13 @@ const authController = (data) => {
 	const services = authServices(data)
 
 	const postLogin = asyncHandler(async (req, res) => {
+		res.status(201)
 		res.json({...req.user, expires: req.session.cookie.expires})
 	})
 
 	const postLogout = asyncHandler(async (req, res) => {
 		req.logout()
+		res.status(201)
 		res.json({ message: 'User is logged out'})
 	})
 

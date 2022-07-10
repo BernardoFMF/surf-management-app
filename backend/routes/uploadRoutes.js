@@ -12,7 +12,7 @@ const uploadRoutes = (data) => {
 
 	const controller = uploadController(data)
 
-	app.post('/uploadfile', authentication.authMember, controller.uploadFile)
+	app.post('/', authentication.authMember, controller.uploadFile)
     
 
 	return app
