@@ -85,13 +85,16 @@ const offset = 0
 const limit = 100
 
 beforeAll( async () => {
-	const con = await data.pool.connect()
-	await con.query(drop)
-	await con.query(create)
-	await con.query(trigger)
-	await con.query(procedures)  
-	await con.query(insert)
-	con.release()
+	const handler = async (client) => {
+		await client.query(drop)
+		await client.query(create)
+		await client.query(trigger)
+		await client.query(procedures)  
+		await client.query(insert)
+	}
+
+	await data.pool(handler)
+
 	await insertQuotaPricesDummies()
 	await insertUserDummies()
 	await insertSportDummies()

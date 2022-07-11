@@ -28,14 +28,16 @@ const offset = 0
 const limit = 100
 
 beforeAll( async () => {
-	const con = await data.pool.connect()
-	await con.query(drop)
-	await con.query(create)
-	await con.query(trigger)
-	await con.query(procedures)
-	await con.query(insert_types)  
-	await con.query(insert)
-	return con.release()
+	const handler = async (client) => {
+		await client.query(drop)
+		await client.query(create)
+		await client.query(trigger)
+		await client.query(procedures)
+		await client.query(insert_types)  
+		await client.query(insert)
+	}
+
+	return await data.pool(handler)
 })
 
 beforeEach(async () => {
