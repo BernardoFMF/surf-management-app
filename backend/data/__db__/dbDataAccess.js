@@ -1144,12 +1144,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadMemberTypesData = async(values) => {
 		let query = queries.QUERY_INSERT_MEMBER_TYPES
 		let count = 0
-		/*for(let value of values){
+		for(let value in values){
 			count++
-			query += `(${value})`
+			query += `(${values[value]})`
 			if(count < values.length) {query += ','}
 			else {query += ';'}
-		}*/
+		}
 
 		const handler = async (client) => {
 			const types = await client.query(query)
@@ -1162,13 +1162,13 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadUsersData = async(values) => {
 		const handler = async (client) => {
 			let ids = []
-			/*for(let value of values){
+			for(let value in values){
 				await client.query('begin')
-				let result = await client.query(queries.QUERY_POST_USER, [value[3],value[2],value[0],value[6],value[5],value[4],value[14],value[13],value[12],value[11],value[10],null,null,value[8],value[9],value[1],null,value[7],0])
+				let result = await client.query(queries.QUERY_POST_USER, [values[value][3],values[value][2],values[value][0],values[value][6],values[value][5],values[value][4],values[value][14],values[value][13],values[value][12],values[value][11],values[value][10],null,null,values[value][8],values[value][9],values[value][1],null,values[value][7],0])
 				await client.query('commit')
 				console.log(result);
 				ids.push(result.rows[0].new_id_)
-			}*/
+			}
 			return ids
 		}
 
@@ -1178,12 +1178,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadCompaniesData = async(values) => {
 		const handler = async (client) => {
 			let ids = []
-			/*for(let value of values){
+			for(let value of values){
 				await client.query('begin')
-				let result = await client.query(queries.QUERY_POST_COMPANY, [value[4],value[2],value[14],value[13],value[12],value[11],value[10],null,null,value[0],null,value[1],0])
+				let result = await client.query(queries.QUERY_POST_COMPANY, [values[value][4],values[value][2],values[value][14],values[value][13],values[value][12],values[value][11],values[value][10],null,null,values[value][0],null,values[value][1],0])
 				await client.query('commit')
 				ids.push(result.rows[0].new_id_)
-			}*/
+			}
 			return ids
 		}
 
@@ -1193,12 +1193,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadQuotasData = async(values) => {
 		let query = queries.QUERY_INSERT_QUOTAS
 		let count = 0
-		/*for(let value of values){
+		for(let value of values){
 			count++
-			query += `(${value})`
+			query += `(${values[value]})`
 			if(count < values.length) {query += ','}
 			else {query += ';'}
-		}*/
+		}
 
 		const handler = async (client) => {
 			const quotas = await client.query(query)
@@ -1211,12 +1211,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadSportsData = async(values) => {
 		let query = queries.QUERY_INSERT_SPORTS
 		let count = 0
-		/*for(let value of values){
+		for(let value of values){
 			count++
-			query += `(${value})`
+			query += `(${value[value]})`
 			if(count < values.length) {query += ','}
 			else {query += ';'}
-		}*/
+		}
 
 		const handler = async (client) => {
 			const sports = await client.query(query)
@@ -1229,12 +1229,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadSportTypesData = async(values) => {
 		let query = queries.QUERY_INSERT_SPORT_TYPES
 		let count = 0
-		/*for(let value of values){
+		for(let value in values){
 			count++
-			query += `(${value})`
+			query += `(${values[value]})`
 			if(count < values.length) {query += ','}
 			else {query += ';'}
-		}*/
+		}
 
 		const handler = async (client) => {
 			const types = await client.query(query)
@@ -1285,10 +1285,10 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadUsersSportsData = async(values) => {
 		const handler = async (client) => {
 			let results = []
-			/*for(let value of values){
-				await client.query(queries.QUERY_POST_USER_SPORT, [value[0],value[1],value[4],value[3],value[5],value[2],value[6],false])
-				result.push({ id_: value[0], sid_: value[1]})
-			}*/
+			for(let value in values){
+				await client.query(queries.QUERY_POST_USER_SPORT, [values[value][0],values[value][1],values[value][4],values[value][3],values[value][5],values[value][2],values[value][6],false])
+				results.push({ id_: values[value][0], sid_: values[value][1]})
+			}
 			return results
 		}
 

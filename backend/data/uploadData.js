@@ -34,7 +34,7 @@ const uploadData = (db) => {
 		if(type=="memberSports") return await uploadUsersSports(data)
 		throw error(404, 'Type does not exist', 'MESSAGE_CODE_30')
 	}
-/*
+
 	const uploadMemberTypes = async(data) => {
 		let count = 0;
 		for(let val of data){
@@ -45,7 +45,7 @@ const uploadData = (db) => {
 		}
 		return await db.uploadMemberTypesData(data)
 	}
-
+/*
 	const uploadUsersAndCompanies = async(data, url) => {
 		let users = []
 		let companies = []
