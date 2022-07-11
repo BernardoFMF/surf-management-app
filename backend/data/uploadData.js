@@ -12,14 +12,9 @@ const uploadData = (db) => {
 
 	const upload = async (file,type,url) => {
 		let data = new Buffer.from(file).toString().split("\r\n")
-		console.log("erro");
 		const checkDelimiter = data[0].includes(";")
-		console.log(checkDelimiter);
 		delimiter = checkDelimiter ? ";" : ","
 		data = data.slice(1,data.length-1)
-
-		console.log(delimiter)
-
 		data = data.filter(elem => {
 			const rowElems = elem.split(delimiter)
 			console.log(typeof(rowElems[0]));
@@ -34,7 +29,7 @@ const uploadData = (db) => {
 		if(type=="memberSports") return await uploadUsersSports(data)
 		throw error(404, 'Type does not exist', 'MESSAGE_CODE_30')
 	}
-/*
+
 	const uploadMemberTypes = async(data) => {
 		let count = 0;
 		for(let val of data){
@@ -63,7 +58,6 @@ const uploadData = (db) => {
 				companies[countC++] = val.slice(1,val.length)
 			}
 		}
-		console.log(users);
 		let idsUsers = await db.uploadUsersData(users)
 		for(let userId of idsUsers){
 			const qrcode_ = await toDataURL(`${url}/validate/${userId}`)
@@ -73,7 +67,6 @@ const uploadData = (db) => {
 		let idsCompanies = await db.uploadCompaniesData(companies)
 
 		let ids = [...idsUsers, ...idsCompanies]
-		console.log(ids);
 		for (let id of ids) {
 			try {
 				let userEmail = await db.getUserEmailByIdData(id)
@@ -111,6 +104,7 @@ const uploadData = (db) => {
 	}
 
 	const uploadSports = async(data) => {
+		console.log(data)
 		let count = 0
 		for(let val of data){
 			val = val.split(delimiter)
@@ -141,7 +135,7 @@ const uploadData = (db) => {
 		}
 		return await db.uploadUsersSportsData(data)
 	}
-*/
+
     return { 
 		upload
 	}
