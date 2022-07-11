@@ -75,7 +75,6 @@ const UploadFilePage = () => {
     },[newMembers])
 
     useEffect(() => {
-        console.log(exportMembers);
         if(exportMembers) {
             setData(exportMembers)
         }
@@ -83,6 +82,8 @@ const UploadFilePage = () => {
 
     const handleChange = (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false)
+      dispatch({ type: UPLOAD_RESET })
+      console.log("handleChange");
     };
 
     const handleSubmit = (values,type) => {
@@ -136,14 +137,14 @@ const UploadFilePage = () => {
     }
 
     const uploadFileFetch = useSelector((state) => state.uploadFileFetch)
-    const { uploadGet } = uploadFileFetch
+    const { uploadGet,loading,error } = uploadFileFetch
 
     const headers = [
         { key: 'id_', label: 'ID'},
         { key: 'email_', label: 'Email'},
         { key: 'iban_', label: 'IBAN'},   
         { key: 'member_type_', label: t('member_type')},
-        { key: 'phone_number_', label: t('enrollment_date')},
+        { key: 'phone_number_', label: t('phone_number')},
     ];
 
     const csvreport = {
@@ -192,7 +193,9 @@ const UploadFilePage = () => {
             <Typography>
             {t("instructions_4")}
             </Typography>
-            <Button onClick={onMemberTypeDownload} variant="contained" color="success">
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button  sx={{mt: 2 }} onClick={onMemberTypeDownload} variant="contained" color="success">
                 {t("member_types_example")}
             </Button>
             <Formik
@@ -239,7 +242,9 @@ const UploadFilePage = () => {
             <Typography>
             {t("instructions_4")}
             </Typography>
-            <Button onClick={onUser_CompanyDownload} variant="contained" color="success">
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button sx={{mt: 2 }} onClick={onUser_CompanyDownload} variant="contained" color="success">
                 {t("user_and_companies_example")}
             </Button>
             <Formik
@@ -310,7 +315,9 @@ const UploadFilePage = () => {
             <Typography>
             {t("instructions_4")}
             </Typography>
-            <Button onClick={onQuotaDownload} variant="contained" color="success">
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button  sx={{mt: 2 }} onClick={onQuotaDownload} variant="contained" color="success">
                 {t("quotas_example")}
             </Button>
             <Formik
@@ -357,7 +364,9 @@ const UploadFilePage = () => {
             <Typography>
             {t("instructions_4")}
             </Typography>
-            <Button onClick={onSportDownload} variant="contained" color="success">
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button  sx={{mt: 2 }} onClick={onSportDownload} variant="contained" color="success">
                 {t("sports_example")}
             </Button>
             <Formik
@@ -404,7 +413,9 @@ const UploadFilePage = () => {
             <Typography>
                 {t("instructions_4")}
             </Typography>
-            <Button onClick={onSportTypesDownload} variant="contained" color="success">
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button  sx={{mt: 2 }} onClick={onSportTypesDownload} variant="contained" color="success">
                 {t("sport_types_example")}
             </Button>
             <Formik
@@ -451,7 +462,9 @@ const UploadFilePage = () => {
             <Typography>
                 {t("instructions_4")}   
             </Typography>
-            <Button onClick={onMemberSportDownload} variant="contained" color="success">
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button  sx={{mt: 2 }} onClick={onMemberSportDownload} variant="contained" color="success">
                 {t("user_sports_example")}
             </Button>
             <Formik

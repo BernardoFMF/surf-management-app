@@ -69,6 +69,7 @@ function formatDate(date) {
  * Candidates
  */
 
+
 const getCandidatesData = (username_filter, name_filter, email_filter, offset, limit) => {
 	const filteredCandidates = candidates.filter(candidate => {
 		let results = []
@@ -360,8 +361,8 @@ const deleteCompanyData = async (id_) => {
 
 const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offset,limit) => {
 	let date_today = formatDate(new Date())
-	let initialDate_filter = formatDate(initialDate_filter)
-	let endDate_filter = formatDate(endDate_filter)
+	initialDate_filter = formatDate(initialDate_filter)
+	endDate_filter = formatDate(endDate_filter)
 
 	let filteredEvents = events.filter(event => {
 		let results = []
@@ -809,7 +810,6 @@ const deleteUserSportData = async (id_, sid_) => {
 /**
  * Quotas
  */
-
 const getQuotasData = async () => {
 	let count = 0
 	let quotasArray = []
@@ -922,6 +922,6 @@ const getEmails = async() => {
 
 
 
-const mock_data = { getUserSportByIdAndUserData, getMemberByIbanData, getCandidateByIbanData, getManagementQuotas,updateManagementQuotaByType, getManagementQuotaByType, postManagementQuota, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getEventMemberByIdAttendanceData, getSportsData, getSportByIdData, postSportData,updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByEmailData, getCandidateByCCData, getCandidateByNifData }
+const mock_data = { getUserSportByIdAndUserData, getMemberByIbanData, getCandidateByIbanData, getManagementQuotas,updateManagementQuotaByType, getManagementQuotaByType, postManagementQuota, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, updateMemberAttendanceData, getEventByIdAttendanceData, getEventMemberByIdAttendanceData, getSportsData, getSportByIdData, postSportData,updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByEmailData, getCandidateByCCData, getCandidateByNifData }
 
 export default mock_data

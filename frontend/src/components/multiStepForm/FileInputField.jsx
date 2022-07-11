@@ -52,7 +52,7 @@ const FileInputField = ({ label, size, ...props}) => {
                         </Button>
                     </AnimateButton>
                 </label>
-                <Typography>{selectedFile ? selectedFile.name : t("no_file_selected")}</Typography>
+                <Typography  sx={{ml: 2 }}>{selectedFile ? selectedFile.name : t("no_file_selected")}</Typography>
                 </Grid>
             </Box>         
         </>

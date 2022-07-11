@@ -75,7 +75,7 @@
     "update_discard": "Descartar",
 
     "MESSAGE_CODE_1": "Nome de utilizador ou senha incorreta",
-    "MESSAGE_CODE_2": "Erro de servidor interno",
+    "MESSAGE_CODE_2": "Erro interno do servidor",
     "MESSAGE_CODE_3": "Candidato eliminado com sucesso",
     "MESSAGE_CODE_4": "Candidato aprovado com sucesso",
     "MESSAGE_CODE_5": "Não autorizado",
@@ -107,7 +107,6 @@
     "MESSAGE_CODE_31": "Utilizador já se encontra associado a este desporto",
     "MESSAGE_CODE_32": "Utilizador não se encontra associado a este desporto",
     "MESSAGE_CODE_33": "Acesso proibido",
-    "MESSAGE_CODE_34": "Erro interno do servidor",
     "MESSAGE_CODE_35": "Novo cargo de quota criado com sucesso",
     "MESSAGE_CODE_36": "Este tipo não existe",
     "MESSAGE_CODE_37": "Candidato com este iban já existe",
@@ -397,7 +396,7 @@
     "Delete" : "Eliminar",
 
     "instructions": "Instruções de como fazer o upload",
-    "general_settings": "Defenições gerais",
+    "general_settings": "Definições gerais",
     "instructions_1": "Para importar os dados dos ficheiros csv para a base de dados da aplicação, serão necessários 6 ficheiros csv diferentes",
     "important": "Importante",
     "instructions_2": "Todos os utilizadores receberão um email para definir o seu username e password",
@@ -420,5 +419,6 @@
     "sport_types_example":"Exemplo de tipos no desporto",
     "user_sports":"Associação users/desportos",
     "upload_user_sports": "Upload dos desportos relacionados a cada membro",
-    "user_sports_example": "Membro/Desporto Exemplo"
+    "user_sports_example": "Membro/Desporto Exemplo",
+    "phone_number": "Numero de telefone"
 }

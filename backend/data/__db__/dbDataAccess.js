@@ -54,7 +54,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		if (limit !== '-1') query = query + ` FETCH FIRST ${limit} ROWS only`
 
 		const handler = async (client) => {
-			const candidates = await client.query(query)
+			let candidates = await client.query(query)
 			const number_of_candidates = await client.query(queryCount)
 			candidates.rows = candidates.rows.map(candidate => {
 				candidate.birth_date_ = formatDate(candidate.birth_date_)
@@ -238,7 +238,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getSportsData = async () => {
 		const handler = async (client) => {
-			const sports = await client.query(queries.QUERY_GET_SPORTS)
+			let sports = await client.query(queries.QUERY_GET_SPORTS)
 			sports = sports.rows.map(sport => {
 				sport.practitioners_ = parseInt(sport.practitioners_)
 				return sport
@@ -314,7 +314,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		query = query + ` order by id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 
 		const handler = async (client) => {
-			const eventsResult = await client.query(query)
+			let eventsResult = await client.query(query)
 			const number_of_events =  await client.query(queryCount)
 
 			let date_today = formatDate(new Date())
@@ -342,7 +342,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getEventByIdData = async (id_) => {
 		const handler = async (client) => {
-			const eventResult = await client.query(queries.QUERY_GET_EVENT_BY_ID, [id_])
+			let eventResult = await client.query(queries.QUERY_GET_EVENT_BY_ID, [id_])
 
 			let date_today = formatDate(new Date())
 			eventResult.rows = eventResult.rows.map(event => {
@@ -442,7 +442,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		query = query + ` order by a.event_id_ offset ${offset} FETCH FIRST ${limit} ROWS only`
 
 		const handler = async (client) => {
-			const events = await client.query(query, [id_])
+			let events = await client.query(query, [id_])
 			const number_of_events = await client.query(queryCount,[id_])
 			events.rows = events.rows.map(event => {
 				event.initial_date_ = formatDate(event.initial_date_)
@@ -490,7 +490,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		if (limit !== '-1') query = query + ` FETCH FIRST ${limit} ROWS only`
 
 		const handler = async (client) => {
-			const users = await client.query(query)
+			let users = await client.query(query)
 			const number_of_users = await client.query(queryCount)
 			users.rows = users.rows.map(user => {
 				user.birth_date_ = formatDate(user.birth_date_)
@@ -506,7 +506,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getUserByIdData = async (id_) => {
 		const handler = async (client) => {
-			const user = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
+			let user = await client.query(queries.QUERY_GET_USER_BY_ID, [id_])
 			user.rows = user.rows.map(user => {
 				user.birth_date_ = formatDate(user.birth_date_)
 				user.enrollment_date_ = formatDate(user.enrollment_date_)
@@ -655,7 +655,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		if(limit !== -1) query +=  ` FETCH FIRST ${limit} ROWS only`
 
 		const handler = async (client) => {
-			const quotas = await client.query(query)
+			let quotas = await client.query(query)
 			const number_of_quotas = await client.query(queryCount)
 			quotas.rows = quotas.rows.map(quota => {
 				quota.date_ = formatDate(quota.date_)
@@ -671,7 +671,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	
 	const getQuotasByDateData = async (date) => {
 		const handler = async (client) => {
-			const result = await client.query(queries.QUERY_GET_QUOTAS_BY_DATE, [date])
+			let result = await client.query(queries.QUERY_GET_QUOTAS_BY_DATE, [date])
 			result.rows = result.rows.map(quota => {
 				quota.date_ = formatDate(quota.date_)
 				if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
@@ -685,7 +685,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 
 	const getQuotasByEmailData = async (email) => {
 		const handler = async (client) => {
-			const result = await client.query(queries.QUERY_GET_QUOTAS_BY_EMAIL, [email])
+			let result = await client.query(queries.QUERY_GET_QUOTAS_BY_EMAIL, [email])
 			result.rows = result.rows.map(quota => {
 				quota.date_ = formatDate(quota.date_)
 				if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
@@ -998,7 +998,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		const handler = async (client) => {
 			const groups = await client.query(query)
 			const number_of_groups = await client.query(queryCount)
-			await client.query('commit')
 			const result = { groups: groups.rows, number_of_groups: number_of_groups.rowCount }
 			return result
 		}
@@ -1172,7 +1171,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadCompaniesData = async(values) => {
 		const handler = async (client) => {
 			let ids = []
-			for(let value of values){
+			for(let value in values){
 				await client.query('begin')
 				let result = await client.query(queries.QUERY_POST_COMPANY, [values[value][4],values[value][2],values[value][14],values[value][13],values[value][12],values[value][11],values[value][10],null,null,values[value][0],null,values[value][1],0])
 				await client.query('commit')
@@ -1187,7 +1186,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadQuotasData = async(values) => {
 		let query = queries.QUERY_INSERT_QUOTAS
 		let count = 0
-		for(let value of values){
+		for(let value in values){
 			count++
 			query += `(${values[value]})`
 			if(count < values.length) {query += ','}
@@ -1205,14 +1204,15 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	const uploadSportsData = async(values) => {
 		let query = queries.QUERY_INSERT_SPORTS
 		let count = 0
-		for(let value of values){
+		for(let value in values){
 			count++
-			query += `(${value[value]})`
+			query += `(${values[value]})`
 			if(count < values.length) {query += ','}
 			else {query += ';'}
 		}
 
 		const handler = async (client) => {
+			console.log(query)
 			const sports = await client.query(query)
 			return sports
 		}
