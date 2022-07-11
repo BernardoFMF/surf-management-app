@@ -1125,7 +1125,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		return await pool(handler)
 	}
 
-	const GetUserSportTypesData = async () => {
+	const getUserSportTypesData = async () => {
 		const handler = async (client) => {
 			const types = await client.query(queries.QUERY_GET_USER_SPORT_TYPES)
 			let result = types.rows.map(row => {
@@ -1475,7 +1475,7 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		getCandidateByCCData, 
 		getCandidateByEmailData, 
 		getMemberValidationData,
-		GetUserSportTypesData, 
+		getUserSportTypesData, 
 		getEmailByGroupIdData,
 		getUserEmailByIdData,
 		postNewTokenData,
