@@ -49,7 +49,15 @@ let user_imgs = []
 let users_sports = []
 let membership_cards = []
 let quotas = []
-let member_types_ = []
+let member_types_ = [{
+	type_: "founder",
+	quota_value_: 0,
+	category_: "user"
+}, {
+	type_: "corporate",
+	quota_value_: 50,
+	category_: "company"
+}]
 
 function formatDate(date) {
 	var d = new Date(date),
@@ -86,7 +94,7 @@ const getCandidatesData = (username_filter, name_filter, email_filter, offset, l
 				results.push(false)
 		}
 
-		if (name_filter) {
+		if (email_filter) {
 			if (candidate.email_ === email_filter) 
 				results.push(true)
 			else 
@@ -174,20 +182,24 @@ const deleteCandidateData = async (id_) => {
 	return id_
 }
 
-const approveCandidateData = async (id_, type_, quota_value_, paid_enrollment_) => {
+const approveCandidateData = async (id_, type_, paid_enrollment_) => {
 	const candidate = await getCandidateByIdData(id_)
+	let enrollment_date_ = new Date()
+	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_, candidate.gender_, candidate.iban_, candidate.img_, enrollment_date_)
+
+	user_imgs = user_imgs.map(elem => {
+		if (elem.user_id_ == uid_) {
+			const img = {
+				user_id_: uid_,
+				img_:candidate.img_
+			}
+			return img
+		}
+		return elem
+	})
 
 	candidates = candidates.filter(candidate => candidate.id_ != id_)
 
-	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, quota_value_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_, candidate.gender_, candidate.iban_)
-
-	if(!candidate.img_) {
-		const img = {
-			user_id_: uid_,
-			img_value_:candidate.img_
-		}
-		user_imgs.push(img)
-	}
 	return uid_
 }
 
@@ -232,24 +244,71 @@ const getCandidateByIbanData = async (iban_) => {
  * Companies
  */
 
-const getCompaniesData = async () => {
-	let count = 0
-	const companiesArray = companies.filter(async (company) => {
-		const member = await getMemberByIdData(company.member_id_)
-		if (member) {
-			++count
-			return true
+const getCompaniesData = async (username_filter,name_filter,email_filter, debt_filter,offset,limit) => {
+	const filteredCompanies = companies.filter(company => {
+		let results = []
+		const member = members.filter(member => member.id_ == company.member_id_)[0]
+		if (username_filter) {
+			if (member.username_.includes(username_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
 		}
-		return false
+		
+		if (name_filter) {
+			if (company.name_.includes(name_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+
+		if (email_filter) {
+			if (member.email_ === email_filter) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+
+		if (debt_filter) {
+			if (member.has_debt_ === (debt_filter == 'true')) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		
+		if (results.every(elem => elem === true)) return true
+		else return false
 	})
-	return {companies: companiesArray, number_of_companies: count}
+	const obj = {
+		companies: filteredCompanies.slice(offset, limit + offset).map(company => {
+			const member = members.filter(member => member.id_ == company.member_id_)[0]
+			const contact = contacts.filter(contact => contact.member_id_ == company.member_id_)[0]
+			let obj = {
+				...company,
+				username_: member.username_,
+				has_debt_: member.has_debt_,
+				member_type_: member.member_type_,
+				is_deleted_: member.is_deleted_,
+				email_: contact.email_,
+				iban_: member.iban_
+			}
+			return obj
+		}),
+		number_of_companies: filteredCompanies.length
+	}
+
+	return obj
 }
 
 const getCompanyByIdData = async (id_) => {
 	const company = companies.filter(company => company.member_id_ == id_)[0]
 	const contact = contacts.filter(contact => contact.member_id_ == id_)[0]
 	if (company) {
-		const member = await getMemberByIdData(company.member_id_)
+		const member = members.filter(member => member.id_ == id_)[0]
+		console.log(member);
+		const img = user_imgs.filter(user => user.user_id_ == id_)[0]
+		console.log(img);
+		const member_type = member_types_.filter(type => type.type_ == member.member_type_)[0]
 		if (member) {
 			const ret = {
 				member_id_:company.member_id_,
@@ -264,7 +323,9 @@ const getCompanyByIdData = async (id_) => {
 				has_debt_:member.has_debt_,
 				member_type_:member.member_type_,
 				iban_: member.iban_,
-				is_deleted_: member.is_deleted_
+				is_deleted_: member.is_deleted_,
+				img_value_: img.img_,
+				category: member_type.category_
 			}
 			return ret
 		}
@@ -297,26 +358,31 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 		email_,
 		phone_number_
 	}
-	const temp_quota = quotas[quotas.length - 1]
 
-	if (temp_quota && new Date().getFullYear() == temp_quota.date_.split('-')[2]) {
-		indexObj.idxQuotas++
-		const quota = {
-			id_: indexObj.idxQuotas,
-			member_id_: member.id_,
-			payment_date: null,
-			date_: temp_quota.date_
-		}
-		quotas.push(quota)
-	}
+	const date = new Date()
+    const curr_date = formatDate(`${date.getFullYear()}-01-01`)
+    let dates = [... new Set(quotas.filter(elem => elem.date >= curr_date))]
 
-	if (img_) {
-		const user_img_ = {
-			user_id_ : indexObj.idxMember,
-			img_,
-		}
-		user_imgs.push(user_img_)
+    const value = member_types_.filter(elem => elem.type_ == type_)[0].quota_value_
+    if (dates) {
+        dates.forEach(elem => {
+            indexObj.idxQuotas++
+            const quota = {
+                id_: indexObj.idxQuotas,
+                memberid: member.id_,
+                paymentdate: null,
+                date: elem,
+                amount : value
+            }
+            quotas.push(quota)
+        })
+    }
+
+	const company_img_ = {
+		user_id_ : indexObj.idxMember,
+		img_,
 	}
+	user_imgs.push(company_img_)
 	members.push(member)
 	companies.push(company)
 	contacts.push(contact)
@@ -324,26 +390,30 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 	return company.member_id_
 }
 
-const updateCompanyData = async (id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
-	const idxMember = members.findIndex((member => member.id_ == id_))
+const updateCompanyData = async (cid_, nif_, type_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
+	const idxMember = members.findIndex((member => member.id_ == cid_))
 	members[idxMember].iban_ = iban_
+	members[idxMember].member_type_ = type_
 	members[idxMember].is_deleted_ = is_deleted_
-	const idxCompany = companies.findIndex((company => company.member_id_ == id_))
+	const idxCompany = companies.findIndex((company => company.member_id_ == cid_))
 	companies[idxCompany].name_ = name_
 	companies[idxCompany].nif_ = nif_
-	const idxContact = contacts.findIndex((contact => contact.member_id_ == id_))
+	const idxContact = contacts.findIndex((contact => contact.member_id_ == cid_))
 	contacts[idxContact].phone_number_ = phone_number_
 	contacts[idxContact].postal_code_ = postal_code_
 	contacts[idxContact].address_ = address_
 	contacts[idxContact].location_ = location_
 
-	if (img_) {
-		const user_img_ = {
-			user_id_ : id_,
-			img_,
+	user_imgs = user_imgs.map(elem => {
+		if (elem.user_id_ == uid_) {
+			const img = {
+				user_id_: uid_,
+				img_: img_
+			}
+			return img
 		}
-		user_imgs.push(user_img_)
-	}
+		return elem
+	})
 
 	return companies[idxCompany].member_id_
 }
@@ -360,8 +430,8 @@ const deleteCompanyData = async (id_) => {
 
 const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offset,limit) => {
 	let date_today = formatDate(new Date())
-	let initialDate_filter = formatDate(initialDate_filter)
-	let endDate_filter = formatDate(endDate_filter)
+	initialDate_filter = formatDate(initialDate_filter)
+	endDate_filter = formatDate(endDate_filter)
 
 	let filteredEvents = events.filter(event => {
 		let results = []
@@ -922,6 +992,6 @@ const getEmails = async() => {
 
 
 
-const mock_data = { getUserSportByIdAndUserData, getMemberByIbanData, getCandidateByIbanData, getManagementQuotas,updateManagementQuotaByType, getManagementQuotaByType, postManagementQuota, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, postMemberAttendanceData, updateMemberAttendanceData, getEventByIdAttendanceData, getEventMemberByIdAttendanceData, getSportsData, getSportByIdData, postSportData,updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByEmailData, getCandidateByCCData, getCandidateByNifData }
+const mock_data = { getUserSportByIdAndUserData, getMemberByIbanData, getCandidateByIbanData, getManagementQuotas,updateManagementQuotaByType, getManagementQuotaByType, postManagementQuota, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, updateMemberAttendanceData, getEventByIdAttendanceData, getEventMemberByIdAttendanceData, getSportsData, getSportByIdData, postSportData,updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByEmailData, getCandidateByCCData, getCandidateByNifData }
 
 export default mock_data
