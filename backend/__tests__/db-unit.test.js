@@ -241,7 +241,7 @@ test('Delete specific event', async () => {
 
 test('Create a event', async () => {
 	expect.assertions(1)
-	const event = await dbEvent.postEvent('Entrega de troféus.', '12-07-2022', '12-07-2022', [1,2])
+	const event = await dbEvent.postEvent('Entrega de troféus.', '12-07-2022', '12-07-2022', [1,2], false)
 	expect(event).toBe(3)
 })
 

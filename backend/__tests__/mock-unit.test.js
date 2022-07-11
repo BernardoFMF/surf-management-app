@@ -8,13 +8,19 @@ import candidate from '../data/candidateData.js'
 import company from '../data/companyData.js'
 import user from '../data/userData.js'
 import quota from '../data/quotaData.js'
+import group from '../data/groupData'
+import member from '../data/memberData'
+import statistics from '../data/statisticsData'
 
-const dbSport = sport(db)
-const dbEvent = event(db)
-const dbCandidate = candidate(db)
-const dbCompany = company(db)
-const dbUser = user(db)
-const dbQuota = quota(db)
+const dbSport = sport(data)
+const dbEvent = event(data)
+const dbCandidate = candidate(data)
+const dbCompany = company(data)
+const dbUser = user(data)
+const dbQuota = quota(data)
+const dbGroup = group(data)
+const dbMember = member(data)
+const dbStatistics = statistics(data)
 
 
 async function insertSportDummies() {
@@ -25,8 +31,8 @@ async function insertSportDummies() {
 }
 
 async function insertEventDummies() {
-	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022')
-	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022')
+	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1], true)
+	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2], true)
 }
 
 async function insertCandidateDummies() {
@@ -40,29 +46,28 @@ async function insertCompanyDummies() {
 }
 
 async function insertUserDummies() {
-	await dbUser.postUser(383128318, 764291145, 'founder', '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe', 'PT50011110000001234567831', '\\xEAABDFFA',)
-	await dbUser.postUser(383123818, 763371741, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe', 'PT50002700000011134567831', '\\xEAABDFFA',)
+	await dbUser.postUser(383128318, 764291145, 'founder', '09-03-1987', 'Iraniano', 'Mohamed Jahal Bali horad', 967022559, 'mohamedlgh@gmail.com', '3010-078', 'Rua D.José Martins', 'Lisboa','lisboa2020', 'mohamed87', true, 'Male', 'urlgandafixe', 'PT50011110000001234567831', '\\xEAABDFFA', '09-03-2022')
+	await dbUser.postUser(383123818, 763371741, 'effective', '27-10-1993', 'Portuguesa', 'Luis Marquez', 967022783, 'luismarquez@gmail.com', '2080-478', 'Rua da Estrela', 'Lisboa','mariabeatriz', 'luizinho23', true, 'Male', 'urlgandafixe', 'PT50002700000011134567831', '\\xEAABDFFA', '09-03-2022')
 }
 
 async function insertSportsforUsersDummies() {
-	await dbUser.postUserSport(1, 2, 54, 1890547, 'Fereracao de Surf', ['coach'], [2017,2018,2019,2020,2021])
-	await dbUser.postUserSport(2, 1, 54, 1890548, 'Federacao de Surf', ['practitioner'], [2018])
-	await dbUser.postUserSport(1, 3, 55, 1895731, 'Fereracao de SkySurf', ['practitioner'], [2021])
-	await dbUser.postUserSport(2, 3, 55, 1890780, 'Federacao de SkySurf', ['practitioner'], [2022])
-}
-
-async function insertAttendanceDummies() {
-	await dbEvent.postMemberAttendance(1,2,'going')
+	await dbUser.postUserSport(1, 2, 54, 1890547, 'Fereracao de Surf', ['coach'], [2017,2018,2019,2020,2021], false)
+	await dbUser.postUserSport(2, 1, 54, 1890548, 'Federacao de Surf', ['practitioner'], [2018], false)
+	await dbUser.postUserSport(1, 3, 55, 1895731, 'Fereracao de SkySurf', ['practitioner'], [2021], false)
+	await dbUser.postUserSport(2, 3, 55, 1890780, 'Federacao de SkySurf', ['practitioner'], [2022], false)
 }
 
 async function insertQuotaPricesDummies() {
-	await dbQuota.postManagementQuota('effective', 15)
-	await dbQuota.postManagementQuota('founder', 0)
-	await dbQuota.postManagementQuota('merit', 0)
-	await dbQuota.postManagementQuota('corporate', 50)
+	await dbQuota.postManagementQuota('effective', 15, 'user')
+	await dbQuota.postManagementQuota('founder', 0, 'user')
+	await dbQuota.postManagementQuota('merit', 0, 'user')
+	await dbQuota.postManagementQuota('corporate', 50, 'company')
 }
 
-
+async function insertGroupsDummies() {
+	await dbGroup.postGroup('ganda grupo de tudo', 'tudo', 'member_type', [ "effective", "corporate", "merit", "founder" ], [])
+	await dbGroup.postGroup('ganda grupo de desporto', 'desporto', 'member_sport_type', [ "coach", "practitioner" ], [1, 3, 2])
+}
 
 beforeAll( async () => {
 	await insertSportDummies()
