@@ -29,7 +29,7 @@ export const login = (username, password) => async (dispatch) => {
       })
       const memberLogin = await response.json()
 
-      if(response.status !== 200) throw Error(memberLogin.message_code)
+      if(response.status !== 201) throw Error(memberLogin.message_code)
   
       const memberInfo = {
         id_: memberLogin.id_,

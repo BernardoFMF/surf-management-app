@@ -49,8 +49,22 @@ let user_imgs = []
 let users_sports = []
 let membership_cards = []
 let quotas = []
-
 let member_types_ = []
+
+function formatDate(date) {
+	var d = new Date(date),
+		month = '' + (d.getMonth() + 1),
+		day = '' + d.getDate(),
+		year = d.getFullYear();
+
+	if (month.length < 2) 
+		month = '0' + month;
+	if (day.length < 2) 
+		day = '0' + day;
+
+	return [year, month, day].join('-');
+}
+
 /**
  * Candidates
  */
@@ -317,43 +331,100 @@ const deleteCompanyData = async (id_) => {
  * Event
  */
 
-const getEventsData = async () => {
-	const obj = {
-		events: events.map(event => {
-			const newEvent = {
-				id_: event.id_,
-				name_: event.name_,
-				initial_date_: event.initial_date_,
-				end_date: event.end_date,
-				status: "not started",
+const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offset,limit) => {
+	let date_today = formatDate(new Date())
+	let initialDate_filter = formatDate(initialDate_filter)
+	let endDate_filter = formatDate(endDate_filter)
+
+	let filteredEvents = events.filter(event => {
+		let results = []
+		if (usernamefilter) {
+			if (event.name_.includes(name_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		if (initialDate_filter) {
+			if (event.initial_date_ === initialDate_filter) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		if (endDate_filter) {
+			if (event.final_date_ === endDate_filter) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+
+		if (results.every(elem => elem === true)) return true
+		else return false
+	}).slice(offset, offset + limit).map(event => {
+		event.initial_date_ = formatDate(event.initial_date_)
+		event.end_date_ = formatDate(event.end_date_)
+		if(date_today < event.initial_date_ && date_today < event.end_date_){
+			let x = {
+				...event, status: "status_not_started"
 			}
-			return newEvent
-		}),
-		number_of_events: events.length
+			return x
+		}else{
+			if(date_today > event.initial_date_ && date_today > event.end_date_){
+				let x = {
+					...event, status: "status_event_ended"
+				}
+				return x
+			}
+			else{
+				let x = {
+					...event, status: "status_event_occurring"
+				}
+				return x
+			}
+		}
+	})
+	const obj = {
+		events: filteredEvents,
+		number_of_events: filteredEvents.length
 	}
 	return obj
 }
 
 const getEventByIdData = async (id_) => {
 	const event = events.filter(event => event.id_ == id_)[0]
-	if (!event) return event
-	const newEvent = {
-		id_: event.id_,
-		name_: event.name_,
-		initial_date_: event.initial_date_,
-		end_date: event.end_date,
-		status: "not started",
+	if (!event) return null
+
+	let date_today = formatDate(new Date())
+	event.initial_date_ = formatDate(event.initial_date_)
+	event.end_date_ = formatDate(event.end_date_)
+	if(date_today < event.initial_date_ && date_today < event.end_date_){
+		let x = {
+			...event, status: "status_not_started"
+		}
+		return x
+	}else{
+		if(date_today > event.initial_date_ && date_today > event.end_date_){
+			let x = {
+				...event, status: "status_event_ended"
+			}
+			return x
+		}
+		else{
+			let x = {
+				...event, status: "status_event_occurring"
+			}
+			return x
+		}
 	}
-	return newEvent
 }
 
-const postEventData = async (name_, initial_date_, final_date_) => {
+const postEventData = async (name_, initial_date_, final_date_, groups_) => {
 	indexObj.idxEvents++
 	const event = {
 		id_: indexObj.idxEvents, 
 		name_, 
 		initial_date_, 
-		final_date_
+		final_date_,
+		groups_
 	}
 	events.push(event)
 	return event.id_
@@ -371,16 +442,6 @@ const deleteEventData = async (id_) => {
 	events = events.filter(event => event.id_ != id_)
 	attendance = attendance.filter(att => att.event_id_ != id_)
 	return id_
-}
-
-const postMemberAttendanceData = async (eid_, id_, state_) => {
-	const event_user = {
-		member_id_: id_,
-		event_id_: eid_,
-		state_
-	}
-	attendance.push(event_user)
-	return {id_, eid_}
 }
 
 const updateMemberAttendanceData = async (eid_, id_, state_) => {
