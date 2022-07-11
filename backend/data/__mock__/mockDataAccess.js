@@ -69,9 +69,36 @@ function formatDate(date) {
  * Candidates
  */
 
-const getCandidatesData = () => {
+const getCandidatesData = (username_filter, name_filter, email_filter, offset, limit) => {
+	const filteredCandidates = candidates.filter(candidate => {
+		let results = []
+		if (username_filter) {
+			if (candidate.username_.includes(username_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		
+		if (name_filter) {
+			if (candidate.full_name_.includes(name_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+
+		if (name_filter) {
+			if (candidate.email_ === email_filter) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		
+		if (results.every(elem => elem === true)) return true
+		else return false
+	})
+
 	const obj = {
-		candidates: candidates.map(candidate => {
+		candidates: filteredCandidates.slice(offset, limit + offset).map(candidate => {
 			const newCandidate = {
 				id_: candidate.id_,
 				username_: candidate.username_,
@@ -90,7 +117,7 @@ const getCandidatesData = () => {
 			}
 			return newCandidate
 		}),
-		number_of_candidates: candidates.length
+		number_of_candidates: filteredCandidates.length
 	}
 	return obj
 }
