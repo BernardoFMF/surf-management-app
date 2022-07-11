@@ -761,18 +761,12 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 	}
 
 	const getAllMembersData = async () => {
-		const client = await pool.connect()
-		try {
-			await client.query('begin')
+		const handler = async (client) => {
 			const result = await client.query(queries.QUERY_GET_ALL_MEMBERS)
-			await client.query('commit')
 			return result.rows
-		} catch (e) {
-			await client.query('rollback')
-			throw e
-		} finally {
-			client.release()
 		}
+
+		return await pool(handler)
 	}
 
 	const getMemberByIdData = async (id_) => {
