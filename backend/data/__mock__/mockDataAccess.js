@@ -994,12 +994,24 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 		is_absent_: false,
 		is_candidate_
 	}
+
 	users_sports.push(user_sport)
+
+	type_.forEach(t => {
+		let sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
+		sportGroups.forEach(group => {
+			if (group.sport_member_type_ == t && !groups_members.filter(member => member.group_id_ == group.group_id_ && member.member_id_ == id_)[0]) {
+				groups_members.push({group_id_: group.group_id_, member_id_: id_})
+			}
+		})
+	})
+
 	return {id_: user_sport.user_id_, sid_: user_sport.sport_id_}
 } 
 
 const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_) => {
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
+	const oldIsAbsent = members[idxMember].is_absent_
 	users_sports[user_sport_idx].fed_id_ = fed_id_
 	users_sports[user_sport_idx].fed_number_ = fed_number_
 	users_sports[user_sport_idx].fed_name_ = fed_name_
@@ -1008,14 +1020,44 @@ const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, t
 	users_sports[user_sport_idx].is_absent_ = is_absent_
 	users_sports[user_sport_idx].is_candidate_ = is_candidate_
 
+	const memberGroups = groups_members.filter(group_member => group_member.member_id_ == id_).map(group => group.group_id_)
+
+	const sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
+
+	const groupsToRemove = sportGroups.filter(group => memberGroups.includes(group.group_id_)).map(group => group.group_id_)
+
+	groups_members = groups_members.filter(member => member.member_id_ == id_ && groupsToRemove.includes(member.group_id_))
+
+	if ((oldIsAbsent == false && is_absent_ == false) || (oldIsAbsent == true && is_absent_ == false)) {
+		type_.forEach(t => {
+			let sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
+			sportGroups.forEach(group => {
+				if (group.sport_member_type_ == t && !groups_members.filter(member => member.group_id_ == group.group_id_ && member.member_id_ == id_)[0]) {
+					groups_members.push({group_id_: group.group_id_, member_id_: id_})
+				}
+			})
+		})
+	}
+
 	return {id_: users_sports[user_sport_idx].user_id_, sid_: users_sports[user_sport_idx].sport_id_}
 }
 
 const deleteUserSportData = async (id_, sid_) => {
+	const memberGroups = groups_members.filter(group_member => group_member.member_id_ == id_).map(group => group.group_id_)
+
+	const sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
+
+	const groupsToRemove = sportGroups.filter(group => memberGroups.includes(group.group_id_)).map(group => group.group_id_)
+
+	groups_members = groups_members.filter(member => member.member_id_ == id_ && groupsToRemove.includes(member.group_id_))
+
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
 	if(user_sport_idx != -1) {
 		users_sports[user_sport_idx].is_absent_ = true
 	}
+
+
+
 	return {id_, sid_}
 }
 
@@ -1100,7 +1142,6 @@ const getMemberQuotasByIdData = async (id_,offset,limit) => {
 }
 
 const postQuotaData = async (date_) => {
-	let cnt = indexObj.idxQuotas
 	date_ = formatDate(date_)
 	members.forEach(member => {
 		const hasQuota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_ == date_)[0]
@@ -1241,11 +1282,10 @@ const deleteGroupData = async (id_) => {
 }
 
 const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_filter, offset, limit) => {
-	let groupsFiltered = []
-	groupsFiltered = groups_members
+	let groupsFiltered = groups_members
 		.filter(elem => elem.member_id_ == id_)
 		.map(elem => {
-			const group = await getGroupByIdData(elem.group_id_)
+			const group = groups.filter(g => g.group_id_ == elem.group_id_)[0]
 			return group
 		})
 		.filter(elem => group_type_filter ? elem.group_type_ == group_type_filter : true )
