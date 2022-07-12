@@ -84,7 +84,7 @@ function formatDate(date) {
 	if (day.length < 2) 
 		day = '0' + day;
 
-	return [year, month, day].join('-');
+	return [day, month, year].join('-');
 }
 
 /**
@@ -471,8 +471,8 @@ const deleteCompanyData = async (id_) => {
 
 const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offset,limit) => {
 	let date_today = formatDate(new Date())
-	initialDate_filter = formatDate(initialDate_filter)
-	endDate_filter = formatDate(endDate_filter)
+	initialDate_filter = initialDate_filter ? formatDate(initialDate_filter) : undefined
+	endDate_filter = endDate_filter ? formatDate(endDate_filter) : undefined
 
 	let filteredEvents = events.filter(event => {
 		let results = []
@@ -495,19 +495,20 @@ const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offse
 				results.push(false)
 		}
 
-		if (results.length == 0 && results.every(elem => elem === true)) return true
+		if (results.length == 0 || results.every(elem => elem === true)) return true
 		else return false
-	}).slice(offset, offset + limit)
-	let test = filteredEvents.map(event => {
+	})
+	let test2 = filteredEvents.slice(offset, offset + limit)
+	let test = test2.map(event => {
 		event.initial_date_ = formatDate(event.initial_date_)
-		event.end_date_ = formatDate(event.end_date_)
-		if(date_today < event.initial_date_ && date_today < event.end_date_){
+		event.final_date_ = formatDate(event.final_date_)
+		if(date_today < event.initial_date_ && date_today < event.final_date_){
 			let x = {
 				...event, status: "status_not_started"
 			}
 			return x
 		}else{
-			if(date_today > event.initial_date_ && date_today > event.end_date_){
+			if(date_today > event.initial_date_ && date_today > event.final_date_){
 				let x = {
 					...event, status: "status_event_ended"
 				}
@@ -534,14 +535,14 @@ const getEventByIdData = async (id_) => {
 
 	let date_today = formatDate(new Date())
 	event.initial_date_ = formatDate(event.initial_date_)
-	event.end_date_ = formatDate(event.end_date_)
-	if(date_today < event.initial_date_ && date_today < event.end_date_){
+	event.final_date_ = formatDate(event.final_date_)
+	if(date_today < event.initial_date_ && date_today < event.final_date_){
 		let x = {
 			...event, status: "status_not_started"
 		}
 		return x
 	}else{
-		if(date_today > event.initial_date_ && date_today > event.end_date_){
+		if(date_today > event.initial_date_ && date_today > event.final_date_){
 			let x = {
 				...event, status: "status_event_ended"
 			}
