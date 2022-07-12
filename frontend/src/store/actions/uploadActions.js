@@ -14,14 +14,15 @@ import {
           body: file
       })
       const response = await request.json()
-      console.log(response);
-      if(request.status !== 200) throw Error(response.message_code)
+      console.log(response.message_code);
+      if(request.status !== 201) throw Error(response.message_code || "MESSAGE_CODE_2")
       dispatch({
         type: UPLOAD_SUCCESS,
         payload: response,
       })
   
     } catch (error) {
+      console.log(error);
       dispatch({
         type: UPLOAD_FAIL,
         payload:

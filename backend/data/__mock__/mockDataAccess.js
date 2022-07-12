@@ -5,7 +5,9 @@ let indexObj = {
 	idxCandidates: 0,
 	idxEvents: 0,
 	idxSports: 0,
-	idxQuotas: 0
+	idxQuotas: 0,
+	idxGroups: 0
+
 }
 
 let members = [{
@@ -53,11 +55,13 @@ let member_types_ = [{
 	type_: "founder",
 	quota_value_: 0,
 	category_: "user"
-}, {
-	type_: "corporate",
-	quota_value_: 50,
-	category_: "company"
 }]
+let groups = []
+let groups_events = []
+let groups_members = []
+let groups_members_types = []
+let groups_sports = []
+let user_sport_types = {'coach': 'coach', 'practitioner': 'practitioner', 'apprentice': 'apprentice', 'jury' : 'jury'}
 
 function formatDate(date) {
 	var d = new Date(date),
@@ -76,6 +80,7 @@ function formatDate(date) {
 /**
  * Candidates
  */
+
 
 const getCandidatesData = (username_filter, name_filter, email_filter, offset, limit) => {
 	const filteredCandidates = candidates.filter(candidate => {
@@ -383,6 +388,16 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 		img_,
 	}
 	user_imgs.push(company_img_)
+
+	groups.forEach(group => {
+		if (group.group_type_ == 'member_type') {
+			groups_members_types.filter(groups_types => groups_types.group_id_ == group.group_id_).forEach(elem => {
+				if (elem.member_type_ == type_)
+					groups_members.push({group_id_: group.group_id_, member_id_: indexObj.idxMember})
+			})
+		}
+	})
+
 	members.push(member)
 	companies.push(company)
 	contacts.push(contact)
@@ -392,6 +407,8 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 
 const updateCompanyData = async (cid_, nif_, type_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
 	const idxMember = members.findIndex((member => member.id_ == cid_))
+	const oldDeleted = members[idxMember].is_deleted_
+	const oldType = members[idxMember].member_type_
 	members[idxMember].iban_ = iban_
 	members[idxMember].member_type_ = type_
 	members[idxMember].is_deleted_ = is_deleted_
@@ -404,10 +421,23 @@ const updateCompanyData = async (cid_, nif_, type_, name_, phone_number_, postal
 	contacts[idxContact].address_ = address_
 	contacts[idxContact].location_ = location_
 
+	if ((oldDeleted == true && is_deleted_ == false) || oldType != type_) {
+		const groupsToRemove = groups_members.filter(group_member => group_member.member_id_ == cid_ && groups.filter(group => group.group_type_ == 'member_type' && group.group_id_ == group_member.group_id_)[0]).map(elem => elem.group_id_)
+		groups_members = groups_members.filter(group_member => groupsToRemove.includes(group_member.group_id_))
+		groups.forEach(group => {
+			if (group.group_type_ == 'member_type') {
+				groups_members_types.filter(groups_types => groups_types.group_id_ == group.group_id_).forEach(elem => {
+					if (elem.member_type_ == type_)
+						groups_members.push({group_id_: group.group_id_, member_id_: indexObj.idxMember})
+				})
+			}
+		})
+	}
+
 	user_imgs = user_imgs.map(elem => {
-		if (elem.user_id_ == uid_) {
+		if (elem.user_id_ == cid_) {
 			const img = {
-				user_id_: uid_,
+				user_id_: cid_,
 				img_: img_
 			}
 			return img
@@ -421,6 +451,7 @@ const updateCompanyData = async (cid_, nif_, type_, name_, phone_number_, postal
 const deleteCompanyData = async (id_) => {
 	const idxCompany = members.findIndex(m => m.id_ == id_)
 	members[idxCompany].is_deleted_ = true
+	groups_members = groups_members.filter(group_member => group_member.member_id_ != id_)
 	return id_
 }
 
@@ -547,7 +578,7 @@ const updateMemberAttendanceData = async (eid_, id_, state_) => {
 	return {id_, eid_}
 }
 
-const getEventByIdAttendanceData = async (eid_) => {
+const getEventByIdAttendanceData = async (eid_, offset, limit) => {
 	const ret = []
 	for (const idx in attendance) {
 		if(attendance[idx].event_id_ == eid_) {
@@ -569,11 +600,38 @@ const getEventByIdAttendanceData = async (eid_) => {
 			}
 		}
 	}
+	ret = ret.slice(offset, offset + limit)
 	return {ret,number_of_events:ret.length}
 }
 
-const getEventMemberByIdAttendanceData = async (id_) => {
-	const ret = attendance.filter(att => att.member_id_ == id_)
+const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,date_filter,offset,limit) => {
+	const ret = attendance
+		.filter(att => att.member_id_ == id_)
+		.slice(offset, offset + limit)
+		.map(attendance => {
+			let results = []
+			if (usernamefilter) {
+				if (attendance.name_.includes(name_filter)) 
+					results.push(true)
+				else 
+					results.push(false)
+			}
+			if (state_filter) {
+				if (attendance.state_ === state_filter) 
+					results.push(true)
+				else 
+					results.push(false)
+			}
+			if (date_filter) {
+				if (attendance.date_ === date_filter) 
+					results.push(true)
+				else 
+					results.push(false)
+			}
+
+			if (results.every(elem => elem === true)) return true
+			else return false
+		})
 	let number_of_events = ret.length
 	return {ret,number_of_events}
 }
@@ -582,7 +640,7 @@ const getEventMemberByIdAttendanceData = async (id_) => {
  */
 
 const getSportsData = async () => {
-	return sports.filter(sport => !sport.is_deleted_)
+	return sports
 }
 
 const getSportByIdData = async (id_) => {
@@ -683,17 +741,39 @@ const getMemberByIbanData = async (iban_) => {
  * Users
  */
 
-const getUsersData = async () => {
-	let count = 0
+const getUsersData = async (username_filter,name_filter,email_filter,debt_filter,offset,limit) => {
 	const usersArray = users.filter(async (user) => {
 		const member = await getMemberByIdData(user.member_id_)
-		if (member) {
-			++count
-			return true
+		const contact = contacts.filter(con => con.member_id_ == user.member_id_)[0]
+		let results = []
+		if (name_filter) {
+			if (user.full_name_.includes(name_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
 		}
-		return false
-	})
-	return {users: usersArray, number_of_users: count}
+		if (username_filter) {
+			if (member.username_.includes(username_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		if (debt_filter) {
+			if (member.has_debt_ === debt_filter) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		if (email_filter) {
+			if (contact.email_ === email_filter) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		if (results.every(elem => elem === true)) return true
+		else return false
+	}).slice(offset, limit + offset)
+	return {users: usersArray, number_of_users: usersArray.length}
 }
 
 const getUserByIdData = async (id_) => {
@@ -738,26 +818,43 @@ const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_na
 		email_,
 		phone_number_
 	}
-	const temp_quota = quotas[quotas.length - 1]
 
-	if (temp_quota && new Date().getFullYear() == temp_quota.date_.split('-')[0]) {
-		indexObj.idxQuotas++
-		const quota = {
-			id_: indexObj.idxQuotas,
-			member_id_: member.id_,
-			payment_date_: null,
-			date_: temp_quota.date_
-		}
-		quotas.push(quota)
+	const date = new Date()
+	const curr_date = formatDate(`${date.getFullYear()}-01-01`)
+	let dates = []
+	dates =  [... new Set(quotas.filter(elem => elem.date_ >= curr_date))]
+
+	const value = member_types_.filter(elem => elem.type_ == type_)[0].quota_value_
+	if (dates) {
+		dates.forEach(elem => {
+			indexObj.idxQuotas++
+			const quota = {
+				id_: indexObj.idxQuotas,
+				member_id_: member.id_,
+				payment_date_: null,
+				date_: elem,
+				amount_ : value
+			}
+			quotas.push(quota)
+		})
+		
 	}
 
-	if (img_) {
-		const user_img_ = {
-			user_id_ : indexObj.idxMember,
-			img_,
-		}
-		user_imgs.push(user_img_)
+	const user_img_ = {
+		user_id_ : indexObj.idxMember,
+		img_,
 	}
+	user_imgs.push(user_img_)
+
+	groups.forEach(group => {
+		if (group.group_type_ == 'member_type') {
+			groups_members_types.filter(groups_types => groups_types.group_id_ == group.group_id_).forEach(elem => {
+				if (elem.member_type_ == type_)
+					groups_members.push({group_id_: group.group_id_, member_id_: indexObj.idxMember})
+			})
+		}
+	})
+
 	members.push(member)
 	users.push(user)
 	contacts.push(contact)
@@ -775,6 +872,8 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 
 const updateUserData = async (id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_, iban_) => {
 	const idxMember = members.findIndex(member => member.id_ == id_)
+	const oldDeleted = members[idxMember].is_deleted_
+	const oldType = members[idxMember].member_type_
 	members[idxMember].is_deleted_ = is_deleted_
 	members[idxMember].type_ = type_
 	members[idxMember].iban_ = iban_
@@ -795,6 +894,19 @@ const updateUserData = async (id_, cc_, nif_, type_, birth_date_, nationality_, 
 	contacts[idxContact].address_ = address_
 	contacts[idxContact].location_ = location_
 
+	if ((oldDeleted == true && is_deleted_ == false) || oldType != type_) {
+		const groupsToRemove = groups_members.filter(group_member => group_member.member_id_ == cid_ && groups.filter(group => group.group_type_ == 'member_type' && group.group_id_ == group_member.group_id_)[0]).map(elem => elem.group_id_)
+		groups_members = groups_members.filter(group_member => groupsToRemove.includes(group_member.group_id_))
+		groups.forEach(group => {
+			if (group.group_type_ == 'member_type') {
+				groups_members_types.filter(groups_types => groups_types.group_id_ == group.group_id_).forEach(elem => {
+					if (elem.member_type_ == type_)
+						groups_members.push({group_id_: group.group_id_, member_id_: indexObj.idxMember})
+				})
+			}
+		})
+	}
+
 	if (img_) {
 		const user_img_ = {
 			user_id_ : id_,
@@ -803,14 +915,25 @@ const updateUserData = async (id_, cc_, nif_, type_, birth_date_, nationality_, 
 		user_imgs.push(user_img_)
 	}
 
+	user_imgs = user_imgs.map(elem => {
+		if (elem.user_id_ == id_) {
+			const img = {
+				user_id_: id_,
+				img_: img_
+			}
+			return img
+		}
+		return elem
+	})
+
+
 	return users[idxUser].member_id_
 } 
 
 const deleteUserData = async (id_) => {
-	members = members.map(member => {
-		if (member.id_ == id_) member.is_deleted_ = true
-		return member
-	})
+	const idxUser = members.findIndex(m => m.id_ == id_)
+	members[idxUser].is_deleted_ = true
+	groups_members = groups_members.filter(group_member => group_member.member_id_ != id_)
 	return id_
 }
 
@@ -824,15 +947,32 @@ const getUsersSportsData = async () => {
 	return {users_sports_array,number_of_sports:users_sports_array.length}
 }
 
-const getUsersSportData = async (id_) => {
+const getUsersSportData = async (id_, offset, limit, is_candidate_, username_) => {
 	let sports_tuples = await getUsersSportsData()
 	let res = sports_tuples.users_sports_array.filter(sport => sport.sport_id_ == id_)
+	res = res.filter(user => {
+		let results = []
+		if (is_candidate_) {
+			if (user.is_candidate_.includes(is_candidate_)) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		if (username_) {
+			if (user.username_.includes(username_)) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		if (results.every(elem => elem === true)) return true
+		else return false
+	}).slice(offset, offset + limit)
 	return {res,number_of_sports:res.length}
 }
 
-const getUserSportsByIdData = async (id_) => {
+const getUserSportsByIdData = async (id_,offset, limit) => {
 	let sports_tuples = await getUsersSportsData()
-	let res = sports_tuples.users_sports_array.filter(user => user.user_id_ == id_)
+	let res = sports_tuples.users_sports_array.filter(user => user.user_id_ == id_).slice(offset, limit + offset)
 	return {res,number_of_sports:res.length}
 }
 
@@ -842,7 +982,7 @@ const getUserSportByIdAndUserData = async (id_, sid_) => {
 	return users_sports[idx]
 }
 
-const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_) => {
+const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_candidate_) => {
 	const user_sport = {
 		user_id_: id_,
 		sport_id_: sid_,
@@ -851,13 +991,14 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 		fed_id_,
 		fed_name_,
 		years_federated_,
-		is_absent_: false
+		is_absent_: false,
+		is_candidate_
 	}
 	users_sports.push(user_sport)
 	return {id_: user_sport.user_id_, sid_: user_sport.sport_id_}
 } 
 
-const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_) => {
+const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_) => {
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
 	users_sports[user_sport_idx].fed_id_ = fed_id_
 	users_sports[user_sport_idx].fed_number_ = fed_number_
@@ -865,6 +1006,8 @@ const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, t
 	users_sports[user_sport_idx].type_ = type_
 	users_sports[user_sport_idx].years_federated_ = years_federated_
 	users_sports[user_sport_idx].is_absent_ = is_absent_
+	users_sports[user_sport_idx].is_candidate_ = is_candidate_
+
 	return {id_: users_sports[user_sport_idx].user_id_, sid_: users_sports[user_sport_idx].sport_id_}
 }
 
@@ -880,17 +1023,53 @@ const deleteUserSportData = async (id_, sid_) => {
  * Quotas
  */
 
-const getQuotasData = async () => {
-	let count = 0
+const getQuotasData = async (username_filter,email_filter,date_filter,offset,limit) => {
 	let quotasArray = []
+	date_filter = formatDate(date_filter)
 	quotas.forEach(async (element) => {
-		const member = await getMemberByIdData(element.member_id_)
-		if (member) {
-			++count
-			quotasArray.push({...element, iban_: member.iban_})
+		const contact = contacts.filter(elem => elem.member_id_ == element.id_)[0]
+		let results = []
+		if (username_filter) {
+			if (element.username_.includes(username_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
 		}
-	});
-	return {quotas: quotasArray, number_of_quotas: count}
+		if (date_filter) {
+			if (element.date_.includes(date_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		if (email_filter) {
+			if (contact.email_ === email_filter) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		if (results.every(elem => elem === true)) quotasArray.push({...element, })
+	}).slice(offset, limit + offset)
+	return {quotas: quotasArray, number_of_quotas: quotasArray.length}
+}
+
+const getQuotasByDateData = async (date) => {
+	date = formatDate(date)
+	return quotas.filter(elem => elem.date_ == date)
+}
+
+const getQuotasByEmailData = async (email) => {
+	let quotasArray = quotas.filter(element => {
+		let results = []
+		if (email) {
+			if (element.email_ === email) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		if (results.every(elem => elem === true)) return true
+		else return false
+	})
+	return quotasArray
 }
 
 const getCompaniesQuotasData = async () => {
@@ -913,18 +1092,21 @@ const getUsersQuotasData = async () => {
 	})
 }
 
-const getMemberQuotasByIdData = async (id_) => {
+const getMemberQuotasByIdData = async (id_,offset,limit) => {
 	const member = await getMemberByIdData(id_)
 	if (member)
-		return quotas.filter(quota => quota.member_id_ == id_)
+		return quotas.filter(quota => quota.member_id_ == id_).slice(offset, limit+offset)
 	return undefined
 }
 
 const postQuotaData = async (date_) => {
 	let cnt = indexObj.idxQuotas
+	date_ = formatDate(date_)
 	members.forEach(member => {
-		const year_quota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_.split('-')[0] == date_.split('-')[0])[0]
-		if (!year_quota) {
+		const hasQuota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_ == date_)[0]
+		const value = member_types_.filter(elem => elem.type_ == member.type_)[0].quota_value_
+
+		if (!hasQuota) {
 			if (member.quota_value_ != 0) {
 				indexObj.idxQuotas++
 				const quota = {
@@ -932,7 +1114,8 @@ const postQuotaData = async (date_) => {
 					member_id_: member.id_,
 					username_: member.username_,
 					payment_date_: null,
-					date_
+					date_,
+					amount_: value
 				}
 				quotas.push(quota)
 			}
@@ -944,6 +1127,7 @@ const postQuotaData = async (date_) => {
 
 const updateMemberQuotaData = async (qid_, payment_date_) => {
 	let id
+	payment_date_ = formatDate(payment_date_)
 	quotas = quotas.map(quota => {
 		if (quota.id_ == qid_) {
 			id = quota.id_
@@ -959,8 +1143,8 @@ const getQuotaByIdData = async (qid_) => {
 	return quota
 }
 
-const getManagementQuotas = async() => {
-	return member_types_
+const getManagementQuotas = async(category_) => {
+	return member_types_.filter(elem => elem.category_ == category_)
 }
 
 const updateManagementQuotaByType = async(type_, quota_value_) => {
@@ -969,10 +1153,11 @@ const updateManagementQuotaByType = async(type_, quota_value_) => {
 	return type_
 }
 
-const postManagementQuota = async(type_, quota_value_) => {
+const postManagementQuota = async(type_, quota_value_, category_) => {
 	const mt = {
 		type_,
-		quota_value_
+		quota_value_,
+		category_
 	}
 	member_types_.push(mt)
 	return type_
@@ -990,8 +1175,184 @@ const getEmails = async() => {
 	return emails
 }
 
+const getGroupsData = async (name_filter, group_type_filter, types_filter, offset, limit) => {
+	let groupsFiltered = []
+	groupsFiltered = groups
+		.filter(elem => group_type_filter ? elem.group_type_ == group_type_filter : true )
+		.filter(elem => name_filter ? elem.name_ == name_filter : true )
+		.filter(elem => {
+			if(!types_filter) return true
+			if(elem.group_type_ == 'member_type') {
+				const types = groups_members_types.filter(group => elem.group_id_ == group.group_id_ && types_filter.includes(group.member_type_))[0]
+				if(!types) return false
+				else return true
+			}
+			else if(elem.group_type_ == 'member_sport_type') {
+				const types = groups_sports.filter(group => elem.group_id_ == group.group_id_ && types_filter.includes(group.sport_member_type_))[0]
+				if(!types) return false
+				else return true
+			}
+		})
+	return groupsFiltered.slice(offset, limit + offset)
+}
 
+const getGroupByIdData = async (id_) => {
+	return groups.filter(g => g.group_id_ == id_)[0]
+}
 
-const mock_data = { getUserSportByIdAndUserData, getMemberByIbanData, getCandidateByIbanData, getManagementQuotas,updateManagementQuotaByType, getManagementQuotaByType, postManagementQuota, getCandidatesData, getCandidateByIdData, postCandidateData, deleteCandidateData, approveCandidateData, getCandidateByUsernameData, getCompaniesData, getCompanyByIdData, postCompanyData, updateCompanyData, deleteCompanyData, getEventsData, getEventByIdData, postEventData,updateEventData, deleteEventData, updateMemberAttendanceData, getEventByIdAttendanceData, getEventMemberByIdAttendanceData, getSportsData, getSportByIdData, postSportData,updateSportData, deleteSportData, getUsersData, getUserByIdData, postUserData, updateUserData, deleteUserData, getUsersSportsData, getUsersSportData, getUserSportsByIdData, postUserSportData, updateUserSportData, deleteUserSportData, getQuotasData, getCompaniesQuotasData, getUsersQuotasData, getMemberQuotasByIdData, postQuotaData, updateMemberQuotaData, getMemberByIdData, getMemberByUsernameData, getQuotaByIdData, getEmails, updateUserQrCodeData, getMemberByCCData, getMemberByNifData, getMemberByEmailData, getCandidateByEmailData, getCandidateByCCData, getCandidateByNifData }
+const getGroupByNameData = async (name_) => {
+	return groups.filter(g => g.name_ == name_)[0]
+}
+
+const postGroupData = async (name_, description_, group_type_, types_, sports_) => {
+	indexObj.idxGroups++
+	groups.push({group_id_: indexObj.idxGroups, name_, description_, group_type_ })
+	if(group_type_ == 'member_type') {
+		types_.forEach(elem => {
+			groups_members_types.push({group_id_: indexObj.idxGroups, member_type_: elem})
+			members
+				.filter(member => member.type_ == elem)
+				.forEach(elem => {
+					groups_members.push({group_id_: indexObj.idxGroups, member_id_: elem.id_})
+				})
+		})
+	}
+	else if (group_type_ == 'member_sport_type') {
+		sports_.forEach(sport => {
+			types_.forEach(type => {
+				users_sports
+					.filter(user => user.sport_id_ == sport.id_ && user.type_ == type)
+					.forEach(elem => {
+						groups_members.push({group_id_: indexObj.idxGroups, member_id_: elem.user_id_})
+						groups_sports.push({group_id_: indexObj.idxGroups, sport_id_: sport.id_, sport_member_type_: type})
+					})
+			})
+		})
+	}
+
+}
+
+const deleteGroupData = async (id_) => {
+	groups_events = groups_events.filter(group => group.group_id_ != id_)
+	groups_members = groups_members.filter(group => group.group_id_ != id_)
+	groups_sports = groups_sports.filter(group => group.group_id_ != id_)
+	groups_members_types = groups_members_types.filter(group => group.group_id_ != id_)
+	groups = groups_members_types.filter(group => group.group_id_ != id_)
+}
+
+const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_filter, offset, limit) => {
+	let groupsFiltered = []
+	groupsFiltered = groups_members
+		.filter(elem => elem.member_id_ == id_)
+		.map(elem => {
+			const group = await getGroupByIdData(elem.group_id_)
+			return group
+		})
+		.filter(elem => group_type_filter ? elem.group_type_ == group_type_filter : true )
+		.filter(elem => name_filter ? elem.name_ == name_filter : true )
+		.filter(elem => {
+			if(!types_filter) return true
+			if(elem.group_type_ == 'member_type') {
+				const types = groups_members_types.filter(group => elem.group_id_ == group.group_id_ && types_filter.includes(group.member_type_))[0]
+				if(!types) return false
+				else return true
+			}
+			else if(elem.group_type_ == 'member_sport_type') {
+				const types = groups_sports.filter(group => elem.group_id_ == group.group_id_ && types_filter.includes(group.sport_member_type_))[0]
+				if(!types) return false
+				else return true
+			}
+		})
+	return groupsFiltered.slice(offset, limit + offset)
+}
+
+const getGroupByIdMembersData = async (id_, username_filter_, offset, limit) => {
+	let m = groups_members
+		.filter(elem => elem.group_id_ == id_)
+		.map(elem => {
+			const member = members.filter(member => member.id_ == elem.member_id_)[0]
+			return {id_ : member.id_, username_: member.username_, member_type_: member.member_type_}
+		})
+	if(username_filter_) {
+		m = m.filter(elem => elem.username_ == username_filter_)
+	}
+	return m.slice(offset, limit + offset)		
+}
+
+const getUserSportTypesData = async () => {
+	return user_sport_types
+}
+
+const mock_data = { 
+	getUserSportTypesData,
+	getGroupsData, 
+	getGroupByIdData, 
+	getGroupByNameData,
+	postGroupData,
+	deleteGroupData,
+	getMemberGroupsData,
+	getGroupByIdMembersData,
+	getQuotasByDateData, 
+	getQuotasByEmailData, 
+	getUserSportByIdAndUserData, 
+	getMemberByIbanData, 
+	getCandidateByIbanData, 
+	getManagementQuotas,
+	updateManagementQuotaByType, 
+	getManagementQuotaByType, 
+	postManagementQuota, 
+	getCandidatesData, 
+	getCandidateByIdData, 
+	postCandidateData, 
+	deleteCandidateData, 
+	approveCandidateData, 
+	getCandidateByUsernameData, 
+	getCompaniesData,
+	getCompanyByIdData, 
+	postCompanyData, 
+	updateCompanyData, 
+	deleteCompanyData, 
+	getEventsData, 
+	getEventByIdData, 
+	postEventData,
+	updateEventData, 
+	deleteEventData, 
+	updateMemberAttendanceData, 
+	getEventByIdAttendanceData, 
+	getEventMemberByIdAttendanceData, 
+	getSportsData, 
+	getSportByIdData, 
+	postSportData,
+	updateSportData, 
+	deleteSportData, 
+	getUsersData, 
+	getUserByIdData, 
+	postUserData, 
+	updateUserData, 
+	deleteUserData,
+	getUsersSportsData, 
+	getUsersSportData, 
+	getUserSportsByIdData, 
+	postUserSportData, 
+	updateUserSportData, 
+	deleteUserSportData, 
+	getQuotasData, 
+	getCompaniesQuotasData, 
+	getUsersQuotasData, 
+	getMemberQuotasByIdData, 
+	postQuotaData, 
+	updateMemberQuotaData, 
+	getMemberByIdData, 
+	getMemberByUsernameData, 
+	getQuotaByIdData, 
+	getEmails, 
+	updateUserQrCodeData, 
+	getMemberByCCData, 
+	getMemberByNifData, 
+	getMemberByEmailData, 
+	getCandidateByEmailData, 
+	getCandidateByCCData, 
+	getCandidateByNifData 
+}
 
 export default mock_data

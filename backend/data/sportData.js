@@ -28,7 +28,7 @@ const sportData = (db) => {
 	}
 
 	const GetUserSportTypes = async () => {
-		return await db.GetUserSportTypesData()
+		return await db.getUserSportTypesData()
 	}
 	
 	return {

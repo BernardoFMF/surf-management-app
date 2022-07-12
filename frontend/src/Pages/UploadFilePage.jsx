@@ -75,7 +75,6 @@ const UploadFilePage = () => {
     },[newMembers])
 
     useEffect(() => {
-        console.log(exportMembers);
         if(exportMembers) {
             setData(exportMembers)
         }
@@ -83,6 +82,8 @@ const UploadFilePage = () => {
 
     const handleChange = (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false)
+      dispatch({ type: UPLOAD_RESET })
+      console.log("handleChange");
     };
 
     const handleSubmit = (values,type) => {
@@ -136,14 +137,14 @@ const UploadFilePage = () => {
     }
 
     const uploadFileFetch = useSelector((state) => state.uploadFileFetch)
-    const { uploadGet } = uploadFileFetch
+    const { uploadGet,loading,error } = uploadFileFetch
 
     const headers = [
         { key: 'id_', label: 'ID'},
         { key: 'email_', label: 'Email'},
         { key: 'iban_', label: 'IBAN'},   
         { key: 'member_type_', label: t('member_type')},
-        { key: 'phone_number_', label: t('enrollment_date')},
+        { key: 'phone_number_', label: t('phone_number')},
     ];
 
     const csvreport = {
@@ -164,16 +165,16 @@ const UploadFilePage = () => {
             id="panel1bh-header"
             >
             <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                General settings
+                {t("general_settings")}
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Instructions on how to do it</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>{t("instructions")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Typography>
-            To import your data from the csv files to the application database, will be needed 6 different csv files
+            {t("instructions_1")}
             </Typography>
             <Typography>
-            <strong>IMPORTANT:</strong> All the users will receive an email to set their password and username
+            <strong>{t("important")}:</strong> {t("instructions_2")}
             </Typography>
             </AccordionDetails>
         </Accordion>
@@ -183,17 +184,19 @@ const UploadFilePage = () => {
             aria-controls="panel2bh-content"
             id="panel2bh-header"
             >
-            <Typography sx={{ width: '33%', flexShrink: 0 }}>Member Types</Typography>
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>{t("member_types")}</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-            Define the different member types
+            {t("instructions_3")}
             </Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Typography>
-            Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+            {t("instructions_4")}
             </Typography>
-            <Button onClick={onMemberTypeDownload} variant="contained" color="success">
-                Member Types example
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button  sx={{mt: 2 }} onClick={onMemberTypeDownload} variant="contained" color="success">
+                {t("member_types_example")}
             </Button>
             <Formik
             initialValues={{ file: null }}
@@ -230,17 +233,19 @@ const UploadFilePage = () => {
             aria-controls="panel3bh-content"
             id="panel3bh-header"
             >
-            <Typography sx={{ width: '33%', flexShrink: 0 }}>Users and Companies</Typography>
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>{t("users_and_companies")}</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-            Upload all of the users/companies
+            {t("upload_user_and_companies")}
             </Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Typography>
-            Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+            {t("instructions_4")}
             </Typography>
-            <Button onClick={onUser_CompanyDownload} variant="contained" color="success">
-                User/Company example
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button sx={{mt: 2 }} onClick={onUser_CompanyDownload} variant="contained" color="success">
+                {t("user_and_companies_example")}
             </Button>
             <Formik
             initialValues={{ file: null }}
@@ -278,13 +283,13 @@ const UploadFilePage = () => {
             id="panel3.5bh-header"
             >
             <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                Check ids
+                {t("check_ids")}
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Check ids from the members that were inserted</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>{t("instructions_5")}</Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Typography>
-            Check ids from the members that were inserted, this ids will be used on the next imports
+            {t("instructions_5")}
             </Typography>
             <Box sx={{ flexGrow: 1 }}>
             <Grid rowSpacing={4} columnSpacing={0} container direction={'row'} sx={{ mt: 2 }} >
@@ -301,17 +306,19 @@ const UploadFilePage = () => {
             aria-controls="panel4bh-content"
             id="panel4bh-header"
             >
-            <Typography sx={{ width: '33%', flexShrink: 0 }}>Quotas</Typography>
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>{t("quotas")}</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-            Upload all of the previous quotas
+            {t("upload_quotas")}
             </Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Typography>
-            Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+            {t("instructions_4")}
             </Typography>
-            <Button onClick={onQuotaDownload} variant="contained" color="success">
-                Quotas example
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button  sx={{mt: 2 }} onClick={onQuotaDownload} variant="contained" color="success">
+                {t("quotas_example")}
             </Button>
             <Formik
             initialValues={{ file: null }}
@@ -348,17 +355,19 @@ const UploadFilePage = () => {
             aria-controls="panel5bh-content"
             id="panel5bh-header"
             >
-            <Typography sx={{ width: '33%', flexShrink: 0 }}>Sports</Typography>
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>{t("sports")}</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-            Define all the sports that exists in the club
+            {t("instructions_7")}
             </Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Typography>
-                Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+            {t("instructions_4")}
             </Typography>
-            <Button onClick={onSportDownload} variant="contained" color="success">
-                Sports example
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button  sx={{mt: 2 }} onClick={onSportDownload} variant="contained" color="success">
+                {t("sports_example")}
             </Button>
             <Formik
             initialValues={{ file: null }}
@@ -395,17 +404,19 @@ const UploadFilePage = () => {
             aria-controls="panel6bh-content"
             id="panel6bh-header"
             >
-            <Typography sx={{ width: '33%', flexShrink: 0 }}>SportsTypes</Typography>
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>{t("sport_types")}</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-            Define the various types on sports
+            {t("instructions_8")}
             </Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Typography>
-                Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+                {t("instructions_4")}
             </Typography>
-            <Button onClick={onSportTypesDownload} variant="contained" color="success">
-                Sport Types example
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button  sx={{mt: 2 }} onClick={onSportTypesDownload} variant="contained" color="success">
+                {t("sport_types_example")}
             </Button>
             <Formik
             initialValues={{ file: null }}
@@ -442,17 +453,19 @@ const UploadFilePage = () => {
             aria-controls="panel7bh-content"
             id="panel7bh-header"
             >
-            <Typography sx={{ width: '33%', flexShrink: 0 }}>Member Sports</Typography>
+            <Typography sx={{ width: '33%', flexShrink: 0 }}>{t("user_sports")}</Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-            Upload the sports related to each user
+                {t("upload_user_sports")}
             </Typography>
             </AccordionSummary>
             <AccordionDetails>
             <Typography>
-                Dowload the following example ,remove the dummy data and fill it with your data and upload it as a csv file
+                {t("instructions_4")}   
             </Typography>
-            <Button onClick={onMemberSportDownload} variant="contained" color="success">
-                Member Sports example
+            { error && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="error">{t(error)}</Alert></Box> }
+            { uploadGet && <Box sx={{ pl: { md: 2 }, pt: 2 }}><Alert severity="success">{t('uploaded_sucessfully')}</Alert></Box> }
+            <Button  sx={{mt: 2 }} onClick={onMemberSportDownload} variant="contained" color="success">
+                {t("user_sports_example")}
             </Button>
             <Formik
             initialValues={{ file: null }}

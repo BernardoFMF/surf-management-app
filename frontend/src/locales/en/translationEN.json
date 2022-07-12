@@ -392,5 +392,35 @@
 
     "Yes" : "Yes",
     "No": "No",
-    "Delete" : "Delete"
+    "Delete" : "Delete",
+
+    "instructions": "Instructions on how to do it",
+    "general_settings": "General Settings",
+    "instructions_1": "To import your data from the csv files to the application database, will be needed 6 different csv files",
+    "important": "Important",
+    "instructions_2": "All the users will receive an email to set their password and username",
+    "member_types": "Member Types",
+    "instructions_3":"Define the different member types",
+    "instructions_4":"Download the following example ,remove the dummy data and fill it with your data and upload it as a csv file",
+    "member_types_example": "Member Types example",
+    "users_and_companies":"Users and Companies",
+    "upload_user_and_companies": "Upload all of the users/companies",
+    "user_and_companies_example": "User/Company example",
+    "check_ids": "Check ids",
+    "instructions_5":"Check ids from the members that were inserted",
+    "instructions_6":"Check ids from the members that were inserted, this ids will be used on the next imports",
+    "upload_quotas": "Upload all of the previous quotas",
+    "quotas_example":"Quotas Example",
+    "instructions_7": "Define all the sports that exists in the club",
+    "sports_example": "Sports Example",
+    "sport_types": "SportsTypes",
+    "instructions_8": "Define the various types on sports",
+    "sport_types_example":"Sport Types Example",
+    "user_sports":"User Sports",
+    "upload_user_sports": "Upload the sports related to each user",
+    "user_sports_example": "User Sport Example",
+    "phone_number": "Phone number"
+
+
+
 }
