@@ -55,7 +55,17 @@ let member_types_ = [{
 	type_: "founder",
 	quota_value_: 0,
 	category_: "user"
-}]
+	},
+	{
+	type_: "effective",
+	quota_value_: 15,
+	category_: "user"
+	},
+	{
+	type_: "corporate",
+	quota_value_: 50,
+	category_: "company"	
+	}]
 let groups = []
 let groups_events = []
 let groups_members = []
@@ -466,7 +476,7 @@ const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offse
 
 	let filteredEvents = events.filter(event => {
 		let results = []
-		if (usernamefilter) {
+		if (name_filter) {
 			if (event.name_.includes(name_filter)) 
 				results.push(true)
 			else 
@@ -485,9 +495,10 @@ const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offse
 				results.push(false)
 		}
 
-		if (results.every(elem => elem === true)) return true
+		if (results.length == 0 && results.every(elem => elem === true)) return true
 		else return false
-	}).slice(offset, offset + limit).map(event => {
+	}).slice(offset, offset + limit)
+	let test = filteredEvents.map(event => {
 		event.initial_date_ = formatDate(event.initial_date_)
 		event.end_date_ = formatDate(event.end_date_)
 		if(date_today < event.initial_date_ && date_today < event.end_date_){
@@ -511,8 +522,8 @@ const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offse
 		}
 	})
 	const obj = {
-		events: filteredEvents,
-		number_of_events: filteredEvents.length
+		events: test,
+		number_of_events: test.length
 	}
 	return obj
 }
@@ -1331,6 +1342,14 @@ const getUserSportTypesData = async () => {
 	return user_sport_types
 }
 
+const getEmailByGroupIdData = async (groups) => {
+	const members = groups_members.filter(elem => groups.includes(elem.group_id_)).map(elem => elem.group_id_)
+	let ids = [... new Set(members)]
+	const emails = [... new Set(contacts.filter(elem => ids.includes(elem.member_id_)).map(elem => elem.email_))]
+	return emails
+
+}
+
 const mock_data = { 
 	getUserSportTypesData,
 	getGroupsData, 
@@ -1400,7 +1419,8 @@ const mock_data = {
 	getMemberByEmailData, 
 	getCandidateByEmailData, 
 	getCandidateByCCData, 
-	getCandidateByNifData 
+	getCandidateByNifData,
+	getEmailByGroupIdData 
 }
 
 export default mock_data

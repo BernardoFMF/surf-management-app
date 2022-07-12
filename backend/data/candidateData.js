@@ -57,7 +57,7 @@ const candidateData = (db) => {
 
 		await db.updateUserQrCodeData(u_id_, qrcode_)
 		
-		await mailSender([candidate.email_],`Aprovação de candidatura`, approvalTemplate(candidate.full_name_, member.member_type_))
+		//await mailSender([candidate.email_],`Aprovação de candidatura`, approvalTemplate(candidate.full_name_, member.member_type_))
 
 		return u_id_
 	}

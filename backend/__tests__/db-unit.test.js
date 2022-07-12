@@ -119,6 +119,12 @@ test('Get specific member', async () => {
 	expect(member.name_).toBe('Ericeira surf shop')
 })
 
+test('Get all members', async () => {
+	expect.assertions(1)
+	const members = await dbMember.getAllMembers()
+	expect(members[0].email_).toBe('mohamedlgh@gmail.com')
+})
+
 //Statistics 
 
 test('Get statistics', async () => {
