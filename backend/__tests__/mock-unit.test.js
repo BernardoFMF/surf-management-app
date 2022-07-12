@@ -74,14 +74,14 @@ beforeAll( async () => {
 	await insertCandidateDummies()
 	await insertUserDummies()
 	await insertCompanyDummies()
-	await insertEventDummies()
 	await insertSportsforUsersDummies()
 	await insertQuotaPricesDummies()
-	return await insertAttendanceDummies()
+	await insertEventDummies()
+	return await insertGroupsDummies()
 })
 
 //Sports - verified 26/04/2022
-/*
+
 test('Get all sports', async () => {
 	expect.assertions(2)
 	const sports = await dbSport.getSports()
@@ -375,4 +375,3 @@ test('Delete a sport for a user', async () => {
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
 })
-*/
