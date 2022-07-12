@@ -9,8 +9,6 @@ import company from '../data/companyData.js'
 import user from '../data/userData.js'
 import quota from '../data/quotaData.js'
 import group from '../data/groupData'
-import member from '../data/memberData'
-import statistics from '../data/statisticsData'
 
 const dbSport = sport(data)
 const dbEvent = event(data)
@@ -19,9 +17,9 @@ const dbCompany = company(data)
 const dbUser = user(data)
 const dbQuota = quota(data)
 const dbGroup = group(data)
-const dbMember = member(data)
-const dbStatistics = statistics(data)
 
+const offset = 0
+const limit = 100
 
 async function insertSportDummies() {
 	await dbSport.postSport('Surf')
@@ -74,10 +72,10 @@ beforeAll( async () => {
 	await insertCandidateDummies()
 	await insertUserDummies()
 	await insertCompanyDummies()
-	await insertEventDummies()
+	await insertGroupsDummies()
 	await insertSportsforUsersDummies()
 	await insertQuotaPricesDummies()
-	return await insertAttendanceDummies()
+	return await insertEventDummies()
 })
 
 //Sports - verified 26/04/2022
@@ -121,9 +119,15 @@ test('Create a sport', async () => {
 
 test('Get all events', async () => {
 	expect.assertions(2)
-	const events = await dbEvent.getEvents()
+	const events = await dbEvent.getEvents(undefined, undefined, undefined, offset, limit)
 	expect(events.events[0].name_).toBe('Assembleia geral.')
 	expect(events.events[1].name_).toBe('Entrega de prémios.')
+})
+
+test('Get all events', async () => {
+	expect.assertions(1)
+	const events = await dbEvent.getEvents('Assembleia geral.', '15-04-2022', '16-04-2022', offset, limit)
+	expect(events.events[0].name_).toBe('Assembleia geral.')
 })
 
 test('Get specific event', async () => {
