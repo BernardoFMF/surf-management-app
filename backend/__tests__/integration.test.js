@@ -4,9 +4,9 @@ import jestOpenAPI from 'jest-openapi'
 import fs from 'fs'
 import dotenv from 'dotenv'
 dotenv.config()
-//import data from '../data/__mock__/mockDataAccess.js'
-import db from '../data/__db__/dbDataAccess.js'
-const data = db(process.env.PG_USER, process.env.PG_PASSWORD, process.env.PG_HOST, process.env.PG_PORT, process.env.PG_DB_TEST_INTEGRATION, process.env.NODE_MODE)
+import data from '../data/__mock__/mockDataAccess.js'
+//import db from '../data/__db__/dbDataAccess.js'
+//const data = db(process.env.PG_USER, process.env.PG_PASSWORD, process.env.PG_HOST, process.env.PG_PORT, process.env.PG_DB_TEST_INTEGRATION, process.env.NODE_MODE)
 jestOpenAPI(process.cwd() +  "/backend/openApi.yaml")
 
 const app = express()

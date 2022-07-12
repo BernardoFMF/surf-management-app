@@ -1,6 +1,6 @@
 'use strict'
 
-import db from '../data/__mock__/mockDataAccess.js'
+import data from '../data/__mock__/mockDataAccess.js'
 
 import sport from '../data/sportData.js'
 import event from '../data/eventData.js'
@@ -81,7 +81,7 @@ beforeAll( async () => {
 })
 
 //Sports - verified 26/04/2022
-/*
+
 test('Get all sports', async () => {
 	expect.assertions(2)
 	const sports = await dbSport.getSports()
@@ -375,4 +375,3 @@ test('Delete a sport for a user', async () => {
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
 })
-*/

@@ -1121,7 +1121,7 @@ const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_fi
 	groupsFiltered = groups_members
 		.filter(elem => elem.member_id_ == id_)
 		.map(elem => {
-			const group = await getGroupByIdData(elem.group_id_)
+			const group = getGroupByIdData(elem.group_id_)
 			return group
 		})
 		.filter(elem => group_type_filter ? elem.group_type_ == group_type_filter : true )
