@@ -158,7 +158,7 @@ test('Create a sport', async () => {
 	const sport_id = await dbSport.postSport('Skimboarding')
 	expect(sport_id).toBe(5)
 })
-/*
+
 //Events - verified 26/04/2022
 
 test('Get all events', async () => {
@@ -214,22 +214,21 @@ test('Update specific attendance', async () => {
 test('Get specific attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventByIdAttendance(1, offset, limit)
-	expect(attendance.attendance[0].state_).toBe('not going')
+	expect(attendance.attendance[4].state_).toBe('not going')
 })
 
 test('Get specific member attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventMemberByIdAttendance(1, undefined, undefined, undefined, offset, limit)
-	expect(attendance.events[0].member_id_).toBe(1)
+	expect(attendance.attendance[0].member_id_).toBe(1)
 })
 
 test('Get specific member attendance', async () => {
 	expect.assertions(1)
-	const attendance = await dbEvent.getEventMemberByIdAttendance(1, 'Assembleia geral.', 'not going', '2022-08-12', offset, limit)
-	expect(attendance.events[0].member_id_).toBe(1)
+	const attendance = await dbEvent.getEventMemberByIdAttendance(1, 'Assembleia geral.', 'not going',undefined, offset, limit)
+	expect(attendance.attendance[0].member_id_).toBe(1)
 })
 
-*/
 //Candidate - verified 12/07/2022
 
 test('Get all candidates', async () => {
@@ -321,7 +320,7 @@ test('Create a quota', async () => {
 	const quotas = await dbQuota.postQuota('01-01-2022')
 	expect(quotas).toBe('01-01-2022')
 })
-/*
+
 test('Get all quotas', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getQuotas(undefined, undefined, undefined, 0, 100)
@@ -473,4 +472,4 @@ test('Delete a sport for a user', async () => {
 	expect.assertions(1)
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
-})*/
+})

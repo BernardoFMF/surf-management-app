@@ -37,7 +37,7 @@ let users = [{
 let companies = []
 let candidates = []
 let events = []
-let attendance = []
+let attendances = []
 let sports = []
 let contacts = [{
 	member_id_: indexObj.idxMember, 
@@ -199,7 +199,7 @@ const deleteCandidateData = async (id_) => {
 
 const approveCandidateData = async (id_, type_, paid_enrollment_) => {
 	const candidate = await getCandidateByIdData(id_)
-	let enrollment_date_ = new Date()
+	let enrollment_date_ = formatDate(new Date())
 	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_, candidate.gender_, candidate.iban_, candidate.img_, enrollment_date_)
 
 	user_imgs = user_imgs.map(elem => {
@@ -571,7 +571,7 @@ const postEventData = async (name_, initial_date_, final_date_, groups_) => {
 		groups_events.push({event_id_:indexObj.idxEvents, group_id_})
 		groups_members.forEach(elem => {
 			if (elem.group_id_ == group_id_) 
-				attendance.push({member_id_: elem.member_id_, event_id_ : indexObj.idxEvents, state_: null})
+				attendances.push({member_id_: elem.member_id_, event_id_ : indexObj.idxEvents, state_: null})
 		})
 	})
 	return event.id_
@@ -588,62 +588,64 @@ const updateEventData = async (id_, name_, initial_date_, final_date_) => {
 const deleteEventData = async (id_) => {
 	groups_events = groups_events.filter(g => g.id_ != id_)
 	events = events.filter(event => event.id_ != id_)
-	attendance = attendance.filter(att => att.event_id_ != id_)
+	attendances = attendances.filter(att => att.event_id_ != id_)
 	return id_
 }
 
 const updateMemberAttendanceData = async (eid_, id_, state_) => {
-	const idx = attendance.findIndex(att => att.member_id_ == id_ && att.event_id_ == eid_)
-	attendance[idx].state_ = state_
+	const idx = attendances.findIndex(att => att.member_id_ == id_ && att.event_id_ == eid_)
+	attendances[idx].state_ = state_
 	return {id_, eid_}
 }
 
 const getEventByIdAttendanceData = async (eid_, offset, limit) => {
-	const ret = []
-	for (const idx in attendance) {
-		if(attendance[idx].event_id_ == eid_) {
-			const member = await getMemberByIdData(attendance[idx].member_id_)
-			const idxContact = contacts.findIndex((contact => contact.member_id_ == attendance[idx].member_id_))
+	const attendance = []
+	for (const idx in attendances) {
+		if(attendances[idx].event_id_ == eid_) {
+			const member = await getMemberByIdData(attendances[idx].member_id_)
+			const idxContact = contacts.findIndex((contact => contact.member_id_ == attendances[idx].member_id_))
 	
 			if (member) {
 				const event = await getEventByIdData(eid_)
 				const obj = {
-					member_id_:attendance[idx].member_id_,
+					member_id_:attendances[idx].member_id_,
 					username_:member.username_,
 					event_id_: event.id_,
 					name_: event.name_,
-					state_:attendance[idx].state_,
+					state_:attendances[idx].state_,
 					email_: contacts[idxContact].email_,
 					phone_number_: contacts[idxContact].phone_number_
 				}
-				ret.push(obj)
+				attendance.push(obj)
 			}
 		}
 	}
-	ret = ret.slice(offset, offset + limit)
-	return {ret,number_of_events:ret.length}
+	attendance = attendance.slice(offset, offset + limit)
+	return {attendance,number_of_events:attendance.length}
 }
 
 const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,date_filter,offset,limit) => {
-	const ret = attendance
+	const attendance = attendances
 		.filter(att => att.member_id_ == id_)
-		.slice(offset, offset + limit)
-		.map(attendance => {
+		.filter(att => {
+			let event = events.filter(event => event.id_ == att.event_id_)[0]
+			console.log(event);
+			console.log(att);
 			let results = []
-			if (usernamefilter) {
-				if (attendance.name_.includes(name_filter)) 
+			if (name_filter) {
+				if (event.name_.includes(name_filter)) 
 					results.push(true)
 				else 
 					results.push(false)
 			}
 			if (state_filter) {
-				if (attendance.state_ === state_filter) 
+				if (att.state_ === state_filter) 
 					results.push(true)
 				else 
 					results.push(false)
 			}
 			if (date_filter) {
-				if (attendance.date_ === date_filter) 
+				if (event.initial_date_ == date_filter) 
 					results.push(true)
 				else 
 					results.push(false)
@@ -652,8 +654,8 @@ const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,dat
 			if (results.every(elem => elem === true)) return true
 			else return false
 		})
-	let number_of_events = ret.length
-	return {ret,number_of_events}
+	let number_of_events = attendance.length
+	return {attendance:attendance.slice(offset, offset + limit),number_of_events}
 }
 /**
  * Sports
