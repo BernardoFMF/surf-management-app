@@ -16,7 +16,7 @@ let members = [{
 	has_debt_: false,
 	quota_value_: 0,
 	pword_: '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',
-	username_: 'senhorJoel',
+	username_: 'afonsoribeiro',
 	is_deleted_: false,
 	iban_: "PT50111111111111111111111"
 }]
@@ -555,6 +555,13 @@ const postEventData = async (name_, initial_date_, final_date_, groups_) => {
 		groups_
 	}
 	events.push(event)
+	groups_.forEach(group_id_ => {
+		groups_events.push({event_id_:indexObj.idxEvents, group_id_})
+		groups_members.forEach(elem => {
+			if (elem.group_id_ == group_id_) 
+				attendance.push({member_id_: elem.member_id_, event_id_ : indexObj.idxEvents, state_: null})
+		})
+	})
 	return event.id_
 }
 
@@ -567,6 +574,7 @@ const updateEventData = async (id_, name_, initial_date_, final_date_) => {
 }
 
 const deleteEventData = async (id_) => {
+	groups_events = groups_events.filter(g => g.id_ != id_)
 	events = events.filter(event => event.id_ != id_)
 	attendance = attendance.filter(att => att.event_id_ != id_)
 	return id_
@@ -819,6 +827,8 @@ const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_na
 		phone_number_
 	}
 
+
+
 	const date = new Date()
 	const curr_date = formatDate(`${date.getFullYear()}-01-01`)
 	let dates = []
@@ -1055,9 +1065,7 @@ const deleteUserSportData = async (id_, sid_) => {
 	if(user_sport_idx != -1) {
 		users_sports[user_sport_idx].is_absent_ = true
 	}
-
-
-
+	
 	return {id_, sid_}
 }
 
