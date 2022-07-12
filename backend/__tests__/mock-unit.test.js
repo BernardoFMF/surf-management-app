@@ -1,6 +1,6 @@
 'use strict'
 
-import db from '../data/__mock__/mockDataAccess.js'
+import data from '../data/__mock__/mockDataAccess.js'
 
 import sport from '../data/sportData.js'
 import event from '../data/eventData.js'
@@ -31,8 +31,8 @@ async function insertSportDummies() {
 }
 
 async function insertEventDummies() {
-	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1], true)
-	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2], true)
+	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1])
+	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2])
 }
 
 async function insertCandidateDummies() {

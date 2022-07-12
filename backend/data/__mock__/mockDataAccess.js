@@ -18,7 +18,7 @@ let members = [{
 	has_debt_: false,
 	quota_value_: 0,
 	pword_: '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',
-	username_: 'senhorJoel',
+	username_: 'afonsoribeiro',
 	is_deleted_: false,
 	iban_: "PT50111111111111111111111"
 }]
@@ -465,6 +465,13 @@ const postEventData = async (name_, initial_date_, final_date_, groups_) => {
 		groups_
 	}
 	events.push(event)
+	groups_.forEach(group_id_ => {
+		groups_events.push({event_id_:indexObj.idxEvents, group_id_})
+		groups_members.forEach(elem => {
+			if (elem.group_id_ == group_id_) 
+				attendance.push({member_id_: elem.member_id_, event_id_ : indexObj.idxEvents, state_: null})
+		})
+	})
 	return event.id_
 }
 
@@ -477,6 +484,7 @@ const updateEventData = async (id_, name_, initial_date_, final_date_) => {
 }
 
 const deleteEventData = async (id_) => {
+	groups_events = groups_events.filter(g => g.id_ != id_)
 	events = events.filter(event => event.id_ != id_)
 	attendance = attendance.filter(att => att.event_id_ != id_)
 	return id_
@@ -729,6 +737,8 @@ const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_na
 		phone_number_
 	}
 
+
+
 	const date = new Date()
 	const curr_date = formatDate(`${date.getFullYear()}-01-01`)
 	let dates = []
@@ -871,6 +881,7 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 		is_candidate_
 	}
 	users_sports.push(user_sport)
+
 	return {id_: user_sport.user_id_, sid_: user_sport.sport_id_}
 } 
 
@@ -892,6 +903,7 @@ const deleteUserSportData = async (id_, sid_) => {
 	if(user_sport_idx != -1) {
 		users_sports[user_sport_idx].is_absent_ = true
 	}
+	groups_members.filter(g => g.member_id_ != id_)
 	return {id_, sid_}
 }
 
@@ -976,7 +988,6 @@ const getMemberQuotasByIdData = async (id_,offset,limit) => {
 }
 
 const postQuotaData = async (date_) => {
-	let cnt = indexObj.idxQuotas
 	date_ = formatDate(date_)
 	members.forEach(member => {
 		const hasQuota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_ == date_)[0]
@@ -1121,7 +1132,7 @@ const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_fi
 	groupsFiltered = groups_members
 		.filter(elem => elem.member_id_ == id_)
 		.map(elem => {
-			const group = await getGroupByIdData(elem.group_id_)
+			const group = groups.filter(g => g.group_id_ == elem.group_id_)[0]
 			return group
 		})
 		.filter(elem => group_type_filter ? elem.group_type_ == group_type_filter : true )
