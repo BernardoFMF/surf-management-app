@@ -29,7 +29,7 @@ export const mailSender = async(receivers, subject, content) => {
 		return info
 	} catch (e) {
 		console.log(e);
-		throw error(554, 'Error while sending email', 'MESSAGE_CODE_42')
+		//throw error(554, 'Error while sending email', 'MESSAGE_CODE_42')
 	}
 }
 

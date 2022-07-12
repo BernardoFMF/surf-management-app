@@ -1,7 +1,5 @@
 'use strict'
 
-import e from "express"
-
 let indexObj = {
 	idxMember: 0,
 	idxCandidates: 0,
@@ -18,7 +16,7 @@ let members = [{
 	has_debt_: false,
 	quota_value_: 0,
 	pword_: '$2b$10$Q8swBKYlSvF7lzKgBrdZ2O0sahIXCCTtUkPobQ7BzBown1HDcVb0K',
-	username_: 'senhorJoel',
+	username_: 'afonsoribeiro',
 	is_deleted_: false,
 	iban_: "PT50111111111111111111111"
 }]
@@ -53,7 +51,11 @@ let user_imgs = []
 let users_sports = []
 let membership_cards = []
 let quotas = []
-let member_types_ = []
+let member_types_ = [{
+	type_: "founder",
+	quota_value_: 0,
+	category_: "user"
+}]
 let groups = []
 let groups_events = []
 let groups_members = []
@@ -97,7 +99,7 @@ const getCandidatesData = (username_filter, name_filter, email_filter, offset, l
 				results.push(false)
 		}
 
-		if (name_filter) {
+		if (email_filter) {
 			if (candidate.email_ === email_filter) 
 				results.push(true)
 			else 
@@ -185,20 +187,24 @@ const deleteCandidateData = async (id_) => {
 	return id_
 }
 
-const approveCandidateData = async (id_, type_, quota_value_, paid_enrollment_) => {
+const approveCandidateData = async (id_, type_, paid_enrollment_) => {
 	const candidate = await getCandidateByIdData(id_)
+	let enrollment_date_ = new Date()
+	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_, candidate.gender_, candidate.iban_, candidate.img_, enrollment_date_)
+
+	user_imgs = user_imgs.map(elem => {
+		if (elem.user_id_ == uid_) {
+			const img = {
+				user_id_: uid_,
+				img_:candidate.img_
+			}
+			return img
+		}
+		return elem
+	})
 
 	candidates = candidates.filter(candidate => candidate.id_ != id_)
 
-	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, quota_value_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_, candidate.gender_, candidate.iban_)
-
-	if(!candidate.img_) {
-		const img = {
-			user_id_: uid_,
-			img_value_:candidate.img_
-		}
-		user_imgs.push(img)
-	}
 	return uid_
 }
 
@@ -243,24 +249,71 @@ const getCandidateByIbanData = async (iban_) => {
  * Companies
  */
 
-const getCompaniesData = async () => {
-	let count = 0
-	const companiesArray = companies.filter(async (company) => {
-		const member = await getMemberByIdData(company.member_id_)
-		if (member) {
-			++count
-			return true
+const getCompaniesData = async (username_filter,name_filter,email_filter, debt_filter,offset,limit) => {
+	const filteredCompanies = companies.filter(company => {
+		let results = []
+		const member = members.filter(member => member.id_ == company.member_id_)[0]
+		if (username_filter) {
+			if (member.username_.includes(username_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
 		}
-		return false
+		
+		if (name_filter) {
+			if (company.name_.includes(name_filter)) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+
+		if (email_filter) {
+			if (member.email_ === email_filter) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+
+		if (debt_filter) {
+			if (member.has_debt_ === (debt_filter == 'true')) 
+				results.push(true)
+			else 
+				results.push(false)
+		}
+		
+		if (results.every(elem => elem === true)) return true
+		else return false
 	})
-	return {companies: companiesArray, number_of_companies: count}
+	const obj = {
+		companies: filteredCompanies.slice(offset, limit + offset).map(company => {
+			const member = members.filter(member => member.id_ == company.member_id_)[0]
+			const contact = contacts.filter(contact => contact.member_id_ == company.member_id_)[0]
+			let obj = {
+				...company,
+				username_: member.username_,
+				has_debt_: member.has_debt_,
+				member_type_: member.member_type_,
+				is_deleted_: member.is_deleted_,
+				email_: contact.email_,
+				iban_: member.iban_
+			}
+			return obj
+		}),
+		number_of_companies: filteredCompanies.length
+	}
+
+	return obj
 }
 
 const getCompanyByIdData = async (id_) => {
 	const company = companies.filter(company => company.member_id_ == id_)[0]
 	const contact = contacts.filter(contact => contact.member_id_ == id_)[0]
 	if (company) {
-		const member = await getMemberByIdData(company.member_id_)
+		const member = members.filter(member => member.id_ == id_)[0]
+		console.log(member);
+		const img = user_imgs.filter(user => user.user_id_ == id_)[0]
+		console.log(img);
+		const member_type = member_types_.filter(type => type.type_ == member.member_type_)[0]
 		if (member) {
 			const ret = {
 				member_id_:company.member_id_,
@@ -275,7 +328,9 @@ const getCompanyByIdData = async (id_) => {
 				has_debt_:member.has_debt_,
 				member_type_:member.member_type_,
 				iban_: member.iban_,
-				is_deleted_: member.is_deleted_
+				is_deleted_: member.is_deleted_,
+				img_value_: img.img_,
+				category: member_type.category_
 			}
 			return ret
 		}
@@ -308,26 +363,41 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 		email_,
 		phone_number_
 	}
-	const temp_quota = quotas[quotas.length - 1]
 
-	if (temp_quota && new Date().getFullYear() == temp_quota.date_.split('-')[2]) {
-		indexObj.idxQuotas++
-		const quota = {
-			id_: indexObj.idxQuotas,
-			member_id_: member.id_,
-			payment_date: null,
-			date_: temp_quota.date_
-		}
-		quotas.push(quota)
-	}
+	const date = new Date()
+    const curr_date = formatDate(`${date.getFullYear()}-01-01`)
+    let dates = [... new Set(quotas.filter(elem => elem.date >= curr_date))]
 
-	if (img_) {
-		const user_img_ = {
-			user_id_ : indexObj.idxMember,
-			img_,
-		}
-		user_imgs.push(user_img_)
+    const value = member_types_.filter(elem => elem.type_ == type_)[0].quota_value_
+    if (dates) {
+        dates.forEach(elem => {
+            indexObj.idxQuotas++
+            const quota = {
+                id_: indexObj.idxQuotas,
+                memberid: member.id_,
+                paymentdate: null,
+                date: elem,
+                amount : value
+            }
+            quotas.push(quota)
+        })
+    }
+
+	const company_img_ = {
+		user_id_ : indexObj.idxMember,
+		img_,
 	}
+	user_imgs.push(company_img_)
+
+	groups.forEach(group => {
+		if (group.group_type_ == 'member_type') {
+			groups_members_types.filter(groups_types => groups_types.group_id_ == group.group_id_).forEach(elem => {
+				if (elem.member_type_ == type_)
+					groups_members.push({group_id_: group.group_id_, member_id_: indexObj.idxMember})
+			})
+		}
+	})
+
 	members.push(member)
 	companies.push(company)
 	contacts.push(contact)
@@ -335,26 +405,45 @@ const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_,
 	return company.member_id_
 }
 
-const updateCompanyData = async (id_, nif_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
-	const idxMember = members.findIndex((member => member.id_ == id_))
+const updateCompanyData = async (cid_, nif_, type_, name_, phone_number_, postal_code_, address_, location_, img_, is_deleted_, iban_) => {
+	const idxMember = members.findIndex((member => member.id_ == cid_))
+	const oldDeleted = members[idxMember].is_deleted_
+	const oldType = members[idxMember].member_type_
 	members[idxMember].iban_ = iban_
+	members[idxMember].member_type_ = type_
 	members[idxMember].is_deleted_ = is_deleted_
-	const idxCompany = companies.findIndex((company => company.member_id_ == id_))
+	const idxCompany = companies.findIndex((company => company.member_id_ == cid_))
 	companies[idxCompany].name_ = name_
 	companies[idxCompany].nif_ = nif_
-	const idxContact = contacts.findIndex((contact => contact.member_id_ == id_))
+	const idxContact = contacts.findIndex((contact => contact.member_id_ == cid_))
 	contacts[idxContact].phone_number_ = phone_number_
 	contacts[idxContact].postal_code_ = postal_code_
 	contacts[idxContact].address_ = address_
 	contacts[idxContact].location_ = location_
 
-	if (img_) {
-		const user_img_ = {
-			user_id_ : id_,
-			img_,
-		}
-		user_imgs.push(user_img_)
+	if ((oldDeleted == true && is_deleted_ == false) || oldType != type_) {
+		const groupsToRemove = groups_members.filter(group_member => group_member.member_id_ == cid_ && groups.filter(group => group.group_type_ == 'member_type' && group.group_id_ == group_member.group_id_)[0]).map(elem => elem.group_id_)
+		groups_members = groups_members.filter(group_member => groupsToRemove.includes(group_member.group_id_))
+		groups.forEach(group => {
+			if (group.group_type_ == 'member_type') {
+				groups_members_types.filter(groups_types => groups_types.group_id_ == group.group_id_).forEach(elem => {
+					if (elem.member_type_ == type_)
+						groups_members.push({group_id_: group.group_id_, member_id_: indexObj.idxMember})
+				})
+			}
+		})
 	}
+
+	user_imgs = user_imgs.map(elem => {
+		if (elem.user_id_ == cid_) {
+			const img = {
+				user_id_: cid_,
+				img_: img_
+			}
+			return img
+		}
+		return elem
+	})
 
 	return companies[idxCompany].member_id_
 }
@@ -362,6 +451,7 @@ const updateCompanyData = async (id_, nif_, name_, phone_number_, postal_code_, 
 const deleteCompanyData = async (id_) => {
 	const idxCompany = members.findIndex(m => m.id_ == id_)
 	members[idxCompany].is_deleted_ = true
+	groups_members = groups_members.filter(group_member => group_member.member_id_ != id_)
 	return id_
 }
 
@@ -465,6 +555,13 @@ const postEventData = async (name_, initial_date_, final_date_, groups_) => {
 		groups_
 	}
 	events.push(event)
+	groups_.forEach(group_id_ => {
+		groups_events.push({event_id_:indexObj.idxEvents, group_id_})
+		groups_members.forEach(elem => {
+			if (elem.group_id_ == group_id_) 
+				attendance.push({member_id_: elem.member_id_, event_id_ : indexObj.idxEvents, state_: null})
+		})
+	})
 	return event.id_
 }
 
@@ -477,6 +574,7 @@ const updateEventData = async (id_, name_, initial_date_, final_date_) => {
 }
 
 const deleteEventData = async (id_) => {
+	groups_events = groups_events.filter(g => g.id_ != id_)
 	events = events.filter(event => event.id_ != id_)
 	attendance = attendance.filter(att => att.event_id_ != id_)
 	return id_
@@ -729,6 +827,8 @@ const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_na
 		phone_number_
 	}
 
+
+
 	const date = new Date()
 	const curr_date = formatDate(`${date.getFullYear()}-01-01`)
 	let dates = []
@@ -750,13 +850,21 @@ const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_na
 		
 	}
 
-	if (img_) {
-		const user_img_ = {
-			user_id_ : indexObj.idxMember,
-			img_,
-		}
-		user_imgs.push(user_img_)
+	const user_img_ = {
+		user_id_ : indexObj.idxMember,
+		img_,
 	}
+	user_imgs.push(user_img_)
+
+	groups.forEach(group => {
+		if (group.group_type_ == 'member_type') {
+			groups_members_types.filter(groups_types => groups_types.group_id_ == group.group_id_).forEach(elem => {
+				if (elem.member_type_ == type_)
+					groups_members.push({group_id_: group.group_id_, member_id_: indexObj.idxMember})
+			})
+		}
+	})
+
 	members.push(member)
 	users.push(user)
 	contacts.push(contact)
@@ -774,6 +882,8 @@ const updateUserQrCodeData = async (id_, qrcode_) => {
 
 const updateUserData = async (id_, cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, postal_code_, address_, location_, img_, paid_enrollment_, is_admin_, is_deleted_, gender_, iban_) => {
 	const idxMember = members.findIndex(member => member.id_ == id_)
+	const oldDeleted = members[idxMember].is_deleted_
+	const oldType = members[idxMember].member_type_
 	members[idxMember].is_deleted_ = is_deleted_
 	members[idxMember].type_ = type_
 	members[idxMember].iban_ = iban_
@@ -794,6 +904,19 @@ const updateUserData = async (id_, cc_, nif_, type_, birth_date_, nationality_, 
 	contacts[idxContact].address_ = address_
 	contacts[idxContact].location_ = location_
 
+	if ((oldDeleted == true && is_deleted_ == false) || oldType != type_) {
+		const groupsToRemove = groups_members.filter(group_member => group_member.member_id_ == cid_ && groups.filter(group => group.group_type_ == 'member_type' && group.group_id_ == group_member.group_id_)[0]).map(elem => elem.group_id_)
+		groups_members = groups_members.filter(group_member => groupsToRemove.includes(group_member.group_id_))
+		groups.forEach(group => {
+			if (group.group_type_ == 'member_type') {
+				groups_members_types.filter(groups_types => groups_types.group_id_ == group.group_id_).forEach(elem => {
+					if (elem.member_type_ == type_)
+						groups_members.push({group_id_: group.group_id_, member_id_: indexObj.idxMember})
+				})
+			}
+		})
+	}
+
 	if (img_) {
 		const user_img_ = {
 			user_id_ : id_,
@@ -802,14 +925,25 @@ const updateUserData = async (id_, cc_, nif_, type_, birth_date_, nationality_, 
 		user_imgs.push(user_img_)
 	}
 
+	user_imgs = user_imgs.map(elem => {
+		if (elem.user_id_ == id_) {
+			const img = {
+				user_id_: id_,
+				img_: img_
+			}
+			return img
+		}
+		return elem
+	})
+
+
 	return users[idxUser].member_id_
 } 
 
 const deleteUserData = async (id_) => {
-	members = members.map(member => {
-		if (member.id_ == id_) member.is_deleted_ = true
-		return member
-	})
+	const idxUser = members.findIndex(m => m.id_ == id_)
+	members[idxUser].is_deleted_ = true
+	groups_members = groups_members.filter(group_member => group_member.member_id_ != id_)
 	return id_
 }
 
@@ -870,12 +1004,24 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 		is_absent_: false,
 		is_candidate_
 	}
+
 	users_sports.push(user_sport)
+
+	type_.forEach(t => {
+		let sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
+		sportGroups.forEach(group => {
+			if (group.sport_member_type_ == t && !groups_members.filter(member => member.group_id_ == group.group_id_ && member.member_id_ == id_)[0]) {
+				groups_members.push({group_id_: group.group_id_, member_id_: id_})
+			}
+		})
+	})
+
 	return {id_: user_sport.user_id_, sid_: user_sport.sport_id_}
 } 
 
 const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_) => {
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
+	const oldIsAbsent = members[idxMember].is_absent_
 	users_sports[user_sport_idx].fed_id_ = fed_id_
 	users_sports[user_sport_idx].fed_number_ = fed_number_
 	users_sports[user_sport_idx].fed_name_ = fed_name_
@@ -884,14 +1030,42 @@ const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, t
 	users_sports[user_sport_idx].is_absent_ = is_absent_
 	users_sports[user_sport_idx].is_candidate_ = is_candidate_
 
+	const memberGroups = groups_members.filter(group_member => group_member.member_id_ == id_).map(group => group.group_id_)
+
+	const sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
+
+	const groupsToRemove = sportGroups.filter(group => memberGroups.includes(group.group_id_)).map(group => group.group_id_)
+
+	groups_members = groups_members.filter(member => member.member_id_ == id_ && groupsToRemove.includes(member.group_id_))
+
+	if ((oldIsAbsent == false && is_absent_ == false) || (oldIsAbsent == true && is_absent_ == false)) {
+		type_.forEach(t => {
+			let sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
+			sportGroups.forEach(group => {
+				if (group.sport_member_type_ == t && !groups_members.filter(member => member.group_id_ == group.group_id_ && member.member_id_ == id_)[0]) {
+					groups_members.push({group_id_: group.group_id_, member_id_: id_})
+				}
+			})
+		})
+	}
+
 	return {id_: users_sports[user_sport_idx].user_id_, sid_: users_sports[user_sport_idx].sport_id_}
 }
 
 const deleteUserSportData = async (id_, sid_) => {
+	const memberGroups = groups_members.filter(group_member => group_member.member_id_ == id_).map(group => group.group_id_)
+
+	const sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
+
+	const groupsToRemove = sportGroups.filter(group => memberGroups.includes(group.group_id_)).map(group => group.group_id_)
+
+	groups_members = groups_members.filter(member => member.member_id_ == id_ && groupsToRemove.includes(member.group_id_))
+
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
 	if(user_sport_idx != -1) {
 		users_sports[user_sport_idx].is_absent_ = true
 	}
+	
 	return {id_, sid_}
 }
 
@@ -976,7 +1150,6 @@ const getMemberQuotasByIdData = async (id_,offset,limit) => {
 }
 
 const postQuotaData = async (date_) => {
-	let cnt = indexObj.idxQuotas
 	date_ = formatDate(date_)
 	members.forEach(member => {
 		const hasQuota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_ == date_)[0]
@@ -1117,11 +1290,10 @@ const deleteGroupData = async (id_) => {
 }
 
 const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_filter, offset, limit) => {
-	let groupsFiltered = []
-	groupsFiltered = groups_members
+	let groupsFiltered = groups_members
 		.filter(elem => elem.member_id_ == id_)
 		.map(elem => {
-			const group = getGroupByIdData(elem.group_id_)
+			const group = groups.filter(g => g.group_id_ == elem.group_id_)[0]
 			return group
 		})
 		.filter(elem => group_type_filter ? elem.group_type_ == group_type_filter : true )
@@ -1158,9 +1330,6 @@ const getGroupByIdMembersData = async (id_, username_filter_, offset, limit) => 
 const getUserSportTypesData = async () => {
 	return user_sport_types
 }
-
-
-
 
 const mock_data = { 
 	getUserSportTypesData,
