@@ -445,7 +445,7 @@ test('Create management quota', async () => {
 test('Get all users', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsers(undefined, undefined, undefined, undefined, offset, limit)
-	expect(users.users.length).toBe(3)
+	expect(users.number_of_users).toBe(3)
 })
 
 test('Get all users', async () => {

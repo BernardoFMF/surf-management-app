@@ -67,14 +67,16 @@ async function insertGroupsDummies() {
 	await dbGroup.postGroup('ganda grupo de desporto', 'desporto', 'member_sport_type', [ "coach", "practitioner" ], [1, 3, 2])
 }
 
-beforeAll( async () => {
+beforeAll( async () => {	
+	await insertQuotaPricesDummies()
 	await insertSportDummies()
 	await insertCandidateDummies()
 	await insertUserDummies()
 	await insertCompanyDummies()
 	await insertGroupsDummies()
-	await insertSportsforUsersDummies()
-	await insertQuotaPricesDummies()
+	await insertSportsforUsersDummies()	
+	//await dbQuota.postQuota('01-01-2023')
+	//await dbQuota.updateMemberQuota(2, '02-03-2023')
 	return await insertEventDummies()
 })
 
@@ -314,25 +316,25 @@ test('Delete specific company', async () => {
 
 })
 
-//Quotas - verified 26/04/2022
+//Quotas - verified 12/07/2022
 
 test('Create a quota', async () => {
 	expect.assertions(1)
-	const quotas = await dbQuota.postQuota('01-01-2022')
-	expect(quotas).toBe('01-01-2022')
+	const quotas = await dbQuota.postQuota('01-01-2023')
+	expect(quotas).toBe('01-01-2023')
 })
-/*
+
 test('Get all quotas', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getQuotas(undefined, undefined, undefined, 0, 100)
-	expect(quotas.number_of_quotas).toBe(4)
+	expect(quotas.number_of_quotas).toBe(5)
 })	
 
 test('Get all quotas', async () => {
 	expect.assertions(1)
-	const quotas = await dbQuota.getQuotas('jobileu', 'jobi@clix.pt', '01-01-2022', 0, 100)
+	const quotas = await dbQuota.getQuotas('luizinho23', 'luismarquez@gmail.com', '01-01-2023', 0, 100)
 	expect(quotas.number_of_quotas).toBe(1)
-})	
+})
 
 test('Get all users quotas', async () => {
 	expect.assertions(1)
@@ -349,7 +351,7 @@ test('Get all companies quotas', async () => {
 test('Get specific member quota', async () => {
 	expect.assertions(1)
 	const quotas = await dbQuota.getMemberQuotasById(6, offset, limit)
-	expect(quotas.quotas[0].date_.getFullYear()).toBe(2022)
+	expect(quotas.quotas[0].date_).toBe('01-01-2023')
 })
 
 test('Update a company quota', async () => {
@@ -360,11 +362,10 @@ test('Update a company quota', async () => {
 
 test('Delete a quota', async () => {
 	expect.assertions(1)
-	await dbQuota.deleteQuota('01-01-2022')
-	const quotas = await dbQuota.getQuotas(undefined, undefined, undefined, 0, -1)
+	await dbQuota.deleteQuota('01-01-2023')
+	const quotas = await dbQuota.getQuotas(undefined, undefined, undefined, 0, 100)
 	expect(quotas.number_of_quotas).toBe(1)
 })
-
 
 test('Get all management quotas', async () => {
 	expect.assertions(1)
@@ -390,19 +391,19 @@ test('Create management quota', async () => {
 test('Get all users', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsers(undefined, undefined, undefined, undefined, offset, limit)
-	expect(users.users.length).toBe(3)
+	expect(users.number_of_users).toBe(3)
 })
 
 test('Get all users', async () => {
 	expect.assertions(1)
-	const users = await dbUser.getUsers('jobileu', 'Jobileu Santos', 'jobi@clix.pt', undefined, offset, limit)
-	expect(users.users.length).toBe(1)
+	const users = await dbUser.getUsers('luizinho23', 'Luis Marquez', 'luismarquez@gmail.com', undefined, offset, limit)
+	expect(users.number_of_users).toBe(1)
 })
 
 test('Get a specific user', async () => {
 	expect.assertions(1)
 	const user = await dbUser.getUserById(1)
-	expect(user.birth_date_).toBe('1987-03-09')
+	expect(user.birth_date_).toBe('09-03-1987')
 })
 
 test('Post User', async () => {
@@ -423,7 +424,7 @@ test('Delete user', async () => {
 	const user = await dbUser.getUserById(id)
 	expect(user.is_deleted_).toBe(true)
 })
-
+/*
 
 //User Sports - verified 26/04/2022
 

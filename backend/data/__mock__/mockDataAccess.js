@@ -51,21 +51,7 @@ let user_imgs = []
 let users_sports = []
 let membership_cards = []
 let quotas = []
-let member_types_ = [{
-	type_: "founder",
-	quota_value_: 0,
-	category_: "user"
-	},
-	{
-	type_: "effective",
-	quota_value_: 15,
-	category_: "user"
-	},
-	{
-	type_: "corporate",
-	quota_value_: 50,
-	category_: "company"	
-	}]
+let member_types_ = []
 let groups = []
 let groups_events = []
 let groups_members = []
@@ -320,9 +306,7 @@ const getCompanyByIdData = async (id_) => {
 	const contact = contacts.filter(contact => contact.member_id_ == id_)[0]
 	if (company) {
 		const member = members.filter(member => member.id_ == id_)[0]
-		console.log(member);
 		const img = user_imgs.filter(user => user.user_id_ == id_)[0]
-		console.log(img);
 		const member_type = member_types_.filter(type => type.type_ == member.member_type_)[0]
 		if (member) {
 			const ret = {
@@ -350,11 +334,12 @@ const getCompanyByIdData = async (id_) => {
 
 const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_, img_, iban_) => {
 	indexObj.idxMember++
+	const quota_value_ = member_types_.filter(elem => elem.type_ == type_)[0].quota_value_
 	const member = {
 		id_: indexObj.idxMember,
 		member_type_: type_,
 		has_debt_: true,
-		quota_value_: 50,
+		quota_value_,
 		is_deleted_: false,
 		username_,
 		pword_,
@@ -761,18 +746,19 @@ const getMemberByIbanData = async (iban_) => {
  */
 
 const getUsersData = async (username_filter,name_filter,email_filter,debt_filter,offset,limit) => {
-	const usersArray = users.filter(async (user) => {
-		const member = await getMemberByIdData(user.member_id_)
+	let usersArray = users.filter(elem => !elem.is_admin_)
+	usersArray = usersArray.filter(user => {
+		const member = members.filter(member => member.id_ == user.member_id_)[0]
 		const contact = contacts.filter(con => con.member_id_ == user.member_id_)[0]
 		let results = []
 		if (name_filter) {
-			if (user.full_name_.includes(name_filter)) 
+			if (user.full_name_ === name_filter) 
 				results.push(true)
 			else 
 				results.push(false)
 		}
 		if (username_filter) {
-			if (member.username_.includes(username_filter)) 
+			if (member.username_ === username_filter) 
 				results.push(true)
 			else 
 				results.push(false)
@@ -789,10 +775,10 @@ const getUsersData = async (username_filter,name_filter,email_filter,debt_filter
 			else 
 				results.push(false)
 		}
-		if (results.every(elem => elem === true)) return true
+		if (results.length == 0 || results.every(elem => elem === true)) return true
 		else return false
-	}).slice(offset, limit + offset)
-	return {users: usersArray, number_of_users: usersArray.length}
+	})
+	return {users: usersArray.slice(offset, limit + offset), number_of_users: usersArray.length}
 }
 
 const getUserByIdData = async (id_) => {
@@ -808,12 +794,14 @@ const getUserByIdData = async (id_) => {
 
 const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, url, iban_, img_) => {
 	indexObj.idxMember++
+	const quota_value_ = member_types_.filter(elem => elem.type_ == type_)[0].quota_value_
 	const member = {
 		id_: indexObj.idxMember,
 		member_type_: type_,
 		has_debt_: true,
 		pword_,
 		username_,
+		quota_value_,
 		is_deleted_: false,
 		iban_
 	}
@@ -1086,9 +1074,9 @@ const deleteUserSportData = async (id_, sid_) => {
 
 const getQuotasData = async (username_filter,email_filter,date_filter,offset,limit) => {
 	let quotasArray = []
-	date_filter = formatDate(date_filter)
+	//date_filter = formatDate(date_filter)
 	quotas.forEach(async (element) => {
-		const contact = contacts.filter(elem => elem.member_id_ == element.id_)[0]
+		const contact = contacts.filter(elem => elem.member_id_ == element.member_id_)[0]
 		let results = []
 		if (username_filter) {
 			if (element.username_ == username_filter) 
@@ -1103,15 +1091,15 @@ const getQuotasData = async (username_filter,email_filter,date_filter,offset,lim
 				results.push(false)
 		}
 		if (email_filter) {
-			if (contact.email_ === email_filter) 
+			if (contact && contact.email_ === email_filter) 
 				results.push(true)
 			else 
 				results.push(false)
 		}
+		
 		if (results.length == 0 || results.every(elem => elem === true)) 
 			quotasArray.push({...element})
 	})
-	console.log(quotasArray);
 	return {quotas: quotasArray.slice(offset, limit + offset), number_of_quotas: quotasArray.length}
 }
 
@@ -1158,7 +1146,7 @@ const getUsersQuotasData = async () => {
 const getMemberQuotasByIdData = async (id_,offset,limit) => {
 	const member = await getMemberByIdData(id_)
 	if (member)
-		return quotas.filter(quota => quota.member_id_ == id_).slice(offset, limit+offset)
+		return {quotas: quotas.filter(quota => quota.member_id_ == id_).slice(offset, limit+offset) ,number_of_quotas:quotas.filter(quota => quota.member_id_ == id_).length}
 	return undefined
 }
 
@@ -1179,7 +1167,6 @@ const postQuotaData = async (date_) => {
 					amount_: value
 				}
 				quotas.push(quota)
-				console.log('pos');	
 			}
 				
 		}
@@ -1206,8 +1193,15 @@ const getQuotaByIdData = async (qid_) => {
 	return quota
 }
 
+const deleteQuotaData = async (date_) => {
+	let array = quotas.filter(quota =>quota.date_ == date_ && quota.payment_date_ != null)
+	quotas = quotas.filter(quota =>quota.date_ != date_)
+	array.forEach(elem => quotas.push(elem))
+	return date_
+}
+
 const getManagementQuotas = async(category_) => {
-	return member_types_.filter(elem => elem.category_ == category_)
+	return member_types_.filter(elem => category_ ? elem.category_ == category_ : true)
 }
 
 const updateManagementQuotaByType = async(type_, quota_value_) => {
@@ -1314,7 +1308,6 @@ const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_fi
 			const group = groups.filter(g => g.group_id_ == elem.group_id_)[0]
 			return group
 		})
-	console.log(groupsFiltered);
 	groupsFiltered = groupsFiltered
 		.filter(elem => group_type_filter ? elem.group_type_ == group_type_filter : true )
 		.filter(elem => name_filter ? elem.name_ == name_filter : true )
@@ -1416,6 +1409,7 @@ const mock_data = {
 	getCompaniesQuotasData, 
 	getUsersQuotasData, 
 	getMemberQuotasByIdData, 
+	deleteQuotaData,
 	postQuotaData, 
 	updateMemberQuotaData, 
 	getMemberByIdData, 
