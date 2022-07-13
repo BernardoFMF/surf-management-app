@@ -45,13 +45,33 @@ let contacts = [{
 	address_: 'Rua do surf, n543',
 	postal_code_:'1890-987',
 	email_:'miguelosousa@gmail.com',
-	phone_number_:912345432
+	phone_number_:'912345432'
 }]
+
 let user_imgs = []
 let users_sports = []
 let membership_cards = []
 let quotas = []
-let member_types_ = []
+let member_types_ = [{
+	type_: 'effective',
+	quota_value_: 15,
+	category_: 'user'
+},
+{
+	type_: 'founder',
+	quota_value_: 0,
+	category_: 'user'
+},
+{
+	type_: 'merit',
+	quota_value_: 0,
+	category_: 'user'
+},
+{
+	type_: 'corporate',
+	quota_value_: 15,
+	category_: 'company'
+}]
 let groups = []
 let groups_events = []
 let groups_members = []
@@ -515,7 +535,8 @@ const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offse
 }
 
 const getEventByIdData = async (id_) => {
-	const event = events.filter(event => event.id_ == id_)[0]
+	let id = parseInt(id_)
+	const event = events.filter(event => event.id_ == id)[0]
 	if (!event) return null
 
 	let date_today = formatDate(new Date())
@@ -584,7 +605,7 @@ const updateMemberAttendanceData = async (eid_, id_, state_) => {
 }
 
 const getEventByIdAttendanceData = async (eid_, offset, limit) => {
-	const attendance = []
+	let attendance = []
 	for (const idx in attendances) {
 		if(attendances[idx].event_id_ == eid_) {
 			const member = await getMemberByIdData(attendances[idx].member_id_)
@@ -597,16 +618,16 @@ const getEventByIdAttendanceData = async (eid_, offset, limit) => {
 					username_:member.username_,
 					event_id_: event.id_,
 					name_: event.name_,
-					state_:attendances[idx].state_,
+					state_: `${attendances[idx].state_}`,
 					email_: contacts[idxContact].email_,
-					phone_number_: contacts[idxContact].phone_number_
+					phone_number_: `${contacts[idxContact].phone_number_}`
 				}
 				attendance.push(obj)
 			}
 		}
 	}
 	attendance = attendance.slice(offset, offset + limit)
-	return {attendance,number_of_events:attendance.length}
+	return {attendance,number_of_attendance:attendance.length}
 }
 
 const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,date_filter,offset,limit) => {
@@ -614,8 +635,7 @@ const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,dat
 		.filter(att => att.member_id_ == id_)
 		.filter(att => {
 			let event = events.filter(event => event.id_ == att.event_id_)[0]
-			console.log(event);
-			console.log(att);
+
 			let results = []
 			if (name_filter) {
 				if (event.name_.includes(name_filter)) 
@@ -640,7 +660,7 @@ const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,dat
 			else return false
 		})
 	let number_of_events = attendance.length
-	return {attendance:attendance.slice(offset, offset + limit),number_of_events}
+	return {events:attendance.slice(offset, offset + limit),number_of_events}
 }
 /**
  * Sports

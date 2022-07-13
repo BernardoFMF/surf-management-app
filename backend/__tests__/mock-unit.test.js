@@ -29,8 +29,8 @@ async function insertSportDummies() {
 }
 
 async function insertEventDummies() {
-	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1])
-	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2])
+	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1], false)
+	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2], false)
 }
 
 async function insertCandidateDummies() {
@@ -55,20 +55,12 @@ async function insertSportsforUsersDummies() {
 	await dbUser.postUserSport(2, 3, 55, 1890780, 'Federacao de SkySurf', ['practitioner'], [2022], false)
 }
 
-async function insertQuotaPricesDummies() {
-	await dbQuota.postManagementQuota('effective', 15, 'user')
-	await dbQuota.postManagementQuota('founder', 0, 'user')
-	await dbQuota.postManagementQuota('merit', 0, 'user')
-	await dbQuota.postManagementQuota('corporate', 50, 'company')
-}
-
 async function insertGroupsDummies() {
 	await dbGroup.postGroup('ganda grupo de tudo', 'tudo', 'member_type', [ "effective", "corporate", "merit", "founder" ], [])
 	await dbGroup.postGroup('ganda grupo de desporto', 'desporto', 'member_sport_type', [ "coach", "practitioner" ], [1, 3, 2])
 }
 
 beforeAll( async () => {	
-	await insertQuotaPricesDummies()
 	await insertSportDummies()
 	await insertCandidateDummies()
 	await insertUserDummies()
@@ -194,7 +186,7 @@ test('Delete specific event', async () => {
 
 test('Create a event', async () => {
 	expect.assertions(1)
-	const event = await dbEvent.postEvent('Entrega de troféus.', '12-07-2022', '12-07-2022', [1,2], true)
+	const event = await dbEvent.postEvent('Entrega de troféus.', '12-07-2022', '12-07-2022', [1,2], false)
 	expect(event).toBe(3)
 })
 
@@ -222,13 +214,13 @@ test('Get specific attendance', async () => {
 test('Get specific member attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventMemberByIdAttendance(1, undefined, undefined, undefined, offset, limit)
-	expect(attendance.attendance[0].member_id_).toBe(1)
+	expect(attendance.events[0].member_id_).toBe(1)
 })
 
 test('Get specific member attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventMemberByIdAttendance(1, 'Assembleia geral.', 'not going',undefined, offset, limit)
-	expect(attendance.attendance[0].member_id_).toBe(1)
+	expect(attendance.events[0].member_id_).toBe(1)
 })
 
 //Candidate - verified 12/07/2022
@@ -270,7 +262,7 @@ test('Delete specific candidate', async () => {
 
 test('Approve a candidate', async () => {
 	expect.assertions(1)
-	const userId = await dbCandidate.approveCandidate(1, 'effective', true, 'candidatebemaneiro')
+	const userId = await dbCandidate.approveCandidate(1, 'effective', true, 'candidatebemaneiro', false)
 	expect(userId).toBe(5)
 })
 

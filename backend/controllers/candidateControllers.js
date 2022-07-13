@@ -32,7 +32,7 @@ const candidateController = (data) => {
 	
 	const approveCandidate = asyncHandler(async (req, res) => {
 		const url = req.protocol + '://' + req.get('host')
-		const candidate = await services.approveCandidateServices(req.params.cid, req.body.type_, req.body.paid_enrollment_, url)
+		const candidate = await services.approveCandidateServices(req.params.cid, req.body.type_, req.body.paid_enrollment_, url, req.body.sendEmail)
 		if (candidate) res.json({ message: 'Candidate approved sucessfully', message_code: 'MESSAGE_CODE_4' })
 	})
 

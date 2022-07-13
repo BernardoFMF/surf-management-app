@@ -26,7 +26,6 @@ const emailServices = (db) => {
             }
         })
         for (const row in receivers) {
-            console.log(receivers[row]);
             const quotasByEmail = await data.getQuotasByEmail(receivers[row])
             await notify(receivers[row], `Quotas em atraso`, notifyTemplate(quotasByEmail))
           }
