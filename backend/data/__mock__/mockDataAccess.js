@@ -47,12 +47,7 @@ let contacts = [{
 	email_:'miguelosousa@gmail.com',
 	phone_number_:'912345432'
 }]
-async function insertQuotaPricesDummies() {
-	await dbQuota.postManagementQuota('effective', 15, 'user')
-	await dbQuota.postManagementQuota('founder', 0, 'user')
-	await dbQuota.postManagementQuota('merit', 0, 'user')
-	await dbQuota.postManagementQuota('corporate', 50, 'company')
-}
+
 let user_imgs = []
 let users_sports = []
 let membership_cards = []

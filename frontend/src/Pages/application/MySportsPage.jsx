@@ -93,8 +93,8 @@ const MySportsPage = () => {
       dispatch(getUserSports(id, (value-1)*searchState.limit, searchState.limit))
     }
 
-    const deleteUserSportHandle = (id, sid) => {
-        dispatch(deleteUserSport(id, sid))
+    const deleteUserSportHandle = (id, sid, is_candidate) => {
+        dispatch(deleteUserSport(id, sid, is_candidate))
         dispatch(getUserSports(id, 0, searchState.limit))
     }
 
@@ -118,11 +118,12 @@ const MySportsPage = () => {
                     onClick={() => {
                         userSportEditHandler(params.row)
                     }}
+                    disabled={params.row.is_candidate_}
                 />,
                 <GridActionsCellItem
                     icon={<DeleteIcon />}
                     label="Delete"
-                    onClick={() => { deleteUserSportHandle(params.row.user_id_, params.row.sport_id_) }}
+                    onClick={() => { deleteUserSportHandle(params.row.user_id_, params.row.sport_id_, params.row.is_candidate_) }}
                     disabled={params.row.is_absent_}
                 />
             ],

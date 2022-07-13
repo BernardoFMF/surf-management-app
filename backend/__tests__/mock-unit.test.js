@@ -29,8 +29,8 @@ async function insertSportDummies() {
 }
 
 async function insertEventDummies() {
-	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1])
-	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2])
+	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1], false)
+	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2], false)
 }
 
 async function insertCandidateDummies() {
@@ -186,7 +186,7 @@ test('Delete specific event', async () => {
 
 test('Create a event', async () => {
 	expect.assertions(1)
-	const event = await dbEvent.postEvent('Entrega de troféus.', '12-07-2022', '12-07-2022', [1,2], true)
+	const event = await dbEvent.postEvent('Entrega de troféus.', '12-07-2022', '12-07-2022', [1,2], false)
 	expect(event).toBe(3)
 })
 
@@ -262,7 +262,7 @@ test('Delete specific candidate', async () => {
 
 test('Approve a candidate', async () => {
 	expect.assertions(1)
-	const userId = await dbCandidate.approveCandidate(1, 'effective', true, 'candidatebemaneiro')
+	const userId = await dbCandidate.approveCandidate(1, 'effective', true, 'candidatebemaneiro', false)
 	expect(userId).toBe(5)
 })
 
