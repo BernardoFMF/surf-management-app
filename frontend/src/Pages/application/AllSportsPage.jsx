@@ -159,8 +159,8 @@ const AllSportsPage = () => {
                                             <CardActions>
                                                 {!memberInfo.is_admin_ && !sport.is_deleted_ && <Button size="small" type="submit"  onClick={() => userSportApplyHandler(sport.id_)}>{t('apply')}</Button>}
                                                 {memberInfo.is_admin_ && !sport.is_deleted_ && <Button size="small" type="submit"  onClick={() => navigate(`/application/sports/${sport.id_}`)}>{t('view_sport')}</Button>}
-                                                {!sport.is_deleted_ ? memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '10px' }} color={'secondary'} onClick={() => deleteSportHandle(sport.id_)}> <DeleteIcon  sx={{ ml: 28}}  /></ButtonBase> 
-                                                : memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '10px'}} color={'secondary'} onClick={() => handleSubmitUpdateByPlus(sport.id_, sport.name_, sport.is_deleted_)}><AddBoxIcon  sx={{  mt: 0.7, ml: !sport.is_deleted_ ? 28 : 50 }} /></ButtonBase>}
+                                                {!sport.is_deleted_ ? memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '1px' }} color={'secondary'} onClick={() => deleteSportHandle(sport.id_)}> <DeleteIcon  sx={{ ml: 28}}  /></ButtonBase> 
+                                                : memberInfo.is_admin_ && <ButtonBase style={{maxWidth: '1px'}} color={'secondary'} onClick={() => handleSubmitUpdateByPlus(sport.id_, sport.name_, sport.is_deleted_)}><AddBoxIcon  sx={{  mt: 0.7, ml: !sport.is_deleted_ ? 28 : 50 }} /></ButtonBase>}
                                             </CardActions>
                                         </Card>
                                       </Grid>

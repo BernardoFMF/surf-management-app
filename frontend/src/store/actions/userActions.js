@@ -233,6 +233,10 @@ export const updateUserSports = (id, sid, body) => async (dispatch) => {
     dispatch({
       type: USER_SPORT_UPDATE_REQUEST,
     })
+    if(body.fed_number === '') body.fed_number = undefined
+    if(body.fed_id === '') body.fed_id = undefined
+    if(body.fed_name === '') body.fed_name = undefined
+    if(body.years_federated === '') body.years_federated = []
     const response = await fetch(`/api/users/${id}/sports/${sid}`, {
         method: 'PUT',
         body: JSON.stringify(body),
@@ -318,6 +322,10 @@ export const createUsersSport = (id, body) => async (dispatch) => {
     dispatch({
       type: USERS_SPORTS_CREATE_REQUEST,
     })
+    if(body.fed_number === '') body.fed_number = undefined
+    if(body.fed_id === '') body.fed_id = undefined
+    if(body.fed_name === '') body.fed_name = undefined
+    if(body.years_federated === '') body.years_federated = undefined
     const response = await fetch(`/api/users/${id}/sports`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
