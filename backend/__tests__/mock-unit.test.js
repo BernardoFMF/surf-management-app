@@ -55,20 +55,12 @@ async function insertSportsforUsersDummies() {
 	await dbUser.postUserSport(2, 3, 55, 1890780, 'Federacao de SkySurf', ['practitioner'], [2022], false)
 }
 
-async function insertQuotaPricesDummies() {
-	await dbQuota.postManagementQuota('effective', 15, 'user')
-	await dbQuota.postManagementQuota('founder', 0, 'user')
-	await dbQuota.postManagementQuota('merit', 0, 'user')
-	await dbQuota.postManagementQuota('corporate', 50, 'company')
-}
-
 async function insertGroupsDummies() {
 	await dbGroup.postGroup('ganda grupo de tudo', 'tudo', 'member_type', [ "effective", "corporate", "merit", "founder" ], [])
 	await dbGroup.postGroup('ganda grupo de desporto', 'desporto', 'member_sport_type', [ "coach", "practitioner" ], [1, 3, 2])
 }
 
 beforeAll( async () => {	
-	await insertQuotaPricesDummies()
 	await insertSportDummies()
 	await insertCandidateDummies()
 	await insertUserDummies()

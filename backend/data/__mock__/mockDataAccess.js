@@ -47,11 +47,36 @@ let contacts = [{
 	email_:'miguelosousa@gmail.com',
 	phone_number_:912345432
 }]
+async function insertQuotaPricesDummies() {
+	await dbQuota.postManagementQuota('effective', 15, 'user')
+	await dbQuota.postManagementQuota('founder', 0, 'user')
+	await dbQuota.postManagementQuota('merit', 0, 'user')
+	await dbQuota.postManagementQuota('corporate', 50, 'company')
+}
 let user_imgs = []
 let users_sports = []
 let membership_cards = []
 let quotas = []
-let member_types_ = []
+let member_types_ = [{
+	type_: 'effective',
+	quota_value_: 15,
+	category_: 'user'
+},
+{
+	type_: 'founder',
+	quota_value_: 0,
+	category_: 'user'
+},
+{
+	type_: 'merit',
+	quota_value_: 0,
+	category_: 'user'
+},
+{
+	type_: 'corporate',
+	quota_value_: 15,
+	category_: 'company'
+}]
 let groups = []
 let groups_events = []
 let groups_members = []
