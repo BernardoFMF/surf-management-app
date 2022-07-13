@@ -423,38 +423,37 @@ test('Delete user', async () => {
 	const user = await dbUser.getUserById(id)
 	expect(user.is_deleted_).toBe(true)
 })
-/*
 
 //User Sports - verified 26/04/2022
 
 test('Get all sports for users', async () => {
 	expect.assertions(1)
 	const userSports = await dbUser.getUsersSports()
-	expect(userSports.length).toBe(1) 
+	expect(userSports.length).toBe(4) 
 })
 
 test('Get users that practice a given sport ', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsersSport(2, offset, limit, false, undefined)
-	expect(users.users.length).toBe(0) 
+	expect(users.number_of_users).toBe(1) 
 })	
 
 test('Get users that practice a given sport ', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsersSport(2, offset, limit, false, 'jobileu')
-	expect(users.users.length).toBe(0) 
+	expect(users.number_of_users).toBe(0) 
 })	
 
 test('Get sports that a given user practice', async () => {
 	expect.assertions(1)
 	const sports = await dbUser.getUserSportsById(2, offset, limit)
-	expect(sports.sports.length).toBe(1)
+	expect(sports.sports.length).toBe(2)
 })
 
 test('Get sports that a given user practice', async () => {
 	expect.assertions(1)
 	const sports = await dbUser.getUsersSports()
-	expect(sports.length).toBe(1)
+	expect(sports.length).toBe(4)
 })
 
 test('Create a sport for a user', async () => {
