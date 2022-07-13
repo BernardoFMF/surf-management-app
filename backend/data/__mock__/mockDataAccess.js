@@ -976,13 +976,14 @@ const getUsersSportsData = async () => {
 		const sport = await getSportByIdData(users_sports[idx].sport_id_)
 		if (member && sport) users_sports_array.push({...users_sports[idx], username_: member.username_, name_: sport.name_})
 	}
-	return {users_sports_array,number_of_sports:users_sports_array.length}
+	return users_sports_array
 }
 
 const getUsersSportData = async (id_, offset, limit, is_candidate_, username_) => {
 	let sports_tuples = await getUsersSportsData()
-	let res = sports_tuples.users_sports_array.filter(sport => sport.sport_id_ == id_)
-	res = res.filter(user => {
+	let sport = await getSportByIdData(id_)
+	let users = sports_tuples.filter(sport => sport.sport_id_ == id_)
+	users = users.filter(user => {
 		let results = []
 		if (is_candidate_) {
 			if (user.is_candidate_.includes(is_candidate_)) 
@@ -999,13 +1000,13 @@ const getUsersSportData = async (id_, offset, limit, is_candidate_, username_) =
 		if (results.every(elem => elem === true)) return true
 		else return false
 	}).slice(offset, offset + limit)
-	return {res,number_of_sports:res.length}
+	return {users,number_of_users:users.length,sport}
 }
 
 const getUserSportsByIdData = async (id_,offset, limit) => {
 	let sports_tuples = await getUsersSportsData()
-	let res = sports_tuples.users_sports_array.filter(user => user.user_id_ == id_).slice(offset, limit + offset)
-	return {res,number_of_sports:res.length}
+	let sports = sports_tuples.filter(user => user.user_id_ == id_).slice(offset, limit + offset)
+	return {sports,number_of_sports:sports.length}
 }
 
 const getUserSportByIdAndUserData = async (id_, sid_) => {
@@ -1043,7 +1044,7 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 
 const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_) => {
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
-	const oldIsAbsent = members[idxMember].is_absent_
+	const oldIsAbsent = members[indexObj.idxMember].is_absent_
 	users_sports[user_sport_idx].fed_id_ = fed_id_
 	users_sports[user_sport_idx].fed_number_ = fed_number_
 	users_sports[user_sport_idx].fed_name_ = fed_name_
@@ -1071,7 +1072,7 @@ const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, t
 		})
 	}
 
-	return {id_: users_sports[user_sport_idx].user_id_, sid_: users_sports[user_sport_idx].sport_id_}
+	return {id_: `${users_sports[user_sport_idx].user_id_}`, sid_: `${users_sports[user_sport_idx].sport_id_}`}
 }
 
 const deleteUserSportData = async (id_, sid_) => {
