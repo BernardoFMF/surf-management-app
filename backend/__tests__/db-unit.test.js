@@ -119,6 +119,12 @@ test('Get specific member', async () => {
 	expect(member.name_).toBe('Ericeira surf shop')
 })
 
+test('Get all members', async () => {
+	expect.assertions(1)
+	const members = await dbMember.getAllMembers()
+	expect(members[0].email_).toBe('mohamedlgh@gmail.com')
+})
+
 //Statistics 
 
 test('Get statistics', async () => {
@@ -439,7 +445,7 @@ test('Create management quota', async () => {
 test('Get all users', async () => {
 	expect.assertions(1)
 	const users = await dbUser.getUsers(undefined, undefined, undefined, undefined, offset, limit)
-	expect(users.users.length).toBe(3)
+	expect(users.number_of_users).toBe(3)
 })
 
 test('Get all users', async () => {

@@ -37,7 +37,7 @@ let users = [{
 let companies = []
 let candidates = []
 let events = []
-let attendance = []
+let attendances = []
 let sports = []
 let contacts = [{
 	member_id_: indexObj.idxMember, 
@@ -51,11 +51,7 @@ let user_imgs = []
 let users_sports = []
 let membership_cards = []
 let quotas = []
-let member_types_ = [{
-	type_: "founder",
-	quota_value_: 0,
-	category_: "user"
-}]
+let member_types_ = []
 let groups = []
 let groups_events = []
 let groups_members = []
@@ -74,7 +70,7 @@ function formatDate(date) {
 	if (day.length < 2) 
 		day = '0' + day;
 
-	return [year, month, day].join('-');
+	return [day, month, year].join('-');
 }
 
 /**
@@ -189,7 +185,7 @@ const deleteCandidateData = async (id_) => {
 
 const approveCandidateData = async (id_, type_, paid_enrollment_) => {
 	const candidate = await getCandidateByIdData(id_)
-	let enrollment_date_ = new Date()
+	let enrollment_date_ = formatDate(new Date())
 	const uid_ = await postUserData(candidate.cc_, candidate.nif_, type_, candidate.birth_date_, candidate.nationality_, candidate.full_name_, candidate.phone_number_, candidate.email_, candidate.postal_code_, candidate.address_, candidate.location_, candidate.pword_, candidate.username_, paid_enrollment_, candidate.gender_, candidate.iban_, candidate.img_, enrollment_date_)
 
 	user_imgs = user_imgs.map(elem => {
@@ -253,22 +249,23 @@ const getCompaniesData = async (username_filter,name_filter,email_filter, debt_f
 	const filteredCompanies = companies.filter(company => {
 		let results = []
 		const member = members.filter(member => member.id_ == company.member_id_)[0]
+		const contact = contacts.filter(contact => contact.member_id_ == company.member_id_)[0]
+
 		if (username_filter) {
-			if (member.username_.includes(username_filter)) 
+			if (member.username_ == username_filter) 
 				results.push(true)
 			else 
 				results.push(false)
 		}
-		
 		if (name_filter) {
-			if (company.name_.includes(name_filter)) 
+			if (company.name_ ==  name_filter) 
 				results.push(true)
 			else 
 				results.push(false)
 		}
 
 		if (email_filter) {
-			if (member.email_ === email_filter) 
+			if (contact.email_ === email_filter) 
 				results.push(true)
 			else 
 				results.push(false)
@@ -281,7 +278,7 @@ const getCompaniesData = async (username_filter,name_filter,email_filter, debt_f
 				results.push(false)
 		}
 		
-		if (results.every(elem => elem === true)) return true
+		if (results.length == 0 || results.every(elem => elem === true)) return true
 		else return false
 	})
 	const obj = {
@@ -301,7 +298,6 @@ const getCompaniesData = async (username_filter,name_filter,email_filter, debt_f
 		}),
 		number_of_companies: filteredCompanies.length
 	}
-
 	return obj
 }
 
@@ -310,9 +306,7 @@ const getCompanyByIdData = async (id_) => {
 	const contact = contacts.filter(contact => contact.member_id_ == id_)[0]
 	if (company) {
 		const member = members.filter(member => member.id_ == id_)[0]
-		console.log(member);
 		const img = user_imgs.filter(user => user.user_id_ == id_)[0]
-		console.log(img);
 		const member_type = member_types_.filter(type => type.type_ == member.member_type_)[0]
 		if (member) {
 			const ret = {
@@ -340,11 +334,12 @@ const getCompanyByIdData = async (id_) => {
 
 const postCompanyData = async (name_, nif_, phone_number_, email_, postal_code_, address_, location_, username_, pword_, type_, img_, iban_) => {
 	indexObj.idxMember++
+	const quota_value_ = member_types_.filter(elem => elem.type_ == type_)[0].quota_value_
 	const member = {
 		id_: indexObj.idxMember,
 		member_type_: type_,
 		has_debt_: true,
-		quota_value_: 50,
+		quota_value_,
 		is_deleted_: false,
 		username_,
 		pword_,
@@ -461,12 +456,12 @@ const deleteCompanyData = async (id_) => {
 
 const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offset,limit) => {
 	let date_today = formatDate(new Date())
-	initialDate_filter = formatDate(initialDate_filter)
-	endDate_filter = formatDate(endDate_filter)
+	initialDate_filter = initialDate_filter ? formatDate(initialDate_filter) : undefined
+	endDate_filter = endDate_filter ? formatDate(endDate_filter) : undefined
 
 	let filteredEvents = events.filter(event => {
 		let results = []
-		if (usernamefilter) {
+		if (name_filter) {
 			if (event.name_.includes(name_filter)) 
 				results.push(true)
 			else 
@@ -485,18 +480,20 @@ const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offse
 				results.push(false)
 		}
 
-		if (results.every(elem => elem === true)) return true
+		if (results.length == 0 || results.every(elem => elem === true)) return true
 		else return false
-	}).slice(offset, offset + limit).map(event => {
+	})
+	let test2 = filteredEvents.slice(offset, offset + limit)
+	let test = test2.map(event => {
 		event.initial_date_ = formatDate(event.initial_date_)
-		event.end_date_ = formatDate(event.end_date_)
-		if(date_today < event.initial_date_ && date_today < event.end_date_){
+		event.final_date_ = formatDate(event.final_date_)
+		if(date_today < event.initial_date_ && date_today < event.final_date_){
 			let x = {
 				...event, status: "status_not_started"
 			}
 			return x
 		}else{
-			if(date_today > event.initial_date_ && date_today > event.end_date_){
+			if(date_today > event.initial_date_ && date_today > event.final_date_){
 				let x = {
 					...event, status: "status_event_ended"
 				}
@@ -511,8 +508,8 @@ const getEventsData = async (name_filter,initialDate_filter,endDate_filter,offse
 		}
 	})
 	const obj = {
-		events: filteredEvents,
-		number_of_events: filteredEvents.length
+		events: test,
+		number_of_events: test.length
 	}
 	return obj
 }
@@ -523,14 +520,14 @@ const getEventByIdData = async (id_) => {
 
 	let date_today = formatDate(new Date())
 	event.initial_date_ = formatDate(event.initial_date_)
-	event.end_date_ = formatDate(event.end_date_)
-	if(date_today < event.initial_date_ && date_today < event.end_date_){
+	event.final_date_ = formatDate(event.final_date_)
+	if(date_today < event.initial_date_ && date_today < event.final_date_){
 		let x = {
 			...event, status: "status_not_started"
 		}
 		return x
 	}else{
-		if(date_today > event.initial_date_ && date_today > event.end_date_){
+		if(date_today > event.initial_date_ && date_today > event.final_date_){
 			let x = {
 				...event, status: "status_event_ended"
 			}
@@ -559,7 +556,7 @@ const postEventData = async (name_, initial_date_, final_date_, groups_) => {
 		groups_events.push({event_id_:indexObj.idxEvents, group_id_})
 		groups_members.forEach(elem => {
 			if (elem.group_id_ == group_id_) 
-				attendance.push({member_id_: elem.member_id_, event_id_ : indexObj.idxEvents, state_: null})
+				attendances.push({member_id_: elem.member_id_, event_id_ : indexObj.idxEvents, state_: null})
 		})
 	})
 	return event.id_
@@ -576,62 +573,64 @@ const updateEventData = async (id_, name_, initial_date_, final_date_) => {
 const deleteEventData = async (id_) => {
 	groups_events = groups_events.filter(g => g.id_ != id_)
 	events = events.filter(event => event.id_ != id_)
-	attendance = attendance.filter(att => att.event_id_ != id_)
+	attendances = attendances.filter(att => att.event_id_ != id_)
 	return id_
 }
 
 const updateMemberAttendanceData = async (eid_, id_, state_) => {
-	const idx = attendance.findIndex(att => att.member_id_ == id_ && att.event_id_ == eid_)
-	attendance[idx].state_ = state_
+	const idx = attendances.findIndex(att => att.member_id_ == id_ && att.event_id_ == eid_)
+	attendances[idx].state_ = state_
 	return {id_, eid_}
 }
 
 const getEventByIdAttendanceData = async (eid_, offset, limit) => {
-	const ret = []
-	for (const idx in attendance) {
-		if(attendance[idx].event_id_ == eid_) {
-			const member = await getMemberByIdData(attendance[idx].member_id_)
-			const idxContact = contacts.findIndex((contact => contact.member_id_ == attendance[idx].member_id_))
+	const attendance = []
+	for (const idx in attendances) {
+		if(attendances[idx].event_id_ == eid_) {
+			const member = await getMemberByIdData(attendances[idx].member_id_)
+			const idxContact = contacts.findIndex((contact => contact.member_id_ == attendances[idx].member_id_))
 	
 			if (member) {
 				const event = await getEventByIdData(eid_)
 				const obj = {
-					member_id_:attendance[idx].member_id_,
+					member_id_:attendances[idx].member_id_,
 					username_:member.username_,
 					event_id_: event.id_,
 					name_: event.name_,
-					state_:attendance[idx].state_,
+					state_:attendances[idx].state_,
 					email_: contacts[idxContact].email_,
 					phone_number_: contacts[idxContact].phone_number_
 				}
-				ret.push(obj)
+				attendance.push(obj)
 			}
 		}
 	}
-	ret = ret.slice(offset, offset + limit)
-	return {ret,number_of_events:ret.length}
+	attendance = attendance.slice(offset, offset + limit)
+	return {attendance,number_of_events:attendance.length}
 }
 
 const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,date_filter,offset,limit) => {
-	const ret = attendance
+	const attendance = attendances
 		.filter(att => att.member_id_ == id_)
-		.slice(offset, offset + limit)
-		.map(attendance => {
+		.filter(att => {
+			let event = events.filter(event => event.id_ == att.event_id_)[0]
+			console.log(event);
+			console.log(att);
 			let results = []
-			if (usernamefilter) {
-				if (attendance.name_.includes(name_filter)) 
+			if (name_filter) {
+				if (event.name_.includes(name_filter)) 
 					results.push(true)
 				else 
 					results.push(false)
 			}
 			if (state_filter) {
-				if (attendance.state_ === state_filter) 
+				if (att.state_ === state_filter) 
 					results.push(true)
 				else 
 					results.push(false)
 			}
 			if (date_filter) {
-				if (attendance.date_ === date_filter) 
+				if (event.initial_date_ == date_filter) 
 					results.push(true)
 				else 
 					results.push(false)
@@ -640,8 +639,8 @@ const getEventMemberByIdAttendanceData = async (id_,name_filter,state_filter,dat
 			if (results.every(elem => elem === true)) return true
 			else return false
 		})
-	let number_of_events = ret.length
-	return {ret,number_of_events}
+	let number_of_events = attendance.length
+	return {attendance:attendance.slice(offset, offset + limit),number_of_events}
 }
 /**
  * Sports
@@ -750,18 +749,19 @@ const getMemberByIbanData = async (iban_) => {
  */
 
 const getUsersData = async (username_filter,name_filter,email_filter,debt_filter,offset,limit) => {
-	const usersArray = users.filter(async (user) => {
-		const member = await getMemberByIdData(user.member_id_)
+	let usersArray = users.filter(elem => !elem.is_admin_)
+	usersArray = usersArray.filter(user => {
+		const member = members.filter(member => member.id_ == user.member_id_)[0]
 		const contact = contacts.filter(con => con.member_id_ == user.member_id_)[0]
 		let results = []
 		if (name_filter) {
-			if (user.full_name_.includes(name_filter)) 
+			if (user.full_name_ === name_filter) 
 				results.push(true)
 			else 
 				results.push(false)
 		}
 		if (username_filter) {
-			if (member.username_.includes(username_filter)) 
+			if (member.username_ === username_filter) 
 				results.push(true)
 			else 
 				results.push(false)
@@ -778,10 +778,10 @@ const getUsersData = async (username_filter,name_filter,email_filter,debt_filter
 			else 
 				results.push(false)
 		}
-		if (results.every(elem => elem === true)) return true
+		if (results.length == 0 || results.every(elem => elem === true)) return true
 		else return false
-	}).slice(offset, limit + offset)
-	return {users: usersArray, number_of_users: usersArray.length}
+	})
+	return {users: usersArray.slice(offset, limit + offset), number_of_users: usersArray.length}
 }
 
 const getUserByIdData = async (id_) => {
@@ -797,12 +797,14 @@ const getUserByIdData = async (id_) => {
 
 const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_name_, phone_number_, email_, postal_code_, address_, location_, pword_, username_, paid_enrollment_, gender_, url, iban_, img_) => {
 	indexObj.idxMember++
+	const quota_value_ = member_types_.filter(elem => elem.type_ == type_)[0].quota_value_
 	const member = {
 		id_: indexObj.idxMember,
 		member_type_: type_,
 		has_debt_: true,
 		pword_,
 		username_,
+		quota_value_,
 		is_deleted_: false,
 		iban_
 	}
@@ -1075,31 +1077,33 @@ const deleteUserSportData = async (id_, sid_) => {
 
 const getQuotasData = async (username_filter,email_filter,date_filter,offset,limit) => {
 	let quotasArray = []
-	date_filter = formatDate(date_filter)
+	//date_filter = formatDate(date_filter)
 	quotas.forEach(async (element) => {
-		const contact = contacts.filter(elem => elem.member_id_ == element.id_)[0]
+		const contact = contacts.filter(elem => elem.member_id_ == element.member_id_)[0]
 		let results = []
 		if (username_filter) {
-			if (element.username_.includes(username_filter)) 
+			if (element.username_ == username_filter) 
 				results.push(true)
 			else 
 				results.push(false)
 		}
 		if (date_filter) {
-			if (element.date_.includes(date_filter)) 
+			if (element.date_ == date_filter) 
 				results.push(true)
 			else 
 				results.push(false)
 		}
 		if (email_filter) {
-			if (contact.email_ === email_filter) 
+			if (contact && contact.email_ === email_filter) 
 				results.push(true)
 			else 
 				results.push(false)
 		}
-		if (results.every(elem => elem === true)) quotasArray.push({...element, })
-	}).slice(offset, limit + offset)
-	return {quotas: quotasArray, number_of_quotas: quotasArray.length}
+		
+		if (results.length == 0 || results.every(elem => elem === true)) 
+			quotasArray.push({...element})
+	})
+	return {quotas: quotasArray.slice(offset, limit + offset), number_of_quotas: quotasArray.length}
 }
 
 const getQuotasByDateData = async (date) => {
@@ -1145,7 +1149,7 @@ const getUsersQuotasData = async () => {
 const getMemberQuotasByIdData = async (id_,offset,limit) => {
 	const member = await getMemberByIdData(id_)
 	if (member)
-		return quotas.filter(quota => quota.member_id_ == id_).slice(offset, limit+offset)
+		return {quotas: quotas.filter(quota => quota.member_id_ == id_).slice(offset, limit+offset) ,number_of_quotas:quotas.filter(quota => quota.member_id_ == id_).length}
 	return undefined
 }
 
@@ -1153,8 +1157,7 @@ const postQuotaData = async (date_) => {
 	date_ = formatDate(date_)
 	members.forEach(member => {
 		const hasQuota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_ == date_)[0]
-		const value = member_types_.filter(elem => elem.type_ == member.type_)[0].quota_value_
-
+		const value = member_types_.filter(elem => elem.type_ == member.member_type_)[0].quota_value_
 		if (!hasQuota) {
 			if (member.quota_value_ != 0) {
 				indexObj.idxQuotas++
@@ -1172,6 +1175,7 @@ const postQuotaData = async (date_) => {
 		}
 	})
 	return date_
+
 }
 
 const updateMemberQuotaData = async (qid_, payment_date_) => {
@@ -1192,8 +1196,15 @@ const getQuotaByIdData = async (qid_) => {
 	return quota
 }
 
+const deleteQuotaData = async (date_) => {
+	let array = quotas.filter(quota =>quota.date_ == date_ && quota.payment_date_ != null)
+	quotas = quotas.filter(quota =>quota.date_ != date_)
+	array.forEach(elem => quotas.push(elem))
+	return date_
+}
+
 const getManagementQuotas = async(category_) => {
-	return member_types_.filter(elem => elem.category_ == category_)
+	return member_types_.filter(elem => category_ ? elem.category_ == category_ : true)
 }
 
 const updateManagementQuotaByType = async(type_, quota_value_) => {
@@ -1228,9 +1239,11 @@ const getGroupsData = async (name_filter, group_type_filter, types_filter, offse
 	let groupsFiltered = []
 	groupsFiltered = groups
 		.filter(elem => group_type_filter ? elem.group_type_ == group_type_filter : true )
+	groupsFiltered = groupsFiltered
 		.filter(elem => name_filter ? elem.name_ == name_filter : true )
+	groupsFiltered = groupsFiltered
 		.filter(elem => {
-			if(!types_filter) return true
+			if(types_filter.length == 0) return true
 			if(elem.group_type_ == 'member_type') {
 				const types = groups_members_types.filter(group => elem.group_id_ == group.group_id_ && types_filter.includes(group.member_type_))[0]
 				if(!types) return false
@@ -1242,7 +1255,8 @@ const getGroupsData = async (name_filter, group_type_filter, types_filter, offse
 				else return true
 			}
 		})
-	return groupsFiltered.slice(offset, limit + offset)
+
+	return {groups: groupsFiltered.slice(offset, limit + offset), number_of_groups: groupsFiltered.length}
 }
 
 const getGroupByIdData = async (id_) => {
@@ -1260,7 +1274,7 @@ const postGroupData = async (name_, description_, group_type_, types_, sports_) 
 		types_.forEach(elem => {
 			groups_members_types.push({group_id_: indexObj.idxGroups, member_type_: elem})
 			members
-				.filter(member => member.type_ == elem)
+				.filter(member => member.member_type_ == elem)
 				.forEach(elem => {
 					groups_members.push({group_id_: indexObj.idxGroups, member_id_: elem.id_})
 				})
@@ -1278,7 +1292,7 @@ const postGroupData = async (name_, description_, group_type_, types_, sports_) 
 			})
 		})
 	}
-
+	return indexObj.idxGroups
 }
 
 const deleteGroupData = async (id_) => {
@@ -1287,6 +1301,7 @@ const deleteGroupData = async (id_) => {
 	groups_sports = groups_sports.filter(group => group.group_id_ != id_)
 	groups_members_types = groups_members_types.filter(group => group.group_id_ != id_)
 	groups = groups_members_types.filter(group => group.group_id_ != id_)
+	return id_
 }
 
 const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_filter, offset, limit) => {
@@ -1296,10 +1311,11 @@ const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_fi
 			const group = groups.filter(g => g.group_id_ == elem.group_id_)[0]
 			return group
 		})
+	groupsFiltered = groupsFiltered
 		.filter(elem => group_type_filter ? elem.group_type_ == group_type_filter : true )
 		.filter(elem => name_filter ? elem.name_ == name_filter : true )
 		.filter(elem => {
-			if(!types_filter) return true
+			if(types_filter.length==0) return true
 			if(elem.group_type_ == 'member_type') {
 				const types = groups_members_types.filter(group => elem.group_id_ == group.group_id_ && types_filter.includes(group.member_type_))[0]
 				if(!types) return false
@@ -1311,24 +1327,32 @@ const getMemberGroupsData = async (id_, name_filter, group_type_filter, types_fi
 				else return true
 			}
 		})
-	return groupsFiltered.slice(offset, limit + offset)
+	return  {groups:groupsFiltered.slice(offset, limit + offset), number_of_groups: groupsFiltered.slice(offset, limit + offset).length}
 }
 
 const getGroupByIdMembersData = async (id_, username_filter_, offset, limit) => {
 	let m = groups_members
 		.filter(elem => elem.group_id_ == id_)
-		.map(elem => {
+	m = m.map(elem => {
 			const member = members.filter(member => member.id_ == elem.member_id_)[0]
 			return {id_ : member.id_, username_: member.username_, member_type_: member.member_type_}
 		})
 	if(username_filter_) {
 		m = m.filter(elem => elem.username_ == username_filter_)
 	}
-	return m.slice(offset, limit + offset)		
+	return { members: m.slice(offset, limit + offset), number_of_members: m.length }		
 }
 
 const getUserSportTypesData = async () => {
 	return user_sport_types
+}
+
+const getEmailByGroupIdData = async (groups) => {
+	const members = groups_members.filter(elem => groups.includes(elem.group_id_)).map(elem => elem.group_id_)
+	let ids = [... new Set(members)]
+	const emails = [... new Set(contacts.filter(elem => ids.includes(elem.member_id_)).map(elem => elem.email_))]
+	return emails
+
 }
 
 const mock_data = { 
@@ -1388,6 +1412,7 @@ const mock_data = {
 	getCompaniesQuotasData, 
 	getUsersQuotasData, 
 	getMemberQuotasByIdData, 
+	deleteQuotaData,
 	postQuotaData, 
 	updateMemberQuotaData, 
 	getMemberByIdData, 
@@ -1400,7 +1425,8 @@ const mock_data = {
 	getMemberByEmailData, 
 	getCandidateByEmailData, 
 	getCandidateByCCData, 
-	getCandidateByNifData 
+	getCandidateByNifData,
+	getEmailByGroupIdData 
 }
 
 export default mock_data
