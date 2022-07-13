@@ -48,7 +48,7 @@ const candidateData = (db) => {
 		return await db.deleteCandidateData(id_)
 	}
 	
-	const approveCandidate = async (id_, type_, paid_enrollment_, url) => {
+	const approveCandidate = async (id_, type_, paid_enrollment_, url, sendEmail) => {
 		const candidate = await getCandidateById(id_)
 		
 		const u_id_ = await db.approveCandidateData(id_, type_, paid_enrollment_)
@@ -57,7 +57,8 @@ const candidateData = (db) => {
 
 		await db.updateUserQrCodeData(u_id_, qrcode_)
 		
-		//await mailSender([candidate.email_],`Aprovação de candidatura`, approvalTemplate(candidate.full_name_, member.member_type_))
+		if(sendEmail == undefined || sendEmail)
+			await mailSender([candidate.email_],`Aprovação de candidatura`, approvalTemplate(candidate.full_name_, member.member_type_))
 
 		return u_id_
 	}

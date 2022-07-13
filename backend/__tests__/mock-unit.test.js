@@ -214,13 +214,13 @@ test('Get specific attendance', async () => {
 test('Get specific member attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventMemberByIdAttendance(1, undefined, undefined, undefined, offset, limit)
-	expect(attendance.attendance[0].member_id_).toBe(1)
+	expect(attendance.events[0].member_id_).toBe(1)
 })
 
 test('Get specific member attendance', async () => {
 	expect.assertions(1)
 	const attendance = await dbEvent.getEventMemberByIdAttendance(1, 'Assembleia geral.', 'not going',undefined, offset, limit)
-	expect(attendance.attendance[0].member_id_).toBe(1)
+	expect(attendance.events[0].member_id_).toBe(1)
 })
 
 //Candidate - verified 12/07/2022
@@ -466,3 +466,4 @@ test('Delete a sport for a user', async () => {
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
 })
+*/

@@ -1159,7 +1159,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 				await client.query('begin')
 				let result = await client.query(queries.QUERY_POST_USER, [values[value][3],values[value][2],values[value][0],values[value][6],values[value][5],values[value][4],values[value][14],values[value][13],values[value][12],values[value][11],values[value][10],null,null,values[value][8],values[value][9],values[value][1],null,values[value][7],0])
 				await client.query('commit')
-				console.log(result);
 				ids.push(result.rows[0].new_id_)
 			}
 			return ids
@@ -1212,7 +1211,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 
 		const handler = async (client) => {
-			console.log(query)
 			const sports = await client.query(query)
 			return sports
 		}

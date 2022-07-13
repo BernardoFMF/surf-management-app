@@ -25,9 +25,50 @@ let insert_types = fs.readFileSync('./docs/scripts_sql/insert-test.sql', 'utf8')
 let insert = fs.readFileSync('./docs/scripts_sql/insert-dummy-integration.sql', 'utf8');
 
 const offset = 0
-const limit = 100
+const limit = 1001
 
 beforeAll( async () => {
+	let res = await supertest(app)
+	.post('/api/auth/login')
+	.send({
+	 'username': 'afonsoribeiro',
+	 'password': '123'
+	})
+	.expect(201)
+	session = res
+	.headers['set-cookie'][0]
+
+	const companyRes = await supertest(app)
+	.post('/api/companies')
+	.set('Accept', 'application/json')
+	.set('Cookie', session)
+	.send({
+		"name": "Ripcurl",
+		"nif": 155552266,
+		"phone_number": 912333345,
+		"email": "rip@gmail.com",
+		"postal_code": "2715-056",
+		"address": "Rua da Borboletas n45 2esq",
+		"location": "Porto Covo",
+		"password": "123",
+		"username": "rip",
+		"type": "corporate",
+		"img": "image",
+		"iban": "PT501111111111222211"
+	})
+	.expect('Content-Type', /json/)
+	.expect(201)
+	expect(companyRes).toSatisfyApiSpec()
+	expect(companyRes.body).toSatisfySchemaInApiSpec("id")
+
+	res = await supertest(app)
+	.post('/api/auth/logout')
+	.expect(201)
+	expect(res).toSatisfyApiSpec()
+	expect(res.body).toSatisfySchemaInApiSpec("message_logout")
+})
+
+/*beforeAll( async () => {
 	const handler = async (client) => {
 		await client.query(drop)
 		await client.query(create)
@@ -38,7 +79,7 @@ beforeAll( async () => {
 	}
 
 	return await data.pool(handler)
-})
+})*/
 
 beforeEach(async () => {
     const res = await supertest(app)
@@ -525,7 +566,8 @@ test('Post, Put, Gets & Delete event', async () => {
 			"name": "assembleia",
 			"initial_date": "08-08-2022",
 			"final_date": "10-08-2022",
-			"groups": [ 1 ]
+			"groups": [ 1 ],
+			"sendEmail" : false
 		})
 		.expect('Content-Type', /json/)
 		.expect(201)
@@ -610,8 +652,24 @@ test('Post, Put & Get an attendance', async () => {
     expect(userRes).toSatisfyApiSpec()
 	expect(userRes.body).toSatisfySchemaInApiSpec("id")
 
+	const createRes = await supertest(app)
+		.post('/api/events')
+		.set('Accept', 'application/json')
+		.set('Cookie', session)
+		.send({
+			"name": "assembleia",
+			"initial_date": "08-08-2022",
+			"final_date": "10-08-2022",
+			"groups": [ 1 ],
+			"sendEmail" : false
+		})
+		.expect('Content-Type', /json/)
+		.expect(201)
+	expect(createRes).toSatisfyApiSpec()
+	expect(createRes.body).toSatisfySchemaInApiSpec('id')
+
 	const putRes = await supertest(app)
-		.put(`/api/events/1/attendance`)
+		.put(`/api/events/${createRes.body}/attendance`)
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.send({
@@ -623,15 +681,16 @@ test('Post, Put & Get an attendance', async () => {
 	expect(putRes).toSatisfyApiSpec()
 	expect(putRes.body).toSatisfySchemaInApiSpec('id_pair')
 
+
 	const getRes = await supertest(app)
-		.get(`/api/events/1/attendance?limit=5&offset=0`)
+		.get(`/api/events/${createRes.body}/attendance?limit=5&offset=0`)
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.expect('Content-Type', /json/)
 		.expect(200)
 	expect(getRes).toSatisfyApiSpec()
 	expect(getRes.body).toSatisfySchemaInApiSpec('event_attendances')
-
+	
 	const getMemberRes = await supertest(app)
 		.get(`/api/events/members/${userRes.body}/attendance?offset=0&limit=10`)
 		.set('Accept', 'application/json')
@@ -640,6 +699,7 @@ test('Post, Put & Get an attendance', async () => {
 		.expect(200)
 	expect(getMemberRes).toSatisfyApiSpec()
 	expect(getMemberRes.body).toSatisfySchemaInApiSpec('attendances_event_member')
+
 })
 
 //Candidate
@@ -720,7 +780,8 @@ test('Approve candidate', async () => {
 			"password": "123",
 			"gender": "Male",
 			"img": "imgfixe",
-			"iban": "PT50159595959595959595959"
+			"iban": "PT50159595959595959595959",
+			"sendEmail": false
 		})
 		.expect('Content-Type', /json/)
 		.expect(201)
@@ -741,7 +802,7 @@ test('Approve candidate', async () => {
 })
 
 // Validate
-
+/*
 test('Validate member', async () => {
 	const res = await supertest(app)
 		.post('/api/auth/logout')
@@ -752,7 +813,7 @@ test('Validate member', async () => {
 	const res1 = await supertest(app)
 		.post('/api/auth/login')
 		.send({
-		'username': 'flocker',
+		'username': 'rip',
 		'password': '123'
 		})
 		.expect(201)
@@ -788,3 +849,4 @@ test('Get statistics', async () => {
 		expect(getRes).toSatisfyApiSpec()
 		expect(getRes.body).toSatisfySchemaInApiSpec("statistics_object")
 })
+*/

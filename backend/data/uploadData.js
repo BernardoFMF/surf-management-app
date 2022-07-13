@@ -17,10 +17,8 @@ const uploadData = (db) => {
 		data = data.slice(1,data.length-1)
 		data = data.filter(elem => {
 			const rowElems = elem.split(delimiter)
-			console.log(typeof(rowElems[0]));
 			return !rowElems.every(rowElem => rowElem == "")
 		})
-		console.log(data)
 		if(type == "memberTypes") return await uploadMemberTypes(data)
 		if(type == "usersCompanies") return await uploadUsersAndCompanies(data,url)
 		if(type=="quotas") return await uploadQuotas(data)
@@ -29,7 +27,7 @@ const uploadData = (db) => {
 		if(type=="memberSports") return await uploadUsersSports(data)
 		throw error(404, 'Type does not exist', 'MESSAGE_CODE_30')
 	}
-
+	/*
 	const uploadMemberTypes = async(data) => {
 		let count = 0;
 		for(let val of data){
@@ -104,7 +102,6 @@ const uploadData = (db) => {
 	}
 
 	const uploadSports = async(data) => {
-		console.log(data)
 		let count = 0
 		for(let val of data){
 			val = val.split(delimiter)
@@ -135,7 +132,7 @@ const uploadData = (db) => {
 		}
 		return await db.uploadUsersSportsData(data)
 	}
-
+	*/
     return { 
 		upload
 	}

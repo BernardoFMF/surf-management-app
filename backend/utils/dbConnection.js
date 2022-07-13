@@ -14,7 +14,6 @@ const pool = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		}
 	}
 	const connector = new pg.Pool(creds)
-	console.log("iniciou o connector");
 	return async (transactionHandler) => {
 		const client = await connector.connect()
 		try {
