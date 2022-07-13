@@ -2466,6 +2466,43 @@ paths:
               schema:
                 $ref: '#/components/schemas/error'
                 
+  /api/members:
+    get:
+      summary: fetches all members
+      operationId: getMembersApi
+      responses:
+        '200':
+          description: response body should be an array of member objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/all_members_object'
+        '400':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: response body should be an error object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'  
   /api/members/{id}:
     get:
       summary: fetches a specific member
@@ -2661,6 +2698,19 @@ paths:
   
 components:
   schemas:
+    all_members_object:
+      type: object
+      properties:
+        id_:
+          type: integer
+        member_type_:
+          type: string
+        email_:
+          type: string
+        phone_number_:
+          type: integer
+        iban_:
+          type: string
     statistics_object:
       type: object
       properties:
@@ -3805,3 +3855,7 @@ components:
       explode: false
       schema:
         type: integer
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0
