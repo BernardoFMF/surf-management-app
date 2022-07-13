@@ -27,14 +27,15 @@ const uploadData = (db) => {
 		if(type=="memberSports") return await uploadUsersSports(data)
 		throw error(404, 'Type does not exist', 'MESSAGE_CODE_30')
 	}
-	/*
+	
 	const uploadMemberTypes = async(data) => {
 		let count = 0;
-		for(let val of data){
-			val = val.split(delimiter)
-			val[0] = `'${val[0]}'`
-			val[2] = `'${val[2]}'`
-			data[count++] = val
+		for(let val in data){
+			let value = data[val]
+			value = value.split(delimiter)
+			value[0] = `'${value[0]}'`
+			value[2] = `'${value[2]}'`
+			data[count++] = value
 		}
 		return await db.uploadMemberTypesData(data)
 	}
@@ -44,37 +45,38 @@ const uploadData = (db) => {
 		let companies = []
 		let countU = 0;
 		let countC = 0;
-		for(let val of data){
-			val = val.split(delimiter)
-			if(val[0] == "U"){
-				let birthDate = val[7].split("/")
-				val[7] = `${birthDate[2]}-${birthDate[1]}-${birthDate[0]}`
-				let enrollmentDate = val[8].split("/")
-				val[8] = `${enrollmentDate[2]}-${enrollmentDate[1]}-${enrollmentDate[0]}`
-				users[countU++] = val.slice(1,val.length)
+		for(let val in data){
+			let value = data[val]
+			value = value.split(delimiter)
+			if(value[0] == "U"){
+				let birthDate = value[7].split("/")
+				value[7] = `${birthDate[2]}-${birthDate[1]}-${birthDate[0]}`
+				let enrollmentDate = value[8].split("/")
+				value[8] = `${enrollmentDate[2]}-${enrollmentDate[1]}-${enrollmentDate[0]}`
+				users[countU++] = value.slice(1,value.length)
 			}else {
-				companies[countC++] = val.slice(1,val.length)
+				companies[countC++] = value.slice(1,value.length)
 			}
 		}
 		let idsUsers = await db.uploadUsersData(users)
-		for(let userId of idsUsers){
-			const qrcode_ = await toDataURL(`${url}/validate/${userId}`)
+		for(let userId in idsUsers){
+			const qrcode_ = await toDataURL(`${url}/validate/${idsUsers[userId]}`)
 			await db.updateUserQrCodeData(userId, qrcode_)
 		}
 
 		let idsCompanies = await db.uploadCompaniesData(companies)
 
 		let ids = [...idsUsers, ...idsCompanies]
-		for (let id of ids) {
+		for (let id in ids) {
 			try {
-				let userEmail = await db.getUserEmailByIdData(id)
+				let userEmail = await db.getUserEmailByIdData(ids[id])
 				
 				let resetToken = crypto.randomBytes(32).toString('hex')
 				const hash = await cryptoUtil.hashpassword(resetToken)
 
-				await db.postNewCredentialsTokenData(id, hash)
+				await db.postNewCredentialsTokenData(ids[id], hash)
 
-				const link = url + `/change-credentials?token=${resetToken}&id=${id}`
+				const link = url + `/change-credentials?token=${resetToken}&id=${ids[id]}`
 
 				await mailSender(userEmail.email_, 'Alteração de credenciais', credentialsChangeTemplate(link))
 			} catch (e) {
@@ -88,51 +90,55 @@ const uploadData = (db) => {
 
 	const uploadQuotas = async(data) => {
 		let count = 0
-		for(let val of data){
-			val = val.split(delimiter)
-			let Date = val[3].split("/") 
-			val[3] = `'${Date[2]}-${Date[1]}-${Date[0]}'`
-			if(val[1]){
-				let paymentDate = val[1].split("/")
-				val[1] = `'${paymentDate[2]}-${paymentDate[1]}-${paymentDate[0]}'`
-			}else {val[1] = "null"}
-			data[count++] = val
+		for(let val in data){
+			let value = data[val]
+			value = value.split(delimiter)
+			let Date = value[3].split("/") 
+			value[3] = `'${Date[2]}-${Date[1]}-${Date[0]}'`
+			if(value[1]){
+				let paymentDate = value[1].split("/")
+				value[1] = `'${paymentDate[2]}-${paymentDate[1]}-${paymentDate[0]}'`
+			}else {value[1] = "null"}
+			data[count++] = value
 		}
 		return await db.uploadQuotasData(data)
 	}
 
 	const uploadSports = async(data) => {
 		let count = 0
-		for(let val of data){
-			val = val.split(delimiter)
-			val[0] = `'${val[0]}'`
-			val.push(false)
-			data[count++] = val
+		for(let val in data){
+			let value = data[val]
+			value = value.split(delimiter)
+			value[0] = `'${value[0]}'`
+			value.push(false)
+			data[count++] = value
 		}
 		return await db.uploadSportsData(data)
 	}
 
 	const uploadSportTypes = async(data) => {
 		let count = 0
-		for(let val of data){
-			val = val.split(delimiter)
-			val[0] = `'${val[0]}'`
-			data[count++] = val
+		for(let val in data){
+			let value = data[val]
+			value = value.split(delimiter)
+			value[0] = `'${value[0]}'`
+			data[count++] = value
 		}
 		return await db.uploadSportTypesData(data)
 	}
 
 	const uploadUsersSports = async(data) => {
 		let count = 0
-		for(let val of data){
-			val = val.split(delimiter)
-			val[2] = val[2].slice(1,val[2].length-1).split("|")
-			val[6] = val[6].slice(1,val[6].length-1).split("|")
-			data[count++] = val
+		for(let val in data){
+			let value = data[val]
+			value = value.split(delimiter)
+			value[2] = value[2].slice(1,value[2].length-1).split("|")
+			value[6] = value[6].slice(1,value[6].length-1).split("|")
+			data[count++] = value
 		}
 		return await db.uploadUsersSportsData(data)
 	}
-	*/
+
     return { 
 		upload
 	}
