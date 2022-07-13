@@ -1072,7 +1072,7 @@ const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, t
 		})
 	}
 
-	return {id_: users_sports[user_sport_idx].user_id_, sid_: users_sports[user_sport_idx].sport_id_}
+	return {id_: `${users_sports[user_sport_idx].user_id_}`, sid_: `${users_sports[user_sport_idx].sport_id_}`}
 }
 
 const deleteUserSportData = async (id_, sid_) => {

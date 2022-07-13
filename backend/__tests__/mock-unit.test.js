@@ -457,7 +457,7 @@ test('Create a sport for a user', async () => {
 test('Update a sport for a user', async () => {
 	expect.assertions(1)
 	const sport = await dbUser.updateUserSport(2, 3, 54, 1890547,'Federacao de Windsurf', ['trainer'],  [2019,2020,2021,2022], false)
-	expect(sport.id_).toBe(2)
+	expect(sport.id_).toBe("2")
 })
 
 test('Delete a sport for a user', async () => {
