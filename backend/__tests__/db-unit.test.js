@@ -37,7 +37,7 @@ async function insertSportDummies() {
 }
 
 async function insertEventDummies() {
-	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '16-04-2022', [1])
+	await dbEvent.postEvent('Assembleia geral.', '15-04-2022', '15-04-2022', [1])
 	await dbEvent.postEvent('Entrega de prémios.', '12-06-2022', '12-06-2022', [2])
 }
 
@@ -219,7 +219,7 @@ test('Get all events', async () => {
 
 test('Get all events', async () => {
 	expect.assertions(1)
-	const events = await dbEvent.getEvents('Assembleia geral.', '15-04-2022', '16-04-2022', offset, limit)
+	const events = await dbEvent.getEvents('Assembleia geral.', '15-04-2022', '15-04-2022', offset, limit)
 	expect(events.events[0].name_).toBe('Assembleia geral.')
 })
 

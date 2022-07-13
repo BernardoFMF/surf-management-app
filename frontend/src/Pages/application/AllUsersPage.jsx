@@ -20,7 +20,7 @@ import DropdownInputField from '../../components/multiStepForm/DropdownInputFiel
 import ExportCSV from '../../components/ExportCSV'
 import CheckInputField from '../../components/multiStepForm/CheckInputField';
 import Meta from '../../components/Meta';
-import { USERS_FETCH_RESET } from '../../store/constants/userConstants';
+import { USERS_FETCH_RESET, USER_POST_RESET } from '../../store/constants/userConstants';
 import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
 import { EXPORT_USER_FETCH_RESET } from '../../store/constants/exportConstants';
 
@@ -53,7 +53,7 @@ const AllUsersPage = () => {
     })
 
     const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit)};
+    const handleClose = () => {setOpen(false); dispatch({ type: USER_POST_RESET }); dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit))};
     const handleOpen = () => setOpen(true);
    
     const [page, setPage] = useState(1);

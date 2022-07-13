@@ -111,15 +111,17 @@ begin
 		update 	User_Sport_ set is_absent_ = false where user_id_ = id_ and sport_id_ = sid_;
 	end if;
 
-	foreach type_elem_ in array type_
-   	loop
-    	insert into Group_Member_ (member_id_, group_id_) 
-    	select distinct id_, g.group_id_ 
-    	from Group_ g join Group_Sports_ gs on g.group_id_ = gs.group_id_ 
-    	where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = type_elem_ and g.group_id_ not in (
-    		select gm.group_id_ from Group_Member_ gm join Group_Sports_ gs on gm.group_id_ = gs.group_id_ where gs.sport_member_type_ = type_elem_ and gm.member_id_ = id_
-    	);
-   	end loop;
+	if is_candidate_ = false then
+		foreach type_elem_ in array type_
+	   	loop
+	    	insert into Group_Member_ (member_id_, group_id_) 
+	    	select distinct id_, g.group_id_ 
+	    	from Group_ g join Group_Sports_ gs on g.group_id_ = gs.group_id_ 
+	    	where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = type_elem_ and g.group_id_ not in (
+	    		select gm.group_id_ from Group_Member_ gm join Group_Sports_ gs on gm.group_id_ = gs.group_id_ where gs.sport_member_type_ = type_elem_ and gm.member_id_ = id_
+	    	);
+	   	end loop;
+   	end if;
 
 	insert into User_Sport_ (user_id_, sport_id_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_, is_candidate_)
 	values (id_, sid_, type_, fed_number_, fed_id_ ,fed_name_ ,years_federated_, is_candidate_);
@@ -136,10 +138,12 @@ $$
 declare
 	old_types text[];
 	old_absent bool;
+	old_candidate bool;
 	type_elem_ text;
 begin
 	select type_ into old_types from User_Sport_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 	select is_absent_ into old_absent from User_Sport_ where user_id_ = p_id_ and sport_id_ = p_sid_;
+	select is_candidate_ into old_candidate from User_Sport_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 
 	delete from Group_Member_ where member_id_ = p_id_ and group_id_ in (
 		select g.group_id_ 
@@ -147,13 +151,13 @@ begin
 		where g.group_type_ = 'member_sport_type' and gs.sport_id_ = p_sid_
 	);
 
-	if (old_absent = false and (old_absent = p_is_absent_)) or (old_absent = true and p_is_absent_ = false) then
+	if ((old_candidate = true and p_is_candidate_ = false) or (old_candidate = false and p_is_candidate_ = false)) and ((old_absent = false and (old_absent = p_is_absent_)) or (old_absent = true and p_is_absent_ = false)) then
 		insert into Group_Member_ (member_id_, group_id_) 
 	    	select distinct p_id_, g.group_id_ 
 	    	from Group_ g join Group_Sports_ gs on g.group_id_ = gs.group_id_
 	    	where g.group_type_ = 'member_sport_type' and gs.sport_member_type_ = any(p_type_) and gs.sport_id_ = p_sid_;
 	end if;
-	
+
 
 	update User_Sport_ set type_ = p_type_, fed_number_ = p_fed_number_, fed_id_ = p_fed_id_, fed_name_ = p_fed_name_, years_federated_ = p_years_federated_, is_absent_ = p_is_absent_, is_candidate_ = p_is_candidate_ where user_id_ = p_id_ and sport_id_ = p_sid_;
 end

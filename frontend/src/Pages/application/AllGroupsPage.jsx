@@ -21,7 +21,7 @@ import { getTypes } from '../../store/actions/typeActions'
 import { getUserSportsTypes, getSports } from '../../store/actions/sportActions'
 import GroupCreateDialog from '../../components/dialogs/GroupCreateDialog';
 import Meta from '../../components/Meta';
-import { GROUPS_FETCH_RESET } from '../../store/constants/groupConstants';
+import { GROUPS_FETCH_RESET, GROUP_POST_RESET } from '../../store/constants/groupConstants';
 import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
 import { SPORTS_FETCH_RESET, USER_SPORT_TYPES_FETCH_RESET } from '../../store/constants/sportConstants';
 
@@ -51,7 +51,7 @@ const AllGroupsPage = () => {
         limit: 10
     })
     const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))};
+    const handleClose = () => {setOpen(false); dispatch({ type: GROUP_POST_RESET }); dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))};
     const handleOpen = () => setOpen(true);
 
     useEffect(() => {
@@ -61,6 +61,7 @@ const AllGroupsPage = () => {
         dispatch(getSports())
         return () => {
             dispatch({ type: GROUPS_FETCH_RESET })
+            dispatch({ type: GROUP_POST_RESET })
             dispatch({ type: TYPES_FETCH_RESET })
             dispatch({ type: USER_SPORT_TYPES_FETCH_RESET })
             dispatch({ type: SPORTS_FETCH_RESET })

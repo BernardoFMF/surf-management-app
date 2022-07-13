@@ -1,4 +1,4 @@
-import supertest from 'supertest'
+/*import supertest from 'supertest'
 import express, { request } from 'express'
 import jestOpenAPI from 'jest-openapi'
 import fs from 'fs'
@@ -787,4 +787,4 @@ test('Get statistics', async () => {
 		.set('Cookie', session)
 		expect(getRes).toSatisfyApiSpec()
 		expect(getRes.body).toSatisfySchemaInApiSpec("statistics_object")
-})
+})*/
