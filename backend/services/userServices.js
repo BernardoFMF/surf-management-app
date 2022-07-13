@@ -95,11 +95,6 @@ const userServices = (db) => {
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!sid) throw error(400, 'Parameter not found: sid', 'MESSAGE_CODE_14')
 		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
-		if(!fed_number) throw error(400, 'Parameter not found: fed_number', 'MESSAGE_CODE_14')
-		if(!fed_id) throw error(400, 'Parameter not found: fed_id', 'MESSAGE_CODE_14')
-		if(!fed_name) throw error(400, 'Parameter not found: fed_name', 'MESSAGE_CODE_14')
-		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
-		if(!years_federated) throw error(400, 'Parameter not found: years_federated', 'MESSAGE_CODE_14')
 		if(is_candidate == undefined) throw error(400, 'Parameter not found: is_candidate', 'MESSAGE_CODE_14')
 
 		return await data.postUserSport(id, sid, fed_id, fed_number, fed_name, type, years_federated, is_candidate)
@@ -109,11 +104,6 @@ const userServices = (db) => {
 		if(!id) throw error(400, 'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!sid) throw error(400, 'Parameter not found: sid', 'MESSAGE_CODE_14')
 		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
-		if(!fed_number) throw error(400, 'Parameter not found: fed_number', 'MESSAGE_CODE_14')
-		if(!fed_id) throw error(400, 'Parameter not found: fed_id', 'MESSAGE_CODE_14')
-		if(!fed_name) throw error(400, 'Parameter not found: fed_name', 'MESSAGE_CODE_14')
-		if(!type) throw error(400, 'Parameter not found: type', 'MESSAGE_CODE_14')
-		if(!years_federated) throw error(400, 'Parameter not found: years_federated', 'MESSAGE_CODE_14')
 		if(is_absent_ == undefined) throw error(400, 'Parameter not found: is_absent_', 'MESSAGE_CODE_14')
 		if(is_candidate == undefined) throw error(400, 'Parameter not found: is_candidate', 'MESSAGE_CODE_14')
 

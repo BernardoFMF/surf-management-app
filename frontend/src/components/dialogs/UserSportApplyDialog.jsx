@@ -90,14 +90,14 @@ const UserSportApplyDialog = ({open, closeHandler, sid, byAdmin}) => {
                                         fed_number: '',
                                         fed_id: '',
                                         fed_name: '',
-                                        years_federated: []
+                                        years_federated: ''
                                     }}
                                     validationSchema={Yup.object().shape({
                                         id: Yup.number().required(t('associate_n_mandatory')),
                                         type: Yup.array().of(Yup.string()).min(1, t('sport_type_mandatory')),
-                                        fed_number: Yup.string().required(t('fed_number_mandatory')),
-                                        fed_id: Yup.string().required(t('fed_id_mandatory')),
-                                        fed_name: Yup.string().required(t('fed_name_mandatory')),
+                                        fed_number: Yup.string(),
+                                        fed_id: Yup.string(),
+                                        fed_name: Yup.string(),
                                         years_federated: Yup.array().of(Yup.number())
                                     })}
                                     onSubmit={createUserSportHandler}

@@ -65,17 +65,17 @@ const UserSportEditDialog = ({open, closeHandler, userSport}) => {
                                     enableReinitialize={true}
                                     initialValues={{
                                         type: userSport.type_,
-                                        fed_number: userSport.fed_number_,
-                                        fed_id: userSport.fed_id_,
-                                        fed_name: userSport.fed_name_,
-                                        years_federated: userSport.years_federated_,
+                                        fed_number: userSport.fed_number_ ? userSport.fed_number_ : '',
+                                        fed_id: userSport.fed_id_ ? userSport.fed_id_ : '',
+                                        fed_name: userSport.fed_name_ ? userSport.fed_name_ : '',
+                                        years_federated: userSport.years_federated_ ? userSport.years_federated_ : '',
                                         is_absent: userSport.is_absent_
                                     }}
                                     validationSchema={Yup.object().shape({
                                         type: Yup.array().of(Yup.string()).min(1, t('sport_type_mandatory')),
-                                        fed_number: Yup.string().required(t('fed_number_mandatory')),
-                                        fed_id: Yup.string().required(t('fed_id_mandatory')),
-                                        fed_name: Yup.string().required(t('fed_name_mandatory')),
+                                        fed_number: Yup.string(),
+                                        fed_id: Yup.string(),
+                                        fed_name: Yup.string(),
                                         years_federated: Yup.array().of(Yup.number()),
                                         is_absent: Yup.bool()
                                     })}
