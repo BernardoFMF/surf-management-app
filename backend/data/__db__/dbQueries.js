@@ -216,7 +216,7 @@ const QUERY_QUOTAS_DISTRIBUTION_STATISTICS = "select sum(q.amount_), extract( mo
 const QUERY_GET_USER_EMAIL_BY_GROUP = "select distinct c.email_ from group_member_ gm join contact_ c on (gm.member_id_ = c.member_id_)"
 
 const QUERY_GET_QUOTAS_BY_DATE = "select * from quota_ q join contact_ c on (q.member_id_ = c.member_id_) join user_ u on (q.member_id_ = u.member_id_) where date_ = $1 and payment_date_ is null"
-const QUERY_GET_QUOTAS_BY_EMAIL = "select date_, amount_ from quota_ q join contact_ c on (q.member_id_ = c.member_id_) where email_ = $1"
+const QUERY_GET_QUOTAS_BY_EMAIL = "select date_, amount_ from quota_ q join contact_ c on (q.member_id_ = c.member_id_) where email_ = $1 and payment_date_ is null"
 
 const QUERY_CHANGE_PASSWORD = "update Member_ set pword_ = $2 where id_ = $1;"
 

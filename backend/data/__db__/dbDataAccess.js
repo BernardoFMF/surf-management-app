@@ -688,7 +688,6 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			let result = await client.query(queries.QUERY_GET_QUOTAS_BY_EMAIL, [email])
 			result.rows = result.rows.map(quota => {
 				quota.date_ = formatDate(quota.date_)
-				if(quota.payment_date_)quota.payment_date_ = formatDate(quota.payment_date_)
 				return quota
 			})
 			return result.rows
