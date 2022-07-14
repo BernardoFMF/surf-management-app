@@ -3855,7 +3855,3 @@ components:
       explode: false
       schema:
         type: integer
-servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0
