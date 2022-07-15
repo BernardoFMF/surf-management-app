@@ -4,6 +4,9 @@ import {createTransport, getTestMessageUrl } from 'nodemailer'
 import error from '../error.js'
 
 export const mailSender = async(receivers, subject, content) => {
+	const email = process.env.EMAIL
+	const password = process.env.EMAIL_PASSWORD
+
 	let transporter = createTransport({
 		host: 'smtp-mail.outlook.com',
 		service: 'outlook',
@@ -13,14 +16,14 @@ export const mailSender = async(receivers, subject, content) => {
 			rejectUnauthorized: false
 		},
 		auth: {
-			user: 'ericeirasurfclub@outlook.com', 
-			pass: 'Miguelbernardogoncalo2022', 
+			user: email, 
+			pass: password, 
 		}
 	})
 	
 	try {
 		let info = await transporter.sendMail({
-			from: 'ericeirasurfclub@outlook.com',
+			from: email,
 			to: receivers,
 			subject: subject, 
 			text: content.text, 
@@ -34,6 +37,9 @@ export const mailSender = async(receivers, subject, content) => {
 }
 
 export const notify = async(receivers, subject, content) => {
+	const email = process.env.EMAIL
+	const password = process.env.EMAIL_PASSWORD
+
 	let transporter = createTransport({
 		host: 'smtp-mail.outlook.com',
 		service: 'outlook',
@@ -43,14 +49,14 @@ export const notify = async(receivers, subject, content) => {
 			rejectUnauthorized: false
 		},
 		auth: {
-			user: 'ericeirasurfclub@outlook.com', 
-			pass: 'Miguelbernardogoncalo2022', 
+			user: email, 
+			pass: password, 
 		}
 	})
 	
 	try {
 		let info = await transporter.sendMail({
-			from: 'ericeirasurfclub@outlook.com',
+			from: email,
 			to: receivers,
 			subject: subject, 
 			text: content.text, 
@@ -64,6 +70,9 @@ export const notify = async(receivers, subject, content) => {
 }
 
 export const contact = async(from, name, content) => {
+	const email = process.env.EMAIL
+	const password = process.env.EMAIL_PASSWORD
+
 	let transporter = createTransport({
 		host: 'smtp-mail.outlook.com',
 		service: 'outlook',
@@ -73,8 +82,8 @@ export const contact = async(from, name, content) => {
 			rejectUnauthorized: false
 		},
 		auth: {
-			user: 'ericeirasurfclub@outlook.com', 
-			pass: 'Miguelbernardogoncalo2022'
+			user: email, 
+			pass: password
 		},
 	})
 	try {

@@ -78,6 +78,7 @@ let groups_members = []
 let groups_members_types = []
 let groups_sports = []
 let user_sport_types = {'coach': 'coach', 'practitioner': 'practitioner', 'apprentice': 'apprentice', 'jury' : 'jury'}
+let member_tokens = []
 
 function formatDate(date) {
 	var d = new Date(date),
@@ -1373,10 +1374,64 @@ const getEmailByGroupIdData = async (groups) => {
 	let ids = [... new Set(members)]
 	const emails = [... new Set(contacts.filter(elem => ids.includes(elem.member_id_)).map(elem => elem.email_))]
 	return emails
+}
 
+const postNewCredentialsTokenData = async (id, hash) => {
+	const token = {
+		member_id_: id,
+		token_: hash,
+		created_at_: null
+	}
+	member_tokens.push(token)
+	return id
+}
+
+const getMemberTokenByIdData = async(id_) => {
+	return member_tokens.filter(token => token.member_id_ == id_)[0]
+}
+
+const deleteMemberTokenData = async(id_) => {
+	member_tokens = member_tokens.filter(token => token.member_id_ != id_)
+	return id_
+}
+
+const updateMemberTokenData = async(id_, new_token) => {
+	const token = {
+		member_id_: id,
+		token_: new_token,
+		created_at_: new Date()
+	}
+	member_tokens = member_tokens.filter(token => token.member_id_ != id_)
+	member_tokens.push(token)
+	return id_
+}
+
+const changePassword = async (id, hash) => {
+	members = members.map(member => {
+		if (member.id_ == id) {
+			member.pword_ = hash
+		}
+		return member
+	})
+	return id
+}
+
+const changeCredentials = async (id, username, hash) => {
+	members = members.map(member => {
+		if (member.id_ == id) {
+			member.pword_ = hash
+			member.username_ = username
+		}
+		return member
+	})
+	return id
 }
 
 const mock_data = { 
+	updateMemberTokenData,
+	deleteMemberTokenData,
+	getMemberTokenByIdData,
+	postNewCredentialsTokenData,
 	getUserSportTypesData,
 	getGroupsData, 
 	getGroupByIdData, 
