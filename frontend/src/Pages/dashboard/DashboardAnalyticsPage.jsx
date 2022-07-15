@@ -35,62 +35,340 @@ const DashboardAnalyticsPage = () => {
 
     const unformattedData = {
         "quotas": {
-            "years": [ 2022, 2001 ],
-            "amounts": [3000, 5000],
-            "total_amount": [12000, 20000],
+            "years": [
+                2023,
+                2022
+            ],
+            "amounts": [
+                150
+            ],
+            "total_amount": [
+                30,
+                480
+            ],
             "data": [
                 {
-                    "id": 2022,
-                    "series": [
-                        {
-                            "name": "paid",
-                            "data": [ 50, 100, 200, 400, 50, 100, 200, 400, 50, 100, 200, 400 ]
-                        },
-                        {
-                            "name": "not_paid",
-                            "data": [ 50, 100, 200, 0, 50, 100, 200, 400, 50, 100, 200, 400 ]
-                        }
-                    ]
+                    "sum": "25",
+                    "month_": "1",
+                    "year_": "2023"
                 },
                 {
-                    "id": 2001,
-                    "series": [
-                        {
-                            "name": "paid",
-                            "data": [ 50, 1000, 200, 400, 50, 100, 200, 400, 50, 1006, 200, 400 ]
-                        },
-                        {
-                            "name": "not_paid",
-                            "data": [ 500, 100, 200, 400, 504, 1004, 200, 400, 50, 100, 200, 400 ]
-                        }
-                    ]
+                    "sum": "45",
+                    "month_": "2",
+                    "year_": "2023"
+                },
+                {
+                    "sum": "35",
+                    "month_": "3",
+                    "year_": "2023"
+                },
+                {
+                    "sum": "44",
+                    "month_": "4",
+                    "year_": "2023"
+                },
+                {
+                    "sum": "25",
+                    "month_": "5",
+                    "year_": "2023"
+                },
+                {
+                    "sum": "15",
+                    "month_": "6",
+                    "year_": "2023"
+                },
+                {
+                    "sum": "53",
+                    "month_": "7",
+                    "year_": "2023"
+                },
+                {
+                    "sum": "23",
+                    "month_": "8",
+                    "year_": "2023"
+                },
+                {
+                    "sum": "12",
+                    "month_": "9",
+                    "year_": "2023"
+                },
+                {
+                    "sum": "33",
+                    "month_": "10",
+                    "year_": "2023"
+                },
+                {
+                    "sum": "25",
+                    "month_": "11",
+                    "year_": "2023"
+                },
+                {
+                    "sum": "65",
+                    "month_": "12",
+                    "year_": "2023"
                 }
             ]
         },
         "members": {
-            "years": [ 2022, 2001 ],
-            "member_growth": [-11, 0.2],
+            "years": [
+                2022,
+                2021
+            ],
+            "member_growth": [
+                30,
+                76
+            ],
             "data": [
                 {
-                    "id": 2022,
-                    "series": [
-                        {
-                            "name": "new_users",
-                            "data": [ 10, 15, 2, 4, 50, 12, 15, 47, 20, 0, 6, 10 ]
-                        }
-                    ]
+                    "count": "16",
+                    "month_": "1",
+                    "year_": "2022"
                 },
                 {
-                    "id": 2001,
-                    "series": [
-                        {
-                            "name": "new_users",
-                            "data": [ 15, 10, 12, 24, 5, 21, 1, 7, 0, 4, 10, 6 ]
-                        }
-                    ]
+                    "count": "32",
+                    "month_": "2",
+                    "year_": "2022"
+                },
+                {
+                    "count": "7",
+                    "month_": "3",
+                    "year_": "2022"
+                },
+                {
+                    "count": "19",
+                    "month_": "4",
+                    "year_": "2022"
+                },
+                {
+                    "count": "5",
+                    "month_": "5",
+                    "year_": "2022"
+                },
+                {
+                    "count": "45",
+                    "month_": "6",
+                    "year_": "2022"
+                },
+                {
+                    "count": "64",
+                    "month_": "7",
+                    "year_": "2022"
+                },
+                {
+                    "count": "76",
+                    "month_": "8",
+                    "year_": "2022"
+                },
+                {
+                    "count": "2",
+                    "month_": "9",
+                    "year_": "2022"
+                },
+                {
+                    "count": "12",
+                    "month_": "10",
+                    "year_": "2022"
+                },
+                {
+                    "count": "87",
+                    "month_": "11",
+                    "year_": "2022"
+                },
+                {
+                    "count": "34",
+                    "month_": "12",
+                    "year_": "2022"
+                },
+                {
+                    "count": "16",
+                    "month_": "1",
+                    "year_": "2021"
+                },
+                {
+                    "count": "32",
+                    "month_": "2",
+                    "year_": "2021"
+                },
+                {
+                    "count": "7",
+                    "month_": "3",
+                    "year_": "2021"
+                },
+                {
+                    "count": "19",
+                    "month_": "4",
+                    "year_": "2021"
+                },
+                {
+                    "count": "5",
+                    "month_": "5",
+                    "year_": "2021"
+                },
+                {
+                    "count": "45",
+                    "month_": "6",
+                    "year_": "2021"
+                },
+                {
+                    "count": "64",
+                    "month_": "7",
+                    "year_": "2021"
+                },
+                {
+                    "count": "76",
+                    "month_": "8",
+                    "year_": "2021"
+                },
+                {
+                    "count": "2",
+                    "month_": "9",
+                    "year_": "2021"
+                },
+                {
+                    "count": "12",
+                    "month_": "10",
+                    "year_": "2021"
+                },
+                {
+                    "count": "87",
+                    "month_": "11",
+                    "year_": "2021"
+                },
+                {
+                    "count": "34",
+                    "month_": "12",
+                    "year_": "2021"
                 }
             ]
-        }
+        },
+        "users": [
+            {
+                "count": "55",
+                "nationality_": "Portuguese",
+                "gender_": "Male"
+            },
+            {
+                "count": "25",
+                "nationality_": "Portuguese",
+                "gender_": "Other"
+            }
+        ],
+        "companies": [
+            {
+                "count": "15"
+            }
+        ],
+        "candidates": [
+            {
+                "count": "65",
+                "nationality_": "Portuguese",
+                "gender_": "Female"
+            },
+            {
+                "count": "86",
+                "nationality_": "Portuguese",
+                "gender_": "Male"
+            },
+            {
+                "count": "23",
+                "nationality_": "Portuguese",
+                "gender_": "Other"
+            }
+        ],
+        "sports": [
+            {
+                "count": "27",
+                "id_": 8,
+                "name_": "Kiteboarding",
+                "gender_": "Male"
+            },
+            {
+                "count": "32",
+                "id_": 9,
+                "name_": "Paddleboarding",
+                "gender_": "Male"
+            },
+            {
+                "count": "16",
+                "id_": 1,
+                "name_": "Surfing",
+                "gender_": "Male"
+            },
+            {
+                "count": "12",
+                "id_": 1,
+                "name_": "Surfing",
+                "gender_": "Female"
+            },
+            {
+                "count": "16",
+                "id_": 4,
+                "name_": "Wakeboard",
+                "gender_": "Male"
+            },
+            {
+                "count": "74",
+                "id_": 6,
+                "name_": "Windsurf",
+                "gender_": "Male"
+            },
+            {
+                "count": "34",
+                "id_": 3,
+                "name_": "Bodysurfing",
+                "gender_": "Male"
+            },
+            {
+                "count": "23",
+                "id_": 7,
+                "name_": "Rafting",
+                "gender_": "Male"
+            },
+            {
+                "count": "44",
+                "id_": 5,
+                "name_": "Finswimming",
+                "gender_": "Male"
+            },
+            {
+                "count": "23",
+                "id_": 2,
+                "name_": "Kneeboarding",
+                "gender_": "Male"
+            },
+            {
+                "count": "31",
+                "id_": 10,
+                "name_": "Canyoning",
+                "gender_": "Male"
+            },
+            {
+                "count": "87",
+                "id_": 11,
+                "name_": "Kayak Polo",
+                "gender_": "Male"
+            }
+        ],
+        "upcoming_events": [
+            {
+                "count": "20",
+                "id_": 4,
+                "name_": "ultra assembleia gera1 do impe231",
+                "state_": null
+            },
+            {
+                "count": "28",
+                "id_": 4,
+                "name_": "ultra assembleia gera1 do impe231",
+                "state_": 'going'
+            },
+            {
+                "count": "12",
+                "id_": 4,
+                "name_": "ultra assembleia gera1 do impe231",
+                "state_": 'not going'
+            }
+        ]
     }
 
     useEffect(() => {
