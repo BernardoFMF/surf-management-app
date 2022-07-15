@@ -782,7 +782,8 @@ test('Approve candidate', async () => {
 		.set('Cookie', session)
 		.send({
 			"type_": "effective",
-			"paid_enrollment": true
+			"paid_enrollment": true,
+			"sendEmail": false
 		})
 		.expect(200)
 	expect(approveRes).toSatisfyApiSpec()

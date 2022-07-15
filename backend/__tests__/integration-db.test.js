@@ -524,7 +524,8 @@ test('Post, Put, Gets & Delete event', async () => {
 			"name": "assembleia",
 			"initial_date": "08-08-2022",
 			"final_date": "10-08-2022",
-			"groups": [ 1 ]
+			"groups": [ 1 ],
+			"sendEmail": false
 		})
 		.expect('Content-Type', /json/)
 		.expect(201)
@@ -732,7 +733,8 @@ test('Approve candidate', async () => {
 		.set('Cookie', session)
 		.send({
 			"type_": "effective",
-			"paid_enrollment": true
+			"paid_enrollment": true,
+			"sendEmail": false
 		})
 		.expect(200)
 	expect(approveRes).toSatisfyApiSpec()

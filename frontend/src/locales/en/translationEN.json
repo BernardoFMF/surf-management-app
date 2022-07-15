@@ -273,7 +273,7 @@
     "end_date": "Final date",
 
     "quota_creation": "Create new quota",
-    "quota_deletion": "Delete chunk of quotas",
+    "quota_deletion": "Delete quotas",
 
 
     "enrollment_date_mandatory": "Enrollment date is mandatory",
