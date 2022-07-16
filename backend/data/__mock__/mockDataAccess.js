@@ -999,7 +999,7 @@ const getUsersSportData = async (id_, offset, limit, is_candidate_, username_) =
 	users = users.filter(user => {
 		let results = []
 		if (is_candidate_) {
-			if (user.is_candidate_.includes(is_candidate_)) 
+			if (user.is_candidate_ == is_candidate_) 
 				results.push(true)
 			else 
 				results.push(false)
@@ -1408,6 +1408,16 @@ const getEmailByGroupIdData = async (groups) => {
 	return emails
 }
 
+const postNewTokenData = async(user_id_, hash) => {
+	const token = {
+		member_id_: user_id_,
+		token_: hash,
+		created_at_: new Date()
+	}
+	member_tokens.push(token)
+	return user_id_
+}
+
 const postNewCredentialsTokenData = async (id, hash) => {
 	const token = {
 		member_id_: id,
@@ -1429,7 +1439,7 @@ const deleteMemberTokenData = async(id_) => {
 
 const updateMemberTokenData = async(id_, new_token) => {
 	const token = {
-		member_id_: id,
+		member_id_: id_,
 		token_: new_token,
 		created_at_: new Date()
 	}
@@ -1476,7 +1486,7 @@ const getAllMembersData = async () => {
 
 const getUserEmailByIdData = async (id_) => {
 	const contact = contacts.filter(c => c.member_id_ == id_)[0]
-	return contact.email_
+	return contact
 }
 
 const getMemberValidationData = async(id_) => {
@@ -1493,6 +1503,7 @@ const getMemberValidationData = async(id_) => {
 }
 
 const mock_data = { 
+	postNewTokenData,
 	getMemberValidationData,
 	getUserEmailByIdData,
 	getAllMembersData,
