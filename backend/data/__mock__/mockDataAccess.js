@@ -48,9 +48,19 @@ let contacts = [{
 	phone_number_:'912345432'
 }]
 
-let user_imgs = []
+let user_imgs = [
+	{
+		user_id_ : indexObj.idxMember,
+		img_: null,
+	}
+]
 let users_sports = []
-let membership_cards = []
+let membership_cards = [
+	{
+		user_id_ : indexObj.idxMember,
+		qrcode_: "qrcodeteste"
+	}
+]
 let quotas = []
 let member_types_ = [{
 	type_: 'effective',
@@ -1031,21 +1041,23 @@ const postUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, typ
 
 	users_sports.push(user_sport)
 
-	type_.forEach(t => {
-		let sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
-		sportGroups.forEach(group => {
-			if (group.sport_member_type_ == t && !groups_members.filter(member => member.group_id_ == group.group_id_ && member.member_id_ == id_)[0]) {
-				groups_members.push({group_id_: group.group_id_, member_id_: id_})
-			}
+	if (is_candidate_ == false) {
+		type_.forEach(t => {
+			let sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
+			sportGroups.forEach(group => {
+				if (group.sport_member_type_ == t && !groups_members.filter(member => member.group_id_ == group.group_id_ && member.member_id_ == id_)[0]) {
+					groups_members.push({group_id_: group.group_id_, member_id_: id_})
+				}
+			})
 		})
-	})
-
+	}
 	return {id_: user_sport.user_id_, sid_: user_sport.sport_id_}
 } 
 
 const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, type_, years_federated_, is_absent_, is_candidate_) => {
 	const user_sport_idx = users_sports.findIndex(user_sport => user_sport.user_id_ == id_ && user_sport.sport_id_ == sid_)
-	const oldIsAbsent = members[indexObj.idxMember].is_absent_
+	const oldIsAbsent = users_sports[user_sport_idx].is_absent_
+	const oldIsCandidate = users_sports[user_sport_idx].is_candidate_
 	users_sports[user_sport_idx].fed_id_ = fed_id_
 	users_sports[user_sport_idx].fed_number_ = fed_number_
 	users_sports[user_sport_idx].fed_name_ = fed_name_
@@ -1062,7 +1074,7 @@ const updateUserSportData = async (id_, sid_, fed_id_, fed_number_, fed_name_, t
 
 	groups_members = groups_members.filter(member => member.member_id_ == id_ && groupsToRemove.includes(member.group_id_))
 
-	if ((oldIsAbsent == false && is_absent_ == false) || (oldIsAbsent == true && is_absent_ == false)) {
+	if (((oldIsCandidate = true && is_candidate_ == false) || (oldIsCandidate = false && is_candidate_ == false)) && ((oldIsAbsent == false && is_absent_ == false) || (oldIsAbsent == true && is_absent_ == false))) {
 		type_.forEach(t => {
 			let sportGroups = groups_sports.filter(group => group.sport_id_ == sid_)
 			sportGroups.forEach(group => {
@@ -1177,6 +1189,7 @@ const getMemberQuotasByIdData = async (id_,offset,limit) => {
 
 const postQuotaData = async (date_) => {
 	date_ = formatDate(date_)
+	let ids = []
 	members.forEach(member => {
 		const hasQuota = quotas.filter(quota => quota.member_id_ == member.id_ && quota.date_ == date_)[0]
 		const value = member_types_.filter(elem => elem.type_ == member.member_type_)[0].quota_value_
@@ -1191,10 +1204,16 @@ const postQuotaData = async (date_) => {
 					date_,
 					amount_: value
 				}
+				ids.push(member.id_)
 				quotas.push(quota)
 			}
-				
 		}
+	})
+	members = members.map(member => {
+		if (ids.includes(member.id_)) {
+			return {...member, has_debt_: true}
+		}
+		return member
 	})
 	return date_
 
@@ -1202,14 +1221,25 @@ const postQuotaData = async (date_) => {
 
 const updateMemberQuotaData = async (qid_, payment_date_) => {
 	let id
+	let member_id
 	payment_date_ = formatDate(payment_date_)
 	quotas = quotas.map(quota => {
 		if (quota.id_ == qid_) {
 			id = quota.id_
+			member_id = quota.member_id_
 			quota.payment_date_ = payment_date_
 		}
 		return quota
 	})
+	let member_quotas = quotas.filter(quota => quota.member_id_ == member_id && quota.payment_date_ == null)
+	if (member_quotas.length == 0) {
+		members = members.map(member => {
+			if (member.id_ == member_id) {
+				return {...member, has_debt_: false}
+			}
+			return member
+		})
+	}
 	return id
 }
 
@@ -1427,7 +1457,45 @@ const changeCredentials = async (id, username, hash) => {
 	return id
 }
 
+const getAllMembersData = async () => {
+	const all_members = members.map(member => {
+		const contact = contacts.filter(c => c.member_id_ == member.id_)[0]
+		let m = {
+			id_: member.id_,
+			member_type_: member.member_type_,
+			email_: contact.email_,
+			phone_number_: contact.phone_number_,
+			iban_: member.iban_
+		}
+		return m
+	})
+	return all_members
+}
+
+const getUserEmailByIdData = async (id_) => {
+	const contact = contacts.filter(c => c.member_id_ == id_)[0]
+	return contact.email_
+}
+
+const getMemberValidationData = async(id_) => {
+	const member = members.filter(member => member.id_ == id_)[0]
+	const user = users.filter(user => user.member_id_ == id_)[0]
+	const image = user_imgs.filter(user => user.member_id_ == id_)[0]
+
+	let validation_data = {
+		has_debt_: member.has_debt_,
+		full_name_: user.full_name_,
+		img_value_: image.img_
+	}
+	return validation_data
+}
+
 const mock_data = { 
+	getMemberValidationData,
+	getUserEmailByIdData,
+	getAllMembersData,
+	changePassword,
+	changeCredentials,
 	updateMemberTokenData,
 	deleteMemberTokenData,
 	getMemberTokenByIdData,

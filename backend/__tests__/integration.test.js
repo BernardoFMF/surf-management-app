@@ -5,8 +5,6 @@ import fs from 'fs'
 import dotenv from 'dotenv'
 dotenv.config()
 import data from '../data/__mock__/mockDataAccess.js'
-//import db from '../data/__db__/dbDataAccess.js'
-//const data = db(process.env.PG_USER, process.env.PG_PASSWORD, process.env.PG_HOST, process.env.PG_PORT, process.env.PG_DB_TEST_INTEGRATION, process.env.NODE_MODE)
 jestOpenAPI(process.cwd() +  "/backend/openApi.yaml")
 
 const app = express()
@@ -16,16 +14,6 @@ import server from '../server.js'
 server(app, data)
 
 let session = null
-
-let drop = fs.readFileSync('./docs/scripts_sql/drop.sql', 'utf8');
-let create = fs.readFileSync('./docs/scripts_sql/create.sql', 'utf8');
-let trigger = fs.readFileSync('./docs/scripts_sql/Triggers.sql', 'utf8');
-let procedures = fs.readFileSync('./docs/scripts_sql/procedures.sql', 'utf8');
-let insert_types = fs.readFileSync('./docs/scripts_sql/insert-test.sql', 'utf8');
-let insert = fs.readFileSync('./docs/scripts_sql/insert-dummy-integration.sql', 'utf8');
-
-const offset = 0
-const limit = 1001
 
 beforeAll( async () => {
 	let res = await supertest(app)
