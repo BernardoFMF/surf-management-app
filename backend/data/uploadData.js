@@ -80,7 +80,6 @@ const uploadData = (db) => {
 
 				await mailSender(userEmail.email_, 'Alteração de credenciais', credentialsChangeTemplate(link))
 			} catch (e) {
-				console.log(e);
 				throw e
 			}
 			

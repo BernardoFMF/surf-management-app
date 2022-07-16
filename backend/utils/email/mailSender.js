@@ -31,7 +31,6 @@ export const mailSender = async(receivers, subject, content) => {
 		})
 		return info
 	} catch (e) {
-		console.log(e);
 		throw error(554, 'Error while sending email', 'MESSAGE_CODE_42')
 	}
 }
@@ -64,7 +63,6 @@ export const notify = async(receivers, subject, content) => {
 		})
 		return info
 	} catch (e) {
-		console.log(e);
 		throw error(554, 'Error while sending email', 'MESSAGE_CODE_42')
 	}
 }
@@ -97,7 +95,6 @@ export const contact = async(from, name, content) => {
 		})
 		return info
 	} catch (e) {
-		console.log(e);
 		throw error(554, 'Error while sending email', 'MESSAGE_CODE_42')
 	}
 	

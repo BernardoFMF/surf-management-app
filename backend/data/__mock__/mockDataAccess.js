@@ -26,7 +26,7 @@ let users = [{
 	cc_: 987654321,
 	nif_: 123456789,
 	birth_date_: '01-01-1970',
-	nationality_: 'Portuguesa',
+	nationality_: 'Portuguese',
 	full_name_: 'Joel Joelho',
 	enrollment_date_: '01-01-1970',
 	paid_enrollment_: true,
@@ -716,7 +716,9 @@ const deleteSportData = async (id_) => {
  */
 
 const getMemberByIdData = async (id_) => {
-	const member = members.filter(member => member.id_ == id_)[0]
+	let member = members.filter(member => member.id_ == id_)[0]
+	const member_type_idx = member_types_.findIndex(mt => mt.type_ == member.member_type_)
+	member.category_ = member_types_[member_type_idx].category_
 	return member
 }
 

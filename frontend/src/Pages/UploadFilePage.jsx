@@ -71,7 +71,6 @@ const UploadFilePage = () => {
 
     useEffect(() => {
         dispatch(exportMembersCSV())
-        console.log(exportMembers);
     },[newMembers])
 
     useEffect(() => {
@@ -83,7 +82,6 @@ const UploadFilePage = () => {
     const handleChange = (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false)
       dispatch({ type: UPLOAD_RESET })
-      console.log("handleChange");
     };
 
     const handleSubmit = (values,type) => {
