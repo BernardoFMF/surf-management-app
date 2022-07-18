@@ -10,7 +10,6 @@ import { DataGrid} from '@mui/x-data-grid';
 import { Pagination } from '@mui/material';
 import { red, blue , green } from "@mui/material/colors";
 import Chip from '@mui/material/Chip';
-import useScriptRef from '../../hooks/useScriptRef'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField'
 import { Form, Formik } from 'formik';
 import AnimateButton from '../../components/extended/AnimateButton'
@@ -19,11 +18,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import Meta from '../../components/Meta'
 import UpcomingEventsChartWrapper from '../../components/chartWrappers/UpcomingEventsChartWrapper'
 import { EVENT_ATTENDANCE_FETCH_RESET, EVENT_FETCH_RESET } from '../../store/constants/eventConstants'
+import useLang from '../../hooks/useLang'
 
 const EventPage = () => {
     let { id } = useParams()
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
+    const { lang } = useLang()
     const eventFetch = useSelector((state) => state.eventFetch)
     const { loading, error, eventGet } = eventFetch
 
@@ -116,6 +117,7 @@ const EventPage = () => {
                                 columns={columns}
                                 pageSize={searchState.limit}
                                 hideFooter={true}
+                                localeText={lang}
                                 sx={{
                                     "& .MuiDataGrid-columnHeaders": {
                                         backgroundColor: "rgba(219, 219, 219, 0.5)"

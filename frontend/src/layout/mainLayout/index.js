@@ -5,10 +5,8 @@ import { Outlet } from 'react-router-dom'
 import { styled, useTheme } from '@mui/material/styles'
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material'
 import ContactFloatMenu from '../contactFloatMenu/ContactFloatMenu';
-import Breadcrumbs from '../../components/extended/Breadcrumbs'
 import Header from './Header'
 import Sidebar from './Sidebar'
-import navigation from '../../menuItems'
 import { drawerWidth } from '../../store/constants/themeConstants'
 import { SET_MENU } from '../../store/constants/customizationConstants'
 
@@ -92,7 +90,7 @@ const MainLayout = () => {
             <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
 
             <Main theme={theme} open={leftDrawerOpened}>
-                <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
+
                 <Outlet />
             </Main>
             <ContactFloatMenu />

@@ -5,8 +5,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { CSVLink } from "react-csv";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
-const CustomAlert = ({csvreport, exportText}) => {
-
+const ExportCSV = ({csvreport, exportText}) => {
     return (
         <CSVLink {...csvreport} style={{textDecoration:"none"}}>
             <AnimateButton>
@@ -25,4 +24,4 @@ const CustomAlert = ({csvreport, exportText}) => {
     )
 }
 
-export default CustomAlert
+export default ExportCSV

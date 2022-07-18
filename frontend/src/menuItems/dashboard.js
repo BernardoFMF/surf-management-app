@@ -14,8 +14,7 @@ const dashboard = {
             type: 'item',
             url: '/dashboard/overview',
             icon: icons.IconDashboard,
-            hideIfNotAdmin: false,
-            breadcrumbs: false
+            hideIfNotAdmin: false
         },
         {
             id: 'analytics',
@@ -23,8 +22,7 @@ const dashboard = {
             type: 'item',
             url: '/dashboard/analytics',
             icon: AssessmentIcon,
-            hideIfNotAdmin: true,
-            breadcrumbs: false
+            hideIfNotAdmin: true
         }
     ]
 }

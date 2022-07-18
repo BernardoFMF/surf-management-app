@@ -1,9 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import useAuth from '../hooks/useAuth'
 import { useDispatch } from 'react-redux';
 import { isAfter } from "date-fns";
 import { logout } from '../store/actions/memberActions';
-import { useEffect } from 'react';
 
 function RequireAuth({ children }) {
     const location = useLocation()

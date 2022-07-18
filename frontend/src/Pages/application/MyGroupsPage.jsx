@@ -23,11 +23,13 @@ import Meta from '../../components/Meta';
 import { MEMBER_GROUPS_FETCH_RESET } from '../../store/constants/groupConstants';
 import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
 import { USER_SPORT_TYPES_FETCH_RESET } from '../../store/constants/sportConstants';
+import useLang from '../../hooks/useLang'
 
 const MyGroupsPage = () => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { lang } = useLang()
     const memberGroupsFetch = useSelector((state) => state.memberGroupsFetch)
     const { loading, error, memberGroupsGet } = memberGroupsFetch
 
@@ -211,6 +213,7 @@ const MyGroupsPage = () => {
                                         pageSize={searchState.limit}
                                         hideFooter={true}
                                         onPageChange={changePageHandler}
+                                        localeText={lang}
                                         sx={{
                                             "& .MuiDataGrid-columnHeaders": {
                                                 backgroundColor: "rgba(219, 219, 219, 0.5)"

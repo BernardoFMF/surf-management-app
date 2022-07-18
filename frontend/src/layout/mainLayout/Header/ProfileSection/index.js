@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux';
-import useAuth from '../../../../hooks/useAuth'
 
 import { useTheme } from '@mui/material/styles';
 import {
@@ -24,37 +23,23 @@ import {
 import MainCard from '../../../../components/cards/MainCard';
 import Transitions from '../../../../components/extended/Transitions';
 import User1 from '../../../../assets/data/blank-profile-picture.png'
-
-// assets
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
 import { logout } from '../../../../store/actions/memberActions';
 
-// ==============================|| PROFILE MENU ||============================== //
-
 const ProfileSection = () => {
     const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
     const navigate = useNavigate();
-    const {t, i18n} = useTranslation()
-
-    const [sdm, setSdm] = useState(true);
-    const [value, setValue] = useState('');
-    const [notification, setNotification] = useState(false);
+    const { t } = useTranslation()
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch()
     const memberLogin = useSelector((state) => state.memberLogin)
-    const { loading, error, memberInfo } = memberLogin
-    const { logoutHook } = useAuth()
+    const { memberInfo } = memberLogin
 
-    /**
-     * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-     **/
     const anchorRef = useRef(null);
     const handleLogout = async () => {
         dispatch(logout())   
         navigate('/')
-        logoutHook()
     }
 
     const handleClose = (event) => {
@@ -179,7 +164,7 @@ const ProfileSection = () => {
                                             }}
                                         >
                                             <ListItemButton
-                                                sx={{ borderRadius: `${customization.borderRadius}px` }}
+                                                sx={{ borderRadius: `12px` }}
                                                 selected={selectedIndex === 1}
                                                 onClick={(event) => handleListItemClick(event, 1, `/application/members/${memberInfo.id_}`)}
                                             >
@@ -193,7 +178,7 @@ const ProfileSection = () => {
                                                 />
                                             </ListItemButton>
                                             <ListItemButton
-                                                sx={{ borderRadius: `${customization.borderRadius}px` }}
+                                                sx={{ borderRadius: `12px` }}
                                                 selected={selectedIndex === 4}
                                                 onClick={handleLogout}
                                             >

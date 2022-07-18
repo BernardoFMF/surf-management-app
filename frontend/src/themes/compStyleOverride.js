@@ -18,7 +18,7 @@ export default function componentStyleOverrides(theme) {
                     backgroundImage: 'none'
                 },
                 rounded: {
-                    borderRadius: `${theme?.customization?.borderRadius}px`
+                    borderRadius: `${theme?.borderRadius}px`
                 }
             }
         },
@@ -103,7 +103,7 @@ export default function componentStyleOverrides(theme) {
             styleOverrides: {
                 root: {
                     background: bgColor,
-                    borderRadius: `${theme?.customization?.borderRadius}px`,
+                    borderRadius: `${theme?.borderRadius}px`,
                     '& .MuiOutlinedInput-notchedOutline': {
                         borderColor: theme.colors?.grey400
                     },
@@ -118,7 +118,7 @@ export default function componentStyleOverrides(theme) {
                     fontWeight: 500,
                     background: bgColor,
                     padding: '15.5px 14px',
-                    borderRadius: `${theme?.customization?.borderRadius}px`,
+                    borderRadius: `${theme?.borderRadius}px`,
                     '&.MuiInputBase-inputSizeSmall': {
                         padding: '10px 14px',
                         '&.MuiInputBase-inputAdornedStart': {
@@ -130,7 +130,7 @@ export default function componentStyleOverrides(theme) {
                     paddingLeft: 4
                 },
                 notchedOutline: {
-                    borderRadius: `${theme?.customization?.borderRadius}px`
+                    borderRadius: `${theme?.borderRadius}px`
                 }
             }
         },

@@ -23,10 +23,12 @@ import DropdownInputField from '../../components/multiStepForm/DropdownInputFiel
 import { getUserSportsTypes } from '../../store/actions/sportActions'
 import { USERS_SPORT_FETCH_RESET, USER_SPORT_UPDATE_RESET, USERS_SPORTS_CREATE_RESET } from '../../store/constants/userConstants'
 import { USER_SPORT_TYPES_FETCH_RESET } from '../../store/constants/sportConstants'
+import useLang from '../../hooks/useLang'
 
 const SportPage = () => {
     const {t} = useTranslation()
     const dispatch = useDispatch()
+    const { lang } = useLang()
     let { id } = useParams()
     const usersSportFetch = useSelector((state) => state.usersSportFetch)
     const { loading, error, usersSportGet } = usersSportFetch
@@ -269,6 +271,7 @@ return (
                     pageSize={searchState.limit}
                     hideFooter={true}
                     onPageChange={changePageHandler}
+                    localeText={lang}
                     sx={{
                         "& .MuiDataGrid-columnHeaders": {
                             backgroundColor: "rgba(219, 219, 219, 0.5)"

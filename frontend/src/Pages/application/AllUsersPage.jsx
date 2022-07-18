@@ -23,12 +23,13 @@ import Meta from '../../components/Meta';
 import { USERS_FETCH_RESET, USER_POST_RESET } from '../../store/constants/userConstants';
 import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
 import { EXPORT_USER_FETCH_RESET } from '../../store/constants/exportConstants';
+import useLang from '../../hooks/useLang'
 
 const AllUsersPage = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
     const dispatch = useDispatch()
-
+    const { lang } = useLang()
     const exportU = useSelector((state) => state.exportUsersCSV)
     const { exportUsers } = exportU
     const [data, setData] = useState([]);
@@ -274,6 +275,7 @@ const AllUsersPage = () => {
                             pageSize={searchState.limit}
                             hideFooter={true}
                             onPageChange={changePageHandler}
+                            localeText={lang}
                             scrollbarSize={20}
                             sx={{
                                 "& .MuiDataGrid-columnHeaders": {

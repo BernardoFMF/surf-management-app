@@ -17,13 +17,14 @@ import { blue } from "@mui/material/colors";
 import InputField from '../../components/multiStepForm/InputField';
 import Meta from '../../components/Meta';
 import { GROUP_FETCH_RESET, GROUP_MEMBERS_FETCH_RESET } from '../../store/constants/groupConstants'
+import useLang from '../../hooks/useLang'
 
 const GroupPage = () => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     let { id } = useParams()
-
+    const { lang } = useLang()
     const groupFetch = useSelector((state) => state.groupFetch)
     const { loading, error, groupById } = groupFetch
 
@@ -249,6 +250,7 @@ const GroupPage = () => {
                                     pageSize={searchState.limit}
                                     hideFooter={true}
                                     onPageChange={changePageHandler}
+                                    localeText={lang}
                                     sx={{
                                         "& .MuiDataGrid-columnHeaders": {
                                             backgroundColor: "rgba(219, 219, 219, 0.5)"

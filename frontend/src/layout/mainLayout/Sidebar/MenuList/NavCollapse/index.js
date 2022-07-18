@@ -13,7 +13,6 @@ import { IconChevronDown, IconChevronUp } from '@tabler/icons';
 
 const NavCollapse = ({ menu, level }) => {
     const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
     const { t } = useTranslation()
 
     const memberLogin = useSelector((state) => state.memberLogin)
@@ -66,7 +65,7 @@ const NavCollapse = ({ menu, level }) => {
         <>
             <ListItemButton
                 sx={{
-                    borderRadius: `${customization.borderRadius}px`,
+                    borderRadius: `12px`,
                     mb: 0.5,
                     alignItems: 'flex-start',
                     backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
