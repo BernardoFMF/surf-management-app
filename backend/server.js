@@ -33,12 +33,21 @@ const router = (app, data) => {
 	
 	const LocalStrategy = localStrategy.Strategy
 
+	let cookieSettings = {
+		maxAge: 4 * 60 * 60 * 1000
+	}
+	if (process.env.NODE_ENV == 'production') {
+		app.set('trust proxy', 1);
+		cookieSettings = { ...cookieSettings, httpOnly: true, secure: true, sameSite: true }
+	}
+	const secret = process.env.SECRET
+		
 	app.use(bodyParser.json({limit: "50mb"}))
 	app.use(fileUploader())
 	app.use(express.urlencoded({ extended: true, limit: "50mb" }))
 	app.use(express.static('public'))
 	app.use(cookieParser())
-	app.use(expressSession({ secret: 'keyboard cat', resave: true, saveUninitialized: true, cookie: { maxAge: 4 * 60 * 60 * 1000 } }))
+	app.use(expressSession({ secret: secret || 'keyboard cat', resave: true, saveUninitialized: true, cookie: cookieSettings }))
 	app.use(passport.initialize())
 	app.use(passport.session())
 	
