@@ -2,6 +2,8 @@
 
 import {createTransport, getTestMessageUrl } from 'nodemailer'
 import error from '../error.js'
+import dotenv from 'dotenv'
+dotenv.config()
 
 export const mailSender = async(receivers, subject, content) => {
 	const email = process.env.EMAIL
