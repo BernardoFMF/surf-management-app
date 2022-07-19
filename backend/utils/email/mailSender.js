@@ -2,6 +2,8 @@
 
 import {createTransport, getTestMessageUrl } from 'nodemailer'
 import error from '../error.js'
+import dotenv from 'dotenv'
+dotenv.config()
 
 export const mailSender = async(receivers, subject, content) => {
 	let transporter = createTransport({
@@ -14,7 +16,7 @@ export const mailSender = async(receivers, subject, content) => {
 		},
 		auth: {
 			user: 'ericeirasurfclub@outlook.com', 
-			pass: 'Miguelbernardogoncalo2022', 
+			pass: process.env.EMAIL_PWORD, 
 		}
 	})
 	
@@ -44,7 +46,7 @@ export const notify = async(receivers, subject, content) => {
 		},
 		auth: {
 			user: 'ericeirasurfclub@outlook.com', 
-			pass: 'Miguelbernardogoncalo2022', 
+			pass: process.env.EMAIL_PWORD, 
 		}
 	})
 	
@@ -74,7 +76,7 @@ export const contact = async(from, name, content) => {
 		},
 		auth: {
 			user: 'ericeirasurfclub@outlook.com', 
-			pass: 'Miguelbernardogoncalo2022'
+			pass: process.env.EMAIL_PWORD
 		},
 	})
 	try {
