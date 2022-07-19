@@ -103,7 +103,6 @@ export const exportCandidatesCSV = () => async (dispatch) => {
           headers: { "Content-Type": "application/json" }
       })
       let members = await response.json()
-      console.log(members);
       if(response.status !== 200) throw Error(members.message_code)
       dispatch({
         type: EXPORT_MEMBERS_FETCH_SUCCESS,

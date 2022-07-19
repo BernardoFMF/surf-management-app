@@ -23,7 +23,6 @@ const pool = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 			return result
 		} catch(e) {
 			await client.query('Rollback')
-			console.log(e);
 			throw e
 		} finally {
 			client.release()

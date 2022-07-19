@@ -420,5 +420,7 @@
     "user_sports":"Associação users/desportos",
     "upload_user_sports": "Upload dos desportos relacionados a cada membro",
     "user_sports_example": "Membro/Desporto Exemplo",
-    "phone_number": "Numero de telefone"
+    "phone_number": "Numero de telefone",
+
+    "uploaded_sucessfully": "Carregado com sucesso"
 }

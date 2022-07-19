@@ -19,10 +19,12 @@ import Meta from '../../components/Meta'
 import { USER_SPORTS_FETCH_RESET, USER_SPORT_DELETE_RESET, USER_SPORT_UPDATE_RESET } from '../../store/constants/userConstants'
 import { USER_SPORT_TYPES_FETCH_RESET } from '../../store/constants/sportConstants'
 import { getUserSportsTypes } from '../../store/actions/sportActions'
+import useLang from '../../hooks/useLang'
 
 const MySportsPage = () => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
+    const { lang } = useLang()
     const userSportDelete = useSelector((state) => state.userSportDelete)
     const { loading: loadingDelete, error: errorDelete, usersSportDelete } = userSportDelete
 
@@ -159,6 +161,7 @@ const MySportsPage = () => {
                         pageSize={searchState.limit}
                         hideFooter={true}
                         onPageChange={changePageHandler}
+                        localeText={lang}
                         sx={{
                             "& .MuiDataGrid-columnHeaders": {
                                 backgroundColor: "rgba(219, 219, 219, 0.5)"

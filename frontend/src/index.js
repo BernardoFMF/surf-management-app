@@ -6,14 +6,14 @@ import App from './App';
 import store from './store/store';
 import './assets/scss/style.scss';
 import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from './hooks/useAuth';
+import { LangProvider } from './hooks/useLang';
 
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <AuthProvider>
+            <LangProvider>
                 <App />
-            </AuthProvider>
+            </LangProvider>
         </BrowserRouter>
     </Provider>,
   document.getElementById('root')

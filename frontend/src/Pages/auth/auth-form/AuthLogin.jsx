@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { login, logout } from '../../../store/actions/memberActions'
-import useAuth from '../../../hooks/useAuth'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
@@ -32,8 +31,6 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 
-// project imports
-import useScriptRef from '../../../hooks/useScriptRef'
 import AnimateButton from '../../../components/extended/AnimateButton'
 
 // assets
@@ -43,7 +40,6 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 const AuthLogin = ({ ...others }) => {
     const theme = useTheme()
-    const scriptedRef = useScriptRef()
     const {t, i18n} = useTranslation()
 
 
@@ -73,19 +69,18 @@ const AuthLogin = ({ ...others }) => {
         logIn()
     }, [memberInfo, error])
 
-    const handleSubmit = async ({username, password}) => {
-        dispatch(login(username, password))
-    }
-
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword)
     };
 
     const handleMouseDownPassword = (e) => {
-
         e.preventDefault()
     };
+
+    const handleSubmit = async (values) => {
+        dispatch(login(values.username, values.password))
+    }
 
     return (
         <>
@@ -120,21 +115,7 @@ const AuthLogin = ({ ...others }) => {
                     username: Yup.string().max(255).required(t('sign_in_username_mandatory')),
                     password: Yup.string().max(255).required(t('sign_in_password_mandatory'))
                 })}
-                onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-                    try {
-                        if (scriptedRef.current) {
-                            await handleSubmit(values)
-                            setStatus({ success: true })
-                            setSubmitting(false)
-                        }
-                    } catch (err) {
-                        if (scriptedRef.current) {
-                            setStatus({ success: false })
-                            setErrors({ submit: err.message })
-                            setSubmitting(false)
-                        }
-                    }
-                }}
+                onSubmit={handleSubmit}
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>

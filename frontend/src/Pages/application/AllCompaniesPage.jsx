@@ -27,11 +27,13 @@ import Meta from '../../components/Meta';
 import { COMPANIES_FETCH_RESET, COMPANY_DELETE_RESET, COMPANY_POST_RESET } from '../../store/constants/companyConstants';
 import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
 import { EXPORT_COMPANY_FETCH_RESET } from '../../store/constants/exportConstants';
+import useLang from '../../hooks/useLang'
 
 const AllCompaniesPage = () => {
     const theme = useTheme()
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'))
     const {t} = useTranslation()
+    const { lang } = useLang()
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -271,6 +273,7 @@ const AllCompaniesPage = () => {
                             pageSize={searchState.limit}
                             hideFooter={true}
                             onPageChange={changePageHandler}
+                            localeText={lang}
                             sx={{
                                 "& .MuiDataGrid-columnHeaders": {
                                     backgroundColor: "rgba(219, 219, 219, 0.5)"

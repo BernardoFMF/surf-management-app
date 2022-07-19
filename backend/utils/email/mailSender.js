@@ -6,6 +6,9 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const mailSender = async(receivers, subject, content) => {
+	const email = process.env.EMAIL
+	const password = process.env.EMAIL_PASSWORD
+
 	let transporter = createTransport({
 		host: 'smtp-mail.outlook.com',
 		service: 'outlook',
@@ -15,14 +18,14 @@ export const mailSender = async(receivers, subject, content) => {
 			rejectUnauthorized: false
 		},
 		auth: {
-			user: 'ericeirasurfclub@outlook.com', 
-			pass: process.env.EMAIL_PWORD, 
+			user: email, 
+			pass: password, 
 		}
 	})
 	
 	try {
 		let info = await transporter.sendMail({
-			from: 'ericeirasurfclub@outlook.com',
+			from: email,
 			to: receivers,
 			subject: subject, 
 			text: content.text, 
@@ -30,12 +33,14 @@ export const mailSender = async(receivers, subject, content) => {
 		})
 		return info
 	} catch (e) {
-		console.log(e);
 		throw error(554, 'Error while sending email', 'MESSAGE_CODE_42')
 	}
 }
 
 export const notify = async(receivers, subject, content) => {
+	const email = process.env.EMAIL
+	const password = process.env.EMAIL_PASSWORD
+
 	let transporter = createTransport({
 		host: 'smtp-mail.outlook.com',
 		service: 'outlook',
@@ -45,14 +50,14 @@ export const notify = async(receivers, subject, content) => {
 			rejectUnauthorized: false
 		},
 		auth: {
-			user: 'ericeirasurfclub@outlook.com', 
-			pass: process.env.EMAIL_PWORD, 
+			user: email, 
+			pass: password, 
 		}
 	})
 	
 	try {
 		let info = await transporter.sendMail({
-			from: 'ericeirasurfclub@outlook.com',
+			from: email,
 			to: receivers,
 			subject: subject, 
 			text: content.text, 
@@ -60,12 +65,14 @@ export const notify = async(receivers, subject, content) => {
 		})
 		return info
 	} catch (e) {
-		console.log(e);
 		throw error(554, 'Error while sending email', 'MESSAGE_CODE_42')
 	}
 }
 
 export const contact = async(from, name, content) => {
+	const email = process.env.EMAIL
+	const password = process.env.EMAIL_PASSWORD
+
 	let transporter = createTransport({
 		host: 'smtp-mail.outlook.com',
 		service: 'outlook',
@@ -75,8 +82,8 @@ export const contact = async(from, name, content) => {
 			rejectUnauthorized: false
 		},
 		auth: {
-			user: 'ericeirasurfclub@outlook.com', 
-			pass: process.env.EMAIL_PWORD
+			user: email, 
+			pass: password
 		},
 	})
 	try {
@@ -90,7 +97,6 @@ export const contact = async(from, name, content) => {
 		})
 		return info
 	} catch (e) {
-		console.log(e);
 		throw error(554, 'Error while sending email', 'MESSAGE_CODE_42')
 	}
 	

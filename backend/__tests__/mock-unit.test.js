@@ -465,3 +465,41 @@ test('Delete a sport for a user', async () => {
 	const user = await dbUser.deleteUserSport(2,4)
 	expect(user.id_).toBe(2)
 })
+
+// Extra
+
+test('Get emails', async () => {
+	expect.assertions(1)
+	const emails = await data.getEmails()
+	expect(emails.length).toBe(8)
+})
+
+test('Get specific member email', async () => {
+	expect.assertions(1)
+	const emails = await data.getUserEmailByIdData(1)
+	expect(emails.email_).toBe('mohamedlgh@gmail.com')
+})
+
+test('Create token', async () => {
+	expect.assertions(1)
+	const token = await data.postNewTokenData(1, 'token')
+	expect(token).toBe(1)
+})
+
+test('Get token by id', async () => {
+	expect.assertions(1)
+	const token = await data.getMemberTokenByIdData(1)
+	expect(token.token_).toBe('token')
+})
+
+test('Update token', async () => {
+	expect.assertions(1)
+	const token = await data.updateMemberTokenData(1, 'new')
+	expect(token).toBe(1)
+})
+
+test('Delete token', async () => {
+	expect.assertions(1)
+	const token = await data.deleteMemberTokenData(1)
+	expect(token).toBe(1)
+})

@@ -21,7 +21,6 @@ const authData = (db) => {
 		await db.postNewTokenData(user.id_, hash)
 	
 		const link = url + `/password-reset?token=${resetToken}&id=${user.id_}`
-		
 		await mailSender(email, 'Mudança de password', passwordChangeTemplate(link))
 
 		return link
@@ -42,14 +41,19 @@ const authData = (db) => {
 			throw error(409, 'Invalid or expired password reset token', 'MESSAGE_CODE_13')
 		}
 
-        let today = new Date();
-        let limitDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+		let today = new Date()
 
-        isValid = (limitDate.getTime() - passwordResetToken.createdat_.getTime()) > 0
+		const msBetweenDates = Math.abs(passwordResetToken.createdat_.getTime() - today.getTime());
+
+		const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
+
+        isValid = hoursBetweenDates < 24
+
+		await db.deleteMemberTokenData(userId)
 
         if (!isValid) throw error(409, 'Invalid or expired password reset token', 'MESSAGE_CODE_13')
 	
-		await db.deleteMemberTokenData(userId)
+		
 
         const hash = await cryptoUtil.hashpassword(password)
 

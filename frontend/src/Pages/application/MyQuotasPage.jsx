@@ -13,10 +13,12 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import SearchIcon from '@mui/icons-material/Search';
 import { Form, Formik } from 'formik';
 import { MEMBER_QUOTAS_FETCH_RESET } from '../../store/constants/quotaConstants';
+import useLang from '../../hooks/useLang'
 
 const MyQuotasPage = () => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
+    const { lang } = useLang()
     const memberQuotasFetch = useSelector((state) => state.memberQuotaFetch)
     const { loading, error, memberQuotasGet } = memberQuotasFetch
     const [rows, setRows] = useState([]);
@@ -82,6 +84,7 @@ const MyQuotasPage = () => {
                 pageSize={searchState.limit}
                 hideFooter={true}
                 onPageChange={changePageHandler}
+                localeText={lang}
                 sx={{
                     "& .MuiDataGrid-columnHeaders": {
                         backgroundColor: "rgba(219, 219, 219, 0.5)"

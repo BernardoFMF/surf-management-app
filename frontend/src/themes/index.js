@@ -8,12 +8,7 @@ import componentStyleOverrides from './compStyleOverride';
 import themePalette from './palette';
 import themeTypography from './typography';
 
-/**
- * Represent theme style and structure as per Material-UI
- * @param {JsonObject} customization customization parameter object
- */
-
-export const theme = (customization) => {
+export const theme = () => {
     const color = colors;
 
     const themeOption = {
@@ -28,7 +23,8 @@ export const theme = (customization) => {
         menuSelected: color.primaryDark,
         menuSelectedBack: color.primaryLight,
         divider: color.grey200,
-        customization
+        fontFamily: `'Arial', sans-serif`,
+        borderRadius: 12
     };
 
     const themeOptions = {

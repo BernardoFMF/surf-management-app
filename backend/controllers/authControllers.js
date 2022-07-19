@@ -20,7 +20,6 @@ const authController = (data) => {
 	const resetPasswordRequest = asyncHandler(async (req, res) => {
 		const url = req.protocol + '://' + req.get('host')
 		const requestPasswordResetService = await services.requestPasswordResetServices(url, req.body.email)
-		console.log(requestPasswordResetService);
 		res.status(201)
 		res.json({ message: 'Password change request was successful', message_code: 'MESSAGE_CODE_45' })
 	})

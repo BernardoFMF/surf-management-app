@@ -24,12 +24,13 @@ import AttendanceEditDialog from '../../components/dialogs/AttendanceEditDialog'
 import {  Alert} from '@mui/material'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import { MEMBER_EVENTS_ATTENDANCE_FETCH_RESET, MEMBER_EVENT_ATTENDANCE_UPDATE_RESET } from '../../store/constants/eventConstants';
+import useLang from '../../hooks/useLang'
 
 const MyEventsPage = () => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    const { lang } = useLang()
     const member = useSelector((state) => state.memberLogin)
     const { memberInfo } = member
 
@@ -222,6 +223,7 @@ const columns = [
             pageSize={searchState.limit}
             hideFooter={true}
             onPageChange={changePageHandler}
+            localeText={lang}
             sx={{
                 "& .MuiDataGrid-columnHeaders": {
                     backgroundColor: "rgba(219, 219, 219, 0.5)"

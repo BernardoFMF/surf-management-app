@@ -1,9 +1,6 @@
 import { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { parse, isDate } from "date-fns";
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom';
-import TranslationMenu from '../components/TranslationMenu'
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Accordion from '@mui/material/Accordion';
@@ -12,33 +9,18 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import { exportMembersCSV } from '../store/actions/exportActions'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { useTheme } from '@mui/material/styles';
 import {
     Box,
-    Divider,
     Grid,
-    IconButton,
-    InputAdornment,
     Typography,
-    useMediaQuery,
     Alert,
-    Stack,
-    CircularProgress,
-    Button,
-    Input
+    Button
 } from '@mui/material';
 
-import AuthWrapper from './auth/AuthWrapper';
-import AuthRegister from './auth/auth-form/AuthRegister'
-import AuthCardWrapper from './auth/AuthCardWrapper'
-import Logo from '../components/Logo'
-import { useParams } from 'react-router-dom'
-import { getMemberValidation } from '../store/actions/companyActions';
 import {uploadFile} from '../store/actions/uploadActions'
 import MainCard from '../components/cards/MainCard';
 import AnimateButton from '../components/extended/AnimateButton'
 import LoadingButton from '@mui/lab/LoadingButton'
-import InputField from '../components/multiStepForm/InputField';
 import Meta from '../components/Meta';
 import FileInputField from '../components/multiStepForm/FileInputField';
 import User_Company_example from '../assets/data/User_CompanyExample.xlsx'
@@ -51,16 +33,12 @@ import { UPLOAD_RESET } from '../store/constants/uploadConstants'
 import ExportCSV from '../components/ExportCSV'
 
 const UploadFilePage = () => {
-
-    const theme = useTheme();
-    const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-    const {t, i18n} = useTranslation()
+    const {t} = useTranslation()
     const dispatch = useDispatch()
     const exportM = useSelector((state) => state.exportMembersCSV)
     const { exportMembers } = exportM
     const [data, setData] = useState([]);
     const [newMembers, setnewMembers] = useState(false);
-
     const [expanded, setExpanded] = useState(false);
 
     useEffect(() => {
@@ -71,7 +49,6 @@ const UploadFilePage = () => {
 
     useEffect(() => {
         dispatch(exportMembersCSV())
-        console.log(exportMembers);
     },[newMembers])
 
     useEffect(() => {
@@ -83,7 +60,6 @@ const UploadFilePage = () => {
     const handleChange = (panel) => (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false)
       dispatch({ type: UPLOAD_RESET })
-      console.log("handleChange");
     };
 
     const handleSubmit = (values,type) => {

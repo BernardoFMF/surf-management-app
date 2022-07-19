@@ -22,11 +22,12 @@ import { exportCandidatesCSV } from '../../store/actions/exportActions'
 import { CANDIDATES_FETCH_RESET, CANDIDATE_DELETE_RESET, APPROVE_CANDIDATE_RESET } from '../../store/constants/candidateConstants';
 import { TYPES_FETCH_RESET } from '../../store/constants/typeConstants';
 import { EXPORT_CANDIDATE_FETCH_RESET } from '../../store/constants/exportConstants';
+import useLang from '../../hooks/useLang'
 
 const AllCandidatesPage = () => {
     const {t} = useTranslation()
     const dispatch = useDispatch()
-
+    const { lang } = useLang()
     const exportC = useSelector((state) => state.exportCandidatesCSV)
     const { exportCandidates } = exportC
     const [data, setData] = useState([]);
@@ -227,6 +228,7 @@ const AllCandidatesPage = () => {
                         columns={columns}
                         pageSize={searchState.limit}
                         hideFooter={true}
+                        localeText={lang}
                         onPageChange={changePageHandler}
                         sx={{
                             "& .MuiDataGrid-columnHeaders": {

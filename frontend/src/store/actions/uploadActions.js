@@ -14,7 +14,6 @@ import {
           body: file
       })
       const response = await request.json()
-      console.log(response.message_code);
       if(request.status !== 201) throw Error(response.message_code || "MESSAGE_CODE_2")
       dispatch({
         type: UPLOAD_SUCCESS,
@@ -22,7 +21,6 @@ import {
       })
   
     } catch (error) {
-      console.log(error);
       dispatch({
         type: UPLOAD_FAIL,
         payload:

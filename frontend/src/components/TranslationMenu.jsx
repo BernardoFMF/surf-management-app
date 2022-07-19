@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Avatar, Menu, MenuItem, Typography, Button } from '@mui/material';
 import GTranslateIcon from '@mui/icons-material/GTranslate';
+import useLang from '../hooks/useLang'
 
 import i18n from '../i18n'
 
@@ -9,6 +10,7 @@ const languages = [{abbreviation: 'en', name: 'English'}, {abbreviation: 'pt', n
 const TranslationMenu = ({sx}) => {
     const [anchorTranslationNav, setAnchorTranslationNav] = useState(null);
     const open = Boolean(anchorTranslationNav)
+    const { changeLang } = useLang()
     
     const handleTranslationMenu = (event) => {
         setAnchorTranslationNav(event.currentTarget)
@@ -19,6 +21,7 @@ const TranslationMenu = ({sx}) => {
           setAnchorTranslationNav(null)
           localStorage.setItem('i18n-lang', lang)
           i18n.changeLanguage(lang)
+          changeLang(lang)
         }
     }
 

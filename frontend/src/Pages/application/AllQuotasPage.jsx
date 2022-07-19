@@ -21,11 +21,12 @@ import QuotaDeletionDialog from '../../components/dialogs/QuotaDeletionDialog';
 import QuotaNotifyVerificationDialog from '../../components/dialogs/QuotaNotifyVerificationDialog'
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import { QUOTAS_FETCH_RESET, QUOTA_CREATE_RESET, QUOTA_UPDATE_RESET, QUOTA_DELETE_RESET } from '../../store/constants/quotaConstants';
+import useLang from '../../hooks/useLang'
 
 const AllQuotasPage = () => {
     const {t, i18n} = useTranslation()
     const dispatch = useDispatch()
-
+    const { lang } = useLang()
     const [page, setPage] = useState(1);
     const quotasFetch = useSelector((state) => state.quotasFetch)
     const { loading, error, quotasGet } = quotasFetch
@@ -259,6 +260,7 @@ const AllQuotasPage = () => {
             pageSize={searchState.limit}
             hideFooter={true}
             onPageChange={changePageHandler}
+            localeText={lang}
             sx={{
                 "& .MuiDataGrid-columnHeaders": {
                     backgroundColor: "rgba(219, 219, 219, 0.5)"

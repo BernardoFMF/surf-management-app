@@ -24,10 +24,12 @@ import EventCreateDialog from '../../components/dialogs/EventCreateDialog';
 import DropdownInputField from '../../components/multiStepForm/DropdownInputField';
 import { EVENTS_FETCH_RESET, EVENT_CREATE_RESET, EVENT_DELETE_RESET } from '../../store/constants/eventConstants';
 import { GROUPS_FETCH_RESET } from '../../store/constants/groupConstants';
+import useLang from '../../hooks/useLang'
 
 const AllEventsPage = () => {
     const {t} = useTranslation()
     const dispatch = useDispatch()
+    const { lang } = useLang()
     const navigate = useNavigate()
     const eventsFetch = useSelector((state) => state.eventsFetch)
     const { loading, error, eventsGet } = eventsFetch
@@ -244,6 +246,7 @@ const columns = [
                         pageSize={searchState.limit}
                         hideFooter={true}
                         onPageChange={changePageHandler}
+                        localeText={lang}
                         sx={{
                             "& .MuiDataGrid-columnHeaders": {
                                 backgroundColor: "rgba(219, 219, 219, 0.5)"

@@ -15,11 +15,9 @@ import NavigationScroll from './layout/NavigationScroll'
 import './i18n'
 
 function App() {
-  const customization = useSelector((state) => state.customization);
-
   return (
     <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={themes(customization)}>
+            <ThemeProvider theme={themes()}>
                 <CssBaseline />
                 <NavigationScroll>
                     <Routes />
