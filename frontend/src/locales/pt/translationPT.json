@@ -422,5 +422,7 @@
     "user_sports_example": "Membro/Desporto Exemplo",
     "phone_number": "Numero de telefone",
 
-    "uploaded_sucessfully": "Carregado com sucesso"
+    "uploaded_sucessfully": "Carregado com sucesso",
+    "export_members" : "Exportar Membros",
+    "send": "Enviar"
 }

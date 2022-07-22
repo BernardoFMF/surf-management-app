@@ -421,5 +421,7 @@
     "user_sports_example": "User Sport Example",
     "phone_number": "Phone number",
 
-    "uploaded_sucessfully": "Uploaded sucessfully"
+    "uploaded_sucessfully": "Uploaded sucessfully",
+    "export_members" : "Export Members",
+    "send": "Send"
 }
