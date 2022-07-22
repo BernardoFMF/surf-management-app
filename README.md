@@ -49,7 +49,7 @@ It's recommended that both databases have the same user, password and port. Only
 - **PG_PASSWORD** - represents the password of the database.
 - **PG_HOST** - represents the host of the database.
 - **PG_PORT** - represents the port of the database.
-- **PG_DB** - represents the name of the database**.
+- **PG_DB** - represents the name of the database.
 - **PG_DB_TEST** - represents the name of the database for tests.
 - **NODE_ENV** - must be set to the value **development**. When deploying, this variable must be set to **production**.
 - **EMAIL** - represents the email which will send notifications.
