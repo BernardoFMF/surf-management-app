@@ -91,18 +91,18 @@ insert into Member_img_
 values (1, null), (2, null), (3, null), (4, null);
 
 insert into Sport_(name_, is_deleted_) 
-values ('Surfing',false),
-('Kneeboarding',false),
-('Bodysurfing',false),
+values ('Surf',false),
+('Kneeboard',false),
+('Bodysurf',false),
 ('Wakeboard',false),
 ('Finswimming',false),
 ('Windsurf',false),
 ('Rafting',false),
-('Kiteboarding',false),
-('Paddleboarding',false),
+('Kiteboard',false),
+('Paddleboard',false),
 ('Canyoning',false),
 ('Kayak Polo',false),
-('Bodyboarding',false);
+('Bodyboard',false);
 
 insert into User_sport_ 
 values (2,1,array['apprentice'],4890, 54,'Federacao Portuguesa de Surf',array[2021,2022],false), 
