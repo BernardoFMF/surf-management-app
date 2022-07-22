@@ -52,6 +52,9 @@ It's recommended that both databases have the same user, password and port. Only
 - **PG_DB** - represents the name of the database**.
 - **PG_DB_TEST** - represents the name of the database for tests.
 - **NODE_ENV** - must be set to the value **development**. When deploying, this variable must be set to **production**.
+- **EMAIL** - represents the email which will send notifications.
+- **EMAIL_PASSWORD** - represents the password for the email above.
+- **SECRET** - represents the secret string which will be used to sign the session cookie.
 
 8. To start the application use the following command on the [root directory](https://github.com/BernardoFMF/surf-management-app).
 
