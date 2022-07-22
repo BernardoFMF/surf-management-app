@@ -44,6 +44,7 @@ const AllCandidatesPage = () => {
     const handleClose = () => {
         setOpen(false)
         dispatch({ type: APPROVE_CANDIDATE_RESET })
+        setPage(1)
         dispatch(getCandidates(searchState.username_filter,searchState.name_filter,searchState.email_filter,0,searchState.limit))
     };
 

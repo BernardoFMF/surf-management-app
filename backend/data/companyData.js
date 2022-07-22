@@ -46,7 +46,7 @@ const companyData = (db) => {
 
 	const getMemberValidation = async (id_) => {
 		const member = await db.getMemberValidationData(id_)
-		if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_24')
+		if (!member) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
 		return member
 	}
 

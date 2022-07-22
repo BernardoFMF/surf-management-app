@@ -63,7 +63,7 @@ const AllCompaniesPage = () => {
     const [page, setPage] = useState(1);
 
     const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); dispatch({ type: COMPANY_POST_RESET }); dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit))};
+    const handleClose = () => {setOpen(false); setPage(1); dispatch({ type: COMPANY_POST_RESET }); dispatch(getCompanies(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit))};
     const handleOpen = () => setOpen(true);
 
     useEffect(() => {

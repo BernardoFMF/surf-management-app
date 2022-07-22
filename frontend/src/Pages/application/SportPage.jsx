@@ -44,6 +44,7 @@ const SportPage = () => {
 
     const handleClose = () => {
         setOpen(false)
+        setPage(1)
         dispatch(getUsersSport(id, 0, searchState.limit, searchState.toggle_filter))
         dispatch({ type: USERS_SPORTS_CREATE_RESET })
     };

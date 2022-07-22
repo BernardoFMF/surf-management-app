@@ -27,7 +27,7 @@ const groupData = (db) => {
 
     const getMemberGroups = async (id_, name_, group_type_, types_, offset_, limit_) => {
         const member = db.getMemberByIdData(id_)
-        if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_24')
+        if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_28')
         return await db.getMemberGroupsData(id_, name_, group_type_, types_, offset_, limit_)
     }
 

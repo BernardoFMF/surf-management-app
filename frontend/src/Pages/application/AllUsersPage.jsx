@@ -54,7 +54,7 @@ const AllUsersPage = () => {
     })
 
     const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); dispatch({ type: USER_POST_RESET }); dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit))};
+    const handleClose = () => {setOpen(false); setPage(1); dispatch({ type: USER_POST_RESET }); dispatch(getUsers(searchState.username_filter, searchState.name_filter, searchState.email_filter, searchState.toggle_filter, 0, searchState.limit))};
     const handleOpen = () => setOpen(true);
    
     const [page, setPage] = useState(1);

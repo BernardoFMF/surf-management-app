@@ -5,7 +5,7 @@ import error from '../utils/error.js'
 const memberData = (db) => {
 	const getMemberById = async (id_) => {
 		const member = await db.getMemberByIdData(id_)
-		if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_12')
+		if (!member) throw error(404, 'Member does not exist', 'MESSAGE_CODE_28')
 		if (member.category_ === 'user') {
 			const user = await db.getUserByIdData(id_)
 			user.category_ = member.category_
@@ -22,7 +22,6 @@ const memberData = (db) => {
 
 	const getAllMembers = async () => {
 		const members = await db.getAllMembersData()
-		if (!members) throw error(404, 'Member does not exist', 'MESSAGE_CODE_12')
 		return members
 	}
 

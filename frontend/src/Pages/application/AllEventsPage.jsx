@@ -42,7 +42,7 @@ const AllEventsPage = () => {
     })
 
     const [openSubmit, setOpenSubmit] = React.useState(false);
-    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch({ type: EVENT_CREATE_RESET }); dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter, 0, searchState.limit))};
+    const handleCloseSubmit = () => {setOpenSubmit(false); setPage(1); dispatch({ type: EVENT_CREATE_RESET }); dispatch(getEvents(searchState.name_filter, searchState.initial_date_filter, searchState.end_date_filter, 0, searchState.limit))};
     const handleOpenSubmit = () => setOpenSubmit(true);
 
     const [page, setPage] = useState(1);

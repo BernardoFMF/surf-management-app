@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useFormikContext, useField } from 'formik'
 import default_image from './../../src/assets/data/blank-profile-picture.png'
 
-import { Button, Grid, Box, Avatar,Typography } from '@mui/material';
+import { useMediaQuery, Grid, Box, Avatar,Typography } from '@mui/material';
 import AnimateButton from './extended/AnimateButton'
 import { useTranslation } from 'react-i18next'
 import AnimatedPage from './AnimatedPage';
@@ -12,8 +12,9 @@ const AvatarBase64 = ({ label, size, memberInfo}) => {
     const {t, i18n} = useTranslation()
     const theme = useTheme();
     
+    const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+
     const [selectedImage, setSelectedImage] = useState(memberInfo.img_value_)
-    const resolution = window.innerWidth;
 
     return (
         <>
@@ -26,60 +27,33 @@ const AvatarBase64 = ({ label, size, memberInfo}) => {
                 onChange={e => {if(e.target.files[0])setSelectedImage(e.target.files[0])}}
             />
             <AnimatedPage>
-            <Grid container  direction={ { xs: "column", md: "row"} } >
+            <Grid container justifyContent="center" alignItems="center" spacing={2} direction={ matchDownSM ? "column" : "row"} >
                 <Grid item>
-                {
-                    selectedImage ?
-                        <Box mt={2} display="flex" justifyContent={'center'} >
-                            <Avatar
-                                alt={selectedImage.name}
-                                src={selectedImage}
-                                sx={{ width: size, height: size}}
-                            />
-                            {resolution > 500 &&
-                            <Grid container direction={ { xs: "row", md: "column"} } justifyContent={'center'}>
-                                <Typography sx={{ml:7, fontSize: '1.6rem', fontWeight: 500}}>
-                                    {t('sign_in_welcome')}
-                                </Typography>
-                                <Typography sx={{mt: 1, ml:7, fontSize: '1.5rem', fontWeight: 500}} color={theme.palette.primary.main}>
-                                    {memberInfo.username_}
-                                </Typography>
-                            </Grid>
-                            }
-                            
-                        </Box> :  
-                        <Box mt={2} ml={2} display="flex" >
-                            <Avatar
-                                alt='blank-profile-picture.png'
-                                src= {default_image} 
-                                sx={{ width: size, height: size}}
-                            />
-                            <Grid container direction={ "column"}  justifyContent={'center'}>
-                                <Typography sx={{ml:5, fontSize: '2.0rem', fontWeight: 500}}>
-                                    {t('sign_in_welcome')}
-                                </Typography>
-                                <Typography sx={{mt: 1, ml:5, fontSize: '1.9rem', fontWeight: 500}} color={theme.palette.primary.main}>
-                                    {memberInfo.username_}
-                                </Typography>
-                            </Grid>
-                        </Box>
-                } 
+                    <Box mt={2} display="flex" justifyContent={'center'} >
+                        {
+                            selectedImage ?
+                                <Avatar
+                                    alt={selectedImage.name}
+                                    src={selectedImage}
+                                    sx={{ width: size, height: size}}
+                                />                 
+                                :  
+                                <Avatar
+                                    alt='blank-profile-picture.png'
+                                    src= {default_image} 
+                                    sx={{ width: size, height: size}}
+                                />
+                        }
+                    </Box> 
                 </Grid>
-                    {
-                        resolution < 500 &&
-                        <Grid container direction="column" textAlign={'center'} >
-                            <Grid item>                
-                                <Typography sx={{mt: 1, fontSize: '1.5rem', fontWeight: 500}}>
-                                    {t('sign_in_welcome')}
-                                </Typography>
-                            </Grid>
-                            <Grid item>                
-                                <Typography sx={{mt: 1, fontSize: '1.4rem', fontWeight: 500}} color={theme.palette.primary.main}>
-                                    {memberInfo.username_}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    }
+                <Grid item alignContent={'center'}>
+                    <Typography sx={{fontSize: '1.6rem', fontWeight: 500}}>
+                        {t('sign_in_welcome')}
+                    </Typography>
+                    <Typography sx={{ fontSize: '1.5rem', fontWeight: 500}} color={theme.palette.primary.main}>
+                        {memberInfo.username_}
+                    </Typography>
+                </Grid>  
             </Grid>
             </AnimatedPage>
            

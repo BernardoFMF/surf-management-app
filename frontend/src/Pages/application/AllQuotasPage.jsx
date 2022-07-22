@@ -46,7 +46,7 @@ const AllQuotasPage = () => {
     }
 
     const [openSubmit, setOpenSubmit] = React.useState(false);
-    const handleCloseSubmit = () => {setOpenSubmit(false); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit)); dispatch({ type: QUOTA_CREATE_RESET })};
+    const handleCloseSubmit = () => {setOpenSubmit(false); setPage(1); dispatch(getQuotas(searchState.username_filter, searchState.email_filter, searchState.date_filter, 0, searchState.limit)); dispatch({ type: QUOTA_CREATE_RESET })};
     const handleOpenSubmit = () => setOpenSubmit(true);
 
     const [openVerification, setOpenVerification] = React.useState(false);

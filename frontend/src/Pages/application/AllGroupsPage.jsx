@@ -53,7 +53,7 @@ const AllGroupsPage = () => {
         limit: 10
     })
     const [open, setOpen] = useState(false);
-    const handleClose = () => {setOpen(false); dispatch({ type: GROUP_POST_RESET }); dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))};
+    const handleClose = () => {setOpen(false); setPage(1); dispatch({ type: GROUP_POST_RESET }); dispatch(getGroups(searchState.name_filter, searchState.group_type_filter, searchState.types_filter, 0, searchState.limit))};
     const handleOpen = () => setOpen(true);
 
     useEffect(() => {
