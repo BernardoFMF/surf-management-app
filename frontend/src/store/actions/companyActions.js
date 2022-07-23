@@ -107,7 +107,6 @@ export const deleteCompany = (id) => async (dispatch) => {
       dispatch({
         type: MEMBER_VALIDATION_FETCH_REQUEST,
       })
-      console.log(pin);
       const response = await fetch(`/api/companies/validate/${id}`, {
           method: 'POST',
           headers: { "Content-Type": "application/json" },
