@@ -93,8 +93,8 @@ the same credentials, differentiated only by the database name, which can be wha
 name wanted.
 
 3. In the .env file created, besides inserting the variables mentioned, add the following:
-- PG_DB_TEST - represents the name of the database used in unit tests;
-- PG_DB_TEST_INTEGRATION - represents the name of the database used in
+- **PG_DB_TEST** - represents the name of the database used in unit tests;
+- **PG_DB_TEST_INTEGRATION** - represents the name of the database used in
 integration tests.
 4. Start the application using the following command in the main directory:
 - npm test on the command prompt.
