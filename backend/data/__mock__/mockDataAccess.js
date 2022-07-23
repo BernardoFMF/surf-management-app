@@ -58,7 +58,8 @@ let users_sports = []
 let membership_cards = [
 	{
 		user_id_ : indexObj.idxMember,
-		qrcode_: "qrcodeteste"
+		qrcode_: "qrcodeteste",
+		pin_: "abD2"
 	}
 ]
 let quotas = []
@@ -907,10 +908,11 @@ const postUserData = async (cc_, nif_, type_, birth_date_, nationality_, full_na
 	return user.member_id_
 }
 
-const updateUserQrCodeData = async (id_, qrcode_) => {
+const updateUserQrCodeData = async (id_, qrcode_, pin_) => {
 	const membership_card = {
 		user_id_ : id_,
-		qrcode_
+		qrcode_,
+		pin_
 	}
 	membership_cards.push(membership_card)
 }
@@ -1493,11 +1495,12 @@ const getMemberValidationData = async(id_) => {
 	const member = members.filter(member => member.id_ == id_)[0]
 	const user = users.filter(user => user.member_id_ == id_)[0]
 	const image = user_imgs.filter(user => user.member_id_ == id_)[0]
-
+	const card = membership_cards.filter(user => user.user_id_ == id_)[0]
 	let validation_data = {
 		has_debt_: member.has_debt_,
 		full_name_: user.full_name_,
-		img_value_: image.img_
+		img_value_: image.img_,
+		pin_: card.pin_
 	}
 	return validation_data
 }

@@ -15,7 +15,13 @@ const memberController = (data) => {
 			}
 		}
 		const member = await services.getMemberByIdServices(req.params.id)
-		if (member) res.json(member)
+		
+		if (member) {
+			if(req.user.id_ != req.params.id) {
+				delete member.pin_
+			}
+			res.json(member)
+		}
 	})
 
 	const getAllMembers = asyncHandler(async (req, res) => {

@@ -36,7 +36,7 @@ const router = (app, data) => {
 	let cookieSettings = {
 		maxAge: 4 * 60 * 60 * 1000
 	}
-	if (process.env.NODE_ENV == 'production') {
+	if (process.env.NODE_ENV === 'production') {
 		app.set('trust proxy', 1);
 		cookieSettings = { ...cookieSettings, httpOnly: true, secure: true, sameSite: true }
 	}
@@ -76,10 +76,12 @@ const router = (app, data) => {
 		async (username, password, done) => {
 			try {
 				const member = await data.getMemberByUsernameData(username)
+				console.log(member);
 				if(!member) {
 					done(error(401, 'Incorrect username', 'MESSAGE_CODE_1'), false, null)
 				} else {
 					if(await crypto.comparepassword(password, member.pword_)) {
+						console.log("passou");
 						done(null, member)
 					} else {
 						done(error(401, 'Incorrect password', 'MESSAGE_CODE_1'), false, null)

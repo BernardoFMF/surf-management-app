@@ -87,6 +87,7 @@ export const login = (username, password) => async (dispatch) => {
       })
       const member = await response.json()
       if(response.status !== 200) throw Error(member.message_code)
+
       dispatch({
         type: MEMBER_FETCH_SUCCESS,
         payload: member,

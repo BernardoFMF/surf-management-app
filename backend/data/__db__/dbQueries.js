@@ -56,7 +56,7 @@ const QUERY_GET_USERS = 'select u.member_id_, nif_, cc_, full_name_, nationality
 
 const QUERY_NUMBER_OF_USERS = 'select count(*) from user_'
 
-const QUERY_GET_USER_BY_ID = 'select u.member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, is_admin_, member_type_, has_debt_, username_, location_, address_, postal_code_, email_, phone_number_, gender_, img_value_, is_deleted_, qrcode_, iban_, category_ from User_ u join Member_ m on u.member_id_ = m.id_ join Member_Types_ mt on m.member_type_ = mt.type_ join Contact_ c on m.id_ = c.member_id_ join Member_Img_ ui on m.id_ = ui.member_id_ join Membership_Card_ mc on m.id_ = mc.user_id_ where m.id_ = $1'
+const QUERY_GET_USER_BY_ID = 'select u.member_id_, nif_, cc_, full_name_, nationality_, birth_date_, enrollment_date_, paid_enrollment_, is_admin_, member_type_, has_debt_, username_, location_, address_, postal_code_, email_, phone_number_, gender_, img_value_, is_deleted_, qrcode_, iban_, category_, pin_ from User_ u join Member_ m on u.member_id_ = m.id_ join Member_Types_ mt on m.member_type_ = mt.type_ join Contact_ c on m.id_ = c.member_id_ join Member_Img_ ui on m.id_ = ui.member_id_ join Membership_Card_ mc on m.id_ = mc.user_id_ where m.id_ = $1'
 
 const QUERY_POST_USER = 'call post_user($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)'
 
@@ -120,7 +120,7 @@ const QUERY_GET_EMAILS = 'select email_ from Contact_'
 
 const QUERY_GET_USER_EMAIL = 'select email_ from Contact_ where member_id_ = $1'
 
-const QUERY_UPDATE_QRCODE = 'insert into Membership_card_ (user_id_, qrcode_) values ($1, $2)'
+const QUERY_UPDATE_QRCODE = 'insert into Membership_card_ (user_id_, qrcode_, pin_) values ($1, $2, $3)'
 
 const QUERY_POST_ATTENDANCE = 'insert into Attendance_(member_id_, event_id_, state_) values ($1, $2, $3)'
 
@@ -152,7 +152,7 @@ const QUERY_GET_MANAGEMENT_QUOTA_BY_TYPE = 'select type_, quota_value_ from Memb
 
 const QUERY_NUMBER_OF_EVENTS = 'select count(*) from event_'
 
-const QUERY_GET_MEMBER_VALIDATE = 'select has_debt_, full_name_, img_value_ from Member_ m join user_ u on m.id_ = u.member_id_ join Member_Img_ mi on mi.member_id_ = m.id_ where m.id_ = $1'
+const QUERY_GET_MEMBER_VALIDATE = 'select has_debt_, full_name_, img_value_, pin_ from Member_ m join user_ u on m.id_ = u.member_id_ join Member_Img_ mi on mi.member_id_ = m.id_ join Membership_Card_ mc on mc.user_id_ = m.id_ where m.id_ = $1'
 
 const QUERY_GET_GROUPS = 'select distinct g.group_id_, name_, description_, group_type_ from Group_ g '
 

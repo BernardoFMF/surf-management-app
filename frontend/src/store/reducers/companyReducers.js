@@ -67,7 +67,7 @@ export const companyDeletionReducer = (state = {}, action) => {
     }
   }
 
-  export const memberValidateFetchReducer = (state = {validateGet: {full_name_ : ""}}, action) => {
+  export const memberValidateFetchReducer = (state = {}, action) => {
     switch (action.type) {
       case MEMBER_VALIDATION_FETCH_REQUEST:
         return { loading: true }

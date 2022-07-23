@@ -2,6 +2,7 @@
 
 import error from '../utils/error.js'
 import { toDataURL } from 'qrcode'
+import crypto from '../utils/crypto.js'
 
 const userData = (db) => {
 	const getUsers = async (username_filter,name_filter,email_filter, debt_filter,offset,limit) => {
@@ -43,7 +44,9 @@ const userData = (db) => {
 
 		const qrcode_ = await toDataURL(`${url}/validate/${userId}`)
 
-		await db.updateUserQrCodeData(userId, qrcode_)
+		const pin_ = crypto.generatePin(4)
+
+		await db.updateUserQrCodeData(userId, qrcode_, pin_)
 
 		return userId
 	}

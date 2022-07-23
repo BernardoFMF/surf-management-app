@@ -194,6 +194,7 @@ create table Group_Sports_ (
 create table Membership_card_ (
 	user_id_ 	 	int,
 	qrcode_			text unique,
+	pin_			varchar(4),
 	
 	primary key(user_id_),
 	constraint fk_user foreign key(user_id_) references User_(member_id_)

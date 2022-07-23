@@ -102,17 +102,19 @@ export const deleteCompany = (id) => async (dispatch) => {
     }
   }
 
-  export const getMemberValidation = (id) => async (dispatch) => {
+  export const getMemberValidation = (id, pin) => async (dispatch) => {
     try {
       dispatch({
         type: MEMBER_VALIDATION_FETCH_REQUEST,
       })
+      console.log(pin);
       const response = await fetch(`/api/companies/validate/${id}`, {
-          method: 'GET',
+          method: 'POST',
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pin: pin }),
       })
       const member = await response.json()
-      if(response.status !== 200) throw Error(member.message_code)
+      if(response.status !== 201) throw Error(member.message_code)
       dispatch({
         type: MEMBER_VALIDATION_FETCH_SUCCESS,
         payload: member,

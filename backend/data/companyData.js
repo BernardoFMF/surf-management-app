@@ -44,10 +44,14 @@ const companyData = (db) => {
 		return await db.deleteCompanyData(id_)
 	}
 
-	const getMemberValidation = async (id_) => {
-		const member = await db.getMemberValidationData(id_)
+	const getMemberValidation = async (id_, pin_) => {
+		let member = await db.getMemberValidationData(id_)
 		if (!member) throw error(404, 'User does not exist', 'MESSAGE_CODE_12')
-		return member
+		if (pin_ === member.pin_) {
+			delete member.pin_
+			return member
+		} 
+		throw error(401, 'Incorrect Pin', 'MESSAGE_CODE_49')
 	}
 
 	return {

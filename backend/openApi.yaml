@@ -1815,7 +1815,7 @@ paths:
                 $ref: '#/components/schemas/error'
                 
   /api/companies/validate/{id}:
-    get:
+    post:
       summary: validates a member
       operationId: validateApi
       parameters:
@@ -1826,6 +1826,11 @@ paths:
           explode: false
           schema:
             type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/validate_body'
       responses:
         '200':
           description: response body should be a user information on validation
@@ -2698,6 +2703,11 @@ paths:
   
 components:
   schemas:
+    validate_body:
+      type: object
+      properties:
+        pin:
+          type: string
     all_members_object:
       type: object
       properties:
@@ -2803,6 +2813,8 @@ components:
           type: string
         quota_value_:
           type: integer
+        pin_:
+          type: string
     users:
       type: object
       required:
@@ -2916,6 +2928,8 @@ components:
         iban_:
           type: string
         category_:
+          type: string
+        pin_:
           type: string
     api_user_body:
       type: object

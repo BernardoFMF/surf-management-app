@@ -8,16 +8,34 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { useTranslation } from 'react-i18next'
 import { Avatar, Box, Typography, Grid, Stack, CircularProgress, useMediaQuery } from '@mui/material';
+import { Formik, Form } from 'formik';
+import InputField from '../multiStepForm/InputField';
+import * as Yup from 'yup';
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import { IconButton } from '@mui/material';
 
 const MembershipCardTab = () => {
   const memberFetch = useSelector((state) => state.memberFetch)
   const { memberGet } = memberFetch
+  const memberLogin = useSelector((state) => state.memberLogin)
+  const { memberInfo } = memberLogin
   const mediumViewport = useMediaQuery('(min-width:600px)');
   const [loading, setLoading] = useState(true);
   const {t, i18n} = useTranslation()
 
   const imageLoaded = () => {
       setLoading(false);
+  }
+
+  const [showPassword, setShowPassword] = useState(false)
+
+  const handleClickShowPassword = () => {
+      setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+      event.preventDefault();
   }
 
   return (
@@ -107,6 +125,45 @@ const MembershipCardTab = () => {
                   </Box>
               </Card>
           </Box>
+            { memberInfo.id_ === memberGet.member_id_ && (
+                <Box sx={{ pt: 2, ml: { md: 4}, width: { md: 400 }}} alignItems={"center"}>
+                    <Formik
+                        initialValues={{
+                            first: memberGet.pin_.charAt(0),
+                            second: memberGet.pin_.charAt(1),
+                            third: memberGet.pin_.charAt(2),
+                            fourth: memberGet.pin_.charAt(3)
+                        }}
+                        validationSchema={Yup.object().shape({
+                            first: Yup.string().required(t('pin_mandatory')),
+                            second: Yup.string().required(t('pin_mandatory')),
+                            third: Yup.string().required(t('pin_mandatory')),
+                            fourth: Yup.string().required(t('pin_mandatory'))
+                        })}
+                    >
+                        {formik => (
+                            <Form>
+                                <Stack direction="row" spacing={2} alignItems='center'>
+                                    <InputField name='first' type={showPassword ? 'text' : 'password'} inputProps={{ maxLength: 1 }} disabled={true}></InputField>
+                                    <InputField name='second' type={showPassword ? 'text' : 'password'} inputProps={{ maxLength: 1 }} disabled={true}></InputField>
+                                    <InputField name='third' type={showPassword ? 'text' : 'password'} inputProps={{ maxLength: 1 }} disabled={true}></InputField>
+                                    <InputField name='fourth' type={showPassword ? 'text' : 'password'} inputProps={{ maxLength: 1 }} disabled={true}></InputField>
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                        size="large"
+                                    >
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </Stack>
+                            </Form>
+                        )}
+                    </Formik>
+                </Box>
+            )}
+            
       </>
   )
 }

@@ -50,8 +50,11 @@ const companyController = (data) => {
 		if(req.user.member_type_ != "corporate") {
 			throw error(401, 'Unauthorized', 'MESSAGE_CODE_5')
 		}
-		const member = await services.getMemberValidation(req.params.id)
-		if (member) res.json(member)
+		const member = await services.getMemberValidation(req.params.id, req.body.pin)
+		if (member) {
+			res.status(201)
+			res.json(member)
+		}
 	})
 
 	return {

@@ -869,9 +869,9 @@ const db = (PG_USER, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB, mode) => {
 		return await pool(handler)
 	}
 
-	const updateUserQrCodeData = async (id_, qrcode_) => {
+	const updateUserQrCodeData = async (id_, qrcode_, pin_) => {
 		const handler = async (client) => {
-			await client.query(queries.QUERY_UPDATE_QRCODE, [id_, qrcode_])
+			await client.query(queries.QUERY_UPDATE_QRCODE, [id_, qrcode_, pin_])
 			return id_
 		}
 

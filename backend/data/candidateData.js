@@ -4,6 +4,7 @@ import error from '../utils/error.js'
 import { toDataURL } from 'qrcode'
 import { mailSender } from '../utils/email/mailSender.js'
 import { approvalTemplate } from  '../utils/email/mailTemplates.js'
+import crypto from '../utils/crypto.js'
 
 const candidateData = (db) => {
 	const getCandidates = async (username_filter,name_filter,email_filter,offset,limit) => {
@@ -55,7 +56,9 @@ const candidateData = (db) => {
 		const member = await db.getMemberByIdData(u_id_)
 		const qrcode_ = await toDataURL(`${url}/validate/${u_id_}`)
 
-		await db.updateUserQrCodeData(u_id_, qrcode_)
+		const pin_ = crypto.generatePin(4)
+
+		await db.updateUserQrCodeData(u_id_, qrcode_, pin_)
 		
 		if(sendEmail == undefined || sendEmail)
 			await mailSender([candidate.email_],`Aprovação de candidatura`, approvalTemplate(candidate.full_name_, member.member_type_))
