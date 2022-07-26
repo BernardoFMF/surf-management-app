@@ -760,14 +760,14 @@ test('Validate member', async () => {
 	session = res1
 	.headers['set-cookie'][0]
 
-	const handler = (client) => {
+	const handler = async (client) => {
 		const result = await client.query("select pin_ from Membership_Card_ where user_id_ = $1", [1])
 		return result.rows[0].pin_
 	}
 	const pin = await data.pool(handler)
 
 	const getRes = await supertest(app)
-		.get(`/api/companies/validate/${1}`)
+		.post(`/api/companies/validate/${1}`)
 		.set('Accept', 'application/json')
 		.set('Cookie', session)
 		.send({

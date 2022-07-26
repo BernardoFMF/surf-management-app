@@ -19,7 +19,6 @@ const companyServices = (db) => {
 	}
 
 	const getMemberValidation = async(id, pin) => {
-		console.log(pin);
 		if(!id) throw error(400,'Parameter not found: id', 'MESSAGE_CODE_14')
 		if(!pin) throw error(400,'Parameter not found: pin', 'MESSAGE_CODE_14')
 		return await data.getMemberValidation(id, pin)
