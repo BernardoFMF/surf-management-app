@@ -1745,6 +1745,9 @@
     },
     "quota_value_" : {
       "type" : "integer"
+    },
+    "pin_" : {
+      "type" : "string"
     }
   }
 };
@@ -2250,6 +2253,9 @@
     },
     "category_" : {
       "type" : "string"
+    },
+    "pin_" : {
+      "type" : "string"
     }
   }
 };
@@ -2357,6 +2363,14 @@
     }
   },
   "example" : null
+};
+            defs["validate_body"] = {
+  "type" : "object",
+  "properties" : {
+    "pin" : {
+      "type" : "string"
+    }
+  }
 };
             defs["validated_user"] = {
   "required" : [ "full_name_", "has_debt_" ],
@@ -2631,7 +2645,7 @@
                           <div class="tab-pane active" id="examples-Default-deleteCandidateApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/candidates/{id}"</code></pre>
+"//api/candidates/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-deleteCandidateApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -3068,7 +3082,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-deleteCompanyApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/companies/{cid}"</code></pre>
+"//api/companies/{cid}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-deleteCompanyApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -3505,7 +3519,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-deleteEventApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/events/{id}"</code></pre>
+"//api/events/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-deleteEventApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -3942,7 +3956,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-deleteGroupApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/groups/{id}"</code></pre>
+"//api/groups/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-deleteGroupApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -4379,7 +4393,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-deleteQuotaApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/quotas?date="</code></pre>
+"//api/quotas?date="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-deleteQuotaApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -4822,7 +4836,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-deleteSportApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/sports/{sid}"</code></pre>
+"//api/sports/{sid}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-deleteSportApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -5259,7 +5273,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-deleteUserApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users/{id}"</code></pre>
+"//api/users/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-deleteUserApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -5696,7 +5710,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-deleteUserSportApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users/{id}/sports/{sid}"</code></pre>
+"//api/users/{id}/sports/{sid}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-deleteUserSportApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -6209,7 +6223,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getCandidateByIdApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/candidates/{id}"</code></pre>
+"//api/candidates/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getCandidateByIdApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -6694,7 +6708,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getCandidatesApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/candidates?username=&name=&email=&offset=&limit="</code></pre>
+"//api/candidates?username=&name=&email=&offset=&limit="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getCandidatesApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -7244,7 +7258,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getCompaniesApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/companies?username=&name=&email=&offset=&limit="</code></pre>
+"//api/companies?username=&name=&email=&offset=&limit="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getCompaniesApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -7848,7 +7862,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getCompaniesQuotasApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/quotas/companies"</code></pre>
+"//api/quotas/companies"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getCompaniesQuotasApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -8206,7 +8220,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getCompanyByIdApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/companies/{cid}"</code></pre>
+"//api/companies/{cid}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getCompanyByIdApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -8691,7 +8705,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getEventAttendanceByIdApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/events/{eid}/attendance?offset=&limit="</code></pre>
+"//api/events/{eid}/attendance?offset=&limit="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getEventAttendanceByIdApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -9245,7 +9259,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getEventAttendanceByMemberIdApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/events/members/{id}/attendance?offset=&limit=&name=&state=&date="</code></pre>
+"//api/events/members/{id}/attendance?offset=&limit=&name=&state=&date="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getEventAttendanceByMemberIdApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -9887,7 +9901,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getEventByIdApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/events/{id}"</code></pre>
+"//api/events/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getEventByIdApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -10372,7 +10386,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getEvents-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/events?offset=&limit=&name=&initialDate=&endDate="</code></pre>
+"//api/events?offset=&limit=&name=&initialDate=&endDate="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getEvents-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -10982,7 +10996,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getGroupByIdApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/groups/{id}"</code></pre>
+"//api/groups/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getGroupByIdApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -11467,7 +11481,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getGroupMembersApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/groups/{id}/members"</code></pre>
+"//api/groups/{id}/members"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getGroupMembersApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -11952,7 +11966,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getGroupsApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/groups?offset=&limit=&name=&group_type=&types="</code></pre>
+"//api/groups?offset=&limit=&name=&group_type=&types="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getGroupsApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -12508,7 +12522,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getManagementQuotasApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/quotas/management?category="</code></pre>
+"//api/quotas/management?category="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getManagementQuotasApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -12947,7 +12961,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getMemberByIdApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/members/{id}"</code></pre>
+"//api/members/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getMemberByIdApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -13432,7 +13446,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getMemberGroupsApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/groups/members/{id}"</code></pre>
+"//api/groups/members/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getMemberGroupsApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -13917,7 +13931,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getMembersApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/members"</code></pre>
+"//api/members"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getMembersApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -14371,7 +14385,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getMembersQuotasApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/quotas/members/{id}?offset=&limit="</code></pre>
+"//api/quotas/members/{id}?offset=&limit="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getMembersQuotasApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -14925,7 +14939,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getQuotasApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/quotas?username=&email=&date=&offset=&limit="</code></pre>
+"//api/quotas?username=&email=&date=&offset=&limit="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getQuotasApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -15484,7 +15498,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getSportByIdApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/sports/{sid}"</code></pre>
+"//api/sports/{sid}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getSportByIdApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -15969,7 +15983,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getSportsApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/sports"</code></pre>
+"//api/sports"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getSportsApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -16375,7 +16389,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getSportsTypesApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/sports/types"</code></pre>
+"//api/sports/types"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getSportsTypesApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -16781,7 +16795,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getStatistics-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/statistics"</code></pre>
+"//api/statistics"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getStatistics-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -17231,7 +17245,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getUserByIdApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users/{id}"</code></pre>
+"//api/users/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getUserByIdApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -17716,7 +17730,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getUserSportsByIdApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users/{id}/sports?offset=&limit="</code></pre>
+"//api/users/{id}/sports?offset=&limit="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getUserSportsByIdApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -18270,7 +18284,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getUsersApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users?offset=&limit=&username=&name=&email="</code></pre>
+"//api/users?offset=&limit=&username=&name=&email="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getUsersApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -18826,7 +18840,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getUsersQuotasApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/quotas/users"</code></pre>
+"//api/quotas/users"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getUsersQuotasApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -19184,7 +19198,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getUsersSportApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users/sports/{sid}?offset=&limit=&is_candidate=&username="</code></pre>
+"//api/users/sports/{sid}?offset=&limit=&is_candidate=&username="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getUsersSportApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -19795,7 +19809,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-getUsersSportsApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users/sports"</code></pre>
+"//api/users/sports"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-getUsersSportsApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -20150,7 +20164,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/candidates"</code></pre>
+"//api/candidates"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postCandidateApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -20653,7 +20667,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/companies"</code></pre>
+"//api/companies"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postCompanyApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -21107,7 +21121,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-postEmailContact-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/emails/contact"</code></pre>
+"//api/emails/contact"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postEmailContact-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -21557,7 +21571,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-postEmailNotify-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/emails/notify"</code></pre>
+"//api/emails/notify"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postEmailNotify-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -22008,7 +22022,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/events"</code></pre>
+"//api/events"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postEvent-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -22511,7 +22525,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/groups"</code></pre>
+"//api/groups"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postGroupApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -23062,7 +23076,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/auth/login"</code></pre>
+"//api/auth/login"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postLoginApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -23516,7 +23530,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-postLogoutApi-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/auth/logout"</code></pre>
+"//api/auth/logout"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postLogoutApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -23919,7 +23933,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/quotas/management"</code></pre>
+"//api/quotas/management"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postManagementQuotasApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -24422,7 +24436,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/quotas"</code></pre>
+"//api/quotas"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postQuotaApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -24877,7 +24891,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/sports"</code></pre>
+"//api/sports"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postSportApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -25380,7 +25394,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users"</code></pre>
+"//api/users"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postUserApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -25883,7 +25897,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users/{id}/sports"</code></pre>
+"//api/users/{id}/sports"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-postUserSportApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -26469,7 +26483,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/candidates/{id}"</code></pre>
+"//api/candidates/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-putCandidateApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -26959,7 +26973,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/companies/{cid}"</code></pre>
+"//api/companies/{cid}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-putCompanyApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -27449,7 +27463,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/events/{id}"</code></pre>
+"//api/events/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-putEventApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -27939,7 +27953,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/events/{eid}/attendance"</code></pre>
+"//api/events/{eid}/attendance"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-putEventAttendanceApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -28429,7 +28443,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/quotas/management/{type}"</code></pre>
+"//api/quotas/management/{type}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-putManagementQuotasApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -28967,7 +28981,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/auth/resetPassword"</code></pre>
+"//api/auth/resetPassword"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-resetPasswordApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -29422,7 +29436,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/auth/resquestResetPassword"</code></pre>
+"//api/auth/resquestResetPassword"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-resquestResetPasswordApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -29877,7 +29891,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/auth/updateCredentials"</code></pre>
+"//api/auth/updateCredentials"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-updateCredentialsApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -30332,7 +30346,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/quotas/{id}"</code></pre>
+"//api/quotas/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-updateMemberQuotaApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -30822,7 +30836,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/sports/{sid}"</code></pre>
+"//api/sports/{sid}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-updateSportApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -31312,7 +31326,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users/{id}"</code></pre>
+"//api/users/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-updateUserApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -31802,7 +31816,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/users/{id}/sports/{sid}"</code></pre>
+"//api/users/{id}/sports/{sid}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-updateUserSportApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -32416,7 +32430,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 -H "Content-Type: file/csv,application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/uploadFile"</code></pre>
+"//api/uploadFile"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-uploadFileApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -32902,7 +32916,7 @@ except ApiException as e:
                         <p class="marked"></p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/companies/validate/{id}</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/api/companies/validate/{id}</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
@@ -32922,9 +32936,10 @@ except ApiException as e:
 
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-validateApi-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
-"https://virtserver.swaggerhub.com/BernardoFMF/surf-management-app/1.0.0/api/companies/validate/{id}"</code></pre>
+-H "Content-Type: application/json"\
+"//api/companies/validate/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-validateApi-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -32941,8 +32956,9 @@ public class DefaultApiExample {
         
         DefaultApi apiInstance = new DefaultApi();
         Integer id = 56; // Integer | 
+        Validate_body body = ; // Validate_body | 
         try {
-            validated_user result = apiInstance.validateApi(id);
+            validated_user result = apiInstance.validateApi(id, body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling DefaultApi#validateApi");
@@ -32960,8 +32976,9 @@ public class DefaultApiExample {
     public static void main(String[] args) {
         DefaultApi apiInstance = new DefaultApi();
         Integer id = 56; // Integer | 
+        Validate_body body = ; // Validate_body | 
         try {
-            validated_user result = apiInstance.validateApi(id);
+            validated_user result = apiInstance.validateApi(id, body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling DefaultApi#validateApi");
@@ -32976,11 +32993,13 @@ public class DefaultApiExample {
   </div> -->
                             <div class="tab-pane" id="examples-Default-validateApi-0-objc">
                               <pre class="prettyprint"><code class="language-cpp">Integer *id = 56; // 
+Validate_body *body = ; //  (optional)
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
 // validates a member
 [apiInstance validateApiWith:id
+    body:body
               completionHandler: ^(validated_user output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
@@ -32997,7 +33016,9 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
 var api = new SurfApp.DefaultApi()
 var id = 56; // {{Integer}} 
-
+var opts = { 
+  'body':  // {{Validate_body}} 
+};
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -33005,7 +33026,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.validateApi(id, callback);
+api.validateApi(id, opts, callback);
 </code></pre>
                             </div>
 
@@ -33028,11 +33049,12 @@ namespace Example
 
             var apiInstance = new DefaultApi();
             var id = 56;  // Integer | 
+            var body = new Validate_body(); // Validate_body |  (optional) 
 
             try
             {
                 // validates a member
-                validated_user result = apiInstance.validateApi(id);
+                validated_user result = apiInstance.validateApi(id, body);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -33051,9 +33073,10 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiDefaultApi();
 $id = 56; // Integer | 
+$body = ; // Validate_body | 
 
 try {
-    $result = $api_instance->validateApi($id);
+    $result = $api_instance->validateApi($id, $body);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling DefaultApi->validateApi: ', $e->getMessage(), PHP_EOL;
@@ -33068,9 +33091,10 @@ use WWW::SwaggerClient::DefaultApi;
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 my $id = 56; # Integer | 
+my $body = WWW::SwaggerClient::Object::Validate_body->new(); # Validate_body | 
 
 eval { 
-    my $result = $api_instance->validateApi(id => $id);
+    my $result = $api_instance->validateApi(id => $id, body => $body);
     print Dumper($result);
 };
 if ($@) {
@@ -33088,10 +33112,11 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
 id = 56 # Integer | 
+body =  # Validate_body |  (optional)
 
 try: 
     # validates a member
-    api_response = api_instance.validate_api(id)
+    api_response = api_instance.validate_api(id, body=body)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling DefaultApi->validateApi: %s\n" % e)</code></pre>
@@ -33128,6 +33153,48 @@ except ApiException as e:
                             </table>
 
 
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body </td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/validate_body"
+      }
+    }
+  }
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_validateApi_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_validateApi_body"></div>
+                                </td>
+                                </tr>
+                            </table>
 
 
 

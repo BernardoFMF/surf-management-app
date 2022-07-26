@@ -118,6 +118,10 @@
     "MESSAGE_CODE_43": "Email enviado com sucesso",
     "MESSAGE_CODE_44" : "Quota com essa data já existe",
     "MESSAGE_CODE_45" : "Quota eliminada com sucesso",
+    "MESSAGE_CODE_46": "Palavra-passe alterada com sucesso",
+    "MESSAGE_CODE_47": "Credenciais atualizadas com sucesso",
+    "MESSAGE_CODE_48": "Email não corresponde",
+    "MESSAGE_CODE_49": "Pin incorreto",
 
     "hello_profile": "Olá,",
     "name": "Nome",
